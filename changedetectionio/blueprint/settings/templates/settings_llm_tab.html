@@ -1,0 +1,9 @@
+{% from '_helpers.html' import render_field %}
+{% from '_stab.html' import stab_shell, stab_pane %}
+{#
+  AI / LLM settings tab content — included from settings.html.
+  Requires template context: form, llm_config, llm_env_configured
+#}
+<div class="tab-pane-inner" id="ai">
+<script src="{{ url_for('static_content', group='js', filename='sub-tabs.js') }}"></script>
+
