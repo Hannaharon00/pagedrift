@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% from '_helpers.html' import render_simple_field, render_field %}
+<script src="{{url_for('static_content', group='js', filename='jquery-3.6.0.min.js')}}"></script>
+<script src="{{url_for('static_content', group='js', filename='modal.js')}}"></script>
+<style>
+{%- for uuid, tag in available_tags -%}
+{%- if tag and tag.title -%}
+{%- set class_name = tag.title|sanitize_tag_class -%}
+{#- Anything but a hex colour would inject CSS rules here, fall back to the generated colour -#}
+{%- set tag_colour = tag.get('tag_colour')|safe_css_colour -%}
+{%- if tag_colour -%}
+.watch-tag-list.tag-{{ class_name }} { background-color: {{ tag_colour }}; color: {{ wcag_text_color(tag_colour) }}; }
+{%- else -%}
+{%- set colors = generate_tag_colors(tag.title) -%}
+.watch-tag-list.tag-{{ class_name }} {
+  background-color: {{ colors['light']['bg'] }};
+  color: {{ colors['light']['color'] }};
+}
+html[data-darkmode="true"] .watch-tag-list.tag-{{ class_name }} {
+  background-color: {{ colors['dark']['bg'] }};
+  color: {{ colors['dark']['color'] }};
+}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+</style>
+
