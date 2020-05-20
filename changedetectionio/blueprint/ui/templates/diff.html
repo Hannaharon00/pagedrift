@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% from '_helpers.html' import render_field, render_checkbox_field, render_button %}
+{% block content %}
+<script>
+    const screenshot_url="{{url_for('static_content', group='screenshot', filename=uuid)}}";
+    {% if last_error_screenshot %}
+    const error_screenshot_url="{{url_for('static_content', group='screenshot', filename=uuid, error_screenshot=1) }}";
+    {% endif %}
+
+    const highlight_submit_ignore_url="{{url_for('ui.ui_edit.highlight_submit_ignore_url', uuid=uuid)}}";
+    const watch_url= {{watch_a.open_link|tojson}};
+
+    // Initial scroll position: if set, scroll to this line number in #difference on page load
+    const initialScrollToLineNumber = {{ initial_scroll_line_number|default('null') }};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="{{url_for('static_content', group='js', filename='plugins.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
+<script src="{{url_for('static_content', group='js', filename='snippet-to-image.js')}}"></script>
+<script src="{{url_for('static_content', group='js', filename='diff-overview.js')}}" defer></script>
+
+
+<div id="settings">
+    <form class="pure-form " action="{{ url_for("ui.ui_diff.diff_history_page", uuid=uuid) }}" method="GET" id="diff-form">
+        <fieldset class="diff-fieldset">
+            {% if versions|length >= 1 %}
+                <span style="white-space: nowrap;">
+                {# TRANSLATORS: 'From' labels the older snapshot version selector on the diff page #}
+                <label id="change-from" for="diff-from-version" class="from-to-label">{{ pgettext('diff version', 'From') }}</label>
+                <select id="diff-from-version" name="from_version" class="needs-localtime">
+                    {%- for version in versions|reverse -%}
+                        <option value="{{ version }}" {% if version== from_version %} selected="" {% endif %}>
+                            {{ version }}{#{% if loop.index == 2 %} (Previous){% endif %}#}
+                        </option>
+                    {%- endfor -%}
+                </select>
+                </span>
+                <span style="white-space: nowrap;">
+                {# TRANSLATORS: 'To' labels the newer snapshot version selector on the diff page #}
+                <label id="change-to" for="diff-to-version" class="from-to-label">{{ pgettext('diff version', 'To') }}</label>
+                <select id="diff-to-version" name="to_version" class="needs-localtime">
+                    {%- for version in versions|reverse -%}
+                        <option value="{{ version }}" {% if version== to_version %} selected="" {% endif %}>
+                            {{ version }}{#{% if loop.first %} (Current){% endif %}#}
+                        </option>
+                    {%- endfor -%}
+                </select>
+                </span>
+                {#<button type="submit" class="pure-button pure-button-primary reset-margin">Go</button>#}
+            {% endif %}
+        </fieldset>
+        <fieldset id="diff-style">
+            <span>
+                <label for="diffWords" class="pure-checkbox">
+                <input type="radio" name="type" id="diffWords" value="diffWords" {% if diff_prefs.type == 'diffWords' %}checked=""{% endif %}> {{ _('Words') }}</label>
+            </span>
+            <span>
+                <label for="diffLines" class="pure-checkbox">
+                <input type="radio" name="type" id="diffLines" value="diffLines" {% if diff_prefs.type == 'diffLines' %}checked=""{% endif %}> {{ _('Lines') }}</label>
+            </span>
+            <span>
+                <label for="ignoreWhitespace" class="pure-checkbox" id="label-diff-ignorewhitespace">
+                <input type="checkbox" id="ignoreWhitespace" name="ignoreWhitespace" {% if diff_prefs.ignoreWhitespace %}checked=""{% endif %}> {{ _('Ignore Whitespace') }}</label>
+            </span>
+            <span>
+                <label for="changesOnly" class="pure-checkbox" id="label-diff-changes">
+                <input type="checkbox" id="changesOnly" name="changesOnly" {% if diff_prefs.changesOnly %}checked=""{% endif %}> {{ _('Same/non-changed') }}</label>
+            </span>
+            <span>
+                <label for="removed" class="pure-checkbox" id="label-diff-removed">
+                <input type="checkbox" id="removed" name="removed" {% if diff_prefs.removed %}checked=""{% endif %}> {{ _('Removed') }}</label>
+            </span>
+            <span>
+                <label for="added" class="pure-checkbox" id="label-diff-added">
+                <input type="checkbox" id="added" name="added" {% if diff_prefs.added %}checked=""{% endif %}> {{ _('Added') }}</label>
+            </span>
+            <span>
+                <label for="replaced" class="pure-checkbox" id="label-diff-replaced">
+                <input type="checkbox" id="replaced"  name="replaced" {% if diff_prefs.replaced %}checked=""{% endif %}> {{ _('Replaced') }}</label>
+            </span>
+            {%- if llm_configured -%}
+            <span>
+                <label for="llm_all_changes" class="pure-checkbox" id="label-diff-llm-all-changes" title="{{ _('Include all intermediate snapshots between the selected versions in the AI summary') }}">
+                <input type="checkbox" id="llm_all_changes" name="llm_all_changes" {% if diff_prefs.llm_all_changes %}checked=""{% endif %}> &#x2728; {{ _('AI: every change between versions') }}</label>
+            </span>
+            {%- endif -%}
+        </fieldset>
+        {%- if versions|length >= 2 -%}
+            <div id="keyboard-nav">
+                <strong>{{ _('Keyboard:') }} </strong>
+                <a href="" class="pure-button pure-button-primary" id="btn-previous"> &larr; {{ _('Previous') }}</a>
+                &nbsp; <a class="pure-button pure-button-primary" id="btn-next" href=""> &rarr; {{ _('Next') }}</a>
+            </div>
+        {%- endif -%}
+    </form>
+</div>
+
