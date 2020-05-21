@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% from '_helpers.html' import highlight_trigger_ignored_explainer %}
+{% block content %}
+    <script>
+        const screenshot_url = "{{url_for('static_content', group='screenshot', filename=uuid)}}";
+        const triggered_line_numbers = {{ highlight_triggered_line_numbers|tojson }};
+        const ignored_line_numbers = {{ highlight_ignored_line_numbers|tojson }};
+        const blocked_line_numbers = {{ highlight_blocked_line_numbers|tojson }};
+        {% if last_error_screenshot %}
+            const error_screenshot_url = "{{url_for('static_content', group='screenshot', filename=uuid, error_screenshot=1) }}";
+        {% endif %}
+        const highlight_submit_ignore_url = "{{url_for('ui.ui_edit.highlight_submit_ignore_url', uuid=uuid)}}";
+    </script>
+    <script src="{{url_for('static_content', group='js', filename='plugins.js')}}"></script>
+    <script src="{{ url_for('static_content', group='js', filename='diff-overview.js') }}" defer></script>
+    <script src="{{ url_for('static_content', group='js', filename='preview.js') }}" defer></script>
+    <script src="{{ url_for('static_content', group='js', filename='tabs.js') }}" defer></script>
+    {% if versions|length >= 2 %}
+        <div id="diff-form" style="text-align: center;">
+            <form class="pure-form "  action="{{url_for('ui.ui_preview.preview_page', uuid=uuid)}}" method="POST">
+                <fieldset>
+                    <label for="preview-version">{{ _('Select timestamp') }}</label> <select id="preview-version"
+                                                                                 name="from_version"
+                                                                                 class="needs-localtime">
+                    {% for version in versions|reverse %}
+                        <option value="{{ version }}" {% if version == current_version %} selected="" {% endif %}>
+                            {{ version }}
+                        </option>
+                    {% endfor %}
+                </select>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="pure-button pure-button-primary">{{ _('Go') }}</button>
+
+                </fieldset>
+            </form>
+                <br>
+                <strong>{{ _('Keyboard:') }} </strong><a href="" class="pure-button pure-button-primary" id="btn-previous">
+                &larr; {{ _('Previous') }}</a> &nbsp; <a class="pure-button pure-button-primary" id="btn-next" href="">
+                &rarr; {{ _('Next') }}</a>
+        </div>
+    {% endif %}
+
+    <div class="tabs">
+        <ul>
+            {% if last_error_text %}
+                <li class="tab" id="error-text-tab"><a href="#error-text">{{ _('Error Text') }}</a></li> {% endif %}
+            {% if last_error_screenshot %}
+                <li class="tab" id="error-screenshot-tab"><a href="#error-screenshot">{{ _('Error Screenshot') }}</a>
+                </li> {% endif %}
+            {% if history_n > 0 %}
+                <li class="tab" id="text-tab"><a href="#text">{{ _('Text') }}</a></li>
+                <li class="tab" id="screenshot-tab"><a href="#screenshot">{{ _('Current screenshot') }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+
