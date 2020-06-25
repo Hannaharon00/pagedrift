@@ -1,3 +1,19 @@
 {%- extends 'base.html' -%}
 {%- block content -%}
 
+<script>
+// Server-rendered translation strings — keeps JS-built rows consistent with the
+// gettext catalog (matches the watchOverviewI18n pattern in watch-overview.html).
+window.queueI18n = {
+    workerLabel:  {{ _('Worker %(num)s', num='__NUM__')|tojson }},
+    idle:         {{ _('— idle')|tojson }},
+    statusRunning:{{ _('running')|tojson }},
+    statusIdle:   {{ _('idle')|tojson }},
+    statusDone:   {{ _('done')|tojson }},
+    cancel:       {{ _('cancel')|tojson }},
+    noWorkers:    {{ _('No workers configured and queue is empty')|tojson }},
+    watchGone:    {{ _('Watch no longer exists')|tojson }},
+    nothingRunning: {{ _('Nothing running')|tojson }}
+};
+</script>
+
