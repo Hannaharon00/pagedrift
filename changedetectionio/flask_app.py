@@ -33,3 +33,8 @@ from changedetectionio import worker_pool
 from changedetectionio.queue_handlers import NotificationQueue, RecheckPriorityQueue
 from changedetectionio.strtobool import strtobool
 
+from .thread_supervisor import start_supervised_thread
+from .time_handler import default_timezone_name, is_within_schedule
+
+IN_PYTEST = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
+
