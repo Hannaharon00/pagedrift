@@ -30,3 +30,59 @@ to rename the form fields to match the storage names (an in-PR rename, no migrat
 needed since storage was new), drop the aliases entirely, and delete ~25 lines of
 plumbing. **Pay once with a migration; don't pay forever with complexity.**
 
+# Write — re-validates the schema on every write
+datastore.data['settings']['application']['llm'] = merged.model_dump()
+```
+
+## Unresolved architectural decisions
+
+Two decisions need answers before the `WatchInput` slice. They're not blockers for `App.py`.
+
+### OpenAPI spec vs Pydantic model — who's source of truth?
+
+Today: `docs/api-spec.yaml` declares the Watch/Tag shape; `model/schema_utils.py` reads
+it to compute readonly fields; the API layer validates against it; the model layer is a
+plain dict that doesn't know about either. When `WatchInput` lands, that's a third
+shape declaration.
+
+Two ways to live:
+- **Pydantic is source.** Generate / sync `api-spec.yaml` from the model
+  (e.g. via `model_json_schema()`). One declaration, multiple consumers. Long-term
+  right answer; needs tooling.
+- **Parallel sources with discipline.** Hand-keep them aligned. Faster to ship but
+  drift is inevitable — that's the bug class we're already trying to close.
+
+Recommendation: start parallel (keep `api-spec.yaml` for now), but write Watch's
+Pydantic model so it could be the eventual single source. Don't *invent* a new
+field shape — match the spec.
+
+### Plugin / processor_config_* extensibility
+
+`processor_config_restock_diff` (and future processor configs) are written by
+plugins, not the core. `extra='forbid'` on a Watch input model would reject them.
+
+Options:
+- **Per-processor sub-models.** Each plugin owns its `<Processor>Settings` Pydantic
+  model; Watch input validates only core fields, processor configs validate
+  separately at their own boundary (the per-watch `restock_diff.json`, etc.).
+- **Opaque pass-through.** Watch input model treats `processor_config_*` as a
+  declared dict-typed field. Loses per-key validation but preserves the
+  plugin-extensibility contract.
+
+Recommendation: per-processor sub-models. Matches the file split already done in
+`update_30` (separate `restock_diff.json` per watch).
+
+## Migration order
+
+| Target | Difficulty | Value | Status |
+|---|---|---|---|
+| `LLMSettings` | low | medium | done (this PR) |
+| `App.py` → `AppSettings` (nested) | low | medium | next |
+| `WatchInput` (form/API validator) | medium | **HIGH — closes [GHSA-h3x5-5j56-hm2j][advisory]** | next-next |
+| `TagInput` (form/API validator) | medium | medium | after Watch |
+| `watch_base(dict)` → `BaseModel` | very high | high | separate multi-PR project, much later |
+
+`Tags.py` (TagsDict), `persistence.py`, `schema_utils.py` are not data models — leave alone.
+
+### Concrete next steps
+
