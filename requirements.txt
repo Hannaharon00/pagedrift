@@ -1,0 +1,49 @@
+feedgen~=1.0
+feedparser~=6.0  # For parsing RSS/Atom feeds
+flask-compress
+flask-login>=0.6.3
+flask-paginate
+flask-socketio>=5.6.1,<6 # Re #3910
+flask>=3.1,<4
+flask_cors # For the Chrome extension to operate
+flask_restful
+flask_wtf~=1.2
+inscriptis~=2.2
+python-engineio>=4.13.1,<5
+python-socketio>=5.11.0,<6
+pytz
+timeago~=1.0
+validators~=0.35
+werkzeug==3.1.6
+
+
+# Set these versions together to avoid a RequestsDependencyWarning
+# >= 2.26 also adds Brotli support if brotli is installed
+brotli~=1.2
+requests[socks]
+requests-file
+
+# urllib3==1.26.19  # Unpinned - let requests decide compatible version
+# If specific version needed for security, use urllib3>=1.26.19,<3.0
+chardet>2.3.0
+
+wtforms~=3.2
+jsonpath-ng~=1.8.0
+
+# Fast JSON serialization for better performance
+orjson~=3.11
+
+# dnspython - Used by paho-mqtt for MQTT broker resolution  
+# Version pin removed since eventlet (which required the specific 2.6.1 pin) has been eliminated
+# paho-mqtt will install compatible dnspython version automatically
+
+# jq not available on Windows so must be installed manually
+
+# Notification library
+apprise==1.13.1
+
+diff_match_patch
+
+# Lightweight URL linkifier for notifications
+linkify-it-py
+
