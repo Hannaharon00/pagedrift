@@ -70,6 +70,12 @@ from .time_handler import default_timezone_name, is_within_schedule
 
 IN_PYTEST = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
 
+datastore = None
+
+# Local
+ticker_thread = None
+extra_stylesheets = []
+
 # Use bulletproof janus-based queues for sync/async reliability
 update_q = RecheckPriorityQueue()
 notification_q = NotificationQueue()
