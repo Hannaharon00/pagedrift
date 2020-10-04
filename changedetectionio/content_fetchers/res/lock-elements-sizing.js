@@ -39,3 +39,69 @@
  * @see https://github.com/dgtlmoon/changedetection.io/issues/XXXX
  */
 
+(() => {
+    // Store original styles in a global WeakMap for later restoration
+    window.__elementSizingRestore = new WeakMap();
+
+    const start = performance.now();
+
+    // Get current viewport height (visible portion of page)
+    const viewportHeight = window.innerHeight;
+
+    // Get all elements and filter to FIRST VIEWPORT ONLY
+    // This dramatically reduces elements to process (100-300 vs 10,000+)
+    const allElements = Array.from(document.querySelectorAll('*'));
+
+    // BATCH READ PHASE: Get bounding rects and filter to viewport
+    const measurements = allElements.map(el => {
+        const rect = el.getBoundingClientRect();
+        const computed = window.getComputedStyle(el);
+
+        // Only lock elements in the first viewport (visible on initial page load)
+        // rect.top < viewportHeight means element starts within visible area
+        const inViewport = rect.top < viewportHeight && rect.top >= 0;
+        const hasSize = rect.height > 0 && rect.width > 0;
+
+        return inViewport && hasSize ? { el, computed, rect } : null;
+    }).filter(Boolean);  // Remove null entries
+
+    const elapsed = performance.now() - start;
+    console.log(`Locked first viewport elements: ${measurements.length} of ${allElements.length} total elements (viewport height: ${viewportHeight}px, took ${elapsed.toFixed(0)}ms)`);
+
+    // BATCH WRITE PHASE: Apply all inline styles without triggering layout
+    // No interleaved reads means browser can optimize style application
+    measurements.forEach(({el, computed, rect}) => {
+        // Save original inline style values BEFORE locking
+        const properties = ['height', 'min-height', 'max-height', 'width', 'min-width', 'max-width'];
+        const originalStyles = {};
+        properties.forEach(prop => {
+            originalStyles[prop] = {
+                value: el.style.getPropertyValue(prop),
+                priority: el.style.getPropertyPriority(prop)
+            };
+        });
+        window.__elementSizingRestore.set(el, originalStyles);
+
+        // Lock dimensions with !important to override media queries
+        if (rect.height > 0) {
+            el.style.setProperty('height', computed.height, 'important');
+            el.style.setProperty('min-height', computed.height, 'important');
+            el.style.setProperty('max-height', computed.height, 'important');
+        }
+        if (rect.width > 0) {
+            el.style.setProperty('width', computed.width, 'important');
+            el.style.setProperty('min-width', computed.width, 'important');
+            el.style.setProperty('max-width', computed.width, 'important');
+        }
+    });
+
+    // Also disable ResizeObserver for JS-based resizing
+    window.ResizeObserver = class {
+        constructor() {}
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+    };
+
+    console.log(`✓ Element dimensions locked (${measurements.length} elements) to prevent media query changes during screenshot`);
+})();
