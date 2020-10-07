@@ -87,3 +87,18 @@ SYSTEM_PROMPT = (
     'No markdown, no backticks, no explanation — pure JSON only.'
 )
 
+_LLM_RESULT_CACHE = OrderedDict()
+_LLM_RESULT_CACHE_MAX = 500
+
+
+def _llm_cache_get(key):
+    return _LLM_RESULT_CACHE.get(key)
+
+
+def _llm_cache_put(key, value):
+    _LLM_RESULT_CACHE[key] = value
+    _LLM_RESULT_CACHE.move_to_end(key)
+    while len(_LLM_RESULT_CACHE) > _LLM_RESULT_CACHE_MAX:
+        _LLM_RESULT_CACHE.popitem(last=False)
+
+
