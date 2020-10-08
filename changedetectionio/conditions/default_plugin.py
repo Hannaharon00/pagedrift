@@ -44,3 +44,41 @@ def register_operators():
         "starts_with": starts_with,
     }
 
+@hookimpl
+def register_operator_choices():
+    return [
+        ("!in", _l("Does NOT Contain")),
+        ("starts_with", _l("Text Starts With")),
+        ("ends_with", _l("Text Ends With")),
+        ("length_min", _l("Length minimum")),
+        ("length_max", _l("Length maximum")),
+        ("contains_regex", _l("Text Matches Regex")),
+        ("!contains_regex", _l("Text Does NOT Match Regex")),
+    ]
+
+@hookimpl
+def register_field_choices():
+    return [
+        ("extracted_number", _l("Extracted number after 'Filters & Triggers'")),
+#        ("meta_description", "Meta Description"),
+#        ("meta_keywords", "Meta Keywords"),
+        ("page_filtered_text", _l("Page text after 'Filters & Triggers'")),
+        #("page_title", "Page <title>"), # actual page title <title>
+    ]
+
+@hookimpl
+def add_data(current_watch_uuid, application_datastruct, ephemeral_data):
+
+    from price_parser import Price
+    res = {}
+    if 'text' in ephemeral_data:
+        res['page_filtered_text'] = ephemeral_data['text']
+
+        # Better to not wrap this in try/except so that the UI can see any errors
+        price = Price.fromstring(ephemeral_data.get('text'))
+        if price and price.amount != None:
+            # This is slightly misleading, it's extracting a PRICE not a Number..
+            res['extracted_number'] = float(price.amount)
+            logger.debug(f"Extracted number result: '{price}' - returning float({res['extracted_number']})")
+
+    return res
