@@ -98,3 +98,100 @@ PERL_STYLE_REGEX = r'^/(.*?)/([a-z]*)?$'
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.I | re.S)
 META_CS  = re.compile(r'<meta[^>]+charset=["\']?\s*([a-z0-9_\-:+.]+)', re.I)
 
+@lxml_guarded
+def subtractive_xpath_selector(selectors: List[str], html_content: str) -> str:
+    from lxml import etree
+    # Parse the HTML content using lxml. Own parser, not etree.HTML()'s process-global default.
+    html_tree = etree.fromstring(html_content, parser=lxml_html_parser())
+
+    # First, collect all elements to remove
+    elements_to_remove = []
+
+    # Iterate over the list of XPath selectors
+    for selector in selectors:
+        # Collect elements for each selector
+        elements_to_remove.extend(html_tree.xpath(selector))
+
+    # If no elements were found, return the original HTML content
+    if not elements_to_remove:
+        return html_content
+
+    # Then, remove them in a separate loop
+    for element in elements_to_remove:
+        if element.getparent() is not None:  # Ensure the element has a parent before removing
+            element.getparent().remove(element)
+
+    # Convert the modified HTML tree back to a string
+    modified_html = etree.tostring(html_tree, method="html").decode("utf-8")
+    return modified_html
+
+
+def element_removal(selectors: List[str], html_content):
+    """Removes elements that match a list of CSS or XPath selectors."""
+    modified_html = html_content
+    css_selectors = []
+    xpath_selectors = []
+
+    for selector in selectors:
+        if selector.strip().startswith(('xpath:', 'xpath1:', '//')):
+            # Handle XPath selectors separately
+            xpath_selector = selector.removeprefix('xpath:').removeprefix('xpath1:')
+            xpath_selectors.append(xpath_selector)
+        else:
+            # Collect CSS selectors as one "hit", see comment in subtractive_css_selector
+            css_selectors.append(selector.strip().strip(","))
+
+    if xpath_selectors:
+        modified_html = subtractive_xpath_selector(xpath_selectors, modified_html)
+
+    if css_selectors:
+        # Remove duplicates, then combine all CSS selectors into one string, separated by commas
+        # This stops the elements index shifting
+        unique_selectors = list(set(css_selectors))  # Ensure uniqueness
+        combined_css_selector = " , ".join(unique_selectors)
+        modified_html = subtractive_css_selector(combined_css_selector, modified_html)
+
+
+    return modified_html
+
+def elementpath_tostring(obj):
+    """
+    change elementpath.select results to string type
+    # The MIT License (MIT), Copyright (c), 2018-2021, SISSA (Scuola Internazionale Superiore di Studi Avanzati)
+    # https://github.com/sissaschool/elementpath/blob/dfcc2fd3d6011b16e02bf30459a7924f547b47d0/elementpath/xpath_tokens.py#L1038
+    """
+
+    import elementpath
+    from decimal import Decimal
+    import math
+
+    if obj is None:
+        return ''
+    # https://elementpath.readthedocs.io/en/latest/xpath_api.html#elementpath.select
+    elif isinstance(obj, elementpath.XPathNode):
+        return obj.string_value
+    elif isinstance(obj, bool):
+        return 'true' if obj else 'false'
+    elif isinstance(obj, Decimal):
+        value = format(obj, 'f')
+        if '.' in value:
+            return value.rstrip('0').rstrip('.')
+        return value
+
+    elif isinstance(obj, float):
+        if math.isnan(obj):
+            return 'NaN'
+        elif math.isinf(obj):
+            return str(obj).upper()
+
+        value = str(obj)
+        if '.' in value:
+            value = value.rstrip('0').rstrip('.')
+        if '+' in value:
+            value = value.replace('+', '')
+        if 'e' in value:
+            return value.upper()
+        return value
+
+    return str(obj)
+
