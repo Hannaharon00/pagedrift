@@ -1,0 +1,3 @@
+"""
+LibVIPS implementation of ImageDiffHandler.
+
