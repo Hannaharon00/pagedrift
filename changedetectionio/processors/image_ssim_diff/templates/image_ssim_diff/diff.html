@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from '_helpers.html' import render_field, render_checkbox_field, render_button %}
+
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static_content', group='styles', filename='diff-image.css')}}?v={{ get_css_version() }}">
+<script src="{{url_for('static_content', group='js', filename='diff-overview.js')}}" defer></script>
+
