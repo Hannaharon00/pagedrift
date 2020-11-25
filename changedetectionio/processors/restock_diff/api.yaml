@@ -1,0 +1,31 @@
+components:
+  schemas:
+    processor_config_restock_diff:
+      type: object
+      description: Configuration for the restock_diff processor (restock and price tracking)
+      properties:
+        in_stock_processing:
+          type: string
+          enum: [in_stock_only, all_changes, 'off']
+          default: in_stock_only
+          description: |
+            When to trigger on stock changes:
+            - `in_stock_only`: Only trigger on Out Of Stock -> In Stock transitions
+            - `all_changes`: Trigger on any availability change
+            - `off`: Disable stock/availability tracking
+        follow_price_changes:
+          type: boolean
+          default: true
+          description: Monitor and track price changes
+        price_change_min:
+          type: [number, 'null']
+          description: Trigger a notification when the price drops below this value
+        price_change_max:
+          type: [number, 'null']
+          description: Trigger a notification when the price rises above this value
+        price_change_threshold_percent:
+          type: [number, 'null']
+          minimum: 0
+          maximum: 100
+          description: Minimum price change percentage since the original price to trigger a notification
+
