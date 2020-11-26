@@ -5,6 +5,8 @@ import os
 import websockets.exceptions
 from urllib.parse import urlparse
 
+from loguru import logger
+
 from changedetectionio.content_fetchers import SCREENSHOT_MAX_HEIGHT_DEFAULT, visualselector_xpath_selectors, \
     SCREENSHOT_SIZE_STITCH_THRESHOLD, SCREENSHOT_DEFAULT_QUALITY, XPATH_ELEMENT_JS, INSTOCK_DATA_JS, \
     SCREENSHOT_MAX_TOTAL_HEIGHT, FAVICON_FETCHER_JS
