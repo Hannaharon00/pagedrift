@@ -19,6 +19,29 @@ from changedetectionio.notification_service import NotificationContextData
 from changedetectionio.strtobool import strtobool
 from changedetectionio import processors
 
+from wtforms import (
+    BooleanField,
+    Form,
+    Field,
+    FloatField,
+    HiddenField,
+    IntegerField,
+    PasswordField,
+    RadioField,
+    SelectField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+    fields,
+    validators,
+    widgets
+)
+from flask_wtf.file import FileField, FileAllowed
+from wtforms.fields import FieldList
+from wtforms.utils import unset_value
+
+from wtforms.validators import ValidationError
+
 default_method = 'GET'
 allow_simplehost = not strtobool(os.getenv('BLOCK_SIMPLEHOSTS', 'False'))
 REQUIRE_ATLEAST_ONE_TIME_PART_MESSAGE_DEFAULT=_l('At least one time interval (weeks, days, hours, minutes, or seconds) must be specified.')
