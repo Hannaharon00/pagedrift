@@ -25,3 +25,34 @@ ADDED_PLACEMARKER_CLOSED = '@added_PLACEMARKER_CLOSED'
 CHANGED_PLACEMARKER_OPEN = '@changed_PLACEMARKER_OPEN'
 CHANGED_PLACEMARKER_CLOSED = '@changed_PLACEMARKER_CLOSED'
 
+# Regexes built from the constants above — no brittle hardcoded strings
+_EXTRACT_REMOVED_RE = re.compile(
+    re.escape(REMOVED_PLACEMARKER_OPEN) + r'(.*?)' + re.escape(REMOVED_PLACEMARKER_CLOSED)
+    + r'|' +
+    re.escape(CHANGED_PLACEMARKER_OPEN) + r'(.*?)' + re.escape(CHANGED_PLACEMARKER_CLOSED)
+)
+_EXTRACT_ADDED_RE = re.compile(
+    re.escape(ADDED_PLACEMARKER_OPEN) + r'(.*?)' + re.escape(ADDED_PLACEMARKER_CLOSED)
+    + r'|' +
+    re.escape(CHANGED_INTO_PLACEMARKER_OPEN) + r'(.*?)' + re.escape(CHANGED_INTO_PLACEMARKER_CLOSED)
+)
+
+
+def extract_changed_from(raw_diff: str) -> str:
+    """Extract only the removed/changed-from fragments from a raw diff string.
+
+    Useful for {{diff_changed_from}} — gives just the old value (e.g. old price),
+    not the full surrounding line. Multiple fragments joined with newlines.
+    """
+    return '\n'.join(next((g for g in m.groups() if g is not None), '') for m in _EXTRACT_REMOVED_RE.finditer(raw_diff))
+
+
+def extract_changed_to(raw_diff: str) -> str:
+    """Extract only the added/changed-into fragments from a raw diff string.
+
+    Useful for {{diff_changed_to}} — gives just the new value (e.g. new price),
+    not the full surrounding line. Multiple fragments joined with newlines.
+    """
+    return '\n'.join(next((g for g in m.groups() if g is not None), '') for m in _EXTRACT_ADDED_RE.finditer(raw_diff))
+
+
