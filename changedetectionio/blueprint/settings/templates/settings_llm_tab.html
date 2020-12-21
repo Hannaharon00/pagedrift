@@ -157,3 +157,112 @@
     </span>
   </div>
 
+  {% if llm_stored.get('tokens_total_cumulative') or llm_stored.get('tokens_this_month') %}
+
+  <div class="llm-usage-grid">
+    <div class="llm-stat-card">
+      <div class="llm-stat-label">{{ _('This month') }}</div>
+      <div class="llm-stat-value">{{ '{:,}'.format(llm_stored.get('tokens_this_month', 0)) }}</div>
+      <div class="llm-stat-sub">{{ _('tokens') }}{% if llm_show_costs and llm_stored.get('cost_usd_this_month') %} &nbsp;·&nbsp; ≈&thinsp;${{ '%.4f'|format(llm_stored.get('cost_usd_this_month', 0)) }}{% endif %}</div>
+      {% if llm_token_budget_month %}
+      {% set pct = (llm_stored.get('tokens_this_month', 0) / llm_token_budget_month * 100)|int %}
+      <div class="llm-stat-bar-wrap">
+        <div class="llm-stat-bar-fill {% if pct >= 100 %}bar-over{% elif pct >= 80 %}bar-warn{% else %}bar-ok{% endif %}"
+             style="width:{{ [pct, 100]|min }}%"></div>
+      </div>
+      <div class="llm-stat-budget-text">{{ _('%(percent)s%% of %(budget)s', percent=pct, budget='{:,}'.format(llm_token_budget_month)) }}</div>
+      {% endif %}
+    </div>
+
+    <div class="llm-stat-card">
+      <div class="llm-stat-label">{{ _('All-time total') }}</div>
+      <div class="llm-stat-value">{{ '{:,}'.format(llm_stored.get('tokens_total_cumulative', 0)) }}</div>
+      <div class="llm-stat-sub">{{ _('tokens') }}{% if llm_show_costs and llm_stored.get('cost_usd_total_cumulative') %} &nbsp;·&nbsp; ≈&thinsp;${{ '%.4f'|format(llm_stored.get('cost_usd_total_cumulative', 0)) }}{% endif %}</div>
+    </div>
+  </div>
+
+  {% if llm_token_budget_month and llm_stored.get('tokens_this_month', 0) >= llm_token_budget_month %}
+  <p class="llm-budget-alert">&#9888; {{ _('Monthly token budget reached. AI summarisation is paused until next month.') }}</p>
+  {% endif %}
+
+  <div class="llm-usage-settings">
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Token budget this period') }}</span>
+      <span class="llm-usage-row-value">
+        {% if llm_token_budget_month_env %}
+          <strong>{{ '{:,}'.format(llm_token_budget_month_env) }}</strong>
+          <span class="llm-env-badge">{{ _('(set via <code>LLM_TOKEN_BUDGET_MONTH</code>)') | safe }}</span>
+          <input type="hidden" name="llm-token_budget_month" value="{{ llm_token_budget_month_env }}">
+        {% else %}
+          {{ form.llm.form.token_budget_month(placeholder=_('0 = unlimited'), value=llm_stored.get('token_budget_month', 0) or '') }}
+          <span class="llm-field-hint">{{ _('tokens (0 = unlimited)') }}</span>
+        {% endif %}
+      </span>
+    </div>
+    {% if llm_stored.get('tokens_month_key') %}
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Current billing period') }}</span>
+      <span class="llm-usage-row-value">{{ llm_stored.get('tokens_month_key') }}</span>
+    </div>
+    {% endif %}
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Max input characters') }}</span>
+      <span class="llm-usage-row-value">
+        {% if llm_max_input_chars_env %}
+          {{ form.llm.form.max_input_chars(value=llm_max_input_chars_env, readonly=True, style="width:10em;opacity:0.6;cursor:not-allowed;") }}
+          <span class="llm-env-badge">{{ _('(set via <code>LLM_MAX_INPUT_CHARS</code>)') | safe }}</span>
+        {% else %}
+          {{ form.llm.form.max_input_chars(placeholder='100000', value=llm_stored.get('max_input_chars', 100000) or '') }}
+          <span class="llm-field-hint">{{ _('characters — currently enforcing: %(limit)s', limit='{:,}'.format(llm_effective_max_input_chars)) }}</span>
+        {% endif %}
+      </span>
+    </div>
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Max tokens per watch per period') }}</span>
+      <span class="llm-usage-row-value">
+        {{ form.llm.form.max_tokens_per_count_period(placeholder=_('0 = unlimited'), value=llm_stored.get('max_tokens_per_count_period', 0) or '') }}
+        <span class="llm-field-hint">{{ _('tokens — skips AI evaluation on a watch once its usage within the current period (monthly) hits this cap (0 = unlimited)') }}</span>
+      </span>
+    </div>
+  </div>
+
+  {% else %}
+  <p class="llm-no-usage">{{ _('No AI usage recorded yet.') }}</p>
+
+  <div class="llm-usage-settings">
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Token budget') }}</span>
+      <span class="llm-usage-row-value">
+        {% if llm_token_budget_month_env %}
+          <strong>{{ '{:,}'.format(llm_token_budget_month_env) }}</strong>
+          <span class="llm-env-badge">{{ _('(set via <code>LLM_TOKEN_BUDGET_MONTH</code>)') | safe }}</span>
+          <input type="hidden" name="llm-token_budget_month" value="{{ llm_token_budget_month_env }}">
+        {% else %}
+          {{ form.llm.form.token_budget_month(placeholder=_('0 = unlimited'), value=llm_stored.get('token_budget_month', 0) or '') }}
+          <span class="llm-field-hint">{{ _('tokens per month (0 = unlimited)') }}</span>
+        {% endif %}
+      </span>
+    </div>
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Max input characters') }}</span>
+      <span class="llm-usage-row-value">
+        {% if llm_max_input_chars_env %}
+          {{ form.llm.form.max_input_chars(value=llm_max_input_chars_env, readonly=True, style="width:10em;opacity:0.6;cursor:not-allowed;") }}
+          <span class="llm-env-badge">{{ _('(set via <code>LLM_MAX_INPUT_CHARS</code>)') | safe }}</span>
+        {% else %}
+          {{ form.llm.form.max_input_chars(placeholder='100000', value=llm_stored.get('max_input_chars', 100000) or '') }}
+          <span class="llm-field-hint">{{ _('characters — currently enforcing: %(limit)s', limit='{:,}'.format(llm_effective_max_input_chars)) }}</span>
+        {% endif %}
+      </span>
+    </div>
+    <div class="llm-usage-row">
+      <span class="llm-usage-row-label">{{ _('Max tokens per watch per period') }}</span>
+      <span class="llm-usage-row-value">
+        {{ form.llm.form.max_tokens_per_count_period(placeholder=_('0 = unlimited'), value=llm_stored.get('max_tokens_per_count_period', 0) or '') }}
+        <span class="llm-field-hint">{{ _('tokens — skips AI evaluation on a watch once its usage within the current period (monthly) hits this cap (0 = unlimited)') }}</span>
+      </span>
+    </div>
+  </div>
+  {% endif %}
+  {% endcall %}
+
