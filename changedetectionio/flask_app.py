@@ -80,6 +80,29 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 # Will be initialized in changedetection_app
 socketio_server = None
 
+class StrictUUIDConverter(BaseConverter):
+    # Special sentinel values allowed in addition to strict UUIDs
+    _ALLOWED_SENTINELS = frozenset({'first'})
+
+    def to_python(self, value: str) -> str:
+        if value in self._ALLOWED_SENTINELS:
+            return value
+        try:
+            u = UUID(value)
+        except ValueError as e:
+            raise ValidationError() from e
+        # Reject non-standard formats (braces, URNs, no-hyphens)
+        if str(u) != value.lower():
+            raise ValidationError()
+        return str(u)
+
+    def to_url(self, value) -> str:
+        return str(value)
+
+
+# app setup (once)
+app.url_map.converters["uuid_str"] = StrictUUIDConverter
+
 # Flask-Compress handles HTTP compression, Socket.IO compression disabled to prevent memory leak.
 # There's also a bug between flask compress and socketio that causes some kind of slow memory leak
 # It's better to use compression on your reverse proxy (nginx etc) instead.
