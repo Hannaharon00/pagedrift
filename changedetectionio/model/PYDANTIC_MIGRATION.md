@@ -30,6 +30,66 @@ to rename the form fields to match the storage names (an in-PR rename, no migrat
 needed since storage was new), drop the aliases entirely, and delete ~25 lines of
 plumbing. **Pay once with a migration; don't pay forever with complexity.**
 
+Same principle applies the moment you find yourself writing `dict.get(new_key) or
+dict.get(old_key)`. That's a migration in disguise — write the migration instead.
+
+## Architecture choice: validator at the boundary, not domain model
+
+There are two ways to use Pydantic. Pick one per slice — they are not interchangeable.
+
+**Pydantic-as-validator (what we do).** Storage stays a plain dict. A `BaseModel`
+validates input at the boundary, dumps back to a dict. No call-site changes; the
+existing `watch['x']` dict access keeps working everywhere.
+
+**Pydantic-as-domain-model.** Replace `dict` inheritance with `BaseModel`. ~190 call
+sites switch from `watch['x']` to `watch.x`. Much bigger blast radius, defers the
+security win. Not what we're doing right now.
+
+The CWE-915 fix only needs the validator pattern. Domain-model replacement is a
+separate, later project.
+
+## The template (LLMSettings)
+
+The first migrated slice. Use as the reference for the next one.
+
+**Match the WTForms field names to the storage / Pydantic field names** so the
+form-input dict and the storage dict have the same key shape. No aliases, no
+`populate_by_name=True`, no `by_alias=True` merge gymnastics. Only reach for
+`Field(alias=…)` if you genuinely cannot rename the form field (rare).
+
+`model/LLMSettings.py`:
+
+```python
+class LLMSettings(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    enabled: bool = True
+    model: str = ''
+    ...
+
+    # System-managed counters
+    tokens_total_cumulative: int = 0
+    ...
+
+    # Field groups
+    CONNECTION_FIELDS: ClassVar[Tuple[str, ...]] = ('model', 'api_key', ...)
+    PROTECTED_FIELDS:  ClassVar[Tuple[str, ...]] = ('tokens_total_cumulative', ...)
+```
+
+Boundary pattern at the route handler:
+
+```python
+# Read
+settings = LLMSettings.model_validate(
+    datastore.data['settings']['application'].get('llm') or {}
+)
+
+# Merge form input
+form_input = dict(form.data.get('llm') or {})
+for protected in LLMSettings.PROTECTED_FIELDS:
+    form_input.pop(protected, None)  # counters never come from form
+merged = LLMSettings.model_validate({**settings.model_dump(), **form_input})
+
 # Write — re-validates the schema on every write
 datastore.data['settings']['application']['llm'] = merged.model_dump()
 ```
