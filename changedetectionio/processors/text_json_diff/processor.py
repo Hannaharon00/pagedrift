@@ -16,3 +16,13 @@ from loguru import logger
 
 from changedetectionio.processors.magic import guess_stream_type
 
+# Translation marker for extraction - allows pybabel to find these strings
+def _(x): return x
+name = _('Webpage Text/HTML, JSON and PDF changes')
+description = _('Detects all text changes where possible')
+del _  # Remove marker
+processor_weight = -100
+list_badge_text = "Text"
+
+JSON_FILTER_PREFIXES = ['json:', 'jq:', 'jqraw:']
+
