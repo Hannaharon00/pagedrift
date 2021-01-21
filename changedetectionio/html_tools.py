@@ -98,6 +98,17 @@ PERL_STYLE_REGEX = r'^/(.*?)/([a-z]*)?$'
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.I | re.S)
 META_CS  = re.compile(r'<meta[^>]+charset=["\']?\s*([a-z0-9_\-:+.]+)', re.I)
 
+META_CT  = re.compile(r'<meta[^>]+http-equiv=["\']?content-type["\']?[^>]*content=["\'][^>]*charset=([a-z0-9_\-:+.]+)', re.I)
+
+# 'price' , 'lowPrice', 'highPrice' are usually under here
+# All of those may or may not appear on different websites - I didnt find a way todo case-insensitive searching here
+LD_JSON_PRODUCT_OFFER_SELECTORS = ["json:$..offers", "json:$..Offers"]
+
+class JSONNotFound(ValueError):
+    def __init__(self, msg):
+        ValueError.__init__(self, msg)
+
+
 @lxml_guarded
 def subtractive_xpath_selector(selectors: List[str], html_content: str) -> str:
     from lxml import etree
