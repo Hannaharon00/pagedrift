@@ -159,3 +159,32 @@ class LabelAfterInputTableWidget(widgets.TableWidget):
         return Markup("".join(html))
 
 
+def validate_time_between_check_has_values(form):
+    """
+    Custom validation function for TimeBetweenCheckForm.
+    Returns True if at least one time interval field has a value > 0.
+    """
+    res = any([
+        form.weeks.data and int(form.weeks.data) > 0,
+        form.days.data and int(form.days.data) > 0,
+        form.hours.data and int(form.hours.data) > 0,
+        form.minutes.data and int(form.minutes.data) > 0,
+        form.seconds.data and int(form.seconds.data) > 0
+    ])
+
+    return res
+
+
+class RequiredTimeInterval(object):
+    """
+    WTForms validator that ensures at least one time interval field has a value > 0.
+    Use this with FormField(TimeBetweenCheckForm, validators=[RequiredTimeInterval()]).
+    """
+    def __init__(self, message=None):
+        self.message = message or _l('At least one time interval (weeks, days, hours, minutes, or seconds) must be specified.')
+
+    def __call__(self, form, field):
+        if not validate_time_between_check_has_values(field.form):
+            raise ValidationError(self.message)
+
+
