@@ -19,3 +19,9 @@ window.queueI18n = {
 
 </div>
 
+<script>
+$(function () {
+  const $root = $('#queue-page');
+  if (!$root.length) return;
+  const baseUrl = $root.data('queueJson');
+
