@@ -26,6 +26,53 @@ Ideal for monitoring price changes, content edits, conditional changes and more.
 
 Stop drowning in noise. Connect any LLM (OpenAI, Gemini, Anthropic, Ollama and more) and go from _"something changed"_ to _"only the thing you care about changed"_.
 
+**AI change detection rules** — write a plain-English intent once: _"notify me only when the price drops below $50"_, _"alert me when the item comes back in stock"_, _"ignore navigation and footer changes"_. The AI evaluates every detected diff against your intent and silently suppresses everything irrelevant. Fewer false positives, zero noise.
+
+**AI change summaries** — instead of staring at a raw diff, your notification reads _"Price dropped from $89.99 to $67.00"_ or _"3 new products added to the listing"_. Works globally or per-watch, with full control over the prompt.
+
+Works with any model you already pay for — GPT-4o-mini and Gemini Flash handle this well at fractions of a cent per check. Or run it entirely locally with **Ollama**, **vLLM**, **LM Studio**, or any **OpenAI-compatible self-hosted endpoint** — pick the *OpenAI-compatible (vLLM, LM Studio, llama.cpp)* option in the provider dropdown and point it at your server's `/v1` URL. Powered by [LiteLLM](https://github.com/BerriAI/litellm), giving you seamless access to [100+ supported providers and models](https://docs.litellm.ai/docs/providers).
+
+[<img src="./docs/LLM-change-summary.jpeg" style="max-width:100%;" alt="AI-powered website change detection — plain language change summaries and smart alert rules"  title="AI website change detection with LLM change summaries and intelligent alert filtering" />](https://changedetection.io?src=github)
+
+_Note: Available in our subscription/hosted service from June 2026_
+
+### Target specific parts of the webpage using the Visual Selector tool.
+
+Available when connected to a <a href="https://github.com/dgtlmoon/changedetection.io/wiki/Playwright-content-fetcher">playwright content fetcher</a> (included as part of our subscription service)
+
+[<img src="https://raw.githubusercontent.com/dgtlmoon/changedetection.io/master/docs/visualselector-anim.gif" style="max-width:100%;" alt="Select parts and elements of a web page to monitor for changes"  title="Select parts and elements of a web page to monitor for changes" />](https://changedetection.io?src=github)
+
+### Easily see what changed, examine by word, line, or individual character.
+
+[<img src="https://raw.githubusercontent.com/dgtlmoon/changedetection.io/master/docs/screenshot-diff.png" style="max-width:100%;" alt="Self-hosted web page change monitoring context difference "  title="Self-hosted web page change monitoring context difference " />](https://changedetection.io?src=github)
+
+
+### Perform interactive browser steps
+
+Fill in text boxes, click buttons and more, setup your changedetection scenario. 
+
+Using the **Browser Steps** configuration, add basic steps before performing change detection, such as logging into websites, adding a product to a cart, accept cookie logins, entering dates and refining searches.
+
+[<img src="docs/browsersteps-anim.gif" style="max-width:100%;" alt="Website change detection with interactive browser steps, detect changes behind login and password, search queries and more"  title="Website change detection with interactive browser steps, detect changes behind login and password, search queries and more" />](https://changedetection.io?src=github)
+
+After **Browser Steps** have been run, then visit the **Visual Selector** tab to refine the content you're interested in.
+Requires Playwright to be enabled.
+
+### Awesome restock and price change notifications
+
+Enable the _"Re-stock & Price detection for single product pages"_ option to activate the best way to monitor product pricing, this will extract any meta-data in the HTML page and give you many options to follow the pricing of the product.
+
+Easily organise and monitor prices for products from the dashboard, get alerts and notifications when the price of a product changes or comes back in stock again!
+
+[<img src="docs/restock-overview.png" style="max-width:100%;" alt="Easily keep an eye on product price changes directly from the UI"  title="Easily keep an eye on product price changes directly from the UI" />](https://changedetection.io?src=github)
+
+Set price change notification parameters, upper and lower price, price change percentage and more.
+Always know when a product for sale drops in price.
+
+[<img src="docs/restock-settings.png" style="max-width:100%;" alt="Set upper lower and percentage price change notification values"  title="Set upper lower and percentage price change notification values" />](https://changedetection.io?src=github)
+
+
+
 ### Example use cases
 
 - Products and services have a change in pricing
