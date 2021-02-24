@@ -11,3 +11,6 @@ See class model docstring for detailed explanation and examples.
 See: processors/restock_diff/processor.py:184-192 for manual resolution example
 """
 
+from blinker import signal
+from changedetectionio.validate_url import is_safe_valid_url
+
