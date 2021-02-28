@@ -114,3 +114,87 @@ async (options) => {
         }
     }
 
+// Create an array to hold the visible elements
+    const visibleElementsArray = [];
+
+// Call collectVisibleElements with the starting parent element
+    collectVisibleElements(document.body, visibleElementsArray);
+
+
+    visibleElementsArray.forEach(function (element) {
+
+        bbox = element.getBoundingClientRect();
+
+        // Skip really small ones, and where width or height ==0
+        if (bbox['width'] * bbox['height'] < 10) {
+            return
+        }
+
+        // Don't include elements that are offset from canvas
+        if (bbox['top'] + scroll_y < 0 || bbox['left'] < 0) {
+            return
+        }
+
+        // @todo the getXpath kind of sucks, it doesnt know when there is for example just one ID sometimes
+        // it should not traverse when we know we can anchor off just an ID one level up etc..
+        // maybe, get current class or id, keep traversing up looking for only class or id until there is just one match
+
+        // 1st primitive - if it has class, try joining it all and select, if theres only one.. well thats us.
+        xpath_result = false;
+        try {
+            var d = findUpTag(element);
+            if (d) {
+                xpath_result = d;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        // You could swap it and default to getXpath and then try the smarter one
+        // default back to the less intelligent one
+        if (!xpath_result) {
+            try {
+                // I've seen on FB and eBay that this doesnt work
+                // ReferenceError: getXPath is not defined at eval (eval at evaluate (:152:29), <anonymous>:67:20) at UtilityScript.evaluate (<anonymous>:159:18) at UtilityScript.<anonymous> (<anonymous>:1:44)
+                xpath_result = getxpath(element);
+            } catch (e) {
+                console.log(e);
+                return
+            }
+        }
+
+        let label = "not-interesting" // A placeholder, the actual labels for training are done by hand for now
+
+        let text = element.textContent.trim().slice(0, 30).trim();
+        while (/\n{2,}|\t{2,}/.test(text)) {
+            text = text.replace(/\n{2,}/g, '\n').replace(/\t{2,}/g, '\t')
+        }
+
+        // Try to identify any possible currency amounts "Sale: 4000" or "Sale now 3000 Kc", can help with the training.
+        const hasDigitCurrency = (/\d/.test(text.slice(0, 6)) || /\d/.test(text.slice(-6))) && /([€£$¥₩₹]|USD|AUD|EUR|Kč|kr|SEK|,–)/.test(text);
+        const computedStyle = window.getComputedStyle(element);
+
+        if (Math.floor(bbox['top']) + scroll_y > max_height) {
+            return
+        }
+
+        size_pos.push({
+            xpath: xpath_result,
+            width: Math.round(bbox['width']),
+            height: Math.round(bbox['height']),
+            left: Math.floor(bbox['left']),
+            top: Math.floor(bbox['top']) + scroll_y,
+            // tagName used by Browser Steps
+            tagName: (element.tagName) ? element.tagName.toLowerCase() : '',
+            // tagtype used by Browser Steps
+            tagtype: (element.tagName.toLowerCase() === 'input' && element.type) ? element.type.toLowerCase() : '',
+            isClickable: computedStyle.cursor === "pointer",
+            // Used by the keras trainer
+            fontSize: computedStyle.getPropertyValue('font-size'),
+            fontWeight: computedStyle.getPropertyValue('font-weight'),
+            hasDigitCurrency: hasDigitCurrency,
+            label: label,
+        });
+
+    });
+
+
