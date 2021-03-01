@@ -7,6 +7,10 @@ ARCHITECTURE NOTE: Configuration Override Hierarchy
 This module implements Watch objects that inherit from dict (technical debt).
 The dream architecture would use Pydantic for:
 
+3. TYPE SAFETY & VALIDATION
+   - Current: Dict access with no compile-time checks
+   - Future: Type hints, IDE autocomplete, validation at boundaries
+
 See class model docstring for detailed explanation and examples.
 See: processors/restock_diff/processor.py:184-192 for manual resolution example
 """
