@@ -13,6 +13,35 @@
 {% set has_tag_filters_extra="WARNING: Watch has tag/groups set with special filters\n" if has_special_tag_options else '' %}
 <script src="{{url_for('static_content', group='js', filename='recheck-proxy.js')}}" defer></script>
 
+<div class="edit-form monospaced-textarea">
+
+    <div class="tabs collapsable">
+        <ul>
+            <li class="tab"><a href="#general">{{ _('General') }}</a></li>
+            {% if capabilities.supports_request_type %}
+            <li class="tab"><a href="#request">{{ _('Request') }}</a></li>
+            {% endif %}
+            {% if extra_tab_content %}
+            <li class="tab"><a href="#extras_tab">{{ extra_tab_content }}</a></li>
+            {% endif %}
+            {% if capabilities.supports_browser_steps %}
+            <li class="tab"><a id="browsersteps-tab" href="#browser-steps">{{ _('Browser Steps') }}</a></li>
+            {% endif %}
+            {% if capabilities.supports_visual_selector %}
+            <li class="tab"><a id="visualselector-tab" href="#visualselector">{{ _('Visual Filter Selector') }}</a></li>
+            {% endif %}
+            {% if not llm_features_disabled %}
+            <li class="tab"><a href="#ai-llm">{{ _('AI / LLM') }}</a></li>
+            {% endif %}
+            {% if capabilities.supports_text_filters_and_triggers %}
+            <li class="tab" id="filters-and-triggers-tab"><a href="#filters-and-triggers">{{ _('Filters & Triggers') }}</a></li>
+            <li class="tab" id="conditions-tab"><a href="#conditions">{{ _('Conditions') }}</a></li>
+            {% endif %}
+            <li class="tab"><a href="#notifications">{{ _('Notifications') }}</a></li>
+            <li class="tab"><a href="#stats">{{ _('Stats') }}</a></li>
+        </ul>
+    </div>
+
     <div class="box-wrap inner">
         <form class="pure-form pure-form-stacked"
               action="{{ url_for('ui.ui_edit.edit_page', uuid=uuid, next = request.args.get('next'), unpause_on_save = request.args.get('unpause_on_save'), tag = request.args.get('tag')) }}" method="POST">
