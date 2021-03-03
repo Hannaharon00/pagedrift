@@ -7,3 +7,7 @@ from changedetectionio.content_fetchers.exceptions import checksumFromPreviousCh
 import urllib3
 import time
 
+class MoreThanOnePriceFound(Exception):
+    def __init__(self):
+        return
+
