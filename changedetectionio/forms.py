@@ -194,3 +194,96 @@ class RequiredTimeInterval(object):
             raise ValidationError(self.message)
 
 
+class RequiredFormField(FormField):
+    """
+    A FormField that passes require_at_least_one=True to TimeBetweenCheckForm.
+    Use this when you want the sub-form to always require at least one value.
+    """
+
+    widget = LabelAfterInputTableWidget()
+
+    def __init__(self, form_class, label=None, validators=None, separator="-", **kwargs):
+        super().__init__(form_class, label, validators, separator, **kwargs)
+
+    def process(self, formdata, data=unset_value, extra_filters=None):
+        if extra_filters:
+            raise TypeError(
+                "FormField cannot take filters, as the encapsulated"
+                "data is not mutable."
+            )
+
+        if data is unset_value:
+            try:
+                data = self.default()
+            except TypeError:
+                data = self.default
+            self._obj = data
+
+        self.object_data = data
+
+        prefix = self.name + self.separator
+        # Pass require_at_least_one=True to the sub-form
+        if isinstance(data, dict):
+            self.form = self.form_class(formdata=formdata, prefix=prefix, require_at_least_one=True, **data)
+        else:
+            self.form = self.form_class(formdata=formdata, obj=data, prefix=prefix, require_at_least_one=True)
+
+    @property
+    def errors(self):
+        """Include sub-form validation errors"""
+        form_errors = self.form.errors
+        # Add any general form errors to a special 'form' key
+        if hasattr(self.form, '_formdata_errors') and self.form._formdata_errors:
+            form_errors = dict(form_errors)  # Make a copy
+            form_errors['form'] = self.form._formdata_errors
+        return form_errors
+
+
+# Separated by  key:value
+class StringDictKeyValue(StringField):
+    widget = widgets.TextArea()
+
+    def _value(self):
+        if self.data:
+            output = ''
+            for k, v in self.data.items():
+                output += f"{k}: {v}\r\n"
+            return output
+        else:
+            return ''
+
+    # incoming data processing + validation
+    def process_formdata(self, valuelist):
+        self.data = {}
+        errors = []
+        if valuelist:
+            # Remove empty strings (blank lines)
+            cleaned = [line.strip() for line in valuelist[0].split("\n") if line.strip()]
+            for idx, s in enumerate(cleaned, start=1):
+                if ':' not in s:
+                    errors.append(f"Line {idx} is missing a ':' separator.")
+                    continue
+                parts = s.split(':', 1)
+                key = parts[0].strip()
+                value = parts[1].strip()
+
+                if not key:
+                    errors.append(f"Line {idx} has an empty key.")
+                if not value:
+                    errors.append(f"Line {idx} has an empty value.")
+
+                self.data[key] = value
+
+        if errors:
+            raise ValidationError("Invalid input:\n" + "\n".join(errors))
+
+class ValidateContentFetcherIsReady(object):
+    """
+    Validates that anything that looks like a regex passes as a regex
+    """
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        return
+
