@@ -28,6 +28,15 @@ See: processors/restock_diff/processor.py:184-192 for manual resolution example
 from blinker import signal
 from changedetectionio.validate_url import is_safe_valid_url
 
+from changedetectionio.strtobool import strtobool
+from changedetectionio.jinja2_custom import render as jinja_render
+from . import watch_base
+from .persistence import EntityPersistenceMixin
+import os
+import re
+from pathlib import Path
+from loguru import logger
+
 from .. import jinja2_custom as safe_jinja
 from ..html_tools import TRANSLATE_WHITESPACE_TABLE
 
