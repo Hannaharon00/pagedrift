@@ -147,6 +147,42 @@ class JSONNotFound(ValueError):
         ValueError.__init__(self, msg)
 
 
+# Given a CSS Rule, and a blob of HTML, return the blob of HTML that matches
+def include_filters(include_filters, html_content, append_pretty_line_formatting=False):
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html_content, "html.parser")
+    html_block = ""
+    r = soup.select(include_filters, separator="")
+
+    for element in r:
+        # When there's more than 1 match, then add the suffix to separate each line
+        # And where the matched result doesn't include something that will cause Inscriptis to add a newline
+        # (This way each 'match' reliably has a new-line in the diff)
+        # Divs are converted to 4 whitespaces by inscriptis
+        if append_pretty_line_formatting and len(html_block) and not element.name in (['br', 'hr', 'div', 'p']):
+            html_block += TEXT_FILTER_LIST_LINE_SUFFIX
+
+        html_block += str(element)
+
+    return html_block
+
+def subtractive_css_selector(css_selector, content):
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(content, "html.parser")
+
+    # So that the elements dont shift their index, build a list of elements here which will be pointers to their place in the DOM
+    elements_to_remove = soup.select(css_selector)
+
+    if not elements_to_remove:
+        # Better to return the original that rebuild with BeautifulSoup
+        return content
+
+    # Then, remove them in a separate loop
+    for item in elements_to_remove:
+        item.decompose()
+
+    return str(soup)
+
 @lxml_guarded
 def subtractive_xpath_selector(selectors: List[str], html_content: str) -> str:
     from lxml import etree
