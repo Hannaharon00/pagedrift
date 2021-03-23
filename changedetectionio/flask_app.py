@@ -132,3 +132,12 @@ if strtobool(os.getenv("FLASK_ENABLE_COMPRESSION")):
 app.config['TEMPLATES_AUTO_RELOAD'] = False
 
 
+# Stop browser caching of assets
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config.exit = Event()
+
+app.config['NEW_VERSION_AVAILABLE'] = False
+
+if os.getenv('FLASK_SERVER_NAME'):
+    app.config['SERVER_NAME'] = os.getenv('FLASK_SERVER_NAME')
+
