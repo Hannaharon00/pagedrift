@@ -13,3 +13,78 @@
 {% set has_tag_filters_extra="WARNING: Watch has tag/groups set with special filters\n" if has_special_tag_options else '' %}
 <script src="{{url_for('static_content', group='js', filename='recheck-proxy.js')}}" defer></script>
 
+    <div class="box-wrap inner">
+        <form class="pure-form pure-form-stacked"
+              action="{{ url_for('ui.ui_edit.edit_page', uuid=uuid, next = request.args.get('next'), unpause_on_save = request.args.get('unpause_on_save'), tag = request.args.get('tag')) }}" method="POST">
+             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="tab-pane-inner" id="general">
+                <fieldset>
+                    <div class="pure-control-group">
+                        {{ render_field(form.url, placeholder="https://...", required=true, class="m-d") }}
+                        <div class="pure-form-message">{{ _('Some sites use JavaScript to create the content, for this you should') }} <a href="https://github.com/dgtlmoon/changedetection.io/wiki/Fetching-pages-with-WebDriver">{{ _('use the Chrome/WebDriver Fetcher') }}</a></div>
+                        <div class="pure-form-message">{{ _('Variables are supported in the URL') }} (<a href="https://github.com/dgtlmoon/changedetection.io/wiki/Handling-variables-in-the-watched-URL">{{ _('help and examples here') }}</a>).</div>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.tags) }}
+                        <span class="pure-form-message-inline">{{ _('Organisational tag/group name used in the main listing page') }}</span>
+                        {% if auto_applied_tags %}
+                        <span class="pure-form-message-inline">
+                            {{ _('Also automatically applied by URL pattern:') }}
+                            {% for tag_uuid, tag in auto_applied_tags.items() %}
+                            <a href="{{ url_for('tags.form_tag_edit', uuid=tag_uuid) }}" class="watch-tag-list tag-{{ tag.title|sanitize_tag_class }}">{{ tag.title }}</a>
+                            {% endfor %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="pure-control-group inline-radio">
+                        {{ render_field(form.processor) }}
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.title, class="m-d", placeholder=watch.label) }}
+                        <span class="pure-form-message-inline">{{ _('Automatically uses the page title if found, you can also use your own title/description here') }}</span>
+                    </div>
+                    <div class="pure-control-group">
+                        <details class="form-wrapper">
+                            <summary>{{ _('Extra Page Title and Link options') }}</summary>
+                            <br>
+                            <div class=" border-fieldset">
+                                <div class="pure-control-group">
+                                    {{ render_field(form.link_to_open, placeholder="https://...", class="m-d") }}
+                                    <span class="pure-form-message-inline">{{ _('Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked.') }}</span>
+                                </div>
+                                <div class="pure-control-group">
+                                    {{ render_ternary_field(form.use_page_title_in_list) }}
+                                </div>
+                            </div>
+                        </details>
+
+                    </div>
+
+                    <div class="pure-control-group time-between-check border-fieldset">
+
+                        {{ render_checkbox_field(form.time_between_check_use_default, class="use-default-timecheck") }}
+                        <br>
+                        <div id="time-check-widget-wrapper">
+                            {{ render_field(form.time_between_check, class="time-check-widget") }}
+
+                            <span class="pure-form-message-inline">
+                             {{ _('The interval/amount of time between each check.') }}
+                            </span>
+                        </div>
+                        <div id="time-between-check-schedule">
+                            <!-- Start Time and End Time -->
+                            <div id="limit-between-time">
+                                {{ render_time_schedule_form(form, available_timezones, timezone_default_config) }}
+                            </div>
+                        </div>
+<br>
+              </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.history_snapshot_max_length, class="history_snapshot_max_length") }}
+                        <span class="pure-form-message-inline">{{ _('Limit collection of history snapshots for each watch to this number of history items.') }}
+                        <br>
+                        {{ _('Set to empty to use system settings default') }}
+                        </span>
+                    </div>
+
