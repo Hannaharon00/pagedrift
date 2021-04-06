@@ -157,3 +157,14 @@
     {% endif %}
 </div>
 
+// Run on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncComparisonWidth);
+} else {
+    syncComparisonWidth();
+}
+
+// Re-sync on window resize
+window.addEventListener('resize', syncComparisonWidth);
+</script>
+
