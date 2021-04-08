@@ -43,3 +43,8 @@ from ..html_tools import TRANSLATE_WHITESPACE_TABLE
 FAVICON_RESAVE_THRESHOLD_SECONDS=86400
 BROTLI_COMPRESS_SIZE_THRESHOLD = int(os.getenv('SNAPSHOT_BROTLI_COMPRESSION_THRESHOLD', 1024*20))
 
+# Module-level favicon filename cache: data_dir → basename (or None)
+# Keyed by data_dir so it survives Watch object recreation, deepcopy, and concurrent requests.
+# Invalidated explicitly when the favicon is saved or the watch history is cleared.
+_FAVICON_FILENAME_CACHE: dict = {}
+
