@@ -94,3 +94,10 @@ class Notifications(Resource):
 
         return 'OK', 204
     
+def validate_notification_urls(notification_urls):
+    from changedetectionio.forms import ValidateAppRiseServers
+    validator = ValidateAppRiseServers()
+    class DummyForm: pass
+    dummy_form = DummyForm()
+    field = type("Field", (object,), {"data": notification_urls, "gettext": lambda self, x: x})()
+    validator(dummy_form, field)
