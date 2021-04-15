@@ -273,3 +273,22 @@ def load_plugins_from_directories():
 # Load plugins
 load_plugins_from_directories()
 
+# Discover installed plugins from external packages (if any)
+plugin_manager.load_setuptools_entrypoints(PLUGIN_NAMESPACE)
+
+# Function to inject datastore into plugins that need it
+def inject_datastore_into_plugins(datastore):
+    """Inject the global datastore into plugins that need access to settings.
+
+    This should be called after plugins are loaded and datastore is initialized.
+
+    Args:
+        datastore: The global ChangeDetectionStore instance
+    """
+    for plugin_name, plugin_obj in plugin_manager.list_name_plugin():
+        # Check if plugin has datastore attribute and it's not set
+        if hasattr(plugin_obj, 'datastore'):
+            if plugin_obj.datastore is None:
+                plugin_obj.datastore = datastore
+                logger.debug(f"Injected datastore into plugin: {plugin_name}")
+
