@@ -7,3 +7,94 @@ from changedetectionio.store import ChangeDetectionStore
 from changedetectionio.auth_decorator import login_optionally_required
 from changedetectionio import html_tools
 
+def construct_blueprint(datastore: ChangeDetectionStore):
+    preview_blueprint = Blueprint('ui_preview', __name__, template_folder="../ui/templates")
+
+
+    @preview_blueprint.route("/preview/<uuid_str:uuid>", methods=['GET', 'POST'])
+    @login_optionally_required
+    def preview_page(uuid):
+        """
+        Render the preview page for a watch.
+
+        This route is processor-aware: it delegates rendering to the processor's
+        preview.py module, allowing different processor types to provide
+        custom visualizations:
+        - text_json_diff: Text preview with syntax highlighting
+        - image_ssim_diff: Image preview with proper rendering
+        - restock_diff: Could show latest price/stock data
+
+        Each processor implements processors/{type}/preview.py::render()
+        If a processor doesn't have a preview module, falls back to default text preview.
+        """
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        try:
+            watch = datastore.data['watching'][uuid]
+        except KeyError:
+            flash(gettext("No history found for the specified link, bad link?"), "error")
+            return redirect(url_for('watchlist.index'))
+
+        # Get the processor type for this watch
+        processor_name = watch.get('processor', 'text_json_diff')
+
+        # Try to get the processor's preview module (works for both built-in and plugin processors)
+        from changedetectionio.processors import get_processor_submodule
+        processor_module = get_processor_submodule(processor_name, 'preview')
+
+        # Call the processor's render() function
+        if processor_module and hasattr(processor_module, 'render'):
+            return processor_module.render(
+                watch=watch,
+                datastore=datastore,
+                request=request,
+                url_for=url_for,
+                render_template=render_template,
+                flash=flash,
+                redirect=redirect
+            )
+
+        # Fallback: if processor doesn't have preview module, use default text preview
+        content = []
+        versions = []
+        timestamp = None
+
+        extra_stylesheets = [url_for('static_content', group='styles', filename='diff.css')]
+        is_html_webdriver = watch.fetcher_supports_screenshots
+
+        triggered_line_numbers = []
+        ignored_line_numbers = []
+        blocked_line_numbers = []
+
+        if datastore.data['watching'][uuid].history_n == 0 and (watch.get_error_text() or watch.get_error_snapshot()):
+            flash(gettext("Preview unavailable - No fetch/check completed or triggers not reached"), "error")
+        else:
+            # So prepare the latest preview or not
+            preferred_version = request.values.get('version') if request.method == 'POST' else request.args.get('version')
+
+
+            versions = list(watch.history.keys())
+            timestamp = versions[-1]
+            if preferred_version and preferred_version in versions:
+                timestamp = preferred_version
+
+            try:
+                versions = list(watch.history.keys())
+                content = watch.get_history_snapshot(timestamp=timestamp)
+
+                triggered_line_numbers = html_tools.strip_ignore_text(content=content,
+                                                                      wordlist=watch.get('trigger_text'),
+                                                                      mode='line numbers'
+                                                                      )
+                ignored_line_numbers = html_tools.strip_ignore_text(content=content,
+                                                                      wordlist=watch.get('ignore_text'),
+                                                                      mode='line numbers'
+                                                                      )
+                blocked_line_numbers = html_tools.strip_ignore_text(content=content,
+                                                                      wordlist=watch.get("text_should_not_be_present"),
+                                                                      mode='line numbers'
+                                                                      )
+            except Exception as e:
+                content.append({'line': f"File doesnt exist or unable to read timestamp {timestamp}", 'classes': ''})
+
