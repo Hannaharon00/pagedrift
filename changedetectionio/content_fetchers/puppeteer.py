@@ -15,3 +15,6 @@ from changedetectionio.content_fetchers.exceptions import PageUnloadable, Non200
     BrowserConnectError
 
 
+# Bug 3 in Playwright screenshot handling
+# Some bug where it gives the wrong screenshot size, but making a request with the clip set first seems to solve it
+
