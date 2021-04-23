@@ -198,3 +198,85 @@ async (options) => {
     });
 
 
+// Inject the current one set in the include_filters, which may be a CSS rule
+// used for displaying the current one in VisualSelector, where its not one we generated.
+    if (include_filters.length) {
+        let results;
+        // Foreach filter, go and find it on the page and add it to the results so we can visualise it again
+        for (const f of include_filters) {
+            bbox = false;
+
+            if (!f.length) {
+                console.log("xpath_element_scraper: Empty filter, skipping");
+                continue;
+            }
+
+            try {
+                // is it xpath?
+                if (f.startsWith('/') || f.startsWith('xpath')) {
+                    var qry_f = f.replace(/xpath(:|\d:)/, '')
+                    console.log("[xpath] Scanning for included filter " + qry_f)
+                    let xpathResult = document.evaluate(qry_f, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                    results = [];
+                    for (let i = 0; i < xpathResult.snapshotLength; i++) {
+                        results.push(xpathResult.snapshotItem(i));
+                    }
+                } else {
+                    console.log("[css] Scanning for included filter " + f)
+                    console.log("[css] Scanning for included filter " + f);
+                    results = document.querySelectorAll(f);
+                }
+            } catch (e) {
+                // Maybe catch DOMException and alert?
+                console.log("xpath_element_scraper: Exception selecting element from filter " + f);
+                console.log(e);
+            }
+
+            if (results != null && results.length) {
+
+                // Iterate over the results
+                results.forEach(node => {
+                    // Try to resolve //something/text() back to its /something so we can atleast get the bounding box
+                    try {
+                        if (typeof node.nodeName == 'string' && node.nodeName === '#text') {
+                            node = node.parentElement
+                        }
+                    } catch (e) {
+                        console.log(e)
+                        console.log("xpath_element_scraper: #text resolver")
+                    }
+
+                    // #1231 - IN the case XPath attribute filter is applied, we will have to traverse up and find the element.
+                    if (typeof node.getBoundingClientRect == 'function') {
+                        bbox = node.getBoundingClientRect();
+                        console.log("xpath_element_scraper: Got filter element, scroll from top was " + scroll_y)
+                    } else {
+                        try {
+                            // Try and see we can find its ownerElement
+                            bbox = node.ownerElement.getBoundingClientRect();
+                            console.log("xpath_element_scraper: Got filter by ownerElement element, scroll from top was " + scroll_y)
+                        } catch (e) {
+                            console.log(e)
+                            console.log("xpath_element_scraper: error looking up node.ownerElement")
+                        }
+                    }
+
+                    if (bbox && bbox['width'] > 0 && bbox['height'] > 0) {
+                        size_pos.push({
+                            xpath: f,
+                            width: parseInt(bbox['width']),
+                            height: parseInt(bbox['height']),
+                            left: parseInt(bbox['left']),
+                            top: parseInt(bbox['top']) + scroll_y,
+                            highlight_as_custom_filter: true
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+// Sort the elements so we find the smallest one first, in other words, we find the smallest one matching in that area
+// so that we dont select the wrapping element by mistake and be unable to select what we want
+    size_pos.sort((a, b) => (a.width * a.height > b.width * b.height) ? 1 : -1)
+
