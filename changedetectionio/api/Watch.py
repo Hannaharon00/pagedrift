@@ -2,6 +2,9 @@ import os
 import re
 import threading
 
+from changedetectionio.validate_url import is_safe_valid_url
+from changedetectionio.favicon_utils import get_favicon_mime_type
+
 from . import auth
 from changedetectionio import queuedWatchMetaData, strtobool
 from changedetectionio import worker_pool
