@@ -19,3 +19,12 @@ from ...diff import (
     CHANGED_INTO_PLACEMARKER_CLOSED,
 )
 
+# Discord embed sidebar colors for different change types
+DISCORD_COLOR_UNCHANGED = 8421504   # Gray (#808080)
+DISCORD_COLOR_REMOVED = 16711680    # Red (#FF0000)
+DISCORD_COLOR_ADDED = 65280         # Green (#00FF00)
+DISCORD_COLOR_CHANGED = 16753920    # Orange (#FFA500)
+DISCORD_COLOR_CHANGED_INTO = 3447003  # Blue (#5865F2 - Discord blue)
+DISCORD_COLOR_WARNING = 16776960    # Yellow (#FFFF00)
+
+
