@@ -146,3 +146,54 @@ Recommendation: per-processor sub-models. Matches the file split already done in
 
 ### Concrete next steps
 
+1. **`App.py`.** Pure dict tree under `settings.{application,requests,headers}`. Define
+   nested `BaseModel`s; `LLMSettings` slots in as the existing sub-tree. No call-site
+   churn — just the global settings POST handler. Sets the pattern for nested models.
+
+2. **`WatchInput` BaseModel** for `blueprint/ui/edit.py:225` and `api/Watch.py`. Replace:
+   ```python
+   datastore.data['watching'][uuid].update(form.data)  # CWE-915
+   ```
+   with:
+   ```python
+   validated = WatchInput.model_validate(form.data)
+   datastore.data['watching'][uuid].update(validated.model_dump())
+   ```
+   Closes the unpatched advisory. Should be a security-tagged commit referencing the GHSA.
+
+3. **`TagInput` BaseModel** — same pattern, smaller.
+
+## Gotchas discovered
+
+These cost real debugging time in the LLMSettings PR. Worth knowing before the next slice.
+
+### `extra='forbid'` is the right default
+
+`extra='ignore'` silently drops unknowns and hides developer mistakes (add a form field,
+forget to declare it on the model, your feature appears to work until you reload). `forbid`
+fails loudly. `allow` defeats the purpose entirely — it's how injection succeeds.
+
+### Don't use Field aliases unless you actually need them
+
+The LLMSettings PR originally used `alias='llm_X'` to bridge llm_-prefixed WTForms
+names to stripped storage names. That created a documented gotcha: with
+`extra='forbid'`, having both `model` and `llm_model` in the same input dict is a
+`ValidationError`, and merging existing-storage-dump with form input required
+`by_alias=True` to keep both sides on the alias shape. We fixed it by renaming the
+form fields to match the storage field names. **Match the form to the model
+upfront and you avoid the whole class of merge bugs.**
+
+### Round-trip counters through the model, don't mutate the dict
+
+If runtime code (e.g. a token accumulator) writes to the storage dict directly, the
+schema is bypassed. Load → mutate instance attributes → `model_dump()` → write back.
+This re-validates on every write and prevents drift.
+
+### Per-call validation needs strict + tolerant modes? Don't.
+
+You might be tempted to validate form input strictly but allow extras in storage
+hydration. Don't — `extra='forbid'` everywhere means storage drift is impossible. If
+something put unknown keys in storage, you want loud failure, not silent acceptance.
+
+### Migrations are convention-based by accident if you let them be
+
