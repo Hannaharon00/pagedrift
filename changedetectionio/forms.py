@@ -165,6 +165,59 @@ class LabelAfterInputTableWidget(widgets.TableWidget):
         return Markup("".join(html))
 
 
+class validateTimeZoneName(object):
+    """
+       Flask wtform validators wont work with basic auth
+    """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        from zoneinfo import available_timezones
+        python_timezones = available_timezones()
+        if field.data and field.data not in python_timezones:
+            raise ValidationError(_l("Not a valid timezone name"))
+
+class ScheduleLimitDaySubForm(Form):
+    enabled = BooleanField(_l("not set"), default=True)
+    start_time = TimeStringField(_l("Start At"), default="00:00", validators=[validators.Optional()])
+    duration = FormField(TimeDurationForm, label=_l("Run duration"), widget=LabelAfterInputTableWidget())
+
+class ScheduleLimitForm(Form):
+    enabled = BooleanField(_l("Use time scheduler"), default=False)
+    # Because the label for=""" doesnt line up/work with the actual checkbox
+    monday = FormField(ScheduleLimitDaySubForm, label="")
+    tuesday = FormField(ScheduleLimitDaySubForm, label="")
+    wednesday = FormField(ScheduleLimitDaySubForm, label="")
+    thursday = FormField(ScheduleLimitDaySubForm, label="")
+    friday = FormField(ScheduleLimitDaySubForm, label="")
+    saturday = FormField(ScheduleLimitDaySubForm, label="")
+    sunday = FormField(ScheduleLimitDaySubForm, label="")
+
+    timezone = StringField(_l("Optional timezone to run in"),
+                                  render_kw={"list": "timezones"},
+                                  validators=[validateTimeZoneName()]
+                                  )
+    def __init__(
+        self,
+        formdata=None,
+        obj=None,
+        prefix="",
+        data=None,
+        meta=None,
+        **kwargs,
+    ):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        self.monday.form.enabled.label.text=_l("Monday")
+        self.tuesday.form.enabled.label.text = _l("Tuesday")
+        self.wednesday.form.enabled.label.text = _l("Wednesday")
+        self.thursday.form.enabled.label.text = _l("Thursday")
+        self.friday.form.enabled.label.text = _l("Friday")
+        self.saturday.form.enabled.label.text = _l("Saturday")
+        self.sunday.form.enabled.label.text = _l("Sunday")
+
+
 def validate_time_between_check_has_values(form):
     """
     Custom validation function for TimeBetweenCheckForm.
