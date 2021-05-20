@@ -17,3 +17,123 @@ operator_choices = [
     ("in", _l("Contains")),
 ]
 
+def filter_complete_rules(ruleset):
+    rules = [
+        rule for rule in ruleset
+        if all(
+            rule.get(k) is not None
+            and rule.get(k) is not False
+            and rule.get(k) != ""
+            and rule.get(k) != "None"
+            for k in ("operator", "field", "value")
+        )
+    ]
+    return rules
+
+def convert_to_jsonlogic(logic_operator: str, rule_dict: list):
+    """
+    Convert a structured rule dict into a JSON Logic rule.
+
+    :param rule_dict: Dictionary containing conditions.
+    :return: JSON Logic rule as a dictionary.
+    """
+
+
+    json_logic_conditions = []
+
+    for condition in rule_dict:
+        operator = condition["operator"]
+        field = condition["field"]
+        value = condition["value"]
+
+        if (
+            not operator
+            or operator == 'None'
+            or not field
+            or value is None
+            or value is False
+            or value == ""
+            or value == "None"
+        ):
+            raise EmptyConditionRuleRowNotUsable()
+
+        # Convert value to int/float if possible
+        try:
+            if isinstance(value, str) and "." in value and value != "None":
+                value = float(value)
+            else:
+                value = int(value)
+        except (ValueError, TypeError):
+            pass  # Keep as a string if conversion fails
+
+        # Handle different JSON Logic operators properly
+        if operator == "in":
+            json_logic_conditions.append({"in": [value, {"var": field}]})  # value first
+        elif operator in ("!", "!!", "-"):
+            json_logic_conditions.append({operator: [{"var": field}]})  # Unary operators
+        elif operator in ("min", "max", "cat"):
+            json_logic_conditions.append({operator: value})  # Multi-argument operators
+        else:
+            json_logic_conditions.append({operator: [{"var": field}, value]})  # Standard binary operators
+
+    return {logic_operator: json_logic_conditions} if len(json_logic_conditions) > 1 else json_logic_conditions[0]
+
+
+def execute_ruleset_against_all_plugins(current_watch_uuid: str, application_datastruct, ephemeral_data={} ):
+    """
+    Build our data and options by calling our plugins then pass it to jsonlogic and see if the conditions pass
+
+    :param ruleset: JSON Logic rule dictionary.
+    :param extracted_data: Dictionary containing the facts.   <-- maybe the app struct+uuid
+    :return: Dictionary of plugin results.
+    """
+    from json_logic import jsonLogic
+
+    EXECUTE_DATA = {}
+    result = True
+    
+    watch = application_datastruct['watching'].get(current_watch_uuid)
+
+    if watch and watch.get("conditions"):
+        logic_operator = "and" if watch.get("conditions_match_logic", "ALL") == "ALL" else "or"
+        complete_rules = filter_complete_rules(watch['conditions'])
+        if complete_rules:
+            # Give all plugins a chance to update the data dict again (that we will test the conditions against)
+            for plugin in plugin_manager.get_plugins():
+                try:
+                    import concurrent.futures
+                    import time
+                    
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        future = executor.submit(
+                            plugin.add_data,
+                            current_watch_uuid=current_watch_uuid,
+                            application_datastruct=application_datastruct,
+                            ephemeral_data=ephemeral_data
+                        )
+                        logger.debug(f"Trying plugin {plugin}....")
+
+                        # Set a timeout of 10 seconds
+                        try:
+                            new_execute_data = future.result(timeout=10)
+                            if new_execute_data and isinstance(new_execute_data, dict):
+                                EXECUTE_DATA.update(new_execute_data)
+
+                        except concurrent.futures.TimeoutError:
+                            # The plugin took too long, abort processing for this watch
+                            raise Exception(f"Plugin {plugin.__class__.__name__} took more than 10 seconds to run.")
+                except Exception as e:
+                    # Log the error but continue with the next plugin
+                    import logging
+                    logging.error(f"Error executing plugin {plugin.__class__.__name__}: {str(e)}")
+                    continue
+
+            # Create the ruleset
+            ruleset = convert_to_jsonlogic(logic_operator=logic_operator, rule_dict=complete_rules)
+            
+            # Pass the custom operations dictionary to jsonLogic
+            if not jsonLogic(logic=ruleset, data=EXECUTE_DATA, operations=CUSTOM_OPERATIONS):
+                result = False
+
+    return {'executed_data': EXECUTE_DATA, 'result': result}
+
