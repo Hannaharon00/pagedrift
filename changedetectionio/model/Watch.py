@@ -12,6 +12,11 @@ The dream architecture would use Pydantic for:
    - Future: @computed_field properties with automatic resolution
    - Examples: resolved_fetch_backend, resolved_restock_settings, etc.
 
+2. DATABASE BACKEND ABSTRACTION
+   - Current: Domain model tightly coupled to file-based JSON storage
+   - Future: Domain model (Pydantic) separate from persistence layer
+   - Enables: Easy migration to PostgreSQL, MongoDB, etc.
+
 3. TYPE SAFETY & VALIDATION
    - Current: Dict access with no compile-time checks
    - Future: Type hints, IDE autocomplete, validation at boundaries
