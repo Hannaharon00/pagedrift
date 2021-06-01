@@ -10,3 +10,16 @@ import json
 IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD = 20
 
 
+def default_content_type(content_type='text/plain'):
+    """Decorator to set a default Content-Type header if none is provided."""
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if not request.content_type:
+                # Set default content type in the request environment
+                request.environ['CONTENT_TYPE'] = content_type
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
