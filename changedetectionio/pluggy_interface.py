@@ -240,3 +240,36 @@ plugin_manager = pluggy.PluginManager(PLUGIN_NAMESPACE)
 # Register hookspecs
 plugin_manager.add_hookspecs(ChangeDetectionSpec)
 
+# Load plugins from subdirectories
+def load_plugins_from_directories():
+    # List of (python_package_prefix, filesystem_path) pairs to scan for plugins.
+    # NOTE: processors/restock_diff/plugins is intentionally excluded here — those
+    # plugins are registered via register_builtin_restock_plugins() to avoid the
+    # circular import: restock_diff/__init__.py → model.Watch → content_fetchers → pluggy_interface.
+    plugin_dirs = [
+        (
+            'changedetectionio.conditions.plugins',
+            os.path.join(os.path.dirname(__file__), 'conditions', 'plugins'),
+        ),
+    ]
+
+    for module_prefix, dir_path in plugin_dirs:
+        if not os.path.exists(dir_path):
+            continue
+
+        # Get all Python files (excluding __init__.py)
+        for filename in os.listdir(dir_path):
+            if filename.endswith(".py") and filename != "__init__.py":
+                module_name = filename[:-3]  # Remove .py extension
+                module_path = f"{module_prefix}.{module_name}"
+
+                try:
+                    module = importlib.import_module(module_path)
+                    # Register the plugin with pluggy
+                    plugin_manager.register(module, module_name)
+                except (ImportError, AttributeError) as e:
+                    print(f"Error loading plugin {module_name}: {e}")
+
+# Load plugins
+load_plugins_from_directories()
+
