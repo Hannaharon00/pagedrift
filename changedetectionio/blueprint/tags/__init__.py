@@ -227,3 +227,55 @@ def construct_blueprint(datastore: ChangeDetectionStore):
             if default.matches_url(watch.get('url', ''))
         }
 
+        output = render_template("edit-tag.html",
+                                 extra_form_content=included_content,
+                                 extra_tab_content=form.extra_tab_content() if form.extra_tab_content() else None,
+                                 matching_watches=matching_watches,
+                                 settings_application=datastore.data['settings']['application'],
+                                 **template_args
+                                 )
+
+        return output
+
+
+    @tags_blueprint.route("/edit/<uuid_str:uuid>", methods=['POST'])
+    @login_optionally_required
+    def form_tag_edit_submit(uuid):
+        from changedetectionio.blueprint.tags.form import group_restock_settings_form
+        if uuid == 'first':
+            uuid = list(datastore.data['settings']['application']['tags'].keys()).pop()
+
+        tag = datastore.data['settings']['application']['tags'].get(uuid)
+
+        form = group_restock_settings_form(formdata=request.form if request.method == 'POST' else None,
+                               data=tag,
+                               extra_notification_tokens=datastore.get_unique_notification_tokens_available()
+                               )
+        # @todo subclass form so validation works
+        #if not form.validate():
+#            for widget, l in form.errors.items():
+#                flash(','.join(l), 'error')
+#           return redirect(url_for('tags.form_tag_edit_submit', uuid=uuid))
+
+        # Until then, validate the fields that must not be taken on trust - tag_colour is
+        # rendered into a <style> block, where anything but a hex colour is CSS injection
+        if not form.tag_colour.validate(form):
+            for message in form.tag_colour.errors:
+                flash(message, 'error')
+            return redirect(url_for('tags.form_tag_edit', uuid=uuid))
+
+        tag.update(form.data)
+        tag['processor'] = 'restock_diff'
+        tag.commit()
+
+        # Clear checksums for all watches using this tag to force reprocessing
+        # Tag changes affect inherited configuration
+        cleared_count = datastore.clear_checksums_for_tag(uuid)
+        logger.info(f"Tag {uuid} updated, cleared {cleared_count} watch checksums")
+
+        flash(gettext("Updated"))
+
+        return redirect(url_for('tags.tags_overview_page'))
+
+
+    return tags_blueprint
