@@ -151,3 +151,32 @@ def execute_ruleset_against_all_plugins(current_watch_uuid: str, application_dat
 
     return {'executed_data': EXECUTE_DATA, 'result': result}
 
+# Load plugins dynamically
+for plugin in plugin_manager.get_plugins():
+    new_ops = plugin.register_operators()
+    if isinstance(new_ops, dict):
+        CUSTOM_OPERATIONS.update(new_ops)
+
+    new_operator_choices = plugin.register_operator_choices()
+    if isinstance(new_operator_choices, list):
+        operator_choices.extend(new_operator_choices)
+
+    new_field_choices = plugin.register_field_choices()
+    if isinstance(new_field_choices, list):
+        field_choices.extend(new_field_choices)
+
+def collect_ui_edit_stats_extras(watch):
+    """Collect and combine HTML content from all plugins that implement ui_edit_stats_extras"""
+    extras_content = []
+    
+    for plugin in plugin_manager.get_plugins():
+        try:
+            content = plugin.ui_edit_stats_extras(watch=watch)
+            if content:
+                extras_content.append(content)
+        except Exception as e:
+            # Skip plugins that don't implement the hook or have errors
+            pass
+            
+    return "\n".join(extras_content) if extras_content else ""
+
