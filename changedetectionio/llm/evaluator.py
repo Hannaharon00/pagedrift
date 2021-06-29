@@ -33,6 +33,46 @@ class LLMInputTooLargeError(Exception):
     pass
 
 
+# ---------------------------------------------------------------------------
+# Intent resolution
+# ---------------------------------------------------------------------------
+
+# A group/tag has exactly one AI control (`llm_backend_profile`), and it is ternary:
+#
+#   True  — AI on for every watch in the group, using the group's AI settings
+#           (llm_intent / llm_change_summary cascade down to the watches)
+#   False — AI off for every watch in the group; its prompts are stored but never used
+#   None  — the group has no opinion: each watch's own AI switch and prompts apply
+#
+# On a *watch* the same key is a plain bool (on/off, default on). One control per level, so
+# there is nothing to reconcile between an "override?" flag and an "enabled?" flag.
+def tag_llm_decision(tag):
+    """This group's AI decision: True (on, use its settings), False (off), or None (no opinion)."""
+    if not tag:
+        return None
+    value = tag.get('llm_backend_profile')
+    return None if value is None else bool(value)
+
+
+def tag_llm_applies_to_watches(tag) -> bool:
+    """True when this group hands its AI settings down to its watches.
+
+    Only the "on" state does that: a group set to "off" suppresses AI for its watches rather
+    than lending them prompts, and a group with no opinion leaves them alone entirely. This is
+    the single gate behind both the evaluator cascade and the watch edit page's
+    "From group ..." placeholder.
+    """
+    return tag_llm_decision(tag) is True
+
+
+def _watch_tags(watch, datastore):
+    """Yield this watch's tag dicts, in the watch's own tag order, skipping unknown UUIDs."""
+    for tag_uuid in watch.get('tags', []):
+        tag = datastore.data['settings']['application'].get('tags', {}).get(tag_uuid)
+        if tag:
+            yield tag
+
+
 def _tags_applying_llm(watch, datastore):
     """Yield this watch's groups, in order, that hand their AI settings to their watches."""
     for tag in _watch_tags(watch, datastore):
