@@ -33,6 +33,55 @@ class LLMInputTooLargeError(Exception):
     pass
 
 
+def _check_input_size(text: str, max_chars: int) -> None:
+    """Raise LLMInputTooLargeError if text exceeds max_chars."""
+    if len(text) > max_chars:
+        raise LLMInputTooLargeError(
+            f"Change too large for AI summary ({len(text):,} chars, limit {max_chars:,})"
+        )
+
+
+def _thinking_extra_body(model: str, budget: int) -> dict | None:
+    """Return litellm extra_body to control thinking for models that support it.
+
+    The `thinkingConfig.thinkingBudget` payload is Gemini-specific (Anthropic and
+    OpenAI reasoning models use different parameters), so we gate on the gemini/
+    provider prefix first, then defer to litellm's model registry for the actual
+    "does this model think?" decision. That picks up new Gemini variants and
+    rolling aliases (`gemini-flash-latest`, etc.) as litellm's registry tracks
+    them, without us hardcoding model names here.
+    """
+    if not model.startswith('gemini/'):
+        return None
+    if 'flash-lite' in model.lower():
+        return None
+    try:
+        import litellm
+        if not litellm.get_model_info(model).get('supports_reasoning'):
+            return None
+    except Exception:
+        # Unknown model or registry lookup failed — skip the thinking config
+        # rather than guess. Worst case: thinking stays at the provider default.
+        return None
+    return {'generationConfig': {'thinkingConfig': {'thinkingBudget': budget}}}
+
+
+def _cached_system(text: str, model: str = '') -> dict:
+    """Wrap a system prompt, adding Anthropic prompt-caching headers only for Anthropic models.
+    Gemini and other providers have their own caching APIs that break when they receive
+    cache_control, so we only apply it where it's supported.
+    """
+    is_anthropic = model.startswith('claude') or model.startswith('anthropic/')
+    if is_anthropic:
+        return {'role': 'system', 'content': [{'type': 'text', 'text': text, 'cache_control': {'type': 'ephemeral'}}]}
+    return {'role': 'system', 'content': text}
+
+
+# Output-token cap for the JSON-returning calls (intent eval, preview, setup/prefilter).
+# Mirrors client.py's _MAX_COMPLETION_TOKENS so the multiplier helper has a base value
+# to scale; cloud-LLM users hit this default unmodified, preserving prior cost defaults.
+JSON_RESPONSE_MAX_TOKENS = 400
+
 # ---------------------------------------------------------------------------
 # Intent resolution
 # ---------------------------------------------------------------------------
