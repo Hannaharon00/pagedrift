@@ -86,6 +86,13 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 # Will be initialized in changedetection_app
 socketio_server = None
 
+# Enable CORS, especially useful for the Chrome extension to operate from anywhere
+CORS(app)
+from uuid import UUID
+
+from werkzeug.routing import BaseConverter, ValidationError
+
+
 class StrictUUIDConverter(BaseConverter):
     # Special sentinel values allowed in addition to strict UUIDs
     _ALLOWED_SENTINELS = frozenset({'first'})
