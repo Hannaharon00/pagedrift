@@ -148,3 +148,31 @@ app.config['NEW_VERSION_AVAILABLE'] = False
 if os.getenv('FLASK_SERVER_NAME'):
     app.config['SERVER_NAME'] = os.getenv('FLASK_SERVER_NAME')
 
+watch_api = Api(app, decorators=[csrf.exempt])
+
+
+def init_app_secret(datastore_path):
+    secret = ""
+
+    path = os.path.join(datastore_path, "secret.txt")
+
+    try:
+        with open(path, encoding='utf-8') as f:
+            secret = f.read()
+
+    except FileNotFoundError:
+        import secrets
+
+        with open(path, "w", encoding='utf-8') as f:
+            secret = secrets.token_hex(32)
+            f.write(secret)
+
+    return secret
+
+
+@app.template_global()
+def get_darkmode_state():
+    css_dark_mode = request.cookies.get('css_dark_mode', 'false')
+    return 'true' if css_dark_mode and strtobool(css_dark_mode) else 'false'
+
+
