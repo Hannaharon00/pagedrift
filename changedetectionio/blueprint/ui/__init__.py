@@ -65,3 +65,97 @@ def _handle_operations(op, uuids, datastore, worker_pool, update_q, queuedWatchM
                 datastore.data['watching'][uuid].commit()
         result_message = gettext("{} watches un-muted").format(len(uuids))
 
+    @ui_blueprint.route("/delete", methods=['POST'])
+    @login_optionally_required
+    def form_delete():
+        uuid = request.args.get('uuid')
+        # More for testing, possible to return the first/only
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+
+        if uuid != 'all' and not uuid in datastore.data['watching'].keys():
+            flash(gettext('The watch by UUID {} does not exist.').format(uuid), 'error')
+            return redirect(url_for('watchlist.index'))
+
+        datastore.delete(uuid)
+        flash(gettext('Deleted.'))
+
+        return redirect(url_for('watchlist.index'))
+
+    @ui_blueprint.route("/clone", methods=['POST'])
+    @login_optionally_required
+    def form_clone():
+        uuid = request.args.get('uuid')
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+
+        new_uuid = datastore.clone(uuid)
+        if not new_uuid:
+            # Refused (e.g. PAGE_WATCH_LIMIT) - the reason is already flashed
+            return redirect(url_for('watchlist.index'))
+
+        if not datastore.data['watching'].get(uuid).get('paused'):
+            worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=5, item={'uuid': new_uuid}))
+
+        flash(gettext('Cloned, you are editing the new watch.'))
+
+        return redirect(url_for("ui.ui_edit.edit_page", uuid=new_uuid))
+
+    @ui_blueprint.route("/checknow", methods=['POST'])
+    @login_optionally_required
+    def form_watch_checknow():
+        # Forced recheck will skip the 'skip if content is the same' rule (, 'reprocess_existing_data': True})))
+        from changedetectionio.blueprint.watchlist import filters as wl_filters
+        uuid = request.args.get('uuid')
+
+        if uuid:
+            # Single watch - check if already queued or running
+            if worker_pool.is_watch_running(uuid) or uuid in update_q.get_queued_uuids():
+                flash(gettext("Watch is already queued or being checked."))
+            else:
+                worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid}))
+                flash(gettext("Queued 1 watch for rechecking."))
+        else:
+            # Multiple watches - operate on the SAME set the watch list is showing
+            # (tag/processor/status/search) via the shared filter, skipping paused.
+            list_filters = wl_filters.list_filters_from_args(datastore, request.args)
+            watches_to_queue = []
+            for k in sorted(datastore.data['watching'].items(), key=lambda item: item[1].get('last_checked', 0)):
+                watch_uuid = k[0]
+                watch = k[1]
+                if not watch['paused'] and watch_uuid and wl_filters.watch_matches_filters(datastore, watch, list_filters):
+                    watches_to_queue.append(watch_uuid)
+
+            # If less than 20 watches, queue synchronously for immediate feedback
+            if len(watches_to_queue) < 20:
+                # Get already queued/running UUIDs once (efficient)
+                queued_uuids = set(update_q.get_queued_uuids())
+                running_uuids = set(worker_pool.get_running_uuids())
+
+                # Filter out watches that are already queued or running
+                watches_to_queue_filtered = []
+                for watch_uuid in watches_to_queue:
+                    if watch_uuid not in queued_uuids and watch_uuid not in running_uuids:
+                        watches_to_queue_filtered.append(watch_uuid)
+
+                # Queue only the filtered watches
+                for watch_uuid in watches_to_queue_filtered:
+                    worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': watch_uuid}))
+
+                # Provide feedback about skipped watches
+                skipped_count = len(watches_to_queue) - len(watches_to_queue_filtered)
+                if skipped_count > 0:
+                    flash(gettext("Queued {count} watches for rechecking ({skipped_count} already queued or running).").format(
+                        count=len(watches_to_queue_filtered), skipped_count=skipped_count))
+                else:
+                    if len(watches_to_queue_filtered) == 1:
+                        flash(gettext("Queued 1 watch for rechecking."))
+                    else:
+                        flash(gettext("Queued {} watches for rechecking.").format(len(watches_to_queue_filtered)))
+            else:
+                # 20+ watches - queue in background thread to avoid blocking HTTP response
+                # Capture queued/running state before background thread
+                queued_uuids = set(update_q.get_queued_uuids())
+                running_uuids = set(worker_pool.get_running_uuids())
+
