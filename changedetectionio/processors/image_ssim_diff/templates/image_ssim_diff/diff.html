@@ -230,3 +230,6 @@ if (document.readyState === 'loading') {
 window.addEventListener('resize', syncComparisonWidth);
 </script>
 
+<script src="{{ url_for('static_content', group='js', filename='comparison-slider.js') }}" defer></script>
+
+{% endblock %}
