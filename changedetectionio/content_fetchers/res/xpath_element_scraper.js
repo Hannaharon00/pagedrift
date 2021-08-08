@@ -280,3 +280,8 @@ async (options) => {
 // so that we dont select the wrapping element by mistake and be unable to select what we want
     size_pos.sort((a, b) => (a.width * a.height > b.width * b.height) ? 1 : -1)
 
+// browser_width required for proper scaling in the frontend
+    // Return as a string to save playwright for juggling thousands of objects
+    return JSON.stringify({'size_pos': size_pos, 'browser_width': window.innerWidth});
+}
+
