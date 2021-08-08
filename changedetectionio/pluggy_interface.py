@@ -292,3 +292,76 @@ def inject_datastore_into_plugins(datastore):
                 plugin_obj.datastore = datastore
                 logger.debug(f"Injected datastore into plugin: {plugin_name}")
 
+def get_itemprop_availability_from_plugin(content, fetcher_name, fetcher_instance, url, llm_intent=None):
+    """Get itemprop availability data from plugins as a fallback.
+
+    This is called when the built-in get_itemprop_availability doesn't find good data.
+
+    Args:
+        content: The HTML/text content to parse
+        fetcher_name: The name of the fetcher being used (e.g., 'html_js_zyte')
+        fetcher_instance: The fetcher instance that generated the content
+        url: The URL being watched (watch.link - includes Jinja2 evaluation)
+        llm_intent: Optional user-supplied intent string passed through to plugins
+
+    Returns:
+        dict or None: Availability data dictionary from first matching plugin, or None
+    """
+    # Get availability data from plugins
+    results = plugin_manager.hook.get_itemprop_availability_override(
+        content=content,
+        fetcher_name=fetcher_name,
+        fetcher_instance=fetcher_instance,
+        url=url,
+        llm_intent=llm_intent,
+    )
+
+    # Return first non-None result with actual data
+    if results:
+        for result in results:
+            if result and isinstance(result, dict):
+                # Check if the result has any meaningful data
+                if result.get('price') is not None or result.get('availability'):
+                    return result
+
+    return None
+
+
+def get_active_plugins():
+    """Get a list of active plugins with their descriptions.
+
+    Returns:
+        list: List of dictionaries with plugin information:
+            [
+                {'name': 'plugin_name', 'description': 'Plugin description'},
+                ...
+            ]
+    """
+    active_plugins = []
+
+    # Get all registered plugins
+    for plugin_name, plugin_obj in plugin_manager.list_name_plugin():
+        # Skip built-in plugins (they start with 'builtin_')
+        if plugin_name.startswith('builtin_'):
+            continue
+
+        # Get plugin description if available
+        description = None
+        if hasattr(plugin_obj, '__doc__') and plugin_obj.__doc__:
+            description = plugin_obj.__doc__.strip().split('\n')[0]  # First line only
+        elif hasattr(plugin_obj, 'description'):
+            description = plugin_obj.description
+
+        # Try to get a friendly name from the plugin
+        friendly_name = plugin_name
+        if hasattr(plugin_obj, 'name'):
+            friendly_name = plugin_obj.name
+
+        active_plugins.append({
+            'name': friendly_name,
+            'description': description or 'No description available'
+        })
+
+    return active_plugins
+
+
