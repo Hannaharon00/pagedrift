@@ -148,6 +148,38 @@ app.config['NEW_VERSION_AVAILABLE'] = False
 if os.getenv('FLASK_SERVER_NAME'):
     app.config['SERVER_NAME'] = os.getenv('FLASK_SERVER_NAME')
 
+# Babel/i18n configuration
+#
+# BABEL_TRANSLATION_DIRECTORIES is a ';' separated list. For each locale, Flask-Babel loads one
+# catalog per directory and merges them in order (Domain.get_translations -> babel
+# Translations.merge -> dict.update), so a later directory overrides an earlier one *per message*
+# rather than replacing the catalog.
+#
+# That gives deployments an optional overlay layer: a catalog holding only the handful of msgids
+# whose wording needs to differ (branding, or wording that makes no sense for that deployment,
+# e.g. instructions to set an ENV var that the operator controls). Every other string in the same
+# language still comes from the base catalog, and a language with no overlay file is untouched.
+# Because the overlay keys off the upstream msgid, templates keep the upstream string verbatim and
+# carry no diff at all.
+#
+# Absent or empty overlay directory == no behaviour change.
+# See changedetectionio/translations_overlay/README.md
+_translation_directories = [str(Path(__file__).parent / 'translations')]
+_translation_overlay = os.getenv(
+    'TRANSLATION_OVERLAY_DIR', str(Path(__file__).parent / 'translations_overlay')
+)
+if os.path.isdir(_translation_overlay):
+    _translation_directories.append(_translation_overlay)
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = ';'.join(_translation_directories)
+app.config['BABEL_DEFAULT_LOCALE'] = 'en_GB'
+
+# Session configuration
+# NOTE: Flask session (for locale, etc.) is separate from Flask-Login's remember-me cookie
+# - Flask session stores data like session['locale'] in a signed cookie
+# - Flask-Login's remember=True creates a separate authentication cookie
+# - Setting PERMANENT_SESSION_LIFETIME controls how long the Flask session cookie lasts
+from datetime import timedelta
+
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3650)  # ~10 years (effectively unlimited)
 
 # app.config["EXPLAIN_TEMPLATE_LOADING"] = True
