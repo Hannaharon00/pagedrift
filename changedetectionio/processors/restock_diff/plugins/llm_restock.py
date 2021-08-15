@@ -87,6 +87,23 @@ SYSTEM_PROMPT = (
     'No markdown, no backticks, no explanation — pure JSON only.'
 )
 
+# Max characters of page content (JSON-LD + stripped text) sent to the LLM.
+# Some retailers (e.g. Amazon.de) place the buy-box price well past 8k chars,
+# so this is env-configurable. Larger values increase input-token cost per
+# check and may exceed local-model context windows (bump Ollama num_ctx to match).
+# NOTE: this is only the default — the caller passes the app's datastore-configured
+# "Max input characters" setting via _get_max_input_chars() below.
+_MAX_CONTENT_CHARS = int(os.getenv('LLM_RESTOCK_MAX_CONTENT_CHARS', 15_000))
+
+# Cache LLM extraction results keyed by the exact LLM input (model + url + stripped content +
+# intent). Product pages re-fetch constantly with noisy raw HTML (analytics, nonces, CSRF
+# tokens) that changes the watch's raw checksum every check — so the processor's checksum-skip
+# rarely fires for them and the LLM would otherwise be billed on every check even when the
+# price/stock content is identical. Keying on the actual prompt means we only spend tokens when
+# the meaningful content changes. Bounded FIFO so it can't grow unbounded across many watches.
+import hashlib
+from collections import OrderedDict
+
 _LLM_RESULT_CACHE = OrderedDict()
 _LLM_RESULT_CACHE_MAX = 500
 
