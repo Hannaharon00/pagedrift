@@ -149,3 +149,60 @@ Easily add the current web page to your changedetection.io tool, simply install 
 
 With Docker composer, just clone this repository and..
 
+```bash
+$ docker compose up -d
+```
+
+Docker standalone
+```bash
+$ docker run -d --restart always -p "127.0.0.1:5000:5000" -v datastore-volume:/datastore --name changedetection.io dgtlmoon/changedetection.io
+```
+
+`:latest` tag is our latest stable release, `:dev` tag is our bleeding edge `master` branch.
+
+Alternative docker repository over at ghcr - [ghcr.io/dgtlmoon/changedetection.io](https://ghcr.io/dgtlmoon/changedetection.io)
+
+### Windows
+
+See the install instructions at the wiki https://github.com/dgtlmoon/changedetection.io/wiki/Microsoft-Windows
+
+### Python Pip
+
+Check out our pypi page https://pypi.org/project/changedetection.io/
+
+```bash
+$ pip3 install changedetection.io
+$ changedetection.io -d /path/to/empty/data/dir -p 5000
+```
+
+Then visit http://127.0.0.1:5000 , You should now be able to access the UI.
+
+_Now with per-site configurable support for using a fast built in HTTP fetcher or use a Chrome based fetcher for monitoring of JavaScript websites!_
+
+## Updating changedetection.io
+
+### Docker
+```
+docker pull dgtlmoon/changedetection.io
+docker kill $(docker ps -a -f name=changedetection.io -q)
+docker rm $(docker ps -a -f name=changedetection.io -q)
+docker run -d --restart always -p "127.0.0.1:5000:5000" -v datastore-volume:/datastore --name changedetection.io dgtlmoon/changedetection.io
+```
+
+### docker compose
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+See the wiki for more information https://github.com/dgtlmoon/changedetection.io/wiki
+
+## Different browser viewport sizes (mobile, desktop etc)
+
+If you are using the recommended `sockpuppetbrowser` (which is in the docker-compose.yml as a setting to be uncommented) you can easily set different viewport sizes for your web page change detection, [see more information here about setting up different viewport sizes](https://github.com/dgtlmoon/sockpuppetbrowser?tab=readme-ov-file#setting-viewport-size).
+
+## Filters
+
+XPath(1.0), JSONPath, jq, and CSS support comes baked in! You can be as specific as you need, use XPath exported from various XPath element query creation tools. 
+(We support LXML `re:test`, `re:match` and `re:replace`.)
+
