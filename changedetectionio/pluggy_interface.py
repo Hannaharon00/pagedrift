@@ -292,6 +292,42 @@ def inject_datastore_into_plugins(datastore):
                 plugin_obj.datastore = datastore
                 logger.debug(f"Injected datastore into plugin: {plugin_name}")
 
+# Helper function to collect UI stats extras from all plugins
+def collect_ui_edit_stats_extras(watch):
+    """Collect and combine HTML content from all plugins that implement ui_edit_stats_extras"""
+    extras_content = []
+
+    # Get all plugins that implement the ui_edit_stats_extras hook
+    results = plugin_manager.hook.ui_edit_stats_extras(watch=watch)
+
+    # If we have results, add them to our content
+    if results:
+        for result in results:
+            if result:  # Skip empty results
+                extras_content.append(result)
+
+    return "\n".join(extras_content) if extras_content else ""
+
+def collect_fetcher_status_icons(fetcher_name):
+    """Collect status icon data from all plugins
+
+    Args:
+        fetcher_name: The name of the fetcher (e.g., 'html_webdriver', 'html_js_zyte')
+
+    Returns:
+        dict or None: Icon data dictionary from first matching plugin, or None
+    """
+    # Get status icon data from plugins
+    results = plugin_manager.hook.fetcher_status_icon(fetcher_name=fetcher_name)
+
+    # Return first non-None result
+    if results:
+        for result in results:
+            if result and isinstance(result, dict):
+                return result
+
+    return None
+
 def get_itemprop_availability_from_plugin(content, fetcher_name, fetcher_instance, url, llm_intent=None):
     """Get itemprop availability data from plugins as a fallback.
 
