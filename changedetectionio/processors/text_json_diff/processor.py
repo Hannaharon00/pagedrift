@@ -28,6 +28,9 @@ list_badge_text = "Text"
 
 JSON_FILTER_PREFIXES = ['json:', 'jq:', 'jqraw:']
 
+# Assume it's this type if the server says nothing on content-type
+DEFAULT_WHEN_NO_CONTENT_TYPE_HEADER = 'text/html'
+
 class FilterNotFoundInResponse(ValueError):
     def __init__(self, msg, screenshot=None, xpath_data=None):
         self.screenshot = screenshot
