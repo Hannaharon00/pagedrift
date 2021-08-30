@@ -5,6 +5,13 @@ from flask import Blueprint, request, redirect, url_for, flash, render_template,
 from flask_babel import gettext
 from loguru import logger
 
+from changedetectionio.store import ChangeDetectionStore
+from changedetectionio.blueprint.ui.edit import construct_blueprint as construct_edit_blueprint
+from changedetectionio.blueprint.ui.notification import construct_blueprint as construct_notification_blueprint
+from changedetectionio.blueprint.ui.views import construct_blueprint as construct_views_blueprint
+from changedetectionio.blueprint.ui.queue import construct_blueprint as construct_queue_blueprint
+from changedetectionio.blueprint.ui import diff, preview
+
 def _handle_operations(op, uuids, datastore, worker_pool, update_q, queuedWatchMetaData, watch_check_update, extra_data=None, emit_flash=True):
     """Apply a bulk operation to the given watch uuids.
 
