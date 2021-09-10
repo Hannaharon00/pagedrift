@@ -148,6 +148,11 @@ app.config['NEW_VERSION_AVAILABLE'] = False
 if os.getenv('FLASK_SERVER_NAME'):
     app.config['SERVER_NAME'] = os.getenv('FLASK_SERVER_NAME')
 
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3650)  # ~10 years (effectively unlimited)
+
+# app.config["EXPLAIN_TEMPLATE_LOADING"] = True
+
+
 watch_api = Api(app, decorators=[csrf.exempt])
 
 
