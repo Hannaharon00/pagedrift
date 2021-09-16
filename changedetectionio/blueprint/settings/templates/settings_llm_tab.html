@@ -250,6 +250,83 @@
     </span>
   </div>
 
+  {% endcall %}
+
+  {# ── Behaviour ─────────────────────────────────────────────────────────── #}
+  {% call stab_pane('behaviour') %}
+  <p class="stab-section-title">{{ _('Behaviour') }}</p>
+
+  {% if llm_config and llm_config.get('model') %}
+  <div class="pure-control-group">
+    <label></label>
+    {{ form.llm.form.override_diff_with_summary() }}
+    <label for="{{ form.llm.form.override_diff_with_summary.id }}" style="display:inline; font-weight:normal;">
+      {{ form.llm.form.override_diff_with_summary.label.text }}
+    </label>
+    <span class="pure-form-message-inline">
+      {{ _('When enabled, the <code>%(diff)s</code> notification token shows the AI summary instead of the raw diff. Use <code>%(raw_diff)s</code> to always get the original.',
+           diff='{{diff}}', raw_diff='{{raw_diff}}') | safe }}
+    </span>
+  </div>
+
+  <div class="pure-control-group">
+    <label></label>
+    {{ form.llm.form.restock_use_fallback_extract() }}
+    <label for="{{ form.llm.form.restock_use_fallback_extract.id }}" style="display:inline; font-weight:normal;">
+      {{ form.llm.form.restock_use_fallback_extract.label.text }}
+    </label>
+    <span class="pure-form-message-inline">
+      {{ _('When enabled, the AI will be used as a last resort to extract price and stock status from product pages where no structured metadata (JSON-LD, microdata, OpenGraph) is found.') }}
+    </span>
+  </div>
+
+  <div class="pure-control-group">
+    <label for="{{ form.llm.form.thinking_budget.id }}">{{ form.llm.form.thinking_budget.label.text }}</label>
+    {{ form.llm.form.thinking_budget() }}
+    <span class="pure-form-message-inline">{{ _('For Gemini 2.5+ models only. Thinking tokens improve reasoning quality but count against the output budget. Set to Off if summaries are being cut short.') }}</span>
+  </div>
+
+  <div class="pure-control-group">
+    <label for="{{ form.llm.form.max_summary_tokens.id }}">{{ form.llm.form.max_summary_tokens.label.text }}</label>
+    {{ form.llm.form.max_summary_tokens() }}
+    <span class="pure-form-message-inline">{{ _('Upper limit on tokens the AI may use when writing a change summary. Higher values allow longer summaries but cost more.') }}</span>
+  </div>
+
+  <div class="pure-control-group">
+    <label>{{ form.llm.form.budget_action.label.text }}</label>
+    <div>
+      {% for subfield in form.llm.form.budget_action %}
+      <label class="pure-radio" style="display:block; font-weight:normal; margin-bottom:0.3em;">
+        {{ subfield() }} {{ subfield.label.text }}
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="pure-control-group">
+    <label>{{ form.llm.form.watchlist_overview_summary.label.text }}</label>
+    <div>
+      {% for subfield in form.llm.form.watchlist_overview_summary %}
+      <label class="pure-radio" style="display:block; font-weight:normal; margin-bottom:0.3em;">
+        {{ subfield() }} {{ subfield.label.text }}
+      </label>
+      {% endfor %}
+    </div>
+    <span class="pure-form-message-inline">
+      {{ _('Which baseline the watchlist “Summary” link compares the latest version against by default.') }}
+    </span>
+  </div>
+  {% else %}
+  <p class="pure-form-message-inline" style="margin-top:0.5em;">
+    {{ _('Configure a provider first to unlock behaviour settings.') }}
+  </p>
+  {% endif %}
+  {% endcall %}
+
+  {# ── Usage ─────────────────────────────────────────────────────────────── #}
+  {% call stab_pane('usage') %}
+  <p class="stab-section-title">{{ _('Token & Cost Tracking') }}</p>
+
   {% if llm_stored.get('tokens_total_cumulative') or llm_stored.get('tokens_this_month') %}
 
   <div class="llm-usage-grid">
