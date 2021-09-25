@@ -439,3 +439,30 @@
 {% endcall %}{# stab_shell #}
 </div>
 
+<script>
+(function () {
+  const LIVE_PROVIDERS = ['openai', 'anthropic', 'gemini', 'ollama', 'openai_compatible', 'openrouter'];
+  const BASE_DEFAULTS  = { ollama: 'http://localhost:11434' };
+  const KEY_HINTS = {
+    openai:             '{{ _("platform.openai.com → API keys") }}',
+    anthropic:          '{{ _("console.anthropic.com → API keys") }}',
+    gemini:             '{{ _("aistudio.google.com → Get API key") }}',
+    ollama:             '{{ _("No API key needed for local Ollama") }}',
+    openai_compatible:  '{{ _("Bearer token for your self-hosted server (vLLM, LM Studio, etc.)") }}',
+    openrouter:         '{{ _("openrouter.ai → Keys") }}',
+  };
+
+  window.llmDisclaimerToggle = function (cb) {
+    const fields = document.getElementById('llm-provider-fields');
+    if (fields) fields.style.display = cb.checked ? '' : 'none';
+  };
+
+  window.llmOnProviderChange = function (provider) {
+    const fetchGroup    = document.getElementById('llm-fetch-group');
+    const baseGroup     = document.getElementById('llm-base-group');
+    const modelSelGrp   = document.getElementById('llm-model-select-group');
+    const localAdvGrp   = document.getElementById('llm-local-advanced-group');
+    const baseField     = document.querySelector('[name="llm-api_base"]');
+    const kindField     = document.querySelector('[name="llm-provider_kind"]');
+    const hint          = document.getElementById('llm-key-hint');
+
