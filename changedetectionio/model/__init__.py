@@ -134,3 +134,78 @@ class watch_base(dict):
         """
         Custom deepcopy for all watch_base subclasses (Watch, Tag, etc.).
 
+    @property
+    def data_dir(self):
+        """
+        The base directory for this watch/tag data (property, computed from UUID).
+
+        Common property for both Watch and Tag objects.
+        Returns path like: /datastore/{uuid}/
+        """
+        return os.path.join(self._datastore_path, self['uuid']) if self._datastore_path else None
+
+    def ensure_data_dir_exists(self):
+        """
+        Create the data directory if it doesn't exist.
+
+        Common method for both Watch and Tag objects.
+        """
+        from loguru import logger
+        if not os.path.isdir(self.data_dir):
+            logger.debug(f"> Creating data dir {self.data_dir}")
+            os.mkdir(self.data_dir)
+
+    def get_global_setting(self, *path):
+        """
+        Get a setting from the global datastore configuration.
+
+        Args:
+            *path: Path to the setting (e.g., 'application', 'history_snapshot_max_length')
+
+        Returns:
+            The setting value, or None if not found
+
+        Example:
+            maxlen = self.get_global_setting('application', 'history_snapshot_max_length')
+        """
+        if not self._datastore:
+            return None
+
+        try:
+            value = self._datastore['settings']
+            for key in path:
+                value = value[key]
+            return value
+        except (KeyError, TypeError):
+            return None
+
+    def _get_commit_data(self):
+        """
+        Prepare data for commit (can be overridden by subclasses).
+
+        Returns:
+            dict: Data to serialize (filtered as needed by subclass)
+        """
+        import copy
+
+        # Acquire datastore lock to prevent concurrent modifications during copy
+        lock = self._datastore.lock if self._datastore and hasattr(self._datastore, 'lock') else None
+
+        if lock:
+            with lock:
+                snapshot = dict(self)
+        else:
+            snapshot = dict(self)
+
+        # Deep copy snapshot (slower, but done outside lock to minimize contention)
+        # Subclasses can override to filter keys (e.g., Watch excludes processor_config_*)
+        return {k: copy.deepcopy(v) for k, v in snapshot.items()}
+
+    def _save_to_disk(self, data_dict, uuid):
+        """
+        Save data to disk (must be implemented by subclasses).
+
+        Args:
+            data_dict: Dictionary to save
+            uuid: UUID for logging
+
