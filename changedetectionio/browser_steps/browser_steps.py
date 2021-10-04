@@ -60,3 +60,143 @@ browser_step_ui_config = {'Choose one': '0 0',
                           }
 
 
+        # Safely wait for timeout
+        await self.page.wait_for_timeout(1.5 * 1000)
+        logger.debug(f"Call action done in {time.time()-now:.2f}s")
+
+    async def action_goto_url(self, selector=None, value=None):
+        if not value:
+            logger.warning("No URL provided for goto_url action")
+            return None
+
+        # Every browser navigation we initiate funnels through here - the "Goto URL" step, the
+        # "Goto site" step, the live Browser Steps UI and the Add Watch snapshot preview - so this
+        # is the one place that has to enforce the fetch rules. Step values are plain user-supplied
+        # strings (forms.SingleBrowserStep.optional_value, or the browser_steps[] API field) and are
+        # NOT covered by the watch URL validation, which is what made file:///etc/passwd readable
+        # and private-IP SSRF possible via a browser step (GHSA-hm22-wg2m-35v4).
+        await validate_fetch_url_async(value)
+
+        now = time.time()
+        response = await self.page.goto(value, timeout=0, wait_until='load')
+        logger.debug(f"Time to goto URL {time.time()-now:.2f}s")
+        return response
+
+    # Incase they request to go back to the start
+    async def action_goto_site(self, selector=None, value=None):
+        return await self.action_goto_url(value=re.sub(r'^source:', '', self.start_url, flags=re.IGNORECASE))
+
+    async def action_click_element_containing_text(self, selector=None, value=''):
+        logger.debug("Clicking element containing text")
+        if not value or not len(value.strip()):
+            return
+            
+        elem = self.page.get_by_text(value)
+        if await elem.count():
+            await elem.first.click(delay=randint(200, 500), timeout=self.action_timeout)
+
+
+    async def action_click_element_containing_text_if_exists(self, selector=None, value=''):
+        logger.debug("Clicking element containing text if exists")
+        if not value or not len(value.strip()):
+            return
+            
+        elem = self.page.get_by_text(value)
+        count = await elem.count()
+        logger.debug(f"Clicking element containing text - {count} elements found")
+        if count:
+            await elem.first.click(delay=randint(200, 500), timeout=self.action_timeout)
+                
+
+    async def action_enter_text_in_field(self, selector, value):
+        if not selector or not len(selector.strip()):
+            return
+
+        await self.page.fill(selector, value, timeout=self.action_timeout)
+
+    async def action_execute_js(self, selector, value):
+        if not value:
+            return None
+            
+        return await self.page.evaluate(value)
+
+    async def action_click_element(self, selector, value):
+        logger.debug("Clicking element")
+        if not selector or not len(selector.strip()):
+            return
+
+        await self.page.click(selector=selector, timeout=self.action_timeout + 20 * 1000, delay=randint(200, 500))
+
+    async def action_click_element_if_exists(self, selector, value):
+        import playwright._impl._errors as _api_types
+        logger.debug("Clicking element if exists")
+        if not selector or not len(selector.strip()):
+            return
+            
+        try:
+            await self.page.click(selector, timeout=self.action_timeout, delay=randint(200, 500))
+        except _api_types.TimeoutError:
+            return
+        except _api_types.Error:
+            # Element was there, but page redrew and now its long long gone
+            return
+                
+
+    async def action_click_x_y(self, selector, value):
+        if not value or not re.match(r'^\s?\d+\s?,\s?\d+\s?$', value):
+            logger.warning("'Click X,Y' step should be in the format of '100 , 90'")
+            return
+
+        try:
+            x, y = value.strip().split(',')
+            x = int(float(x.strip()))
+            y = int(float(y.strip()))
+            
+            await self.page.mouse.click(x=x, y=y, delay=randint(200, 500))
+                
+        except Exception as e:
+            logger.error(f"Error parsing x,y coordinates: {str(e)}")
+
+    async def action__select_by_option_text(self, selector, value):
+        if not selector or not len(selector.strip()):
+            return
+
+        await self.page.select_option(selector, label=value, timeout=self.action_timeout)
+
+    async def action_scroll_down(self, selector, value):
+        # Some sites this doesnt work on for some reason
+        await self.page.mouse.wheel(0, 600)
+        await self.page.wait_for_timeout(1000)
+
+    async def action_wait_for_seconds(self, selector, value):
+        try:
+            seconds = float(value.strip()) if value else 1.0
+            await self.page.wait_for_timeout(seconds * 1000)
+        except (ValueError, TypeError) as e:
+            logger.error(f"Invalid value for wait_for_seconds: {str(e)}")
+
+    async def action_wait_for_text(self, selector, value):
+        if not value:
+            return
+            
+        import json
+        v = json.dumps(value)
+        await self.page.wait_for_function(
+            f'document.querySelector("body").innerText.includes({v});',
+            timeout=30000
+        )
+            
+
+    async def action_wait_for_text_in_element(self, selector, value):
+        if not selector or not value:
+            return
+            
+        import json
+        s = json.dumps(selector)
+        v = json.dumps(value)
+        
+        await self.page.wait_for_function(
+            f'document.querySelector({s}).innerText.includes({v});',
+            timeout=30000
+        )
+
