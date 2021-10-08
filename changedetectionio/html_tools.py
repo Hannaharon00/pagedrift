@@ -280,3 +280,32 @@ def elementpath_tostring(obj):
 
     return str(obj)
 
+# Extract/find element
+def extract_element(find='title', html_content=''):
+    from bs4 import BeautifulSoup
+
+    #Re #106, be sure to handle when its not found
+    element_text = None
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+    result = soup.find(find)
+    if result and result.string:
+        element_text = result.string.strip()
+
+    return element_text
+
+# Any surrogate still present after json.loads() is a lone one - the decoder already folds
+# well-formed pairs (😀 -> a single emoji character) before we see them. Lone ones
+# come from escapes like \uD800 in the source document, which travel as plain ASCII and so
+# pass straight through the fetched-content sanitizer in processors/base.py.
+_LONE_SURROGATE_RE = re.compile(r'[\ud800-\udfff]')
+
+def _has_lone_surrogate(value):
+    if isinstance(value, str):
+        return bool(_LONE_SURROGATE_RE.search(value))
+    if isinstance(value, dict):
+        return any(_has_lone_surrogate(k) or _has_lone_surrogate(v) for k, v in value.items())
+    if isinstance(value, list):
+        return any(_has_lone_surrogate(v) for v in value)
+    return False
+
