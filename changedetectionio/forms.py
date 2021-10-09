@@ -56,6 +56,17 @@ from changedetectionio.notification import (
 
 from wtforms.fields import FormField
 
+dictfilt = lambda x, y: dict([ (i,x[i]) for i in x if i in set(y) ])
+
+valid_method = {
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+}
+
 default_method = 'GET'
 allow_simplehost = not strtobool(os.getenv('BLOCK_SIMPLEHOSTS', 'False'))
 REQUIRE_ATLEAST_ONE_TIME_PART_MESSAGE_DEFAULT=_l('At least one time interval (weeks, days, hours, minutes, or seconds) must be specified.')
