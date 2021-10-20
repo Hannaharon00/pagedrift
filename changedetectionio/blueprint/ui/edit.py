@@ -63,3 +63,91 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMe
                     break
         return result
 
+    def _watch_has_tag_options_set(watch):
+        """This should be fixed better so that Tag is some proper Model, a tag is just a Watch also"""
+        for tag_uuid, tag in datastore.data['settings']['application'].get('tags', {}).items():
+            if tag_uuid in watch.get('tags', []) and (tag.get('include_filters') or tag.get('subtractive_selectors')):
+                return True
+
+    @edit_blueprint.route("/edit/<uuid_str:uuid>", methods=['GET', 'POST'])
+    @login_optionally_required
+    # https://stackoverflow.com/questions/42984453/wtforms-populate-form-with-data-if-data-exists
+    # https://wtforms.readthedocs.io/en/3.0.x/forms/#wtforms.form.Form.populate_obj ?
+    def edit_page(uuid):
+        from changedetectionio import forms
+        from changedetectionio.browser_steps.browser_steps import browser_step_ui_config
+        from changedetectionio import processors
+        import importlib
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        # More for testing, possible to return the first/only
+        if not datastore.data['watching'].keys():
+            flash(gettext("No watches to edit"), "error")
+            return redirect(url_for('watchlist.index'))
+
+        if not uuid in datastore.data['watching']:
+            flash(gettext("No watch with the UUID {} found.").format(uuid), "error")
+            return redirect(url_for('watchlist.index'))
+
+        switch_processor = request.args.get('switch_processor')
+        if switch_processor:
+            for p in processors.available_processors():
+                if p[0] == switch_processor:
+                    datastore.data['watching'][uuid]['processor'] = switch_processor
+                    flash(gettext("Switched to mode - {}.").format(p[1]))
+                    datastore.clear_watch_history(uuid)
+                    redirect(url_for('ui_edit.edit_page', uuid=uuid))
+
+        # be sure we update with a copy instead of accidently editing the live object by reference
+        default = None
+        while not default:
+            try:
+                default = deepcopy(datastore.data['watching'][uuid])
+            except RuntimeError as e:
+                # Dictionary changed
+                continue
+
+        # Defaults for proxy choice
+        if datastore.proxy_list is not None:  # When enabled
+            # @todo
+            # Radio needs '' not None, or incase that the chosen one no longer exists
+            if default['proxy'] is None or not any(default['proxy'] in tup for tup in datastore.proxy_list):
+                default['proxy'] = ''
+        # proxy_override set to the json/text list of the items
+
+        # Does it use some custom form? does one exist?
+        processor_name = datastore.data['watching'][uuid].get('processor', '')
+        processor_classes = next((tpl for tpl in processors.find_processors() if tpl[1] == processor_name), None)
+        if not processor_classes:
+            flash(gettext("Could not load '{}' processor, processor plugin might be missing. Please select a different processor.").format(processor_name), 'error')
+            # Fall back to default processor so user can still edit and change processor
+            processor_classes = next((tpl for tpl in processors.find_processors() if tpl[1] == 'text_json_diff'), None)
+            if not processor_classes:
+                # If even text_json_diff is missing, something is very wrong
+                flash(gettext("Could not load '{}' processor, processor plugin might be missing.").format(processor_name), 'error')
+                return redirect(url_for('watchlist.index'))
+
+        parent_module = processors.get_parent_module(processor_classes[0])
+
+        try:
+            # Get the parent of the "processor.py" go up one, get the form (kinda spaghetti but its reusing existing code)
+            forms_module = importlib.import_module(f"{parent_module.__name__}.forms")
+            # Access the 'processor_settings_form' class from the 'forms' module
+            form_class = getattr(forms_module, 'processor_settings_form')
+        except ModuleNotFoundError as e:
+            # .forms didnt exist
+            form_class = forms.processor_text_json_diff_form
+        except AttributeError as e:
+            # .forms exists but no useful form
+            form_class = forms.processor_text_json_diff_form
+
+        form = form_class(formdata=request.form if request.method == 'POST' else None,
+                          data=default,
+                          extra_notification_tokens=default.extra_notification_token_values(),
+                          default_system_settings=datastore.data['settings']
+                          )
+
+        # For the form widget tag UUID back to "string name" for the field
+        form.tags.datastore = datastore
+
