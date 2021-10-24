@@ -218,6 +218,61 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMe
             except Exception as e:
                 logger.debug(f"Error cleaning up browsersteps session: {e}")
 
+            # Do not queue on edit if its not within the time range
+
+            # @todo maybe it should never queue anyway on edit...
+            is_in_schedule = True
+            watch = datastore.data['watching'].get(uuid)
+
+            if watch.get('time_between_check_use_default'):
+                time_schedule_limit = datastore.data['settings']['requests'].get('time_schedule_limit') or {}
+            else:
+                time_schedule_limit = watch.get('time_schedule_limit') or {}
+
+            tz_name = default_timezone_name(
+                time_schedule_limit.get('timezone')
+                or datastore.data['settings']['application'].get('scheduler_timezone_default')
+            )
+
+            if time_schedule_limit and time_schedule_limit.get('enabled'):
+                try:
+                    is_in_schedule = is_within_schedule(time_schedule_limit=time_schedule_limit,
+                                                      default_tz=tz_name
+                                                      )
+                except Exception as e:
+                    # Only decides whether to queue an immediate recheck — the watch is
+                    # already saved by this point. Returning a bare `False` from a view
+                    # made Flask raise TypeError and the save appeared to fail with a 500.
+                    logger.error(
+                        f"{uuid} - Recheck scheduler, error handling timezone, check skipped - TZ name '{tz_name}' - {str(e)}")
+                    is_in_schedule = False
+
+            #############################
+            if not datastore.data['watching'][uuid].get('paused') and is_in_schedule:
+                # Queue the watch for immediate recheck, with a higher priority
+                worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid}))
+
+            # Diff page [edit] link should go back to diff page
+            if request.args.get("next") and request.args.get("next") == 'diff':
+                return redirect(url_for('ui.ui_diff.diff_history_page', uuid=uuid))
+
+            return redirect(url_for('watchlist.index', tag=request.args.get("tag",'')))
+
+        else:
+            if request.method == 'POST' and not form.validate():
+                flash(gettext("An error occurred, please see below."), "error")
+
+            # JQ is difficult to install on windows and must be manually added (outside requirements.txt)
+            jq_support = True
+            try:
+                import jq
+            except ModuleNotFoundError:
+                jq_support = False
+
+            watch = datastore.data['watching'].get(uuid)
+
+            from zoneinfo import available_timezones
+
             # Import the global plugin system
             from changedetectionio.pluggy_interface import collect_ui_edit_stats_extras, get_fetcher_capabilities
 
