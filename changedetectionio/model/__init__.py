@@ -48,6 +48,220 @@ class watch_base(dict):
         See: Tag.py model docstring for tag override explanation
         See: processors/restock_diff/processor.py:184-192 for current manual example
 
+        # IMPORTANT: Don't initialize __watch_was_edited yet!
+        # We'll initialize it AFTER the initial update() call below
+        # This prevents marking the watch as edited during initialization
+
+        self.update({
+            # Custom notification content
+            # Re #110, so then if this is set to None, we know to use the default value instead
+            # Requires setting to None on submit if it's the same as the default
+            # Should be all None by default, so we use the system default in this case.
+            'body': None,
+            'browser_steps': [],
+            'browser_steps_last_error_step': None,
+            'conditions' : [],
+            'conditions_match_logic': CONDITIONS_MATCH_LOGIC_DEFAULT,
+            'check_count': 0,
+            'check_unique_lines': False,  # On change-detected, compare against all history if its something new
+            'consecutive_filter_failures': 0,  # Every time the CSS/xPath filter cannot be located, reset when all is fine.
+            # LLM intent-based evaluation
+            'content-type': None,
+            'date_created': None,
+            'extract_lines_containing': [],  # Keep only lines containing these substrings (plain text, case-insensitive)
+            'extract_text': [],  # Extract text by regex after filters
+            'fetch_backend': 'system',  # plaintext, playwright etc
+            'fetch_time': 0.0,
+            'filter_failure_notification_send': strtobool(os.getenv('FILTER_FAILURE_NOTIFICATION_SEND_DEFAULT', 'True')),
+            'filter_text_added': True,
+            'filter_text_removed': True,
+            'filter_text_replaced': True,
+            'follow_price_changes': True,
+            'has_ldjson_price_data': None,
+            'headers': {},  # Extra headers to send
+            'history_snapshot_max_length': None,
+            'ignore_status_codes': None,
+            'ignore_text': [],  # List of text to ignore when calculating the comparison checksum
+            'in_stock_only': True,  # Only trigger change on going to instock from out-of-stock
+            'include_filters': [],
+            'last_checked': 0,
+            'last_error': False,
+            'last_notification_error': None,
+            'last_viewed': 0,  # history key value of the last viewed via the [diff] link
+            'link_to_open': '',  # Optional human-facing URL to open instead of 'url' (eg. watch an API/RSS endpoint, open the real page)
+            'llm_backend_profile': True, # @note - now its just a bool but in the near future we can select a LLM profile or 'off'/false
+            'llm_change_summary': '',        # Prompt for AI Change Summary — replaces {{ diff }} in notifications
+            'llm_change_summary_mode': 'replace',  # 'replace' the inherited prompt, or 'append' to it
+            'llm_evaluation_cache': {},      # {sha256(intent+diff): {important, summary}} - evaluated once, cached
+            'llm_intent': '',                # Plain-English description of what the user cares about (change filter)
+            'llm_prefilter': None,           # CSS selector derived at setup time (semantic only, e.g. "footer")
+            'method': 'GET',
+            'notification_alert_count': 0,
+            'notification_body': None,
+            'notification_format': USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH,
+            'notification_muted': False,
+            'notification_screenshot': False,  # Include the latest screenshot if available and supported by the apprise URL
+            'notification_title': None,
+            'notification_urls': [],  # List of URLs to add to the notification Queue (Usually AppRise)
+            'page_title': None, # <title> from the page
+            'paused': False,
+            'previous_md5': False,
+            'processor': 'text_json_diff',  # could be restock_diff or others from .processors
+            'price_change_threshold_percent': None,
+            'proxy': None,  # Preferred proxy connection
+            'remote_server_reply': None,  # From 'server' reply header
+            'sort_text_alphabetically': False,
+            'strip_ignored_lines': None,
+            'subtractive_selectors': [],
+            'tag': '',  # Old system of text name for a tag, to be removed
+            'tags': [],  # list of UUIDs to App.Tags
+            'text_should_not_be_present': [],  # Text that should not present
+            'time_between_check': {'weeks': None, 'days': None, 'hours': None, 'minutes': None, 'seconds': None},
+            'time_between_check_use_default': True,
+            "time_schedule_limit": {
+                "enabled": False,
+                "monday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "tuesday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "wednesday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "thursday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "friday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "saturday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+                "sunday": {
+                    "enabled": True,
+                    "start_time": "00:00",
+                    "duration": {
+                        "hours": "24",
+                        "minutes": "00"
+                    }
+                },
+            },
+            'title': None, # An arbitrary field that overrides 'page_title'
+            'track_ldjson_price_data': None,
+            'trim_text_whitespace': False,
+            'remove_duplicate_lines': False,
+            'trigger_text': [],  # List of text or regex to wait for until a change is detected
+            'url': '',
+            'use_page_title_in_list': None, # None = use system settings
+            'uuid': str(uuid.uuid4()),
+            'webdriver_delay': None,
+            'webdriver_js_execute_code': None,  # Run before change-detection
+        })
+
+        super(watch_base, self).__init__(*arg, **kw)
+
+        # Check if we're being initialized from an existing watch object
+        # that has was_edited=True, so we can preserve the flag
+        preserve_edited_flag = False
+        if self.get('default'):
+            # When creating a new watch object from an existing one (e.g., changing processor),
+            # preserve the was_edited flag if it was True
+            default_watch = self.get('default')
+            if hasattr(default_watch, 'was_edited') and default_watch.was_edited:
+                preserve_edited_flag = True
+            del self['default']
+
+        # NOW initialize the edited flag after all initial setup is complete
+        # This ensures initialization doesn't trigger the edited flag
+        # But preserve it if the source watch had it set to True
+        self.__watch_was_edited = preserve_edited_flag
+
+    def _mark_field_as_edited(self, key):
+        """
+        Helper to mark a field as edited if it's writable.
+
+        Internal method used by __setitem__, update(), pop(), etc.
+        """
+        # Don't track edits during initial load or if already edited
+        if not hasattr(self, '_watch_base__watch_was_edited'):
+            return
+        if self.__watch_was_edited:
+            return  # Already marked as edited
+
+        # __-prefixed keys are transient in-memory state (e.g. __check_status set by
+        # set_watch_minitext_status). They never persist to disk and must not trigger
+        # the edited flag — otherwise just observing a check in progress would force
+        # the next run to bypass the unchanged-content skip.
+        if isinstance(key, str) and key.startswith('__'):
+            return
+
+        # Import from shared schema utilities (no circular dependency)
+        from .schema_utils import get_readonly_watch_fields, SYSTEM_MANAGED_NON_SPEC_FIELDS
+
+        # `last_viewed` is set internally by mark_all_viewed and shouldn't flag the watch as
+        # edited, but is not in SYSTEM_MANAGED_NON_SPEC_FIELDS because it IS user-writable via
+        # the UpdateWatch schema (the API path).
+        if (key not in get_readonly_watch_fields()
+                and key != 'last_viewed'
+                and key not in SYSTEM_MANAGED_NON_SPEC_FIELDS):
+            self.__watch_was_edited = True
+
+    def __setitem__(self, key, value):
+        """
+        Override dict.__setitem__ to track when writable watch fields are modified.
+
+        This enables skipping reprocessing when:
+        1. HTML content is unchanged (checksumFromPreviousCheckWasTheSame)
+        2. AND watch configuration was not edited
+
+        Only sets the edited flag when field is NOT in readonly_fields (from OpenAPI spec).
+        """
+        # Set the value first (always)
+        super().__setitem__(key, value)
+        # Mark as edited if writable field
+        self._mark_field_as_edited(key)
+
+    def __delitem__(self, key):
+        """Override dict.__delitem__ to track deletions of writable fields."""
+        super().__delitem__(key)
+        self._mark_field_as_edited(key)
+
+    def update(self, *args, **kwargs):
+
+        if args and args[0].get('browser_steps'):
+            args[0]['browser_steps'] = browser_steps_get_valid_steps(args[0].get('browser_steps'))
+
         """Override dict.update() to track modifications to writable fields."""
         # Call parent update first
         super().update(*args, **kwargs)
