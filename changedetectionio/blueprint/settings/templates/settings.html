@@ -1,5 +1,68 @@
 {% extends 'base.html' %}
 
+{% block content %}
+{% from '_helpers.html' import render_field, render_checkbox_field, render_button, render_time_schedule_form, render_ternary_field, render_fieldlist_with_inline_errors %}
+{% from '_common_fields.html' import show_token_placeholders %}
+<script src="{{url_for('static_content', group='js', filename='modal.js')}}"></script>
+<script src="{{url_for('static_content', group='js', filename='tabs.js')}}" defer></script>
+<script src="{{url_for('static_content', group='js', filename='plugins.js')}}" defer></script>
+<script src="{{url_for('static_content', group='js', filename='vis.js')}}" defer></script>
+<script src="{{url_for('static_content', group='js', filename='global-settings.js')}}" defer></script>
+<script src="{{url_for('static_content', group='js', filename='scheduler.js')}}" defer></script>
+<div class="edit-form">
+    <div class="tabs collapsable">
+        <ul>
+            <li class="tab" id=""><a href="#general">{{ _('General') }}</a></li>
+            <li class="tab"><a href="#fetching">{{ _('Fetching') }}</a></li>
+            <li class="tab"><a href="#filters">{{ _('Global Filters') }}</a></li>
+            <li class="tab"><a href="#ui-options">{{ _('UI Options') }}</a></li>
+            <li class="tab"><a href="#api">API</a></li>
+            <li class="tab"><a href="#rss">RSS</a></li>
+            <li class="tab"><a href="{{ url_for('backups.create') }}">{{ _('Backups') }}</a></li>
+            <li class="tab"><a href="#timedate">{{ _('Time & Date') }}</a></li>
+            <li class="tab"><a href="#proxies">{{ _('CAPTCHA & Proxies') }}</a></li>
+            {% if plugin_tabs %}
+                {% for tab in plugin_tabs %}
+            <li class="tab"><a href="#plugin-{{ tab.plugin_id }}">{{ tab.tab_label }}</a></li>
+                {% endfor %}
+            {% endif %}
+            {% if not llm_features_disabled %}
+            <li class="tab"><a href="#ai">{{ _('AI / LLM') }}</a></li>
+            {% endif %}
+            <li class="tab"><a href="#info">{{ _('Info') }}</a></li>
+        </ul>
+    </div>
+    <div class="box-wrap inner">
+        <form class="pure-form pure-form-stacked settings" action="{{url_for('settings.settings_page')}}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" >
+            <div class="tab-pane-inner" id="general">
+                <fieldset>
+                    <div class="pure-control-group">
+                        {{ render_field(form.requests.form.time_between_check, class="time-check-widget") }}
+
+                        <span class="pure-form-message-inline">{{ _('Default recheck time for all watches, current system minimum is') }} <i>{{min_system_recheck_seconds}}</i> {{ _('seconds') }} (<a href="https://github.com/dgtlmoon/changedetection.io/wiki/Misc-system-settings#enviroment-variables">{{ _('more info') }}</a>).</span>
+                            <div id="time-between-check-schedule">
+                                <!-- Start Time and End Time {{ timezone_default_config }} -->
+                                <div id="limit-between-time">
+                                   {{ render_time_schedule_form(form.requests, available_timezones, timezone_default_config) }}
+                                </div>
+                        </div>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.application.form.filter_failure_notification_threshold_attempts, class="filter_failure_notification_threshold_attempts") }}
+                        <span class="pure-form-message-inline">{{ _('After this many consecutive times that the CSS/xPath filter is missing, send a notification') }}
+                            <br>
+                        {{ _('Set to <strong>0</strong> to disable')|safe }}
+                        </span>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.application.form.history_snapshot_max_length, class="history_snapshot_max_length") }}
+                        <span class="pure-form-message-inline">{{ _('Limit collection of history snapshots for each watch to this number of history items.') }}
+                            <br>
+                        {{ _('Set to empty to disable / no limit') }}
+                        </span>
+                    </div>
+
                     <fieldset class="pure-group">
                     {{ render_checkbox_field(form.application.form.ignore_whitespace) }}
                     <span class="pure-form-message-inline">{{ _('Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected.') }}<br>
