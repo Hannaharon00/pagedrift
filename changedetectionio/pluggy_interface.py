@@ -441,3 +441,51 @@ def get_active_plugins():
     return active_plugins
 
 
+def load_plugin_settings(datastore_path, plugin_id):
+    """Load settings for a specific plugin from JSON file.
+
+    Args:
+        datastore_path: Path to the datastore directory
+        plugin_id: Unique identifier for the plugin (e.g., 'zyte_fetcher')
+
+    Returns:
+        dict: Plugin settings, or empty dict if file doesn't exist
+    """
+    import json
+    settings_file = os.path.join(datastore_path, f"{plugin_id}.json")
+
+    if not os.path.exists(settings_file):
+        return {}
+
+    try:
+        with open(settings_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"Failed to load settings for plugin '{plugin_id}': {e}")
+        return {}
+
+
+def save_plugin_settings(datastore_path, plugin_id, settings):
+    """Save settings for a specific plugin to JSON file.
+
+    Args:
+        datastore_path: Path to the datastore directory
+        plugin_id: Unique identifier for the plugin (e.g., 'zyte_fetcher')
+        settings: Dictionary of settings to save
+
+    Returns:
+        bool: True if save was successful, False otherwise
+    """
+    import json
+    settings_file = os.path.join(datastore_path, f"{plugin_id}.json")
+
+    try:
+        with open(settings_file, 'w', encoding='utf-8') as f:
+            json.dump(settings, f, indent=2, ensure_ascii=False)
+        logger.info(f"Saved settings for plugin '{plugin_id}' to {settings_file}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to save settings for plugin '{plugin_id}': {e}")
+        return False
+
+
