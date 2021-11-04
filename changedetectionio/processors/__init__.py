@@ -117,6 +117,62 @@ def find_processor_module(processor_name):
     return None
 
 
+def get_processor_module(processor_name):
+    """
+    Get the actual processor module (with perform_site_check class) by name.
+    Works for both built-in and plugin processors.
+
+    Args:
+        processor_name: Processor machine name (e.g., 'text_json_diff', 'osint_recon')
+
+    Returns:
+        module: The processor module containing perform_site_check, or None if not found
+    """
+    processor_classes = find_processors()
+    processor_tuple = next((tpl for tpl in processor_classes if tpl[1] == processor_name), None)
+
+    if processor_tuple:
+        # Return the actual processor module (first element of tuple)
+        return processor_tuple[0]
+
+    return None
+
+
+def get_processor_submodule(processor_name, submodule_name):
+    """
+    Get an optional submodule from a processor (e.g., 'difference', 'extract', 'preview').
+    Works for both built-in and plugin processors.
+
+    Args:
+        processor_name: Processor machine name (e.g., 'text_json_diff', 'osint_recon')
+        submodule_name: Name of the submodule (e.g., 'difference', 'extract', 'preview')
+
+    Returns:
+        module: The submodule if it exists, or None if not found
+    """
+    processor_classes = find_processors()
+    processor_tuple = next((tpl for tpl in processor_classes if tpl[1] == processor_name), None)
+
+    if not processor_tuple:
+        return None
+
+    processor_module = processor_tuple[0]
+    parent_module = get_parent_module(processor_module)
+
+    if not parent_module:
+        return None
+
+    # Try to import the submodule
+    try:
+        # For built-in processors: changedetectionio.processors.text_json_diff.difference
+        # For plugin processors: changedetectionio_osint.difference
+        parent_module_name = parent_module.__name__
+        submodule_full_name = f"{parent_module_name}.{submodule_name}"
+        return importlib.import_module(submodule_full_name)
+    except (ModuleNotFoundError, ImportError):
+        return None
+
+
 @lru_cache(maxsize=1)
 def get_plugin_processor_metadata():
     """Get metadata from plugin processors."""
