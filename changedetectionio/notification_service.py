@@ -341,6 +341,12 @@ def add_rendered_diff_to_notification_vars(notification_scan_text:str, prev_snap
 
     return ret
 
+Your configured CSS/xPath filters of '{filter_list}' for {{{{watch_url}}}} did not appear on the page after {threshold} attempts.
+
+It's possible the page changed layout and the filter needs updating ( Try the 'Visual Selector' tab )
+
+Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
+
 The element may have moved and needs editing, or does it need a delay added?
 
 Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
