@@ -332,6 +332,22 @@ Math: {{ 1 + 1 }}") }}
                     {{ render_conditions_fieldlist_of_formfields_as_table(form.conditions) }}
                     <div class="pure-form-message-inline">
 
+                        <p id="verify-state-text">{{ _('Use the verify (✓) button to test if a condition passes against the current snapshot.') }}</p>
+                       {{ _('Read a quick tutorial about') }} <a href="https://changedetection.io/tutorial/conditional-actions-web-page-changes">{{ _('using conditional web page changes here') }}</a>.<br>
+                    </div>
+                </div>
+            </div>
+            {% if not llm_features_disabled %}
+            <div class="tab-pane-inner" id="ai-llm">
+                {% include "edit/include_llm_intent.html" %}
+            </div>
+            {% endif %}
+            <div class="tab-pane-inner" id="filters-and-triggers">
+
+                <span id="activate-text-preview" class="pure-button pure-button-primary button-xsmall">{{ _('Activate preview') }}</span>
+              <div>
+              <div id="edit-text-filter">
+
                     {% if ui_edit_stats_extras %}
                     <div class="plugin-stats-extras"> <!-- from pluggy plugin -->
                         {{ ui_edit_stats_extras|safe }}
