@@ -13,3 +13,10 @@ from loguru import logger
 if TYPE_CHECKING:
     import pyvips
 
+try:
+    import pyvips
+    PYVIPS_AVAILABLE = True
+except ImportError:
+    PYVIPS_AVAILABLE = False
+    logger.warning("pyvips not available - install with: pip install pyvips")
+
