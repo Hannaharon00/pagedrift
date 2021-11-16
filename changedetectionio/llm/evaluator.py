@@ -5,6 +5,29 @@ Two public entry points:
   - run_setup(watch, datastore)        — one-time: decide if pre-filter needed
   - evaluate_change(watch, datastore, diff, current_snapshot) — per-change evaluation
 
+Intent resolution: watch.llm_intent → first tag with llm_intent whose AI switch is "on"
+                   (see tag_llm_applies_to_watches) → None (no evaluation)
+Cache: each (intent, diff) pair is evaluated exactly once, result stored in watch.
+
+Environment variable overrides (take priority over datastore settings):
+  LLM_MODEL    — model string (e.g. "gpt-4o-mini", "ollama/llama3.2")
+  LLM_API_KEY  — API key for cloud providers
+  LLM_API_BASE — base URL for local/custom endpoints (e.g. http://localhost:11434)
+  LLM_TIMEOUT       — per-request timeout in seconds (default 300). When set, it
+                      applies to every endpoint (a single hard ceiling).
+  LLM_LOCAL_TIMEOUT — timeout in seconds for local/self-hosted endpoints (api_base
+                      on a private/LAN address); default 1800. Applied automatically
+                      unless LLM_TIMEOUT is set. See resolve_llm_timeout().
+"""
+
+import hashlib
+import os
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from loguru import logger
+
+from changedetectionio.strtobool import strtobool
+
 from . import client as llm_client
 from .prompt_builder import (
     build_change_summary_prompt, build_change_summary_system_prompt,
