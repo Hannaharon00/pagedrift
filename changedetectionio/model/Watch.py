@@ -48,6 +48,9 @@ BROTLI_COMPRESS_SIZE_THRESHOLD = int(os.getenv('SNAPSHOT_BROTLI_COMPRESSION_THRE
 # Invalidated explicitly when the favicon is saved or the watch history is cleared.
 _FAVICON_FILENAME_CACHE: dict = {}
 
+minimum_seconds_recheck_time = int(os.getenv('MINIMUM_SECONDS_RECHECK_TIME', 3))
+mtable = {'seconds': 1, 'minutes': 60, 'hours': 3600, 'days': 86400, 'weeks': 86400 * 7}
+
         # Compression failed
         if fallback_uncompressed:
             logger.warning(f"Brotli compression failed for {filepath}, saving uncompressed")
