@@ -144,3 +144,113 @@
                         </span>
                     </div>
 
+                </fieldset>
+            </div>
+
+            {% if capabilities.supports_request_type %}
+            <div class="tab-pane-inner" id="request">
+                    <div class="pure-control-group inline-radio">
+                        {{ render_field(form.fetch_backend, class="fetch-backend") }}
+                        <span class="pure-form-message-inline">
+                            <p>{{ _('Use the <strong>Basic</strong> method (default) where your watched sites don\'t need Javascript to render.')|safe }}</p>
+                            <p>{{ _('The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set by the ENV var \'WEBDRIVER_URL\'.')|safe }}</p>
+                            {{ _('Tip:') }} <a href="https://github.com/dgtlmoon/changedetection.io/wiki/Proxy-configuration#brightdata-proxy-support">{{ _('Connect using Bright Data and Oxylabs Proxies, find out more here.') }}</a>
+                        </span>
+                    </div>
+                {% if form.proxy %}
+                    <div class="pure-control-group inline-radio">
+                          <div>{{ form.proxy.label }} <a href="" id="check-all-proxies" class="pure-button button-secondary button-xsmall" >{{ _('Check/Scan all') }}</a></div>
+                          <div>{{ form.proxy(class="fetch-backend-proxy") }}</div>
+                        <span class="pure-form-message-inline">
+                        {{ _('Choose a proxy for this watch') }}
+                        </span>
+                    </div>
+                {% endif %}
+
+                <!-- webdriver always -->
+                <fieldset data-visible-for="fetch_backend=html_webdriver"  style="display: none;">
+                    <div class="pure-control-group">
+                        {{ render_field(form.webdriver_delay) }}
+                        <div class="pure-form-message-inline">
+                            <strong>{{ _('If you\'re having trouble waiting for the page to be fully rendered (text missing etc), try increasing the \'wait\' time here.') }}</strong>
+                            <br>
+                            {{ _('This will wait <i>n</i> seconds before extracting the text.')|safe }}
+                            {% if using_global_webdriver_wait %}
+                            <br><strong>{{ _('Using the current global default settings') }}</strong>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="pure-control-group">
+                        <a class="pure-button button-secondary button-xsmall show-advanced">{{ _('Show advanced options') }}</a>
+                    </div>
+                    <div class="advanced-options"  style="display: none;">
+                        {{ render_field(form.webdriver_js_execute_code) }}
+                        <div class="pure-form-message-inline">
+                            {{ _('Run this code before performing change detection, handy for filling in fields and other actions') }} <a
+                                href="https://github.com/dgtlmoon/changedetection.io/wiki/Run-JavaScript-before-change-detection">{{ _('More help and examples here') }}</a>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- html requests always -->
+                <fieldset data-visible-for="fetch_backend=html_requests">
+                    <div class="pure-control-group">
+                        <a class="pure-button button-secondary button-xsmall show-advanced">{{ _('Show advanced options') }}</a>
+                    </div>
+                    <div class="advanced-options"  style="display: none;">
+                        <div class="pure-control-group" id="request-method">
+                            {{ render_field(form.method) }}
+                        </div>
+                        <div id="request-body">
+                                            {{ render_field(form.body, rows=7, placeholder="Example
+{
+   \"name\":\"John\",
+   \"age\":30,
+   \"car\":null,
+   \"year\":{% now 'Europe/Berlin', '%Y' %}
+}") }}
+                        </div>
+                        <div class="pure-form-message">{{ _('Variables are supported in the request body') }} (<a href="https://github.com/dgtlmoon/changedetection.io/wiki/Handling-variables-in-the-watched-URL">{{ _('help and examples here') }}</a>).</div>
+                    </div>
+                </fieldset>
+            <!-- hmm -->
+                <div class="pure-control-group advanced-options"  style="display: none;">
+                    {{ render_field(form.headers, rows=7, placeholder="Example
+Cookie: foobar
+User-Agent: wonderbra 1.0
+Math: {{ 1 + 1 }}") }}
+                        <div class="pure-form-message">{{ _('Variables are supported in the request header values') }} (<a href="https://github.com/dgtlmoon/changedetection.io/wiki/Handling-variables-in-the-watched-URL">{{ _('help and examples here') }}</a>).</div>
+                        <div class="pure-form-message-inline">
+                            {% if has_extra_headers_file %}
+                                <strong>{{ _('Alert! Extra headers file found and will be added to this watch!') }}</strong>
+                            {% else %}
+                                {{ _('Headers can be also read from a file in your data-directory') }} <a href="https://github.com/dgtlmoon/changedetection.io/wiki/Adding-headers-from-an-external-file">{{ _('Read more here') }}</a>
+                            {% endif %}
+                            <br>
+                            ({{ _('Not supported by Selenium browser') }})
+                        </div>
+                    </div>
+            <fieldset data-visible-for="fetch_backend=html_requests fetch_backend=html_webdriver" >
+                    <div class="pure-control-group inline-radio advanced-options"  style="display: none;">
+                    {{ render_checkbox_field(form.ignore_status_codes) }}
+                    </div>
+            </fieldset>
+            </div>
+            {% endif %}
+
+            <div class="tab-pane-inner" id="browser-steps">
+            {% if capabilities.supports_browser_steps %}
+               {% if true %}
+                <img class="beta-logo" src="{{url_for('static_content', group='images', filename='beta-logo.png')}}" alt="New beta functionality">
+                <fieldset>
+                    <div class="pure-control-group">
+                        <!--
+                        Too hard right now, better to just send the events to the fetcher for now and leave it in the final screenshot
+                        and/or report an error
+                        <a id="play-steps" class="pure-button button-secondary button-xsmall" style="font-size: 70%">Play steps  ▶</a>
+                        -->
+
+                        <!---  Do this later -->
+                        <div class="checkbox" style="display: none;">
+                            <input type=checkbox id="include_text_elements" > <label for="include_text_elements">{{ _('Turn on text finder') }}</label>
+                        </div>
+
