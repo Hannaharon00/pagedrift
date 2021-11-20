@@ -254,3 +254,81 @@ Math: {{ 1 + 1 }}") }}
                             <input type=checkbox id="include_text_elements" > <label for="include_text_elements">{{ _('Turn on text finder') }}</label>
                         </div>
 
+                        <div id="loading-status-text" style="display: none;">{{ _('Please wait, first browser step can take a little time to load..') }}<div class="spinner"></div></div>
+                        <div class="flex-wrapper" >
+
+                            <div id="browser-steps-ui" class="noselect">
+                                <div class="noselect"  id="browsersteps-selector-wrapper">
+                                    <span class="loader" >
+                                        <span id="browsersteps-click-start">
+                                            <h2 >{{ _('Click here to Start') }}</h2>
+                                            <svg style="height: 3.5rem;" version="1.1" viewBox="0 0 32 32"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="start"/><g id="play_x5F_alt"><path d="M16,0C7.164,0,0,7.164,0,16s7.164,16,16,16s16-7.164,16-16S24.836,0,16,0z M10,24V8l16.008,8L10,24z" style="fill: var(--color-grey-400);"/></g></svg><br>
+                                            {{ _('Please allow 10-15 seconds for the browser to connect.') }}<br>
+                                        </span>
+                                        <div class="spinner"  style="display: none;"></div>
+                                    </span>
+                                    <img class="noselect" id="browsersteps-img" src="" style="max-width: 100%; width: 100%;" >
+                                    <canvas  class="noselect" id="browsersteps-selector-canvas" style="max-width: 100%; width: 100%;"></canvas>
+                                </div>
+                            </div>
+                            <div id="browser-steps-fieldlist" >
+                                <span id="browser-seconds-remaining">{{ _('Press "Play" to start.') }}</span> <span style="font-size: 80%;"> (<a target="newwindow" href="https://github.com/dgtlmoon/changedetection.io/pull/478/files#diff-1a79d924d1840c485238e66772391268a89c95b781d69091384cf1ea1ac146c9R4">?</a>) </span>
+                                {{ render_field(form.browser_steps) }}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                {% else %}
+                    <strong>{{ _('Visual Selector data is not ready, watch needs to be checked atleast once.') }}</strong>
+                {% endif %}
+            {% else %}
+                <p>
+                    <strong>{{ _('Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based fetchers)') }}<br>
+                    {{ _('You need to') }} <a href="#request">{{ _('Set the fetch method') }}</a> {{ _('to one that supports interactive Javascript.') }}</strong>
+                </p>
+            {% endif %}
+            </div>
+
+
+            <div class="tab-pane-inner" id="notifications">
+                <fieldset>
+                    <div  class="pure-control-group inline-radio">
+                      {{ render_ternary_field(form.notification_muted, BooleanField=true) }}
+                    </div>
+                    {% if capabilities.supports_screenshots %}
+                    <div class="pure-control-group inline-radio">
+                      {{ render_checkbox_field(form.notification_screenshot) }}
+                        <span class="pure-form-message-inline">
+                            <strong>{{ _('Use with caution!') }}</strong> {{ _('This will easily fill up your email storage quota or flood other storages.') }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.filter_failure_notification_send) }}
+                        <span class="pure-form-message-inline">
+                         {{ _('Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and your filter will not work anymore.') }}
+                        </span>
+                    </div>
+                    <div class="field-group" id="notification-field-group">
+                        {% if has_default_notification_urls %}
+                        <div class="inline-warning">
+                            <img class="inline-warning-icon" src="{{url_for('static_content', group='images', filename='notice.svg')}}" alt="{{ _('Look out!') }}" title="{{ _('Lookout!') }}" >
+                            {{ _('There are <a href="%(url)s">system-wide notification URLs enabled</a>, this form will override notification settings for this watch only &dash; an empty Notification URL list here will still send notifications.', url=url_for('settings.notifications.apprise'))|safe }}
+                        </div>
+                        {% endif %}
+                        <a href="#notifications" id="notification-setting-reset-to-default" class="pure-button button-xsmall" style="right: 20px; top: 20px; position: absolute; background-color: #5f42dd; border-radius: 4px; font-size: 70%; color: #fff">{{ _('Use system defaults') }}</a>
+                        {{ render_common_settings_form(form, emailprefix, settings_application, extra_notification_token_placeholder_info) }}
+                    </div>
+                </fieldset>
+            </div>
+
+            {% if capabilities.supports_text_filters_and_triggers %}
+            <div class="tab-pane-inner" id="conditions">
+                    <script>
+                        const verify_condition_rule_url="{{url_for('conditions.verify_condition_single_rule', watch_uuid=uuid)}}";
+                    </script>
+                <div class="pure-control-group">
+                    {{ render_field(form.conditions_match_logic) }}
+                    {{ render_conditions_fieldlist_of_formfields_as_table(form.conditions) }}
+                    <div class="pure-form-message-inline">
+

@@ -165,6 +165,34 @@ class LabelAfterInputTableWidget(widgets.TableWidget):
         return Markup("".join(html))
 
 
+class TimeDurationForm(Form):
+    hours = SelectField(choices=[(f"{i}", f"{i}") for i in range(0, 25)], default="24",  validators=[validators.Optional()])
+    minutes = SelectField(choices=[(f"{i}", f"{i}") for i in range(0, 60)], default="00", validators=[validators.Optional()])
+
+class TimeStringField(Field):
+    """
+    A WTForms field for time inputs (HH:MM) that stores the value as a string.
+    """
+    widget = TimeInput()  # Use the built-in time input widget
+
+    def _value(self):
+        """
+        Returns the value for rendering in the form.
+        """
+        return self.data if self.data is not None else ""
+
+    def process_formdata(self, valuelist):
+        """
+        Processes the raw input from the form and stores it as a string.
+        """
+        if valuelist:
+            time_str = valuelist[0]
+            # Simple validation for HH:MM format
+            if not time_str or len(time_str.split(":")) != 2:
+                raise ValidationError(_l("Invalid time format. Use HH:MM."))
+            self.data = time_str
+
+
 class validateTimeZoneName(object):
     """
        Flask wtform validators wont work with basic auth
