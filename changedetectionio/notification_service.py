@@ -347,6 +347,52 @@ It's possible the page changed layout and the filter needs updating ( Try the 'V
 
 Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
 
+Thanks - Your omniscient changedetection.io installation.
+"""
+
+        n_object = NotificationContextData({
+            'notification_title': 'Changedetection.io - Alert - CSS/xPath filter was not present in the page',
+            'notification_body': body,
+            'notification_format': _check_cascading_vars(self.datastore, 'notification_format', watch),
+        })
+        n_object['markup_text_links_to_html_links'] = (n_object.get('notification_format') or '').startswith('html')
+
+        if len(watch['notification_urls']):
+            n_object['notification_urls'] = watch['notification_urls']
+
+        elif len(self.datastore.data['settings']['application']['notification_urls']):
+            n_object['notification_urls'] = self.datastore.data['settings']['application']['notification_urls']
+
+        # Only prepare to notify if the rules above matched
+        if 'notification_urls' in n_object:
+            n_object.update({
+                'watch_url': watch['url'],
+                'watch_open_url': watch.open_link_override or watch['url'],
+                'uuid': watch_uuid,
+                'screenshot': None
+            })
+            self.notification_q.put(n_object)
+            logger.debug(f"Sent filter not found notification for {watch_uuid}")
+        else:
+            logger.debug(f"NOT sending filter not found notification for {watch_uuid} - no notification URLs")
+
+    def send_step_failure_notification(self, watch_uuid, step_n):
+        """
+        Send notification when browser steps fail consecutively
+        """
+        watch = self.datastore.data['watching'].get(watch_uuid, False)
+        if not watch:
+            return
+        threshold = self.datastore.data['settings']['application'].get('filter_failure_notification_threshold_attempts')
+
+        step = step_n
+        # @todo - This could be a markdown template on the disk, apprise will convert the markdown to HTML+Plaintext parts in the email, and then 'markup_text_links_to_html_links' is not needed
+
+        # {{{{ }}}} because this will be Jinja2 {{ }} tokens
+        body = f"""Hello,
+        
+Your configured browser step at position {step} for the web page watch {{{{watch_url}}}} did not appear on the page after {threshold} attempts, did the page change layout?
+
 The element may have moved and needs editing, or does it need a delay added?
 
 Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
