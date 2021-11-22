@@ -28,3 +28,10 @@ list_badge_text = "Text"
 
 JSON_FILTER_PREFIXES = ['json:', 'jq:', 'jqraw:']
 
+class FilterNotFoundInResponse(ValueError):
+    def __init__(self, msg, screenshot=None, xpath_data=None):
+        self.screenshot = screenshot
+        self.xpath_data = xpath_data
+        ValueError.__init__(self, msg)
+
+
