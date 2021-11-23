@@ -92,3 +92,58 @@ paths:
           source: |
             import requests
 
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            uuid = 'YOUR-UUID'
+            data = {
+                'processor_config_restock_diff': {
+                    'in_stock_processing': 'all_changes',
+                    'follow_price_changes': True,
+                    'price_change_min': 10.00,
+                    'price_change_max': 500.00,
+                }
+            }
+            response = requests.put(f'http://localhost:5000/api/v1/watch/{uuid}',
+                                    headers=headers, json=data)
+            print(response.text)
+
+  /tag/{uuid}:
+    put:
+      x-code-samples:
+        - lang: 'curl'
+          label: 'Set restock config on group/tag'
+          source: |
+            curl -X PUT "http://localhost:5000/api/v1/tag/YOUR-TAG-UUID" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "overrides_watch": true,
+                "processor_config_restock_diff": {
+                  "in_stock_processing": "in_stock_only",
+                  "follow_price_changes": true,
+                  "price_change_threshold_percent": 10
+                }
+              }'
+        - lang: 'Python'
+          label: 'Set restock config on group/tag'
+          source: |
+            import requests
+
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            tag_uuid = 'YOUR-TAG-UUID'
+            data = {
+                'overrides_watch': True,
+                'processor_config_restock_diff': {
+                    'in_stock_processing': 'in_stock_only',
+                    'follow_price_changes': True,
+                    'price_change_threshold_percent': 10,
+                }
+            }
+            response = requests.put(f'http://localhost:5000/api/v1/tag/{tag_uuid}',
+                                    headers=headers, json=data)
+            print(response.text)
