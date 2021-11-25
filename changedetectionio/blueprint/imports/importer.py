@@ -4,6 +4,9 @@ from wtforms import ValidationError
 from loguru import logger
 from flask_babel import gettext
 
+from changedetectionio.forms import validate_url
+
+
 class Importer():
     remaining_data = []
     new_uuids = []
