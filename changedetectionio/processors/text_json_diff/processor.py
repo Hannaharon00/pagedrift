@@ -35,3 +35,107 @@ class FilterNotFoundInResponse(ValueError):
         ValueError.__init__(self, msg)
 
 
+class PDFToHTMLToolNotFound(ValueError):
+    def __init__(self, msg):
+        ValueError.__init__(self, msg)
+
+
+class FilterConfig:
+    """Consolidates all filter and rule configurations from watch, tags, and global settings."""
+
+    def __init__(self, watch, datastore):
+        self.watch = watch
+        self.datastore = datastore
+        self.watch_uuid = watch.get('uuid')
+        # Cache computed properties to avoid repeated list operations
+        self._include_filters_cache = None
+        self._subtractive_selectors_cache = None
+
+    def _get_merged_rules(self, attr, include_global=False):
+        """Merge rules from watch, tags, and optionally global settings."""
+        watch_rules = self.watch.get(attr, [])
+        tag_rules = self.datastore.get_tag_overrides_for_watch(uuid=self.watch_uuid, attr=attr)
+        rules = list(dict.fromkeys(watch_rules + tag_rules))
+
+        if include_global:
+            global_rules = self.datastore.data['settings']['application'].get(f'global_{attr}', [])
+            rules = list(dict.fromkeys(rules + global_rules))
+
+        return rules
+
+    @property
+    def include_filters(self):
+        if self._include_filters_cache is None:
+            filters = self._get_merged_rules('include_filters')
+            # Inject LD+JSON price tracker rule if enabled
+            if self.watch.get('track_ldjson_price_data', '') == PRICE_DATA_TRACK_ACCEPT:
+                filters += html_tools.LD_JSON_PRODUCT_OFFER_SELECTORS
+            self._include_filters_cache = filters
+        return self._include_filters_cache
+
+    @property
+    def subtractive_selectors(self):
+        if self._subtractive_selectors_cache is None:
+            watch_selectors = self.watch.get("subtractive_selectors", [])
+            tag_selectors = self.datastore.get_tag_overrides_for_watch(uuid=self.watch_uuid, attr='subtractive_selectors')
+            global_selectors = self.datastore.data["settings"]["application"].get("global_subtractive_selectors", [])
+            self._subtractive_selectors_cache = [*tag_selectors, *watch_selectors, *global_selectors]
+        return self._subtractive_selectors_cache
+
+    @property
+    def extract_lines_containing(self):
+        return self._get_merged_rules('extract_lines_containing')
+
+    @property
+    def extract_text(self):
+        return self._get_merged_rules('extract_text')
+
+    @property
+    def ignore_text(self):
+        return self._get_merged_rules('ignore_text', include_global=True)
+
+    @property
+    def trigger_text(self):
+        return self._get_merged_rules('trigger_text')
+
+    @property
+    def text_should_not_be_present(self):
+        return self._get_merged_rules('text_should_not_be_present')
+
+    def get_filter_config_hash(self):
+        """
+        Stable hash of the effective filter configuration.
+
+        Used by the skip-logic in run_changedetection() so that any change to
+        global settings, tag overrides, or watch filters automatically invalidates
+        the raw-content-unchanged shortcut — without needing scattered
+        clear_all_last_checksums() calls at every settings mutation site.
+        """
+        app = self.datastore.data['settings']['application']
+        config = {
+            'extract_lines_containing': sorted(self.extract_lines_containing),
+            'extract_text':             sorted(self.extract_text),
+            'ignore_text':              sorted(self.ignore_text),
+            'include_filters':          sorted(self.include_filters),
+            'subtractive_selectors':    sorted(self.subtractive_selectors),
+            'text_should_not_be_present': sorted(self.text_should_not_be_present),
+            'trigger_text':             sorted(self.trigger_text),
+            # Global processing flags not captured by the filter lists above
+            'ignore_whitespace':        app.get('ignore_whitespace', False),
+            'strip_ignored_lines':      app.get('strip_ignored_lines', False),
+        }
+        return hashlib.md5(json.dumps(config, sort_keys=True).encode()).hexdigest()
+
+    @property
+    def has_include_filters(self):
+        return bool(self.include_filters) and bool(self.include_filters[0].strip())
+
+    @property
+    def has_include_json_filters(self):
+        return any(f.strip().startswith(prefix) for f in self.include_filters for prefix in JSON_FILTER_PREFIXES)
+
+    @property
+    def has_subtractive_selectors(self):
+        return bool(self.subtractive_selectors) and bool(self.subtractive_selectors[0].strip())
+
+
