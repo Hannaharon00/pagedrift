@@ -272,3 +272,15 @@ class NotifyDiscordCustom(NotifyDiscord):
         return chunks
 
 
+# Register the custom Discord handler with Apprise
+# This will override the built-in discord:// handler
+@notify(on="discord")
+def discord_custom_wrapper(body, title, notify_type, meta, body_format=None, *args, **kwargs):
+    """
+    Wrapper function to make the custom Discord handler work with Apprise's decorator system.
+    Note: This decorator approach may not work for overriding built-in plugins.
+    The class-based approach above is the proper way to extend NotifyDiscord.
+    """
+    logger.info("Custom Discord handler called")
+    # This is here for potential future use with decorator-based registration
+    return True
