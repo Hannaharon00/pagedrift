@@ -15,6 +15,22 @@ from loguru import logger
 # _summary_max_tokens() and are NOT subject to this cap.
 _MAX_COMPLETION_TOKENS = 400
 
+# Default request timeout (seconds). Raised from 60 to 300 because even cloud
+# reasoning models can be slow on the first hit (issue #4225). Overridable via
+# LLM_TIMEOUT.
+DEFAULT_TIMEOUT = int(os.getenv('LLM_TIMEOUT', 300))
+# Relaxed timeout for local / self-hosted endpoints (Ollama, vLLM, LM Studio,
+# llama.cpp on localhost or a LAN address). These run on modest hardware and can
+# spend many minutes on prompt prefill before the first token, so they get a much
+# longer deadline (Hermes-style, 30 min). Overridable via LLM_LOCAL_TIMEOUT; see
+# evaluator.resolve_llm_timeout() for how the endpoint is classified.
+DEFAULT_LOCAL_TIMEOUT = int(os.getenv('LLM_LOCAL_TIMEOUT', 1800))
+# Models and reasoning architectures that reject explicit sampling parameters (temperature/top_p)
+_NO_TEMPERATURE_MODEL_KEYWORDS = ('flash-lite', 'thinking-exp', 'o1', 'o3', 'o4')
+
+DEFAULT_RETRIES = 3
+
+
 class _LoguruInterceptHandler(logging.Handler):
     # Routes litellm's stdlib log records through loguru so debug output
     # uses the same format/sink as the rest of the app.
