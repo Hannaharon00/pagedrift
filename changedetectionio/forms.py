@@ -437,3 +437,26 @@ class ValidateKnownContentFetcher(object):
             raise ValidationError(self.message or gettext("Unknown fetch method."))
 
 
+class validateLLMApiBaseSafe(object):
+    """Block private/loopback/reserved api_base values (SSRF) unless the operator
+    has opted in via ALLOW_IANA_RESTRICTED_ADDRESSES=true."""
+
+    def __call__(self, form, field):
+        from changedetectionio.validate_url import is_llm_api_base_safe
+        ok, reason = is_llm_api_base_safe(field.data)
+        if not ok:
+            raise ValidationError(reason)
+
+
+class ValidateSinglePythonRegexString(object):
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        try:
+            re.compile(field.data)
+        except re.error:
+            message = field.gettext('RegEx \'%s\' is not a valid regular expression.')
+            raise ValidationError(message % (field.data))
+
+
