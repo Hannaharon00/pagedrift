@@ -13,3 +13,6 @@ from changedetectionio.processors.exceptions import ProcessorException
 from . import SCREENSHOT_COMPARISON_THRESHOLD_OPTIONS_DEFAULT, PROCESSOR_CONFIG_NAME, OPENCV_BLUR_SIGMA
 from ..base import difference_detection_processor, SCREENSHOT_FORMAT_PNG
 
+# All image operations now use OpenCV via isolated_opencv subprocess handler
+# Template matching temporarily disabled pending OpenCV implementation
+
