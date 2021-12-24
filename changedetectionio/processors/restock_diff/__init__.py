@@ -83,3 +83,56 @@ class Restock(dict):
         pct = round((price - prev) / prev * 100.0, 1)
         return pct if pct != 0 else None
 
+# @todo - kinda bad, needs to be in its own DB
+def get_price_from_history_str(history_str):
+    m = _price_re.search(history_str)
+    if not m:
+        return None
+
+    try:
+        return str(Decimal(m.group(1)))
+    except InvalidOperation:
+        return None
+
+
+class Watch(BaseWatch):
+    def __init__(self, *arg, **kw):
+        super().__init__(*arg, **kw)
+        self['restock'] = Restock(kw['default']['restock']) if kw.get('default') and kw['default'].get('restock') else Restock()
+
+
+    def clear_watch(self):
+        super().clear_watch()
+        self.update({'restock': Restock()})
+
+    def extra_notification_token_values(self):
+        values = super().extra_notification_token_values()
+        # Copy so the derived 'previous_price' token added below doesn't mutate the stored restock object
+        values['restock'] = dict(self.get('restock', {}))
+
+        values['restock']['previous_price'] = None
+        if self.history_n >= 2:
+            history = self.history
+            if history and len(history) >=2:
+                """Unfortunately for now timestamp is stored as string key"""
+                # Keys are stored oldest-first (ascending). worker.py saves the new snapshot
+                # BEFORE sending the notification, so the newest key ([-1]) is the current check
+                # and the previous check is the second-newest ([-2]). Guaranteed to exist here
+                # because len(history) >= 2.
+                sorted_keys = sorted(list(history), key=lambda x: int(x))
+
+                price_str = self.get_history_snapshot(timestamp=sorted_keys[-2])
+                if price_str:
+                    values['restock']['previous_price'] = get_price_from_history_str(price_str)
+        return values
+
+    def extra_notification_token_placeholder_info(self):
+        values = super().extra_notification_token_placeholder_info()
+
+        values.append(('restock.price', "Price detected"))
+        values.append(('restock.in_stock', "In stock status"))
+        values.append(('restock.last_price', "Price at the previous check"))
+        values.append(('restock.previous_price', "Previous price in history"))
+
+        return values
+

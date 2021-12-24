@@ -460,3 +460,54 @@ class ValidateSinglePythonRegexString(object):
             raise ValidationError(message % (field.data))
 
 
+# Not true anymore but keep the validate_ hook for future use, we convert color tags
+#    def validate_notification_urls(self, field):
+#        """Validate that HTML Color format is not used with Telegram"""
+#        if self.notification_format.data == 'HTML Color' and field.data:
+#            for url in field.data:
+#                if url and ('tgram://' in url or 'discord://' in url or 'discord.com/api/webhooks' in url):
+#                    raise ValidationError('HTML Color format is not supported by Telegram and Discord. Please choose another Notification Format (Plain Text, HTML, or Markdown to HTML).')
+
+
+# Standalone form for the /settings/notifications/apprise page. Holds only the
+# global apprise-notification fields (the macro
+# `notification_part_render_common_settings_form` in _common_fields.html expects
+# these exact field names) plus base_url, which powers the {{base_url}} token
+# in notification templates.
+#
+# This is intentionally not a sub-form of globalSettingsForm — the notifications
+# page POSTs to its own route so the broader settings form's validators (worker
+# count, RSS limits, etc.) don't run when the user only wants to tweak alerts.
+#
+# Named for the backend (apprise) on purpose: future backends (simple_email,
+# webhook, etc.) will land as their own forms next to this one.
+class globalSettingsAppriseNotificationForm(Form):
+    def __init__(self, formdata=None, obj=None, prefix="", data=None, meta=None, **kwargs):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        extra = kwargs.get('extra_notification_tokens', {})
+        self.notification_body.extra_notification_tokens = extra
+        self.notification_title.extra_notification_tokens = extra
+        self.notification_urls.extra_notification_tokens = extra
+
+    notification_urls = StringListField(_l('Notification URL List'),
+                                        validators=[validators.Optional(), ValidateAppRiseServers(), ValidateJinja2Template()])
+    notification_title = StringField(_l('Notification Title'),
+                                     default='ChangeDetection.io Notification - {{ watch_url }}',
+                                     validators=[validators.Optional(), ValidateJinja2Template()])
+    notification_body = TextAreaField(_l('Notification Body'),
+                                      default='{{ watch_url }} had a change.',
+                                      validators=[validators.Optional(), ValidateJinja2Template()])
+    notification_format = SelectField(_l('Notification format'),
+                                      choices=list(valid_notification_formats.items()))
+    base_url = StringField(_l('Notification base URL override'),
+                           validators=[validators.Optional()],
+                           render_kw={"placeholder": os.getenv('BASE_URL', _l('Not set'))})
+    save_button = SubmitField(_l('Save'), render_kw={"class": "pure-button pure-button-primary"})
+
+
+class importForm(Form):
+    processor = RadioField(_l('Processor'), choices=lambda: processors.available_processors(), default=processors.get_default_processor)
+    urls = TextAreaField(_l('URLs'))
+    xlsx_file = FileField(_l('Upload .xlsx file'), validators=[FileAllowed(['xlsx'], _l('Must be .xlsx file!'))])
+    file_mapping = SelectField(_l('File mapping'), [validators.DataRequired()], choices={('wachete', 'Wachete mapping'), ('custom','Custom mapping')})
+
