@@ -441,6 +441,77 @@ def get_active_plugins():
     return active_plugins
 
 
+def get_fetcher_capabilities(watch, datastore):
+    """Get capability flags for a watch's fetcher.
+
+    Args:
+        watch: The watch object/dict
+        datastore: The datastore to resolve 'system' fetcher
+
+    Returns:
+        dict: Dictionary with capability flags:
+            {
+                'supports_browser_steps': bool,
+                'supports_screenshots': bool,
+                'supports_xpath_element_data': bool
+            }
+    """
+    # Get the fetcher name from watch
+    fetcher_name = watch.get('fetch_backend', 'system')
+
+    # Resolve 'system' to actual fetcher
+    if fetcher_name == 'system':
+        fetcher_name = datastore.data['settings']['application'].get('fetch_backend', 'html_requests')
+
+    # Get the fetcher class
+    from changedetectionio import content_fetchers
+
+    # Try built-in fetchers first, then plugin-provided fetchers
+    fetcher_class = None
+    if hasattr(content_fetchers, fetcher_name):
+        fetcher_class = getattr(content_fetchers, fetcher_name)
+    else:
+        # Query all plugins for registered fetchers
+        for fetcher_registration in plugin_manager.hook.register_content_fetcher():
+            if fetcher_registration and fetcher_registration[0] == fetcher_name:
+                fetcher_class = fetcher_registration[1]
+                break
+
+    # Log + build from the shared FetcherCapabilities model. Return a plain dict so
+    # callers (e.g. blueprint/ui/edit.py) can still add their own extra capability keys.
+    caps = content_fetchers._log_fetcher_capabilities(fetcher_class, fetcher_name, uuid=watch.get('uuid'))
+    return caps.model_dump()
+
+
+def get_plugin_settings_tabs():
+    """Get all plugin settings tabs.
+
+    Returns:
+        list: List of dictionaries with plugin settings tab information:
+            [
+                {
+                    'plugin_id': str,
+                    'tab_label': str,
+                    'form_class': Form,
+                    'description': str
+                },
+                ...
+            ]
+    """
+    tabs = []
+    results = plugin_manager.hook.plugin_settings_tab()
+
+    for result in results:
+        if result and isinstance(result, dict):
+            # Validate required fields
+            if 'plugin_id' in result and 'tab_label' in result and 'form_class' in result:
+                tabs.append(result)
+            else:
+                logger.warning(f"Invalid plugin settings tab spec: {result}")
+
+    return tabs
+
+
 def load_plugin_settings(datastore_path, plugin_id):
     """Load settings for a specific plugin from JSON file.
 
