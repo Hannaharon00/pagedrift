@@ -142,3 +142,61 @@ class FilterConfig:
         return bool(self.subtractive_selectors) and bool(self.subtractive_selectors[0].strip())
 
 
+class RuleEngine:
+    """Evaluates blocking rules (triggers, conditions, text_should_not_be_present)."""
+
+    @staticmethod
+    def evaluate_trigger_text(content, trigger_patterns):
+        """
+        Check if trigger text is present. If trigger_text is configured,
+        content is blocked UNLESS the trigger is found.
+        Returns True if blocked, False if allowed.
+        """
+        if not trigger_patterns:
+            return False
+
+        # Assume blocked if trigger_text is configured
+        result = html_tools.strip_ignore_text(
+            content=str(content),
+            wordlist=trigger_patterns,
+            mode="line numbers"
+        )
+        # Unblock if trigger was found
+        return not bool(result)
+
+    @staticmethod
+    def evaluate_text_should_not_be_present(content, patterns):
+        """
+        Check if forbidden text is present. If found, block the change.
+        Returns True if blocked, False if allowed.
+        """
+        if not patterns:
+            return False
+
+        result = html_tools.strip_ignore_text(
+            content=str(content),
+            wordlist=patterns,
+            mode="line numbers"
+        )
+        # Block if forbidden text was found
+        return bool(result)
+
+    @staticmethod
+    def evaluate_conditions(watch, datastore, content):
+        """
+        Evaluate custom conditions ruleset.
+        Returns True if blocked, False if allowed.
+        """
+        if not watch.get('conditions') or not watch.get('conditions_match_logic'):
+            return False
+
+        conditions_result = execute_ruleset_against_all_plugins(
+            current_watch_uuid=watch.get('uuid'),
+            application_datastruct=datastore.data,
+            ephemeral_data={'text': content}
+        )
+
+        # Block if conditions not met
+        return not conditions_result.get('result')
+
+
