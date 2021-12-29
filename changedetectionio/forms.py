@@ -286,6 +286,90 @@ class RequiredTimeInterval(object):
             raise ValidationError(self.message)
 
 
+class TimeBetweenCheckForm(Form):
+    weeks = IntegerField(_l('Weeks'), validators=[validators.Optional(), validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    days = IntegerField(_l('Days'), validators=[validators.Optional(), validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    hours = IntegerField(_l('Hours'), validators=[validators.Optional(), validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    minutes = IntegerField(_l('Minutes'), validators=[validators.Optional(), validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    seconds = IntegerField(_l('Seconds'), validators=[validators.Optional(), validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    # @todo add total seconds minimum validatior = minimum_seconds_recheck_time
+
+    def __init__(self, formdata=None, obj=None, prefix="", data=None, meta=None, **kwargs):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        self.require_at_least_one = kwargs.get('require_at_least_one', False)
+        self.require_at_least_one_message = kwargs.get('require_at_least_one_message', REQUIRE_ATLEAST_ONE_TIME_PART_MESSAGE_DEFAULT)
+
+    def validate(self, **kwargs):
+        """Custom validation that can optionally require at least one time interval."""
+        # Run normal field validation first
+        if not super().validate(**kwargs):
+            return False
+
+        # Apply optional "at least one" validation
+        if self.require_at_least_one:
+            if not validate_time_between_check_has_values(self):
+                # Add error to the form's general errors (not field-specific)
+                if not hasattr(self, '_formdata_errors'):
+                    self._formdata_errors = []
+                self._formdata_errors.append(self.require_at_least_one_message)
+                return False
+
+        return True
+
+
+class EnhancedFormField(FormField):
+    """
+    An enhanced FormField that supports conditional validation with top-level error messages.
+    Adds a 'top_errors' property for validation errors at the FormField level.
+    """
+
+    widget = LabelAfterInputTableWidget()
+
+    def __init__(self, form_class, label=None, validators=None, separator="-",
+                 conditional_field=None, conditional_message=None, conditional_test_function=None, **kwargs):
+        """
+        Initialize EnhancedFormField with optional conditional validation.
+
+        :param conditional_field: Name of the field this FormField depends on (e.g. 'time_between_check_use_default')
+        :param conditional_message: Error message to show when validation fails
+        :param conditional_test_function: Custom function to test if FormField has valid values.
+                                        Should take self.form as parameter and return True if valid.
+        """
+        super().__init__(form_class, label, validators, separator, **kwargs)
+        self.top_errors = []
+        self.conditional_field = conditional_field
+        self.conditional_message = conditional_message or "At least one field must have a value when not using defaults."
+        self.conditional_test_function = conditional_test_function
+
+    def validate(self, form, extra_validators=()):
+        """
+        Custom validation that supports conditional logic and stores top-level errors.
+        """
+        self.top_errors = []
+
+        # First run the normal FormField validation
+        base_valid = super().validate(form, extra_validators)
+
+        # Apply conditional validation if configured
+        if self.conditional_field and hasattr(form, self.conditional_field):
+            conditional_field_obj = getattr(form, self.conditional_field)
+
+            # If the conditional field is False/unchecked, check if this FormField has any values
+            if not conditional_field_obj.data:
+                # Use custom test function if provided, otherwise use generic fallback
+                if self.conditional_test_function:
+                    has_any_value = self.conditional_test_function(self.form)
+                else:
+                    # Generic fallback - check if any field has truthy data
+                    has_any_value = any(field.data for field in self.form if hasattr(field, 'data') and field.data)
+
+                if not has_any_value:
+                    self.top_errors.append(self.conditional_message)
+                    base_valid = False
+
+        return base_valid
+
+
 class RequiredFormField(FormField):
     """
     A FormField that passes require_at_least_one=True to TimeBetweenCheckForm.
