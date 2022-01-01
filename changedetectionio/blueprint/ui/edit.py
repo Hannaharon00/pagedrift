@@ -151,6 +151,73 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMe
         # For the form widget tag UUID back to "string name" for the field
         form.tags.datastore = datastore
 
+            # Handle processor-config-* fields separately (save to JSON, not datastore)
+            # IMPORTANT: These must NOT be saved to url-watches.json, only to the processor-specific JSON file
+            processor_config_data = processors.extract_processor_config_from_form_data(form.data)
+            processors.save_processor_config(datastore, uuid, processor_config_data)
+
+            # Ignore text
+            form_ignore_text = form.ignore_text.data
+            datastore.data['watching'][uuid]['ignore_text'] = form_ignore_text
+
+            # Be sure proxy value is None
+            if datastore.proxy_list is not None and form.data['proxy'] == '':
+                extra_update_obj['proxy'] = None
+
+            # Unsetting all filter_text methods should make it go back to default
+            # This particularly affects tests running
+            if 'filter_text_added' in form.data and not form.data.get('filter_text_added') \
+                    and 'filter_text_replaced' in form.data and not form.data.get('filter_text_replaced') \
+                    and 'filter_text_removed' in form.data and not form.data.get('filter_text_removed'):
+                extra_update_obj['filter_text_added'] = True
+                extra_update_obj['filter_text_replaced'] = True
+                extra_update_obj['filter_text_removed'] = True
+
+            # A group that has taken the AI on/off decision owns that control, so the edit page
+            # renders it disabled (see include_llm_intent.html). A disabled checkbox isn't
+            # submitted at all, and for a checkbox "not submitted" is indistinguishable from
+            # "unticked" — so don't take this field from the form while a group decides. The
+            # watch keeps its own preference untouched, ready for when the group stops deciding.
+            # Resolved against the watch's *stored* tags — i.e. what the page was rendered from,
+            # so attaching or detaching a group in this same save is still honoured correctly.
+            if _resolve_llm_group_overrides(datastore.data['watching'][uuid], datastore).get('llm_backend_profile'):
+                extra_update_obj['llm_backend_profile'] = datastore.data['watching'][uuid].get('llm_backend_profile', True)
+
+            # Because wtforms doesn't support accessing other data in process_ , but we convert the CSV list of tags back to a list of UUIDs
+            tag_uuids = []
+            if form.data.get('tags'):
+                # Sometimes in testing this can be list, dont know why
+                if type(form.data.get('tags')) == list:
+                    extra_update_obj['tags'] = form.data.get('tags')
+                else:
+                    for t in form.data.get('tags').split(','):
+                        tag_uuids.append(datastore.add_tag(title=t))
+                    extra_update_obj['tags'] = tag_uuids
+
+            datastore.data['watching'][uuid].update(form.data)
+            datastore.data['watching'][uuid].update(extra_update_obj)
+
+            if not datastore.data['watching'][uuid].get('tags'):
+                # Force it to be a list, because form.data['tags'] will be string if nothing found
+                # And del(form.data['tags'] ) wont work either for some reason
+                datastore.data['watching'][uuid]['tags'] = []
+
+            # Recast it if need be to right data Watch handler
+            watch_class = processors.get_custom_watch_obj_for_processor(form.data.get('processor'))
+            datastore.data['watching'][uuid] = watch_class(datastore_path=datastore.datastore_path, __datastore=datastore.data, default=datastore.data['watching'][uuid])
+
+            # Save the watch immediately
+            datastore.data['watching'][uuid].commit()
+
+            flash(gettext("Updated watch - unpaused!") if request.args.get('unpause_on_save') else gettext("Updated watch."))
+
+            # Cleanup any browsersteps session for this watch
+            try:
+                from changedetectionio.blueprint.browser_steps import cleanup_session_for_watch
+                cleanup_session_for_watch(uuid)
+            except Exception as e:
+                logger.debug(f"Error cleaning up browsersteps session: {e}")
+
             # Import the global plugin system
             from changedetectionio.pluggy_interface import collect_ui_edit_stats_extras, get_fetcher_capabilities
 
