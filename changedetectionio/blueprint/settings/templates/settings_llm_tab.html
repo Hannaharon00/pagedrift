@@ -466,3 +466,60 @@
     const kindField     = document.querySelector('[name="llm-provider_kind"]');
     const hint          = document.getElementById('llm-key-hint');
 
+    const params = new URLSearchParams({ provider });
+    if (apiKey)  params.set('api_key',  apiKey);
+    if (apiBase) params.set('api_base', apiBase);
+
+    try {
+      const resp = await fetch('{{ url_for("settings.llm.llm_get_models") }}?' + params);
+      const data = await resp.json();
+
+      if (data.error) {
+        statusEl.style.color = '#c0392b';
+        statusEl.textContent = '✗ ' + data.error;
+        selGroup.style.display = 'none';
+        return;
+      }
+
+      if (!data.models || data.models.length === 0) {
+        statusEl.style.color = '#e67e22';
+        statusEl.textContent = '{{ _("No models returned by the provider.") }}';
+        selGroup.style.display = 'none';
+        return;
+      }
+
+      modelSel.innerHTML = '<option value="">{{ _("— choose a model —") }}</option>';
+      const currentModel = document.querySelector('[name="llm-model"]').value.trim();
+      for (const m of data.models) {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        if (m === currentModel) opt.selected = true;
+        modelSel.appendChild(opt);
+      }
+
+      selGroup.style.display = '';
+      statusEl.style.color = '#27ae60';
+      statusEl.textContent = '✓ ' + data.models.length + ' {{ _("models available with your key") }}';
+    } catch (e) {
+      statusEl.style.color = '#c0392b';
+      statusEl.textContent = '✗ {{ _("Request failed") }}: ' + e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '↻ {{ _("Load available models") }}';
+    }
+  };
+
+  window.llmOnModelPick = function (value) {
+    if (value) document.querySelector('[name="llm-model"]').value = value;
+  };
+
+  window.llmRunTest = async function () {
+    const btn    = document.getElementById('llm-test-btn');
+    const result = document.getElementById('llm-test-result');
+    if (!btn || !result) return;
+
+    btn.disabled = true;
+    btn.textContent = '⏳ {{ _("Testing…") }}';
+    result.style.display = 'none';
+
