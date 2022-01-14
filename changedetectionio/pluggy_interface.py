@@ -292,6 +292,46 @@ def inject_datastore_into_plugins(datastore):
                 plugin_obj.datastore = datastore
                 logger.debug(f"Injected datastore into plugin: {plugin_name}")
 
+# Function to register built-in fetchers - called later from content_fetchers/__init__.py
+def register_builtin_fetchers():
+    """Register built-in content fetchers as internal plugins
+
+    This is called from content_fetchers/__init__.py after all fetchers are imported
+    to avoid circular import issues.
+    """
+    from changedetectionio.content_fetchers import requests, playwright, puppeteer, webdriver_selenium
+
+    # Register each built-in fetcher plugin
+    if hasattr(requests, 'requests_plugin'):
+        plugin_manager.register(requests.requests_plugin, 'builtin_requests')
+
+    if hasattr(playwright, 'playwright_plugin'):
+        plugin_manager.register(playwright.playwright_plugin, 'builtin_playwright')
+
+    if hasattr(puppeteer, 'puppeteer_plugin'):
+        plugin_manager.register(puppeteer.puppeteer_plugin, 'builtin_puppeteer')
+
+    if hasattr(webdriver_selenium, 'webdriver_selenium_plugin'):
+        plugin_manager.register(webdriver_selenium.webdriver_selenium_plugin, 'builtin_webdriver_selenium')
+
+
+def register_builtin_restock_plugins():
+    """Register built-in restock processor plugins after all imports are complete.
+
+    Called from content_fetchers/__init__.py alongside register_builtin_fetchers()
+    to avoid the circular import that occurs when loading via load_plugins_from_directories()
+    (restock_diff/__init__.py → model.Watch → content_fetchers → pluggy_interface).
+    """
+    import importlib
+    module_path = 'changedetectionio.processors.restock_diff.plugins.llm_restock'
+    try:
+        module = importlib.import_module(module_path)
+        if not plugin_manager.is_registered(module):
+            plugin_manager.register(module, 'llm_restock')
+            logger.debug("Registered built-in restock plugin: llm_restock")
+    except Exception as e:
+        logger.error(f"Failed to register llm_restock plugin: {e}")
+
 # Helper function to collect UI stats extras from all plugins
 def collect_ui_edit_stats_extras(watch):
     """Collect and combine HTML content from all plugins that implement ui_edit_stats_extras"""
