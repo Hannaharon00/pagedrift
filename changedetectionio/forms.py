@@ -368,3 +368,61 @@ class ValidateContentFetcherIsReady(object):
     def __call__(self, form, field):
         return
 
+# AttributeError: module 'changedetectionio.content_fetcher' has no attribute 'extra_browser_unlocked<>ASDF213r123r'
+        # Better would be a radiohandler that keeps a reference to each class
+        # if field.data is not None and field.data != 'system':
+        #     klass = getattr(content_fetcher, field.data)
+        #     some_object = klass()
+        #     try:
+        #         ready = some_object.is_ready()
+        #
+        #     except urllib3.exceptions.MaxRetryError as e:
+        #         driver_url = some_object.command_executor
+        #         message = field.gettext('Content fetcher \'%s\' did not respond.' % (field.data))
+        #         message += '<br>' + field.gettext(
+        #             'Be sure that the selenium/webdriver runner is running and accessible via network from this container/host.')
+        #         message += '<br>' + field.gettext('Did you follow the instructions in the wiki?')
+        #         message += '<br><br>' + field.gettext('WebDriver Host: %s' % (driver_url))
+        #         message += '<br><a href="https://github.com/dgtlmoon/changedetection.io/wiki/Fetching-pages-with-WebDriver">Go here for more information</a>'
+        #         message += '<br>'+field.gettext('Content fetcher did not respond properly, unable to use it.\n %s' % (str(e)))
+        #
+        #         raise ValidationError(message)
+        #
+        #     except Exception as e:
+        #         message = field.gettext('Content fetcher \'%s\' did not respond properly, unable to use it.\n %s')
+        #         raise ValidationError(message % (field.data, e))
+
+
+class ValidateKnownContentFetcher(object):
+    """The posted fetch_backend has to name a fetcher this install actually has.
+
+    Deliberately *not* a live-preview capability check. This validator sits on the
+    shared quick-add form, whose POST endpoint is also how the watch list (and tests,
+    and scripts) add a watch with any legal backend - 'html_requests' included. Which
+    browsers the Add-Watch page *offers* is a rendering decision (see the add_watch_ui
+    blueprint's browser_config), and whether one can render a live preview is enforced
+    where that matters, in /snapshot.
+
+    Optional: no value posted means "leave it on the system default", as before.
+    """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        from flask import current_app
+        from changedetectionio import content_fetchers
+
+        if not field.data:
+            return
+
+        allowed = {'system'} | {name for name, _description in content_fetchers.available_fetchers()}
+        datastore = current_app.config.get('DATASTORE')
+        if datastore:
+            allowed |= {value for value, _label in datastore.extra_browsers}
+
+        if field.data not in allowed:
+            logger.warning(f"Rejected unknown fetch_backend {field.data!r} - known: {sorted(allowed)}")
+            raise ValidationError(self.message or gettext("Unknown fetch method."))
+
+
