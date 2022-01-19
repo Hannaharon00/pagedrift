@@ -341,3 +341,7 @@ def add_rendered_diff_to_notification_vars(notification_scan_text:str, prev_snap
 
     return ret
 
+The element may have moved and needs editing, or does it need a delay added?
+
+Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
+
