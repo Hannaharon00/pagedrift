@@ -132,3 +132,64 @@ def register_short_timeago_locale(flask_locale):
         # Outside an app context, or any unexpected failure -> bundled English short locale.
         return 'en_short'
 
+# Language metadata: flag icon CSS class and native name
+# Using flag-icons library: https://flagicons.lipis.dev/
+LANGUAGE_DATA = {
+    'en_GB': {'flag': 'fi fi-gb fis', 'name': 'English (UK)'},
+    'en_US': {'flag': 'fi fi-us fis', 'name': 'English (US)'},
+    'de': {'flag': 'fi fi-de fis', 'name': 'Deutsch'},
+    'fr': {'flag': 'fi fi-fr fis', 'name': 'Français'},
+    'ko': {'flag': 'fi fi-kr fis', 'name': '한국어'},
+    'cs': {'flag': 'fi fi-cz fis', 'name': 'Čeština'},
+    'es': {'flag': 'fi fi-es fis', 'name': 'Español'},
+    'pt': {'flag': 'fi fi-pt fis', 'name': 'Português (Portugal)'},
+    'pt_BR': {'flag': 'fi fi-br fis', 'name': 'Português (Brasil)'},
+    'it': {'flag': 'fi fi-it fis', 'name': 'Italiano'},
+    'ja': {'flag': 'fi fi-jp fis', 'name': '日本語'},
+    'zh': {'flag': 'fi fi-cn fis', 'name': '中文 (简体)'},
+    'zh_Hant_TW': {'flag': 'fi fi-tw fis', 'name': '繁體中文'},
+    'ru': {'flag': 'fi fi-ru fis', 'name': 'Русский'},
+    'pl': {'flag': 'fi fi-pl fis', 'name': 'Polski'},
+    'nl': {'flag': 'fi fi-nl fis', 'name': 'Nederlands'},
+    'sv': {'flag': 'fi fi-se fis', 'name': 'Svenska'},
+    'da': {'flag': 'fi fi-dk fis', 'name': 'Dansk'},
+    'no': {'flag': 'fi fi-no fis', 'name': 'Norsk'},
+    'fi': {'flag': 'fi fi-fi fis', 'name': 'Suomi'},
+    'tr': {'flag': 'fi fi-tr fis', 'name': 'Türkçe'},
+    'ar': {'flag': 'fi fi-sa fis', 'name': 'العربية'},
+    'hi': {'flag': 'fi fi-in fis', 'name': 'हिन्दी'},
+    'id': {'flag': 'fi fi-id fis', 'name': 'Bahasa Indonesia'},
+    'uk': {'flag': 'fi fi-ua fis', 'name': 'Українська'},
+}
+
+
+def get_available_languages():
+    """
+    Discover available languages by scanning the translations directory
+    Returns a dict of available languages with their metadata
+    """
+    translations_dir = Path(__file__).parent / 'translations'
+
+    available = {}
+
+    # Scan for translation directories
+    if translations_dir.exists():
+        for lang_dir in translations_dir.iterdir():
+            if lang_dir.is_dir() and lang_dir.name in LANGUAGE_DATA:
+                # Check if messages.po exists
+                po_file = lang_dir / 'LC_MESSAGES' / 'messages.po'
+                if po_file.exists():
+                    available[lang_dir.name] = LANGUAGE_DATA[lang_dir.name]
+
+    # If no English variants found, fall back to adding en_GB as default
+    if 'en_GB' not in available and 'en_US' not in available:
+        available['en_GB'] = LANGUAGE_DATA['en_GB']
+
+    return available
+
+
+def get_language_codes():
+    """Get list of available language codes"""
+    return list(get_available_languages().keys())
+
+
