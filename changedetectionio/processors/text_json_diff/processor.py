@@ -142,6 +142,69 @@ class FilterConfig:
         return bool(self.subtractive_selectors) and bool(self.subtractive_selectors[0].strip())
 
 
+class ContentTransformer:
+    """Handles text transformations like trimming, sorting, and deduplication."""
+
+    @staticmethod
+    def trim_whitespace(text):
+        """Remove leading/trailing whitespace from each line."""
+        # Use generator expression to avoid building intermediate list
+        return '\n'.join(line.strip() for line in text.replace("\n\n", "\n").splitlines())
+
+    @staticmethod
+    def remove_duplicate_lines(text):
+        """Remove duplicate lines while preserving order."""
+        return '\n'.join(dict.fromkeys(line for line in text.replace("\n\n", "\n").splitlines()))
+
+    @staticmethod
+    def sort_alphabetically(text):
+        """Sort lines alphabetically (case-insensitive)."""
+        # Remove double line feeds before sorting
+        text = text.replace("\n\n", "\n")
+        return '\n'.join(sorted(text.splitlines(), key=lambda x: x.lower()))
+
+    @staticmethod
+    def extract_lines_containing(text, substrings):
+        """Keep only lines that contain at least one of the given substrings (case-insensitive)."""
+        needles = [s.lower() for s in substrings if s.strip()]
+        if not needles:
+            return text
+        return '\n'.join(
+            line for line in text.splitlines()
+            if any(needle in line.lower() for needle in needles)
+        )
+
+    @staticmethod
+    def extract_by_regex(text, regex_patterns):
+        """Extract text matching regex patterns."""
+        # Use list of strings instead of concatenating lists repeatedly (avoids O(n²) behavior)
+        regex_matched_output = []
+
+        for s_re in regex_patterns:
+            # Check if it's perl-style regex /.../
+            if re.search(PERL_STYLE_REGEX, s_re, re.IGNORECASE):
+                regex = html_tools.perl_style_slash_enclosed_regex_to_options(s_re)
+                result = re.findall(regex, text)
+
+                for match in result:
+                    if type(match) is tuple:
+                        regex_matched_output.extend(match)
+                        regex_matched_output.append('\n')
+                    else:
+                        regex_matched_output.append(match)
+                        regex_matched_output.append('\n')
+            else:
+                # Plain text search (case-insensitive)
+                r = re.compile(re.escape(s_re), re.IGNORECASE)
+                res = r.findall(text)
+                if res:
+                    for match in res:
+                        regex_matched_output.append(match)
+                        regex_matched_output.append('\n')
+
+        return ''.join(regex_matched_output) if regex_matched_output else ''
+
+
 class RuleEngine:
     """Evaluates blocking rules (triggers, conditions, text_should_not_be_present)."""
 
