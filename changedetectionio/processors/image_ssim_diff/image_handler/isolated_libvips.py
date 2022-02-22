@@ -8,3 +8,8 @@ ensures complete memory cleanup when the process exits.
 This module wraps LibvipsImageDiffHandler operations in multiprocessing for
 complete memory isolation without code duplication.
 
+Research: https://github.com/libvips/pyvips/issues/234
+"""
+
+import multiprocessing
+
