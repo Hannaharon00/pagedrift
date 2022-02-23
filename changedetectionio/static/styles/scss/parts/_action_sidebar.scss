@@ -1,0 +1,7 @@
+// Left-rail navigation - icon-only collapsed rail with label rollout on hover
+@use "../settings" as *;
+
+//$action-sidebar-width-expanded: 240px — used by the rail's outer frame, the hover-expansion target, the always-on width, and the content-main left-padding in always-on mode
+//$action-sidebar-width-collapsed: 64px — used by the resting inner-block width and the content-main left-padding in minimal mode
+//$action-sidebar-content-slot: 1100px — editable content column; .content-main max-width is now derived as content_slot + collapsed_width
+
