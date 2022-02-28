@@ -431,3 +431,83 @@ def _parse_json(json_data, json_filter):
             match = jq_expression.input(json_data).all()
             return '\n'.join(str(item) for item in match)
 
+def _get_stripped_text_from_json_match(match):
+    s = []
+    # More than one result, we will return it as a JSON list.
+    if len(match) > 1:
+        for i in match:
+            s.append(i.value if hasattr(i, 'value') else i)
+
+    # Single value, use just the value, as it could be later used in a token in notifications.
+    if len(match) == 1:
+        s = match[0].value if hasattr(match[0], 'value') else match[0]
+
+    # Re #257 - Better handling where it does not exist, in the case the original 's' value was False..
+    if not match:
+        # Re 265 - Just return an empty string when filter not found
+        return ''
+
+    # Ticket #462 - allow the original encoding through, usually it's UTF-8 or similar
+    stripped_text_from_html = json.dumps(s, indent=4, ensure_ascii=False)
+
+    return stripped_text_from_html
+
+def extract_json_blob_from_html(content, ensure_is_ldjson_info_type, json_filter):
+    from bs4 import BeautifulSoup
+    stripped_text_from_html = ''
+
+    # Foreach <script json></script> blob.. just return the first that matches json_filter
+    # As a last resort, try to parse the whole <body>
+    soup = BeautifulSoup(content, 'html.parser')
+
+    if ensure_is_ldjson_info_type:
+        bs_result = soup.find_all('script', {"type": "application/ld+json"})
+    else:
+        bs_result = soup.find_all('script')
+    bs_result += soup.find_all('body')
+
+    bs_jsons = []
+
+    for result in bs_result:
+        # result.text is how bs4 magically strips JSON from the body
+        content_start = result.text.lstrip("\ufeff").strip()[:100] if result.text else ''
+        # Skip empty tags, and things that dont even look like JSON
+        if not result.text or not (content_start[0] == '{' or content_start[0] == '['):
+            continue
+        try:
+            json_data = json.loads(result.text)
+            bs_jsons.append(json_data)
+        except json.JSONDecodeError:
+            # Skip objects which cannot be parsed
+            continue
+
+    if not bs_jsons:
+        raise JSONNotFound("No parsable JSON found in this document")
+
+    for json_data in bs_jsons:
+        stripped_text_from_html = _parse_json(json_data, json_filter)
+
+        if ensure_is_ldjson_info_type:
+            # Could sometimes be list, string or something else random
+            if isinstance(json_data, dict):
+                # If it has LD JSON 'key' @type, and @type is 'product', and something was found for the search
+                # (Some sites have multiple of the same ld+json @type='product', but some have the review part, some have the 'price' part)
+                # @type could also be a list although non-standard ("@type": ["Product", "SubType"],)
+                # LD_JSON auto-extract also requires some content PLUS the ldjson to be present
+                # 1833 - could be either str or dict, should not be anything else
+
+                t = json_data.get('@type')
+                if t and stripped_text_from_html:
+
+                    if isinstance(t, str) and t.lower() == ensure_is_ldjson_info_type.lower():
+                        break
+                    # The non-standard part, some have a list
+                    elif isinstance(t, list):
+                        if ensure_is_ldjson_info_type.lower() in [x.lower().strip() for x in t]:
+                            break
+
+        elif stripped_text_from_html:
+            break
+
+    return stripped_text_from_html
+
