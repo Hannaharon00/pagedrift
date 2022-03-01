@@ -32,6 +32,71 @@ This processor uses **OpenCV** by default for screenshot comparison, providing *
 5. **Change Detection**: Percentage of changed pixels above threshold = change detected
 6. **Visualization**: Generate diff image with red-highlighted changed regions
 
+## Architecture
+
+### Default Method: OpenCV
+
+The processor uses OpenCV's `cv2.absdiff()` for ultra-fast pixel-level comparison:
+
+```python
+# Convert to grayscale
+gray_from = cv2.cvtColor(image_from, cv2.COLOR_RGB2GRAY)
+gray_to = cv2.cvtColor(image_to, cv2.COLOR_RGB2GRAY)
+
+# Apply Gaussian blur (reduces noise, controlled by OPENCV_BLUR_SIGMA env var)
+gray_from = cv2.GaussianBlur(gray_from, (0, 0), sigma=0.8)
+gray_to = cv2.GaussianBlur(gray_to, (0, 0), sigma=0.8)
+
+# Calculate absolute difference
+diff = cv2.absdiff(gray_from, gray_to)
+
+# Apply threshold (default: 30)
+_, thresh = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)
+
+# Count changed pixels
+change_percentage = (changed_pixels / total_pixels) * 100
+```
+
+### Optional: Pixelmatch
+
+For users who need better anti-aliasing detection (especially for text-heavy screenshots), **pixelmatch** can be optionally installed:
+
+```bash
+pip install pybind11-pixelmatch>=0.1.3
+```
+
+**Note**: Pixelmatch uses a C++17 implementation via pybind11 and may have build issues on some platforms (particularly Alpine/musl systems with symbolic link security restrictions). The application will automatically fall back to OpenCV if pixelmatch is not available.
+
+To use pixelmatch instead of OpenCV, set the environment variable:
+```bash
+COMPARISON_METHOD=pixelmatch
+```
+
+#### When to use pixelmatch:
+- Screenshots with lots of text and anti-aliasing
+- Need to ignore minor font rendering differences between browser versions
+- 10-20x faster than SSIM (but slower than OpenCV)
+
+#### When to stick with OpenCV (default):
+- General webpage monitoring
+- Maximum performance (50-100x faster than SSIM)
+- Simple pixel-level change detection
+- Avoid build dependencies (Alpine/musl systems)
+
+## Configuration
+
+### Environment Variables
+
+```bash
+# Comparison method (opencv or pixelmatch)
+COMPARISON_METHOD=opencv  # Default
+
+# OpenCV threshold (0-255, lower = more sensitive)
+COMPARISON_THRESHOLD_OPENCV=30  # Default
+
+# Pixelmatch threshold (0-100, mapped to 0-1 scale)
+COMPARISON_THRESHOLD_PIXELMATCH=10  # Default
+
 # Gaussian blur sigma for OpenCV (0 = no blur, higher = more blur)
 OPENCV_BLUR_SIGMA=0.8  # Default
 
