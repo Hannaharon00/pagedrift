@@ -295,3 +295,18 @@ class SignalPriorityQueue(queue.PriorityQueue):
             }
 
 
+class AsyncSignalPriorityQueue(asyncio.PriorityQueue):
+    """
+    Async version of SignalPriorityQueue that sends signals when items are added/removed.
+    
+    This class extends asyncio.PriorityQueue and maintains the same signal behavior
+    as the synchronous version for real-time UI updates.
+    """
+    
+    def __init__(self, maxsize=0):
+        super().__init__(maxsize)
+        try:
+            self.queue_length_signal = signal('queue_length')
+        except Exception as e:
+            logger.critical(f"Exception: {e}")
+
