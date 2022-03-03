@@ -65,6 +65,28 @@ def _handle_operations(op, uuids, datastore, worker_pool, update_q, queuedWatchM
                 datastore.data['watching'][uuid].commit()
         result_message = gettext("{} watches un-muted").format(len(uuids))
 
+def construct_blueprint(datastore: ChangeDetectionStore, update_q, worker_pool, queuedWatchMetaData, watch_check_update):
+    ui_blueprint = Blueprint('ui', __name__, template_folder="templates")
+    
+    # Register the edit blueprint
+    edit_blueprint = construct_edit_blueprint(datastore, update_q, queuedWatchMetaData)
+    ui_blueprint.register_blueprint(edit_blueprint)
+    
+    # Register the notification blueprint
+    notification_blueprint = construct_notification_blueprint(datastore)
+    ui_blueprint.register_blueprint(notification_blueprint)
+    
+    # Register the views blueprint
+    views_blueprint = construct_views_blueprint(datastore, update_q, queuedWatchMetaData, watch_check_update)
+    ui_blueprint.register_blueprint(views_blueprint)
+
+    # Register diff and preview blueprints
+    diff_blueprint = diff.construct_blueprint(datastore)
+    ui_blueprint.register_blueprint(diff_blueprint)
+
+    preview_blueprint = preview.construct_blueprint(datastore)
+    ui_blueprint.register_blueprint(preview_blueprint)
+
     @ui_blueprint.route("/delete", methods=['POST'])
     @login_optionally_required
     def form_delete():
