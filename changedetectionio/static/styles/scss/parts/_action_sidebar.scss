@@ -5,3 +5,41 @@
 //$action-sidebar-width-collapsed: 64px — used by the resting inner-block width and the content-main left-padding in minimal mode
 //$action-sidebar-content-slot: 1100px — editable content column; .content-main max-width is now derived as content_slot + collapsed_width
 
+ul.action-sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// Footer list (status counters, live spark, version) sits at the bottom of the
+// rail — the flex equivalent of the demo's `.rail-spacer { flex: 1 }`.
+// Both classes are stacked in the selector so this beats `ul.action-sidebar-list`
+// (specificity 0,1,1) which sets `margin: 0` and would otherwise cancel the auto.
+.action-sidebar-list.action-sidebar-list--bottom {
+  margin-top: auto;
+}
+
+.action-sidebar-li {
+  >:first-child {
+/*    padding-left: $common-gap/2;*/
+  }
+  &:nth-child(2) {
+    padding-top: 2rem; /* to align horizontally with the start of the actual content in content area */
+  }
+
+  list-style: none;
+  margin: 0;
+  position: relative; // anchor for rollout label
+  color: var(--color-white);
+  button {
+    padding: 0;
+    margin: 0;
+  }
+  a {
+    color: var(--color-white);
+  }
+}
+
