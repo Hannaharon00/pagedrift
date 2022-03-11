@@ -45,6 +45,95 @@ class RecheckPriorityQueue:
             # Sync interface: threading.Queue for ticker thread and Flask routes
             self._notification_queue = queue.Queue(maxsize=maxsize if maxsize > 0 else 0)
 
+            # Priority storage - thread-safe
+            self._priority_items = []
+            self._lock = threading.RLock()
+
+            # No event signaling needed - pure polling approach
+            # Workers check queue every 50ms (latency acceptable: 0-500ms)
+            # Scales to 1000+ workers: each sleeping worker = ~4KB coroutine, not thread
+
+            # Signals for UI updates
+            self.queue_length_signal = signal('queue_length')
+
+            logger.debug("RecheckPriorityQueue initialized successfully")
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to initialize RecheckPriorityQueue: {str(e)}")
+            raise
+    
+    # SYNC INTERFACE (for ticker thread)
+    def put(self, item, block: bool = True, timeout: Optional[float] = None):
+        """Thread-safe sync put with priority ordering"""
+        logger.trace(f"RecheckQueue.put() called for item: {self._get_item_uuid(item)}, block={block}, timeout={timeout}")
+        try:
+            # Stamp an enqueue timestamp on the item if it doesn't already carry one
+            # — gives the queue UI a "queued Ns ago" reading without all callers
+            # having to opt in. setdefault preserves callers that DO supply their own.
+            try:
+                if hasattr(item, 'item') and isinstance(item.item, dict):
+                    import time as _t
+                    item.item.setdefault('enqueued_at', _t.time())
+            except Exception:
+                pass
+
+            # CRITICAL: Add to both priority storage AND notification queue atomically
+            # to prevent desynchronization where item exists but no notification
+            with self._lock:
+                heapq.heappush(self._priority_items, item)
+
+                # Add notification - use blocking with timeout for safety
+                # Notification queue is unlimited size, so should never block in practice
+                # but timeout ensures we detect any unexpected issues (deadlock, etc)
+                try:
+                    self._notification_queue.put(True, block=True, timeout=5.0)
+                except Exception as notif_e:
+                    # Notification failed - MUST remove from priority_items to keep in sync
+                    # This prevents "Priority queue inconsistency" errors in get()
+                    logger.critical(f"CRITICAL: Notification queue put failed, removing from priority_items: {notif_e}")
+                    self._priority_items.remove(item)
+                    heapq.heapify(self._priority_items)
+                    raise  # Re-raise to be caught by outer exception handler
+
+            # Signal emission after successful queue - log but don't fail the operation
+            # Item is already safely queued, so signal failure shouldn't affect queue state
+            try:
+                self._emit_put_signals(item)
+            except Exception as signal_e:
+                logger.error(f"Failed to emit put signals but item queued successfully: {signal_e}")
+
+            logger.trace(f"Successfully queued item: {self._get_item_uuid(item)}")
+            return True
+
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to put item {self._get_item_uuid(item)}: {type(e).__name__}: {str(e)}")
+            # Item should have been cleaned up in the inner try/except if notification failed
+            return False
+    
+    def get(self, block: bool = True, timeout: Optional[float] = None):
+        """Thread-safe sync get with priority ordering"""
+        logger.trace(f"RecheckQueue.get() called, block={block}, timeout={timeout}")
+        import queue as queue_module
+        try:
+            # Wait for notification (this doesn't return the actual item, just signals availability)
+            self._notification_queue.get(block=block, timeout=timeout)
+
+            # Get highest priority item
+            with self._lock:
+                if not self._priority_items:
+                    logger.critical(f"CRITICAL: Queue notification received but no priority items available")
+                    raise Exception("Priority queue inconsistency")
+                item = heapq.heappop(self._priority_items)
+
+            # Signal emission after successful retrieval - log but don't lose the item
+            # Item is already retrieved, so signal failure shouldn't affect queue state
+            try:
+                self._emit_get_signals()
+            except Exception as signal_e:
+                logger.error(f"Failed to emit get signals but item retrieved successfully: {signal_e}")
+
+            logger.trace(f"RecheckQueue.get() successfully retrieved item: {self._get_item_uuid(item)}")
+            return item
+
         except queue_module.Empty:
             # Queue is empty with timeout - expected behavior
             logger.trace(f"RecheckQueue.get() timed out - queue is empty (timeout={timeout})")
