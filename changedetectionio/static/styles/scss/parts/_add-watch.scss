@@ -1,3 +1,13 @@
 /* Add Watch UI - 3-pane workspace (top: URL+Go, left: live visual selector, right: options) */
 @use "../settings" as *;
 
+body {
+ &.blueprint-add_watch_ui {
+    @media (min-width: 901px) {
+      #add-watch-ui {
+        width: 80%;
+      }
+    }
+ }
+}
+
