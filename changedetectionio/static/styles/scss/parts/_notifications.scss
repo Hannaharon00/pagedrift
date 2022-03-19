@@ -1,0 +1,30 @@
+@use "../settings" as *;
+
+.notification-add-buttons {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  .add-destination-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    input[type="email"] {
+      margin: 0;
+      min-width: 16rem;
+    }
+  }
+}
+
+#notification-add-email-preset {
+  padding-top: $common-gap;
+  padding-bottom: $common-gap;
+}
+
+#notification-recipients {
+  padding-bottom: $common-gap;
+}
+
