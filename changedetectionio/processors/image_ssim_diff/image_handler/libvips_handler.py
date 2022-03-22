@@ -20,3 +20,6 @@ except ImportError:
     PYVIPS_AVAILABLE = False
     logger.warning("pyvips not available - install with: pip install pyvips")
 
+from . import ImageDiffHandler
+
+
