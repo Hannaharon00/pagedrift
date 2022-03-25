@@ -197,3 +197,43 @@ something put unknown keys in storage, you want loud failure, not silent accepta
 
 ### Migrations are convention-based by accident if you let them be
 
+`for k in list(d) if k.startswith('llm_')` is shorter than an explicit list but
+silently catches any future flat `llm_*` key. Migrations are forever — prefer an
+explicit allowlist of keys to move, even if it's verbose.
+
+## What NOT to do
+
+- Don't add custom helper methods (`dump_without_connection()`, `clear_X()`) when stock
+  `model_dump(exclude=set(FIELDS))` works. The standard idiom is more readable and
+  zero-line.
+- Don't push security/business logic into the model (e.g. SSRF guards, credential-exfil
+  checks). The model owns field shape and validation. Route handlers own
+  policy. Mixing them dilutes both.
+- Don't make `get_X_config()` return a Pydantic instance if callers do dict-style access.
+  Either migrate all call sites (high-touch) or keep returning a dict and let the model
+  be the validation/dump layer only.
+- Don't `model_copy(update=...)` without re-validating. It doesn't coerce types or
+  enforce `extra='forbid'`. Use `model_validate({**old.model_dump(), **updates})` for
+  strict merges.
+
+## Required for each new slice
+
+Each migration PR should ship:
+
+- `model/<Thing>Settings.py` (or input model) — declared schema, `extra='forbid'`,
+  field aliases if there's a name mismatch between form and storage.
+- `store/updates.py:update_N` if the storage shape changes. Pure dict-shuffling, no
+  Pydantic import (migrations should not depend on the model — model evolves
+  independently).
+- `tests/unit/test_<thing>.py` — unit coverage of the model itself: defaults,
+  alias merge, type coercion, `extra='forbid'` rejection, dump shapes.
+- All runtime callers updated to go through `get_<thing>_settings(datastore)` or
+  equivalent, not raw dict reads.
+
+## Reference
+
+- `model/LLMSettings.py` — the template
+- `tests/unit/test_llm_settings.py` — model unit-test template
+- `store/updates.py:update_31` — schema migration template
+- `blueprint/settings/__init__.py` (POST handler) — boundary-validation template
+- `llm/evaluator.py:accumulate_global_tokens` — instance-mutation-then-dump-back template
