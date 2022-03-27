@@ -50,3 +50,99 @@
 
     function totalNow() { return currentQueue + currentChecking; }
 
+    function stepValueAt(t) {
+        // Last event at or before t (step function). Log is small; scan from the end.
+        for (let i = eventLog.length - 1; i >= 0; i--) {
+            if (eventLog[i].t <= t) return eventLog[i].v;
+        }
+        return NaN; // before our earliest knowledge -> leave that column blank
+    }
+
+    function pushEvent(now) {
+        const v = totalNow();
+        const last = eventLog[eventLog.length - 1];
+        if (!last || last.v !== v) eventLog.push({ t: now, v: v });
+    }
+
+    function trimLog(now) {
+        const cutoff = now - RETAIN_MS;
+        // Keep the most recent event that predates the cutoff as a baseline anchor.
+        let anchor = -1;
+        for (let i = 0; i < eventLog.length; i++) {
+            if (eventLog[i].t <= cutoff) anchor = i; else break;
+        }
+        if (anchor > 0) eventLog.splice(0, anchor);
+        if (eventLog.length > MAX_EVENTS) eventLog.splice(0, eventLog.length - MAX_EVENTS);
+    }
+
+    function loadLog() {
+        try {
+            const raw = localStorage.getItem(STORE_KEY);
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            const log = Array.isArray(parsed) ? parsed : parsed.log;
+            if (!Array.isArray(log)) return [];
+            eventLog = log.filter(e => e && typeof e.t === "number" && typeof e.v === "number");
+            trimLog(Date.now());
+            return eventLog;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    let saveTimer = null;
+    function saveLog() {
+        if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+        try {
+            trimLog(Date.now());
+            localStorage.setItem(STORE_KEY, JSON.stringify({ savedAt: Date.now(), log: eventLog }));
+        } catch (e) { /* quota / private mode — history is best-effort */ }
+    }
+    function scheduleSave() {
+        if (saveTimer) return;
+        saveTimer = setTimeout(function () { saveTimer = null; saveLog(); }, 750);
+    }
+
+    // --- One Spark per canvas (different widths: rail vs drawer) ---
+    function Spark(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext("2d");
+        this.W = 1;
+        this.cssW = 0;
+        this.cssH = 0;
+        this.rawW = -1;       // last-seen clientWidth/Height (incl. padding) — cheap change check
+        this.rawH = -1;
+        this.displayMax = MIN_SCALE;
+        this.resize();
+    }
+
+    // Measure the canvas CONTENT box straight from the browser's computed CSS, so
+    // sizing fully follows the stylesheet (padding/box styling from e.g. the
+    // .action-sidebar-item class included) instead of hand-computed pixel maths.
+    // clientWidth/Height already exclude border + scrollbar; subtract padding to
+    // land on the exact content box that the canvas bitmap is drawn into.
+    Spark.prototype.resize = function () {
+        const rawW = this.canvas.clientWidth;
+        const rawH = this.canvas.clientHeight;
+        const cs = getComputedStyle(this.canvas);
+        const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+        const padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+        const cssW = Math.max(0, Math.round(rawW - padX));
+        const cssH = Math.max(0, Math.round(rawH - padY));
+        this.rawW = rawW;
+        this.rawH = rawH;
+        if (cssW === this.cssW && cssH === this.cssH) return;
+        this.cssW = cssW;
+        this.cssH = cssH;
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = Math.max(1, Math.round(cssW * dpr));
+        this.canvas.height = Math.max(1, Math.round(cssH * dpr));
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        this.W = Math.max(1, cssW);
+    };
+
+    // Wall-clock time represented by pixel column x: right edge = now, left edge = now - window.
+    Spark.prototype.columnTime = function (x, now) {
+        return now - ((this.W - 1 - x) / Math.max(1, this.W - 1)) * (WINDOW_SECONDS * 1000);
+    };
+
