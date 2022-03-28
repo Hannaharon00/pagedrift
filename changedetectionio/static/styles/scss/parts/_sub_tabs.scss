@@ -23,3 +23,74 @@
   margin-bottom: 1.5rem;
 }
 
+// ── Left nav rail ─────────────────────────────────────────────────────────────
+.stab-nav {
+  display: flex;
+  flex-direction: column;
+  width: 11rem;
+  flex-shrink: 0;
+  padding: 0.75rem 0;
+  gap: 1px;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0.03) 0%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  border-right: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.stab-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem 0.65rem 1rem;
+  width: 100%;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--color-text);
+  text-align: left;
+  opacity: 0.65;
+  transition: background 0.12s ease, opacity 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    opacity: 0.85;
+  }
+
+  &.active {
+    border-left-color: var(--color-menu-accent);
+    background: rgba(237, 89, 0, 0.07);
+    color: var(--color-menu-accent);
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .stab-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    flex-shrink: 0;
+    opacity: 0.8;
+
+    svg {
+      width: 0.95rem;
+      height: 0.95rem;
+      stroke: currentColor;
+      fill: none;
+    }
+  }
+}
+
+// ── Right content area ────────────────────────────────────────────────────────
+.stab-body {
+  flex: 1;
+  min-width: 0;
+  padding: 1.4rem 1.6rem;
+  overflow-x: hidden;
+}
+
