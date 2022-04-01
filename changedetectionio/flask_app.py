@@ -210,6 +210,20 @@ def _configure_plugin_templates():
         )
 
 
+# Configure plugin templates (called after plugins are loaded)
+_configure_plugin_templates()
+csrf = CSRFProtect()
+csrf.init_app(app)
+notification_debug_log = []
+
+# Locale for correct presentation of prices etc
+default_locale = locale.getdefaultlocale()
+logger.info(f"System locale default is {default_locale}")
+try:
+    locale.setlocale(locale.LC_ALL, default_locale)
+except locale.Error:
+    logger.warning(f"Unable to set locale {default_locale}, locale is not installed maybe?")
+
 watch_api = Api(app, decorators=[csrf.exempt])
 
 
