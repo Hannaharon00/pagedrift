@@ -1,0 +1,59 @@
+{% macro render_field(field) %}
+    <div {% if field.errors or field.top_errors %} class="error" {% endif %}>{{ field.label }}</div>
+    <div {% if field.errors or field.top_errors %} class="error" {% endif %}>{{ field(**kwargs)|safe }}
+        {% if field.top_errors %}
+            top
+            <ul class="errors top-errors">
+                {% for error in field.top_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if field.errors %}
+            <ul class=errors>
+                {% if field.errors is mapping and 'form' in field.errors %}
+                    {#  and subfield form errors, such as used in RequiredFormField() for TimeBetweenCheckForm sub form #}
+                    {% set errors = field.errors['form'] %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% elif field.type == 'FieldList' %}
+                    {# Handle FieldList of FormFields - errors is a list of dicts, one per entry #}
+                    {% for idx, entry_errors in field.errors|enumerate %}
+                        {% if entry_errors is mapping and entry_errors %}
+                            {# Only show entries that have actual errors #}
+                            <li><strong>{{ _('Entry') }} {{ idx + 1 }}:</strong>
+                                <ul>
+                                    {% for field_name, messages in entry_errors.items() %}
+                                        {% for message in messages %}
+                                            <li>{{ field_name }}: {{ message }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {#  regular list of errors with this field #}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro render_checkbox_field(field) %}
+  <div class="checkbox {% if field.errors %} error {% endif %}">
+  {{ field(**kwargs)|safe }} <label for="{{ field.id }}">{{ field.label.text | string | forceescape }}</label>
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+{% endmacro %}
+
