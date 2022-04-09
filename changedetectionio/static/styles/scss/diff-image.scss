@@ -176,3 +176,58 @@
   }
 }
 
+#settings {
+  background: var(--color-background);
+  padding: 1.5em;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2em;
+  border: 1px solid var(--color-border-table-cell);
+
+  h2 {
+    margin-top: 0;
+    color: var(--color-text);
+  }
+}
+
+.diff-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.edit-link {
+  float: right;
+  margin-top: -0.5em;
+}
+
+.comparison-description {
+  color: var(--color-text-input-description);
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+
+.download-link {
+  color: var(--color-link);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 0.85em;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.diff-section-header {
+  color: #d32f2f;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
