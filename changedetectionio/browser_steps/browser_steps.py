@@ -60,6 +60,74 @@ browser_step_ui_config = {'Choose one': '0 0',
                           }
 
 
+# Good reference - https://playwright.dev/python/docs/input
+#                  https://pythonmana.com/2021/12/202112162236307035.html
+#
+# ONLY Works in Playwright because we need the fullscreen screenshot
+class steppable_browser_interface():
+    page = None
+    start_url = None
+    action_timeout = 10 * 1000
+
+    def __init__(self, start_url):
+        self.start_url = start_url
+
+    # Convert and perform "Click Button" for example
+    async def call_action(self, action_name, selector=None, optional_value=None):
+        if self.page is None:
+            logger.warning("Cannot call action on None page object")
+            return
+            
+        now = time.time()
+        call_action_name = re.sub('[^0-9a-zA-Z]+', '_', action_name.lower())
+        if call_action_name == 'choose_one':
+            return
+
+        logger.debug(f"> Action calling '{call_action_name}'")
+        # https://playwright.dev/python/docs/selectors#xpath-selectors
+        if selector and selector.startswith('/') and not selector.startswith('//'):
+            selector = "xpath=" + selector
+
+        # Check if action handler exists
+        if not hasattr(self, "action_" + call_action_name):
+            logger.warning(f"Action handler for '{call_action_name}' not found")
+            return
+            
+        action_handler = getattr(self, "action_" + call_action_name)
+
+        # Support for Jinja2 variables in the value and selector
+        if selector and ('{%' in selector or '{{' in selector):
+            selector = jinja_render(template_str=selector)
+
+        if optional_value and ('{%' in optional_value or '{{' in optional_value):
+            optional_value = jinja_render(template_str=optional_value)
+
+        # Trigger click and cautiously handle potential navigation
+        # This means the page redirects/reloads/changes JS etc etc
+        if call_action_name.startswith('click_'):
+            try:
+                # Set up navigation expectation before the click (like sync version)
+                async with self.page.expect_event("framenavigated", timeout=3000) as navigation_info:
+                    await action_handler(selector, optional_value)
+                
+                # Check if navigation actually occurred
+                try:
+                    await navigation_info.value  # This waits for the navigation promise
+                    logger.debug(f"Navigation occurred on {call_action_name}.")
+                except Exception:
+                    logger.debug(f"No navigation occurred within timeout when calling {call_action_name}, that's OK, continuing.")
+                    
+            except Exception as e:
+                # If expect_event itself times out, that means no navigation occurred - that's OK
+                if "framenavigated" in str(e) and "exceeded" in str(e):
+                    logger.debug(f"No navigation occurred within timeout when calling {call_action_name}, that's OK, continuing.")
+                else:
+                    raise e
+        else:
+            # Some other action that probably a navigation is not expected
+            await action_handler(selector, optional_value)
+
+
         # Safely wait for timeout
         await self.page.wait_for_timeout(1.5 * 1000)
         logger.debug(f"Call action done in {time.time()-now:.2f}s")
