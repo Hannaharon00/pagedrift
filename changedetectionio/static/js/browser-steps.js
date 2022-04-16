@@ -326,3 +326,80 @@ $(document).ready(function () {
         var elem_selector = $('tr:nth-child(2) input', $(this).closest('tbody'));
         var elem_value = $('tr:nth-child(3) input', $(this).closest('tbody'));
 
+        if (config[0] == 0) {
+            $(elem_selector).fadeOut();
+        } else {
+            $(elem_selector).fadeIn();
+        }
+        if (config[1] == 0) {
+            $(elem_value).fadeOut();
+        } else {
+            $(elem_value).fadeIn();
+        }
+
+        if ($(this).val() === 'Click X,Y' && last_click_xy['x'] > 0 && $(elem_value).val().length === 0) {
+            // @todo handle scale
+            $(elem_value).val(last_click_xy['x'] + ',' + last_click_xy['y']).focus();
+        }
+    }).change();
+
+    function set_greyed_state() {
+        $('ul#browser_steps select').not('option:selected[value="Choose one"]').closest('li').removeClass('empty');
+        $('ul#browser_steps select option:selected[value="Choose one"]').closest('li').addClass('empty');
+    }
+
+    // Add the extra buttons to the steps
+    $('ul#browser_steps li').each(function (i) {
+            var s = '<div class="control">' + '<a data-step-index=' + i + ' class="pure-button button-secondary button-green button-xsmall apply" >Apply</a>&nbsp;';
+            s += `<a data-step-index="${i}" class="pure-button button-secondary button-xsmall clear" >Clear</a>&nbsp;` +
+                `<a data-step-index="${i}" class="pure-button button-secondary button-red button-xsmall remove" >Remove</a>`;
+
+            // if a screenshot is available
+            if (browser_steps_available_screenshots.includes(i.toString())) {
+                var d = (browser_steps_last_error_step === i+1) ? 'before' : 'after';
+                s += `&nbsp;<a data-step-index="${i}" class="pure-button button-secondary button-xsmall show-screenshot" title="Show screenshot from last run" data-type="${d}">Pic</a>&nbsp;`;
+            }
+            s += '</div>';
+            $(this).append(s)
+        }
+    );
+
+    $('ul#browser_steps li .control .clear').click(function (element) {
+        $("select", $(this).closest('li')).val("Choose one").change();
+        $(":text", $(this).closest('li')).val('');
+    });
+
+
+    $('ul#browser_steps li .control .remove').click(function (element) {
+        // so you wanna remove the 2nd (3rd spot 0,1,2,...)
+        var p = $("#browser_steps li").index($(this).closest('li'));
+
+        var elem_to_remove = $("#browser_steps li")[p];
+        $('.clear', elem_to_remove).click();
+        $("#browser_steps li").slice(p, 10).each(function (index) {
+            // get the next one's value from where we clicked
+            var next = $("#browser_steps li")[p + index + 1];
+            if (next) {
+                // and set THIS ones value from the next one
+                var n = $('input', next);
+                $("select", $(this)).val($('select', next).val());
+                $('input', this)[0].value = $(n)[0].value;
+                $('input', this)[1].value = $(n)[1].value;
+                // Triggers reconfiguring the field based on the system config
+                $("select", $(this)).change();
+            }
+
+        });
+
+        // Reset their hidden/empty states
+        set_greyed_state();
+    });
+
+    $('ul#browser_steps li .control .apply').click(function (event) {
+        if (apply_buttons_disabled) {
+            return;
+        }
+
+        var current_data = $(event.currentTarget).closest('li');
+        var step_n = $(event.currentTarget).data('step-index');
+
