@@ -69,3 +69,38 @@ def _start_browser_steps_loop():
             loop.close()
             logger.debug("Browser steps event loop closed")
 
+def _ensure_browser_steps_loop():
+    """Ensure the browser steps event loop is running"""
+    global _browser_steps_loop, _browser_steps_thread
+
+    with _browser_steps_loop_lock:
+        if _browser_steps_thread is None or not _browser_steps_thread.is_alive():
+            logger.debug("Starting browser steps event loop thread")
+            _browser_steps_thread = threading.Thread(
+                target=_start_browser_steps_loop,
+                daemon=True,
+                name="BrowserStepsEventLoop"
+            )
+            _browser_steps_thread.start()
+
+            # Wait for the loop to be ready
+            timeout = 5.0
+            start_time = time.time()
+            while _browser_steps_loop is None:
+                if time.time() - start_time > timeout:
+                    raise RuntimeError("Browser steps event loop failed to start")
+                time.sleep(0.01)
+
+            logger.debug("Browser steps event loop thread started and ready")
+
+def run_async_in_browser_loop(coro):
+    """Run async coroutine using the dedicated browser steps event loop"""
+    _ensure_browser_steps_loop()
+
+    if _browser_steps_loop and not _browser_steps_loop.is_closed():
+        logger.debug("Browser steps using dedicated event loop")
+        future = asyncio.run_coroutine_threadsafe(coro, _browser_steps_loop)
+        return future.result()
+    else:
+        raise RuntimeError("Browser steps event loop is not available")
+
