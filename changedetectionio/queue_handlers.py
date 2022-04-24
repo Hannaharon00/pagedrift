@@ -221,3 +221,90 @@ class RecheckPriorityQueue:
             logger.critical(f"CRITICAL: Failed to get queue size: {str(e)}")
             return 0
     
+    def empty(self) -> bool:
+        """Check if queue is empty"""
+        return self.qsize() == 0
+
+    def get_queued_uuids(self) -> list:
+        """Get list of all queued UUIDs efficiently with single lock"""
+        try:
+            with self._lock:
+                return [item.item['uuid'] for item in self._priority_items if hasattr(item, 'item') and 'uuid' in item.item]
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get queued UUIDs: {str(e)}")
+            return []
+
+    def clear(self):
+        """Clear all items from both priority storage and notification queue"""
+        try:
+            with self._lock:
+                # Clear priority items
+                self._priority_items.clear()
+
+                # Drain all notifications to prevent stale notifications
+                # This is critical for test cleanup to prevent queue desynchronization
+                drained = 0
+                while not self._notification_queue.empty():
+                    try:
+                        self._notification_queue.get_nowait()
+                        drained += 1
+                    except queue.Empty:
+                        break
+
+                if drained > 0:
+                    logger.debug(f"Cleared queue: removed {drained} notifications")
+
+            return True
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to clear queue: {str(e)}")
+            return False
+
+    def close(self):
+        """Close the queue"""
+        try:
+            # Nothing to close for threading.Queue
+            logger.debug("RecheckPriorityQueue closed successfully")
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to close RecheckPriorityQueue: {str(e)}")
+    
+    # COMPATIBILITY METHODS (from original implementation)
+    @property
+    def queue(self):
+        """Provide compatibility with original queue access"""
+        try:
+            with self._lock:
+                return list(self._priority_items)
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get queue list: {str(e)}")
+            return []
+    
+    def get_uuid_position(self, target_uuid: str) -> Dict[str, Any]:
+        """Find position of UUID in queue"""
+        try:
+            with self._lock:
+                queue_list = list(self._priority_items)
+                total_items = len(queue_list)
+                
+                if total_items == 0:
+                    return {'position': None, 'total_items': 0, 'priority': None, 'found': False}
+                
+                # Find target item
+                for item in queue_list:
+                    if (hasattr(item, 'item') and isinstance(item.item, dict) and 
+                        item.item.get('uuid') == target_uuid):
+                        
+                        # Count items with higher priority
+                        position = sum(1 for other in queue_list if other.priority < item.priority)
+                        return {
+                            'position': position,
+                            'total_items': total_items, 
+                            'priority': item.priority,
+                            'found': True
+                        }
+                
+                return {'position': None, 'total_items': total_items, 'priority': None, 'found': False}
+                
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get UUID position for {target_uuid}: {str(e)}")
+            return {'position': None, 'total_items': 0, 'priority': None, 'found': False}
+    
