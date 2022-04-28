@@ -521,6 +521,27 @@ class ValidateKnownContentFetcher(object):
             raise ValidationError(self.message or gettext("Unknown fetch method."))
 
 
+class validateURL(object):
+
+    """
+       Flask wtform validators wont work with basic auth
+    """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        # This should raise a ValidationError() or not
+        validate_url(field.data)
+
+
+def validate_url(test_url):
+    from changedetectionio.validate_url import is_safe_valid_url
+    if not is_safe_valid_url(test_url):
+        # This should be wtforms.validators.
+        raise ValidationError('Watch protocol is not permitted or invalid URL format')
+
+
 class validateLLMApiBaseSafe(object):
     """Block private/loopback/reserved api_base values (SSRF) unless the operator
     has opted in via ALLOW_IANA_RESTRICTED_ADDRESSES=true."""
