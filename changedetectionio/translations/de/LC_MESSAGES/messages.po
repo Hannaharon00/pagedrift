@@ -45,3 +45,60 @@ msgstr "Gehen"
 msgid "Enter a URL to get started!"
 msgstr ""
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "Ein Backup läuft!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr ""
+"Hier können Sie ein neues Backup herunterladen und anfordern. Sobald ein Backup abgeschlossen ist, wird es unten "
+"aufgelistet."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "Mb"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "Keine Backups gefunden."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Backup erstellen"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Backups entfernen"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr ""
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr ""
+
