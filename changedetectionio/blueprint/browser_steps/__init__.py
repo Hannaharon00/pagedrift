@@ -1,4 +1,21 @@
 
+# HORRIBLE HACK BUT WORKS :-) PR anyone?
+#
+# Why?
+# `browsersteps_playwright_browser_interface.chromium.connect_over_cdp()` will only run once without async()
+# - this flask app is not async()
+# - A single timeout/keepalive which applies to the session made at .connect_over_cdp()
+#
+# So it means that we must unfortunately for now just keep a single timer since .connect_over_cdp() was run
+# and know when that reaches timeout/keepalive :( when that time is up, restart the connection and tell the user
+# that their time is up, insert another coin. (reload)
+#
+#
+
+from changedetectionio.strtobool import strtobool
+from flask import Blueprint, request, make_response
+import os
+
 from changedetectionio.store import ChangeDetectionStore
 from changedetectionio.blueprint import plaintext_response
 from changedetectionio.flask_app import login_optionally_required
