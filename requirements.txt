@@ -126,3 +126,41 @@ greenlet >= 3.0.3
 # Default SOCKETIO_MODE=threading is recommended for better compatibility
 gevent
 
+referencing==0.37.0  # jsonschema-path>=0.4.x allows <0.38.0; 0.37.0 is current latest
+
+# For conditions
+panzi-json-logic
+# For conditions - extracted number from a body of text
+price-parser
+
+# flask_socket_io - incorrect package name, already have flask-socketio above
+
+# Lightweight MIME type detection (saves ~14MB memory vs python-magic/libmagic)
+# Used for detecting correct favicon type and content-type detection
+puremagic<2.0  # 2.x requires Python >=3.12; unpin once 3.11 support is dropped
+
+# Scheduler - Windows seemed to miss a lot of default timezone info (even "UTC" !)
+tzdata
+
+#typing_extensions ==4.8.0
+
+pluggy ~= 1.6
+
+# LLM intent-based change evaluation (multi-provider via litellm)
+# Uncapped: litellm now uses jsonschema<5.0,>=4.0.0, resolving earlier openapi-spec-validator conflict.
+# Note litellm >=1.83.11 does `from typing import NotRequired`, which is 3.11+ (PEP 655) - that is
+# why 3.10 support was dropped rather than pinning everyone to the last 3.10-compatible release.
+litellm>=1.40.0
+# Used today for LLMSettings (model/LLMSettings.py); transitively pulled by litellm but pinned explicitly
+# so the validation/typing layer doesn't disappear if litellm drops it.
+pydantic>=2.0,<3.0
+# BM25 relevance trimming for large snapshots (pure Python, no ML)
+rank-bm25>=0.2.2
+
+# Needed for testing, cross-platform for process and system monitoring
+psutil==7.2.2
+
+# For events between checking and socketio updates
+blinker
+pytest-xdist
+
