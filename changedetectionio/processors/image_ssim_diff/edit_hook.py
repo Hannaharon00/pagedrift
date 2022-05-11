@@ -103,3 +103,49 @@ def on_config_save(watch, processor_config, datastore):
         return processor_config
 
 
+def analyze_region_features(screenshot_bytes, x, y, width, height):
+    """
+    Analyze if a region has enough visual features for template matching.
+
+    Uses OpenCV to detect corners/edges. If the region has distinctive
+    features, template matching can reliably track it when it moves.
+
+    Args:
+        screenshot_bytes: Full screenshot as bytes
+        x, y, width, height: Bounding box coordinates
+
+    Returns:
+        bool: True if region has enough features, False otherwise
+    """
+    # Template matching disabled - would need OpenCV implementation for region analysis
+    if not TEMPLATE_MATCHING_ENABLED:
+        logger.warning(f"Cannot analyze region features: {IMPORT_ERROR}")
+        return False
+
+    # Note: Original implementation used LibVIPS handler to crop region, then OpenCV
+    # for feature detection (goodFeaturesToTrack, Canny edge detection, variance).
+    # If re-implementing, use OpenCV directly for both cropping and analysis.
+    # Feature detection would use: cv2.goodFeaturesToTrack, cv2.Canny, np.var
+    return False
+
+
+def save_template_to_file(watch, screenshot_bytes, x, y, width, height):
+    """
+    Extract the template region and save as cropped_image_template.png in watch data directory.
+
+    This is a convenience wrapper around handler.save_template() that handles
+    watch directory setup and path construction.
+
+    Args:
+        watch: Watch object
+        screenshot_bytes: Full screenshot as bytes
+        x, y, width, height: Bounding box coordinates
+    """
+    # Template matching disabled - would need OpenCV implementation for template saving
+    if not TEMPLATE_MATCHING_ENABLED:
+        logger.warning(f"Cannot save template: {IMPORT_ERROR}")
+        return
+
+    # Note: Original implementation used LibVIPS handler to crop and save region.
+    # If re-implementing, use OpenCV (cv2.imdecode, crop with array slicing, cv2.imwrite).
+    return
