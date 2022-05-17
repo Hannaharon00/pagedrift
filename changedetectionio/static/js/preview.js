@@ -49,3 +49,25 @@ function setupDateWidget() {
     }
 }
 
+$(document).ready(function () {
+    if ($('#preview-version').length) {
+        setupDateWidget();
+    }
+    $('pre#difference').highlightLines([
+        {
+            'color': 'var(--highlight-trigger-text-bg-color)',
+            'lines': triggered_line_numbers,
+            'title': i18nT('highlightTrigger', "Triggers a change if this text appears, AND something changed in the document.")
+        },
+        {
+            'color': 'var(--highlight-ignored-text-bg-color)',
+            'lines': ignored_line_numbers,
+            'title': i18nT('highlightIgnored', "Ignored for calculating changes, but still shown.")
+        },
+        {
+            'color': 'var(--highlight-blocked-text-bg-color)',
+            'lines': blocked_line_numbers,
+            'title': i18nT('highlightBlocked', "No change-detection will occur because this text exists.")
+        }
+    ]);
+});
