@@ -181,3 +181,148 @@ $(document).ready(function () {
         }.debounce(10));
     });
 
+        if (selected_in_xpath_list !== false) {
+            // Nothing focused, so fill in a new one
+            // if inpt type button or <button>
+            // from the top, find the next not used one and use it
+            var x = selected_in_xpath_list;
+            console.log(x);
+            if (x && first_available.length) {
+                // @todo will it let you click shit that has a layer ontop? probably not.
+                if (x['tagtype'] === 'text' || x['tagtype'] === 'number' || x['tagtype'] === 'email' || x['tagName'] === 'textarea' || x['tagtype'] === 'password' || x['tagtype'] === 'search') {
+                    $('select', first_available).val('Enter text in field').change();
+                    $('input[type=text]', first_available).first().val(x['xpath']);
+                    $('input[placeholder="Value"]', first_available).addClass('ok').click().focus();
+                    found_something = true;
+                }
+                else if (x['tagName'] === 'select') {
+                    $('select', first_available).val('<select> by option text').change();
+                    $('input[type=text]', first_available).first().val(x['xpath']);
+                    $('input[placeholder="Value"]', first_available).addClass('ok').click().focus();
+                    found_something = true;
+                }
+                else {
+                    // There's no good way (that I know) to find if this
+                    // see https://stackoverflow.com/questions/446892/how-to-find-event-listeners-on-a-dom-node-in-javascript-or-in-debugging
+                    // https://codepen.io/azaslavsky/pen/DEJVWv
+
+                    // So we dont know if its really a clickable element or not :-(
+                    // Assume it is - then we dont fill the pages with unreliable "Click X,Y" selections
+                    // If you switch to "Click X,y" after an element here is setup, it will give the last co-ords anyway
+                    //if (x['isClickable'] || x['tagName'].startsWith('h') || x['tagName'] === 'a' || x['tagName'] === 'button' || x['tagtype'] === 'submit' || x['tagtype'] === 'checkbox' || x['tagtype'] === 'radio' || x['tagtype'] === 'li') {
+                        $('select', first_available).val('Click element').change();
+                        $('input[type=text]', first_available).first().val(x['xpath']).focus();
+                        found_something = true;
+                    //}
+                }
+            }
+        }
+    }
+
+    function draw_circle_on_canvas(x, y) {
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'rgba(255,0,0, 0.6)';
+        ctx.fill();
+    }
+
+    // Reusable AJAX function for browser step operations
+    function executeBrowserStep(url, data = {}) {
+        $('#browser-steps-ui .loader .spinner').fadeIn();
+        apply_buttons_disabled = true;
+        $('ul#browser_steps li .control .apply').css('opacity', 0.5);
+        $("#browsersteps-img").css('opacity', 0.65);
+
+        return $.ajax({
+            method: "POST",
+            url: url,
+            data: data,
+            statusCode: {
+                400: function () {
+                    alert(i18nT('reloadProblem', "There was a problem processing the request, please reload the page."));
+                    $("#loading-status-text").hide();
+                    $('#browser-steps-ui .loader .spinner').fadeOut();
+                },
+                401: function (data) {
+                    alert(data.responseText);
+                    $("#loading-status-text").hide();
+                    $('#browser-steps-ui .loader .spinner').fadeOut();
+                }
+            }
+        }).done(function (data) {
+            xpath_data = data.xpath_data;
+            $('#browsersteps-img').attr('src', data.screenshot);
+            $('#browser-steps-ui .loader .spinner').fadeOut();
+            apply_buttons_disabled = false;
+            $("#browsersteps-img").css('opacity', 1);
+            $('ul#browser_steps li .control .apply').css('opacity', 1);
+            $("#loading-status-text").hide();
+        }).fail(function (data) {
+            console.log(data);
+            if (data.responseText && data.responseText.includes("Browser session expired")) {
+                disable_browsersteps_ui();
+            }
+            apply_buttons_disabled = false;
+            $("#loading-status-text").hide();
+            $('ul#browser_steps li .control .apply').css('opacity', 1);
+            $("#browsersteps-img").css('opacity', 1);
+        });
+    }
+
+    function start() {
+        console.log("Starting browser-steps UI");
+        browsersteps_session_id = false;
+        $('#browser-steps-ui .loader .spinner').show();
+        // Request a new session
+        $.ajax({
+            type: "POST",
+            url: browser_steps_start_url,
+            statusCode: {
+                400: function () {
+                    // More than likely the CSRF token was lost when the server restarted
+                    alert(i18nT('reloadProblem', "There was a problem processing the request, please reload the page."));
+                },
+                401: function (err) {
+                    // This will be a custom error
+                    alert(err.responseText);
+                }
+            }
+        }).done(function (data) {
+            $("#loading-status-text").fadeIn();
+            browsersteps_session_id = data.browsersteps_session_id;
+            browser_interface_seconds_remaining = 500;
+            // Request goto_site operation
+            executeBrowserStep(
+                browser_steps_sync_url + "&browsersteps_session_id=" + browsersteps_session_id + "&goto_website_url_first_step=true"
+            );
+
+        }).fail(function (data) {
+            console.log(data);
+            alert(i18nT('serverCommError', 'There was an error communicating with the server.'));
+        });
+
+    }
+
+    function disable_browsersteps_ui() {
+        $("#browser-steps-ui").css('opacity', '0.3');
+        $('#browsersteps-selector-canvas').off("mousemove mousedown click");
+    }
+
+
+    ////////////////////////// STEPS UI ////////////////////
+    $('ul#browser_steps [type="text"]').keydown(function (e) {
+        if (e.keyCode === 13) {
+            // hitting [enter] in a browser-step input should trigger the 'Apply'
+            e.preventDefault();
+            $(".apply", $(this).closest('li')).click();
+            return false;
+        }
+    });
+
+    // Look up which step was selected, and enable or disable the related extra fields
+    // So that people using it dont' get confused
+    $('ul#browser_steps select').on("change", function () {
+        var config = browser_steps_config[$(this).val()].split(' ');
+        var elem_selector = $('tr:nth-child(2) input', $(this).closest('tbody'));
+        var elem_value = $('tr:nth-child(3) input', $(this).closest('tbody'));
+
