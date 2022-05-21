@@ -1,0 +1,19 @@
+/**
+ * Image Comparison Diff Styles
+ * Styles for the interactive image comparison slider and screenshot diff visualization
+ */
+
+.comparison-score {
+  padding: 1em;
+  background: var(--color-table-stripe);
+  border-radius: 4px;
+  margin: 1em 0;
+  border: 1px solid var(--color-border-table-cell);
+  color: var(--color-text);
+}
+
+.change-detected {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
