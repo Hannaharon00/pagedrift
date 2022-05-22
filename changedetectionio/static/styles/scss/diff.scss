@@ -1,0 +1,39 @@
+#diff-form {
+
+  background: rgba(0, 0, 0, .05);
+  padding: 1em;
+  border-radius: 10px;
+  margin-bottom: 1em;
+  color: #fff;
+  font-size: 0.9rem;
+  text-align: center;
+
+  label.from-to-label {
+    width: 4rem;
+    text-decoration: none;
+    padding: 0.5rem;
+
+    &#change-from {
+      color: #b30000;
+      background: #fadad7
+    }
+
+    &#change-to {
+      background: #eaf2c2;
+      color: #406619;
+    }
+  }
+
+  #diff-style {
+    >span {
+      display: inline-block;
+      padding: 0.3em;
+      label {
+        font-weight: normal;
+      }
+    }
+  }
+  * {
+    vertical-align: middle;
+  }
+
