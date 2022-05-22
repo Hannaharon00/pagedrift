@@ -2,3 +2,10 @@ $grid-col-checkbox: 40px;
 $grid-col-watch: 100px;
 $grid-gap: 0.5rem;
 
+// Breakpoint at which the watch list snaps from horizontal table rows to the
+// stacked mobile grid layout. The min-width companion (= max + 1px) handles
+// the desktop-only side so the two queries can never overlap or leave a 1px
+// gap between them.
+$watch-table-mobile-max: 767px;
+
+
