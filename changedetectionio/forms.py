@@ -521,6 +521,90 @@ class ValidateKnownContentFetcher(object):
             raise ValidationError(self.message or gettext("Unknown fetch method."))
 
 
+class ValidateNotificationBodyAndTitleWhenURLisSet(object):
+    """
+       Validates that they entered something in both notification title+body when the URL is set
+       Due to https://github.com/dgtlmoon/changedetection.io/issues/360
+       """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        if len(field.data):
+            if not len(form.notification_title.data) or not len(form.notification_body.data):
+                message = field.gettext('Notification Body and Title is required when a Notification URL is used')
+                raise ValidationError(message)
+
+class ValidateAppRiseServers(object):
+    """
+       Validates that each URL given is compatible with AppRise
+       """
+
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        import apprise
+        from .notification.apprise_plugin.assets import apprise_asset
+        from .notification.apprise_plugin.custom_handlers import apprise_http_custom_handler  # noqa: F401
+        from changedetectionio.jinja2_custom import render as jinja_render
+
+        apobj = apprise.Apprise(asset=apprise_asset)
+
+        for server_url in field.data:
+            generic_notification_context_data = NotificationContextData()
+            # Make sure something is atleast in all those regular token fields
+            generic_notification_context_data.set_random_for_validation()
+
+            url = jinja_render(template_str=server_url.strip(), **generic_notification_context_data).strip()
+            if url.startswith("#"):
+                continue
+
+            if not apobj.add(url):
+                message = field.gettext('\'%s\' is not a valid AppRise URL.' % (url))
+                raise ValidationError(message)
+
+class ValidateJinja2Template(object):
+    """
+    Validates that a {token} is from a valid set
+    """
+    def __call__(self, form, field):
+        from changedetectionio.jinja2_custom import create_jinja_env
+        from jinja2 import BaseLoader, TemplateSyntaxError, UndefinedError
+        from jinja2.meta import find_undeclared_variables
+        import jinja2.exceptions
+
+        # Might be a list of text, or might be just text (like from the apprise url list)
+        joined_data = ' '.join(map(str, field.data)) if isinstance(field.data, list) else f"{field.data}"
+
+        try:
+            # Use the shared helper to create a properly configured environment
+            jinja2_env = create_jinja_env(loader=BaseLoader)
+
+            # Add notification tokens for validation
+            static_token_placeholders = NotificationContextData()
+            static_token_placeholders.set_random_for_validation()
+            jinja2_env.globals.update(static_token_placeholders)
+            if hasattr(field, 'extra_notification_tokens'):
+                jinja2_env.globals.update(field.extra_notification_tokens)
+
+            jinja2_env.from_string(joined_data).render()
+        except TemplateSyntaxError as e:
+            raise ValidationError(f"This is not a valid Jinja2 template: {e}") from e
+        except UndefinedError as e:
+            raise ValidationError(f"A variable or function is not defined: {e}") from e
+        except jinja2.exceptions.SecurityError as e:
+            raise ValidationError(f"This is not a valid Jinja2 template: {e}") from e
+
+        # Check for undeclared variables
+        ast = jinja2_env.parse(joined_data)
+        undefined = ", ".join(find_undeclared_variables(ast))
+        if undefined:
+            raise ValidationError(
+                f"The following tokens used in the notification are not valid: {undefined}"
+            )
+
 class validateURL(object):
 
     """
