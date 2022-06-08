@@ -1,0 +1,36 @@
+// ── AI / LLM shared styles ────────────────────────────────────────────────────
+// Used by both the diff page (#llm-diff-summary-area) and the watchlist
+// inline summary row (.ai-inline-summary-row).
+
+// ── Diff page: summary block ──────────────────────────────────────────────────
+#llm-diff-summary-area {
+  margin: 0.6rem 0 0.4rem;
+  padding: 0.65rem 0.9rem;
+  background: linear-gradient(135deg, rgba(120, 80, 200, 0.18), rgba(80, 160, 220, 0.14));
+  border-left: 3px solid rgba(140, 90, 220, 0.8);
+  border-radius: 0 4px 4px 0;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .llm-diff-summary-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 0.25rem;
+  }
+
+  .llm-diff-summary-text {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+
