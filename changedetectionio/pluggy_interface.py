@@ -560,3 +560,46 @@ def save_plugin_settings(datastore_path, plugin_id, settings):
         return False
 
 
+def apply_update_finalize(update_handler, watch, datastore, processing_exception):
+    """Apply update_finalize hooks from all plugins.
+
+    Called in the finally block after watch processing completes, allowing plugins
+    to perform cleanup, update metrics, or log final status.
+
+    Args:
+        update_handler: The perform_site_check instance (may be None)
+        watch: The watch dict that was processed (may be None)
+        datastore: The application datastore
+        processing_exception: The exception from processing, or None if successful
+
+    Returns:
+        None
+    """
+    try:
+        # Call all plugins that implement the update_finalize hook
+        plugin_manager.hook.update_finalize(
+            update_handler=update_handler,
+            watch=watch,
+            datastore=datastore,
+            processing_exception=processing_exception
+        )
+    except Exception as e:
+        # Don't let plugin errors crash the worker
+        logger.error(f"Error in update_finalize hook: {e}")
+        logger.exception(f"update_finalize hook exception details:")
+
+
+def collect_html_head_extras():
+    """Collect and combine HTML head extras from all plugins.
+
+    Called from a Flask template global so it always runs inside a request context.
+    This means url_for() works correctly in plugin implementations, including when the
+    app is deployed under a sub-path via USE_X_SETTINGS / X-Forwarded-Prefix (ProxyFix
+    sets SCRIPT_NAME so url_for() automatically prepends the prefix).
+
+    Returns:
+        str: Combined HTML string to inject inside <head>, or empty string
+    """
+    results = plugin_manager.hook.get_html_head_extras()
+    parts = [r for r in results if r]
+    return "\n".join(parts) if parts else ""
