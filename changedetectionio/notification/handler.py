@@ -221,3 +221,212 @@ def apply_service_tweaks(url, n_body, n_title, requested_output_format):
     return url, n_body, n_title
 
 
+def process_notification(n_object: NotificationContextData, datastore):
+    import apprise
+    from apprise import NotifyFormat
+    from .apprise_plugin.assets import apprise_asset
+    from changedetectionio.jinja2_custom import render as jinja_render
+    from . import USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH, default_notification_format, valid_notification_formats
+    # be sure its registered
+    from .apprise_plugin.custom_handlers import apprise_http_custom_handler
+    # Register custom Discord plugin
+    from .apprise_plugin.discord import NotifyDiscordCustom
+
+    if not isinstance(n_object, NotificationContextData):
+        raise TypeError(f"Expected NotificationContextData, got {type(n_object)}")
+
+    now = time.time()
+    if n_object.get('notification_timestamp'):
+        logger.trace(f"Time since queued {now-n_object['notification_timestamp']:.3f}s")
+
+    # Insert variables into the notification content
+    notification_parameters = create_notification_parameters(n_object, datastore)
+
+    requested_output_format = n_object.get('notification_format', default_notification_format)
+    logger.debug(f"Requested notification output format: '{requested_output_format}'")
+
+    # If we arrived with 'System default' then look it up
+    if requested_output_format == USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH:
+        # Initially text or whatever
+        requested_output_format = datastore.data['settings']['application'].get('notification_format', default_notification_format)
+
+    requested_output_format_original = requested_output_format
+
+    # Now clean it up so it fits perfectly with apprise
+    requested_output_format = notification_format_align_with_apprise(n_format=requested_output_format)
+
+    logger.trace(f"Complete notification body including Jinja and placeholders calculated in  {time.time() - now:.2f}s")
+
+    # https://github.com/caronc/apprise/wiki/Development_LogCapture
+    # Anything higher than or equal to WARNING (which covers things like Connection errors)
+    # raise it as an exception
+
+    sent_objs = []
+
+    if 'as_async' in n_object:
+        apprise_asset.async_mode = n_object.get('as_async')
+
+    apobj = apprise.Apprise(debug=True, asset=apprise_asset)
+
+    # Override Apprise's built-in Discord plugin with our custom one
+    # This allows us to use colored embeds for diff content
+    # First remove the built-in discord plugin, then add our custom one
+    apprise.plugins.N_MGR.remove('discord')
+    apprise.plugins.N_MGR.add(NotifyDiscordCustom, schemas='discord')
+
+    if not n_object.get('notification_urls'):
+        return None
+
+    n_object.update(add_rendered_diff_to_notification_vars(
+        notification_scan_text=n_object.get('notification_body', '')+n_object.get('notification_title', ''),
+        current_snapshot=n_object.get('current_snapshot'),
+        prev_snapshot=n_object.get('prev_snapshot'),
+        # Should always be false for 'text' mode or its too hard to read
+        # But otherwise, this could be some setting
+        word_diff=False if requested_output_format_original == 'text' else True,
+        # HTML-format notifications must escape diff content (GHSA-q8xq-qg4x-wphg).
+        # FormattableDiff/Extract escape internally so {{ diff(...) }} stays callable —
+        # the post-Jinja escape loop below would otherwise convert them to plain str.
+        escape_output='html' in requested_output_format,
+        )
+    )
+
+    # {{ raw_diff }} always holds the actual diff regardless of AI Change Summary
+    n_object['raw_diff'] = n_object.get('diff', '')
+
+    # AI Change Summary: optionally replace {{ diff }} with the AI summary
+    _llm_change_summary = (n_object.get('_llm_change_summary') or '').strip()
+    from changedetectionio.llm.evaluator import get_llm_settings
+    _override_diff = get_llm_settings(datastore).override_diff_with_summary
+    if _llm_change_summary and _override_diff:
+        n_object['diff'] = _llm_change_summary
+
+    # Lazily populate llm_summary / llm_intent if used in notification template
+    scan_text = n_object.get('notification_body', '') + n_object.get('notification_title', '')
+    if 'llm_summary' in scan_text or 'llm_intent' in scan_text or 'raw_diff' in scan_text:
+        n_object['llm_summary'] = _llm_change_summary or (n_object.get('_llm_result') or {}).get('summary', '')
+        n_object['llm_intent'] = n_object.get('_llm_intent', '')
+
+    # Escape diff/snapshot variables before Jinja renders them into an HTML notification.
+    # GHSA-q8xq-qg4x-wphg: inscriptis decodes HTML entities when converting text/html
+    # pages to snapshot text, so a page that visibly displays "&lt;a href...&gt;" yields
+    # literal "<a href...>" in the snapshot — which would otherwise render as live
+    # markup in HTML emails / Telegram (parse_mode=html) / Discord embeds, letting a
+    # watched page inject phishing links into the operator's notification channel.
+    # Also covers #3529 — raw '<' chars from text/plain pages breaking HTML email layout.
+    # The operator's own template HTML (e.g. <a href="{{watch_url}}">) is outside the
+    # variable values so it stays untouched. Diff placemarkers contain no HTML chars,
+    # so they survive escape and are still replaced with <span> tags later.
+    if 'html' in requested_output_format:
+        from markupsafe import escape as html_escape
+        from changedetectionio.notification_service import FormattableDiff, FormattableExtract
+        _page_content_keys = {'raw_diff', 'current_snapshot', 'prev_snapshot', 'triggered_text'}
+        for key in [k for k in notification_parameters if k.startswith('diff') or k in _page_content_keys]:
+            value = notification_parameters.get(key)
+            if not value:
+                continue
+            # FormattableDiff / FormattableExtract are callable str subclasses — {{ diff(lines=5) }}
+            # etc. relies on __call__. Wrapping them with str(html_escape(...)) here would lose
+            # __call__ and break those tokens. They escape internally via escape_output=True
+            # (set by add_rendered_diff_to_notification_vars above) for both __str__ and __call__.
+            if isinstance(value, (FormattableDiff, FormattableExtract)):
+                continue
+            notification_parameters[key] = str(html_escape(str(value)))
+
+    with (apprise.LogCapture(level=apprise.logging.DEBUG) as logs):
+        for url in n_object['notification_urls']:
+
+            n_body = jinja_render(template_str=n_object.get('notification_body', ''), **notification_parameters)
+            n_title = jinja_render(template_str=n_object.get('notification_title', ''), **notification_parameters)
+
+            if n_object.get('markup_text_links_to_html_links'):
+                n_body = markup_text_links_to_html(body=n_body)
+
+            url = url.strip()
+            if not url or url.startswith('#'):
+                logger.debug(f"Skipping commented out or empty notification URL - '{url}'")
+                continue
+
+            logger.info(f">> Process Notification: AppRise start notifying '{url}'")
+            url = jinja_render(template_str=url, **notification_parameters)
+
+            if 'html' in requested_output_format:
+                # Since the n_body is always some kind of text from the 'diff' engine, attempt to preserve whitespaces that get sent to the HTML output
+                # But only where its more than 1 consecutive whitespace, otherwise "and this" becomes "and&nbsp;this" etc which is too much.
+                n_body = n_body.replace('  ', '&nbsp;&nbsp;')
+
+            (url, n_body, n_title) = apply_service_tweaks(url=url, n_body=n_body, n_title=n_title, requested_output_format=requested_output_format_original)
+
+            apprise_input_format = "NO-THANKS-WE-WILL-MANAGE-ALL-OF-THIS"
+
+            if not 'format=' in url:
+                parsed_url = urlparse(url)
+                prefix_add_to_url = '?' if not parsed_url.query else '&'
+
+                # THIS IS THE TRICK HOW TO DISABLE APPRISE DOING WEIRD AUTO-CONVERSION WITH BREAKING BR TAGS ETC
+                if 'html' in requested_output_format:
+                    url = f"{url}{prefix_add_to_url}format={NotifyFormat.HTML.value}"
+                    apprise_input_format = NotifyFormat.HTML.value
+                elif 'text' in requested_output_format:
+                    url = f"{url}{prefix_add_to_url}format={NotifyFormat.TEXT.value}"
+                    apprise_input_format = NotifyFormat.TEXT.value
+
+                elif requested_output_format == NotifyFormat.MARKDOWN.value:
+                    # Convert markdown to HTML ourselves since not all plugins do this
+                    from apprise.conversion import markdown_to_html
+                    # Make sure there are paragraph breaks around horizontal rules
+                    n_body = n_body.replace('---', '\n\n---\n\n')
+                    n_body = markdown_to_html(n_body)
+                    url = f"{url}{prefix_add_to_url}format={NotifyFormat.HTML.value}"
+                    requested_output_format = NotifyFormat.HTML.value
+                    apprise_input_format = NotifyFormat.HTML.value  # Changed from MARKDOWN to HTML
+
+            else:
+                # ?format was IN the apprise URL, they are kind of on their own here, we will try our best
+                if 'format=html' in url:
+                    n_body = newline_re.sub('<br>\r\n', n_body)
+                    # This will also prevent apprise from doing conversion
+                    apprise_input_format = NotifyFormat.HTML.value
+                    requested_output_format = NotifyFormat.HTML.value
+                elif 'format=text' in url:
+                    apprise_input_format = NotifyFormat.TEXT.value
+                    requested_output_format = NotifyFormat.TEXT.value
+
+#@todo on null:// (only if its a 1 url with null) probably doesnt need to actually .add/setup/etc
+            sent_objs.append({'title': n_title,
+                              'body': n_body,
+                              'url': url,
+                              # So that we can do a null:// call and get back exactly what would have been sent
+                              'original_context': n_object })
+
+            if not url.startswith('null://'):
+                apobj.add(url)
+
+            # Since the output is always based on the plaintext of the 'diff' engine, wrap it nicely.
+            # It should always be similar to the 'history' part of the UI.
+            if url.startswith('mail') and 'html' in requested_output_format:
+                if not '<pre' in n_body and not '<body' in n_body: # No custom HTML-ish body was setup already
+                    n_body = as_monospaced_html_email(content=n_body, title=n_title)
+
+        if not url.startswith('null://'):
+            apobj.notify(
+                title=n_title,
+                body=n_body,
+                # `body_format` Tell apprise what format the INPUT is in, specify a wrong/bad type and it will force skip conversion in apprise
+                # &format= in URL Tell apprise what format the OUTPUT should be in (it can convert between)
+                body_format=apprise_input_format,
+                # False is not an option for AppRise, must be type None
+                attach=n_object.get('screenshot', None)
+            )
+
+        # Returns empty string if nothing found, multi-line string otherwise
+        log_value = logs.getvalue()
+
+        if log_value and ('WARNING' in log_value or 'ERROR' in log_value):
+            logger.critical(log_value)
+            raise Exception(log_value)
+
+    # Return what was sent for better logging - after the for loop
+    return sent_objs
+
+
