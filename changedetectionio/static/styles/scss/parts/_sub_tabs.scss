@@ -1,0 +1,25 @@
+// ── Vertical sub-tab layout ───────────────────────────────────────────────────
+// Reusable panel: left nav rail + right content area.
+// HTML structure:
+//   <div class="stab-shell" id="some-id">
+//     <nav class="stab-nav">
+//       <button class="stab-btn" data-stab="foo"><span class="stab-icon">⊞</span> Foo</button>
+//     </nav>
+//     <div class="stab-body">
+//       <div class="stab-pane" data-stab="foo">…content…</div>
+//     </div>
+//   </div>
+// JS: sub-tabs.js initialises all .stab-shell elements, toggles .active.
+// Form fields in hidden panes still submit (visibility:hidden, not display:none).
+
+.stab-shell {
+  display: flex;
+  align-items: stretch;
+  background: var(--color-background);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
