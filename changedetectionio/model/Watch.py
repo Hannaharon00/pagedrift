@@ -62,6 +62,172 @@ mtable = {'seconds': 1, 'minutes': 60, 'hours': 3600, 'days': 86400, 'weeks': 86
             raise Exception(f"Brotli compression failed for {filepath}: {e}")
 
 
+        return False
+
+    @property
+    def has_unviewed(self):
+        return int(self.newest_history_key) > int(self['last_viewed']) and self.__history_n >= 2
+
+    def _resolve_link(self, url, flash_on_template_error=True):
+        """Validate, Jinja2-render and de-'source:' a URL so it is safe to put in an href.
+
+        Returns 'DISABLED' when the URL is missing/unsafe, or '' when its Jinja2 template
+        could not be rendered.
+        """
+        if not is_safe_valid_url(url):
+            return 'DISABLED'
+
+        ready_url = url
+        if '{%' in url or '{{' in url:
+            # Jinja2 available in URLs along with https://pypi.org/project/jinja2-time/
+            try:
+                ready_url = jinja_render(template_str=url)
+            except Exception as e:
+                logger.critical(f"Invalid URL template for: '{url}' - {str(e)}")
+                # has_request_context() guard: this is also reached from worker threads and the
+                # notification path, where flash() would raise "Working outside of request context".
+                from flask import has_request_context
+                if flash_on_template_error and has_request_context():
+                    from flask import flash, url_for
+                    from markupsafe import Markup
+                    message = Markup('<a href="{}#general">The URL {} is invalid and cannot be used, click to edit</a>'.format(
+                        url_for('ui.ui_edit.edit_page', uuid=self.get('uuid')), url))
+                    flash(message, 'error')
+                return ''
+
+        if ready_url.startswith('source:'):
+            ready_url=ready_url.replace('source:', '')
+
+        # Also double check it after any Jinja2 formatting just incase
+        if not is_safe_valid_url(ready_url):
+            return 'DISABLED'
+        return ready_url
+
+    @property
+    def link(self):
+        """The URL that actually gets fetched/checked."""
+        return self._resolve_link(self.get('url', ''))
+
+    @property
+    def open_link_override(self):
+        """The resolved optional 'Link to Open', or '' when unset/unusable."""
+        override = str(self.get('link_to_open') or '').strip()
+        if not override:
+            return ''
+
+        # Don't flash on a broken template here - `link` already surfaces that for the watched URL,
+        # and a bad "Link to Open" should never stop the page rendering.
+        ready = self._resolve_link(override, flash_on_template_error=False)
+        if not ready or ready == 'DISABLED':
+            return ''
+        return ready
+
+    @property
+    def open_link(self):
+        """The URL a human should be sent to when they click through to "the site".
+
+        Some watches point at an API endpoint or RSS feed that is useless in a browser -
+        'Link to Open' lets the user store the real page for those. Falls back to `link`.
+        """
+        return self.open_link_override or self.link
+
+    @property
+    def domain_only_from_link(self):
+        from urllib.parse import urlparse
+        parsed = urlparse(self.link)
+        domain = parsed.hostname
+        return domain
+
+    @property
+    def history_index_filename(self):
+        # So that you dont try to view different histories in different 'diff' setups, can confuse cdio.
+        processor = self.get('processor')
+        if not processor or self.get('processor') == 'text_json_diff':
+            return 'history.txt'
+        else:
+            return f'history-{processor}.txt'
+
+    def clear_watch(self):
+        import pathlib
+
+        # Get list of processor config files to preserve
+        from changedetectionio.processors import find_processors
+        processor_names = [name for cls, name in find_processors()]
+        processor_config_files = {f"{name}.json" for name in processor_names}
+
+        # JSON Data, Screenshots, Textfiles (history index and snapshots), HTML in the future etc
+        # But preserve processor config files (they're configuration, not history data)
+        # Use glob not rglob here for safety.
+        for item in pathlib.Path(str(self.data_dir)).glob("*.*"):
+            # Skip processor config files
+            if item.name in processor_config_files:
+                continue
+            os.unlink(item)
+
+        _FAVICON_FILENAME_CACHE.pop(self.data_dir, None)
+
+        # Force the attr to recalculate
+        bump = self.history
+
+        # Do this last because it will trigger a recheck due to last_checked being zero
+        self.update({
+            'browser_steps_last_error_step': None,
+            'check_count': 0,
+            'fetch_time': 0.0,
+            'has_ldjson_price_data': None,
+            'last_checked': 0,
+            'last_error': False,
+            'last_notification_error': False,
+            'last_viewed': 0,
+            'previous_md5': False,
+            'remote_server_reply': None,
+            'track_ldjson_price_data': None
+        })
+        watch_check_update = signal('watch_check_update')
+        if watch_check_update:
+            watch_check_update.send(watch_uuid=self.get('uuid'))
+
+        return
+
+    @property
+    def is_source_type_url(self):
+        return self.get('url', '').startswith('source:')
+
+    @property
+    def get_fetch_backend(self):
+        """
+        Get the fetch backend for this watch with special case handling.
+
+        CHAIN RESOLUTION OPPORTUNITY:
+        Currently returns watch.fetch_backend directly, but doesn't implement
+        Watch → Tag → Global resolution chain. With Pydantic:
+
+        @computed_field
+        def resolved_fetch_backend(self) -> str:
+            # Special case: PDFs always use html_requests
+            if self.is_pdf:
+                return 'html_requests'
+
+            # Watch override
+            if self.fetch_backend and self.fetch_backend != 'system':
+                return self.fetch_backend
+
+            # Tag override (first tag with overrides_watch=True wins)
+            for tag_uuid in self.tags:
+                tag = self._datastore.get_tag(tag_uuid)
+                if tag.overrides_watch and tag.fetch_backend:
+                    return tag.fetch_backend
+
+            # Global default
+            return self._datastore.settings.fetch_backend
+        """
+        # Maybe also if is_image etc?
+        # This is because chrome/playwright wont render the PDF in the browser and we will just fetch it and use pdf2html to see the text.
+        if self.is_pdf:
+            return 'html_requests'
+
+        return self.get('fetch_backend')
+
     @property
     def fetcher_supports_screenshots(self):
         """Return True if the fetcher configured for this watch supports screenshots.
