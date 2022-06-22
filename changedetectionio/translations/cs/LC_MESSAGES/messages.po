@@ -108,6 +108,68 @@ msgstr "Tvorba souboru zálohy běží, vraťte se za pár minut"
 msgid "Maximum number of backups reached, please remove some"
 msgstr "Maximální počet souborů záloh dosažen, některé prosím smažte"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "Seznam adres URL"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX a Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr "Obnova zálohy"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "Možnost obnovení changedetection.io zálohy je v"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "sekci záloh"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr "Vložte jednu URL na řádek a případně přidejte tagy pro každou URL odsazené mezerníkem, oddělené čárkou (,):"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "Příklad"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "URL, které neprojdou validací, zůstanou v textové oblasti."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Nakopírujte a vložte exportovaný Distill.io soubor, měl by být ve formátu JSON."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"Tohle je <i>experimentální</i>, podporovaná pole jsou <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, zbytek (včetně <code>schedule</code>) je ignorován."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "Jak exportovat?"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "V případě potřeby nastavte výchozí nástroj pro načítání na Chrome."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "Tabulka vlastního mapování sloupců a datových typů pro"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "Vlastní mapování"
+
 #: changedetectionio/blueprint/settings/llm.py
 #, python-brace-format
 msgid "AI summary cache cleared ({} file(s) removed)."
