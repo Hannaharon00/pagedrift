@@ -1,0 +1,29 @@
+@use "../settings" as *;
+
+// Top menu bar (right of the rail). The hairline under it is a gradient rather
+// than a flat border-bottom (which can't fade): a 1px pseudo-line that ramps the
+// white from nearly invisible on the left (next to the action bar) up to ~0.8 on
+// the right, so the divider dissolves toward the rail.
+.header {
+/* @todo - come back to this, because it has for now a transparent background.. */
+  /*  position: sticky;
+  top: 0;
+  z-index: 50;*/
+  color: var(--color-text-menu-heading);
+  a {
+    color: var(--color-text-menu-heading);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(to right,
+      rgba(200, 200, 200, 0.02),
+      rgba(200, 200, 200, 0.6));
+  }
+}
+

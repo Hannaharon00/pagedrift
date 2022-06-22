@@ -1,0 +1,45 @@
+// Toast Notification System
+// Modern, animated toast notifications
+
+.toast-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+  z-index: 10000;
+
+  // Positioning
+  &.toast-top-right {
+    top: 20px;
+    right: 20px;
+  }
+
+  &.toast-top-center {
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.toast-top-left {
+    top: 20px;
+    left: 20px;
+  }
+
+  &.toast-bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  &.toast-bottom-center {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.toast-bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+}
+
