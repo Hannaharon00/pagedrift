@@ -41,3 +41,64 @@ msgstr "Start"
 msgid "Enter a URL to get started!"
 msgstr "Wpisz adres URL, aby rozpocząć!"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr "Maksymalny rozmiar pliku do przesłania: %(upload)s MB, maksymalny rozmiar po rozpakowaniu: %(decomp)s MB"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "Czy uwzględnić wszystkie grupy znalezione w kopii zapasowej?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Czy należy zastąpić wszystkie istniejące grupy o tym samym identyfikatorze UUID?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Czy uwzględnić wszystkie obserwacje znalezione w kopii zapasowej?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Czy zastąpić wszystkie istniejące obserwacje o tym samym identyfikatorze UUID?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Po zaimportowaniu pierwszych 5 000 adresów URL z listy pozostałe można zaimportować ponownie."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Importowano z listy w ciągu {duration} sekund, {skipped_count} pozycji pominięto."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Nie udało się odczytać pliku JSON – czy był uszkodzony?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "Struktura JSON wygląda na nieprawidłową – czy została uszkodzona?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Zaimportowano z Distill.io w ciągu {duration} sekund, {skipped_count} pozycji pominięto."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Nie można odczytać pliku XLSX wyeksportowanego — czy coś jest nie tak z tym plikiem?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr ""
+"Wystąpił błąd podczas przetwarzania wiersza o numerze {}; wartość adresu URL była nieprawidłowa, wiersz został "
+"pominięty."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr ""
+"Wystąpił błąd podczas przetwarzania wiersza o numerze {}; sprawdź, czy typy danych we wszystkich komórkach są "
+"prawidłowe; wiersz został pominięty."
+
