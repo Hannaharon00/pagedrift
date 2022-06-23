@@ -48,6 +48,65 @@ msgstr "Mulai"
 msgid "Enter a URL to get started!"
 msgstr "Masukkan URL untuk memulai!"
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "File ZIP tidak valid atau rusak"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "Pemulihan dimulai di latar belakang, periksa kembali beberapa menit lagi."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "Buat"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "Pulihkan"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "Pencadangan sedang berjalan!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr "Di sini Anda dapat mengunduh dan meminta cadangan baru. Setelah pencadangan selesai, cadangan akan tercantum di bawah."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "MB"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "Tidak ada cadangan."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Buat cadangan"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Hapus cadangan"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "Pemulihan sedang berjalan!"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr "Pulihkan cadangan. Harus berupa file cadangan .zip yang dibuat pada/setelah v0.53.1 (tata letak basis data baru)."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "Catatan: Ini tidak menimpa pengaturan utama aplikasi, hanya monitor dan grup."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr "Ukuran unggahan maks.: %(upload)s MB, ukuran hasil dekompresi maks.: %(decomp)s MB"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Fetching"
 msgstr "Pengambilan"
