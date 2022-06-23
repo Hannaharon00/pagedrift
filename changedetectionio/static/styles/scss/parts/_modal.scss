@@ -139,3 +139,24 @@
   }
 }
 
+// Dark mode adjustments
+html[data-darkmode="true"] {
+  .modal-dialog {
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.7);
+
+    .modal-footer {
+      background: var(--color-grey-200);
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
