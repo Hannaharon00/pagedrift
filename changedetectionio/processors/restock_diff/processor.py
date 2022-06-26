@@ -27,6 +27,36 @@ class MoreThanOnePriceFound(Exception):
     def __init__(self):
         return
 
+def _search_prop_by_value(matches, value):
+    for properties in matches:
+        for prop in properties:
+            if value in prop[0]:
+                return prop[1]  # Yield the desired value and exit the function
+
+def _deduplicate_prices(data):
+    import re
+
+    '''
+    Some price data has multiple entries, OR it has a single entry with ['$159', '159', 159, "$ 159"] or just "159"
+    Get all the values, clean it and add it to a set then return the unique values
+    '''
+    unique_data = set()
+
+    # Return the complete 'datum' where its price was not seen before
+    for datum in data:
+
+        if isinstance(datum.value, list):
+            # Process each item in the list
+            normalized_value = set([float(re.sub(r'[^\d.]', '', str(item))) for item in datum.value if str(item).strip()])
+            unique_data.update(normalized_value)
+        else:
+            # Process single value
+            v = float(re.sub(r'[^\d.]', '', str(datum.value)))
+            unique_data.add(v)
+
+    return list(unique_data)
+
+
 # =============================================================================
 # MEMORY MANAGEMENT: Why We Use Multiprocessing (Linux Only)
 # =============================================================================

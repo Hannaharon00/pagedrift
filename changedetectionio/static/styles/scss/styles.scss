@@ -1,0 +1,76 @@
+/*
+ * -- BASE STYLES --
+ */
+@use "settings" as *;
+@use "parts/top_menu";
+@use "parts/variables";
+@use "parts/arrows";
+@use "parts/browser-steps";
+@use "parts/extra_proxies";
+@use "parts/extra_browsers";
+@use "parts/pagination";
+@use "parts/spinners";
+@use "parts/darkmode";
+@use "parts/menu";
+@use "parts/love";
+@use "parts/preview_text_filter";
+@use "parts/table";
+@use "parts/seg";
+@use "parts/button";
+@use "parts/watch_table";
+@use "parts/watch_table-mobile";
+@use "parts/edit";
+@use "parts/conditions_table";
+@use "parts/socket";
+@use "parts/visualselector";
+@use "parts/add-watch";
+@use "parts/widgets";
+@use "parts/diff_image";
+@use "parts/modal";
+@use "parts/language";
+@use "parts/action_sidebar";
+@use "parts/queue";
+@use "parts/hamburger_menu";
+@use "parts/search_modal";
+@use "parts/llm";
+@use "parts/notification_bubble";
+@use "parts/notifications";
+@use "parts/restock_graph";
+@use "parts/toast";
+@use "parts/login_form";
+@use "parts/tabs";
+@use "parts/sub_tabs";
+
+// Smooth transitions for theme switching
+// Disabled - people complained
+/*body,
+.pure-table,
+.pure-table thead,
+.pure-table td,
+.pure-table th,
+.pure-form input,
+.pure-form textarea,
+.pure-form select,
+.edit-form .inner,
+.pure-menu-horizontal,
+footer,
+.sticky-tab,
+#diff-jump,
+.button-tag,
+#new-watch-form,
+#new-watch-form input:not(.pure-button),
+code,
+.messages li,
+#checkbox-operations,
+.inline-warning,
+a,
+.watch-controls img {
+  transition: color 0.4s ease, background-color 0.4s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}*/
+
+body {
+  color: var(--color-text);
+  background: var(--color-background-page);
+  font-family: Helvetica Neue, Helvetica, Lucida Grande, Arial, Ubuntu, Cantarell, Fira Sans, sans-serif;
+}
+
