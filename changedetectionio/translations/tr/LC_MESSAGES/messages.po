@@ -105,3 +105,63 @@ msgstr "Not: Bu, ana uygulama ayarlarını geçersiz kılmaz, yalnızca izleyici
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr ""
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Buraya HTML yapıştırmayın, yalnızca CSS ve XPath seçicilerini kullanın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "HTML'nin birden çok bölümünü yoksaymak için satır başına birden çok öğe, CSS veya XPath seçici ekleyin."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Not: Bu, izleyici başına kurallara ek olarak genel olarak uygulanır."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr ""
+"Eşleşen metin metin anlık görüntüsünde yoksayılacaktır (yine de görebilirsiniz ancak bir değişikliği "
+"tetiklemeyecektir)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr "Her satır ayrı ayrı işlenir, eşleşen herhangi bir satır yoksayılır (sağlama toplamı oluşturulmadan önce kaldırılır)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Düzenli İfade desteği, tüm satırı eğik çizgi içine alın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Bunu değiştirmek, bir uyarıyı tetikleyebilecek karşılaştırma sağlama toplamını etkiler"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"\"Yoksayılan metin\" bölümünde görünen herhangi bir metni çıktıdan kaldırın (aksi takdirde değişiklik tespiti için "
+"sadece yoksayılır)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "API Erişimi"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "changedetection.io'nuzu API üzerinden yönlendirin, Daha fazlası"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "API erişimi ve örnekler burada"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Şunu kullanarak API erişim sınırını kısıtlayın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "başlık - Chrome Eklentisinin çalışması için gereklidir"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "kopyala"
+
