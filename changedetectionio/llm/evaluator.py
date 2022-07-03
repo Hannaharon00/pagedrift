@@ -165,6 +165,84 @@ def _summary_max_tokens(diff: str, max_cap: int = LLM_DEFAULT_MAX_SUMMARY_TOKENS
     return max(400, min(len(diff) // 4, max_cap))
 
 
+def apply_local_token_multiplier(base_max_tokens: int, llm_cfg: dict) -> int:
+    """
+    Scale max_tokens for endpoints that commonly serve reasoning models
+    (Ollama — self-hosted or ollama.com cloud — and OpenAI-compatible servers like
+    vLLM, LM Studio, llama.cpp).
+
+    Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought into
+    `message.reasoning_content` BEFORE the final answer lands in `message.content`.
+    Without enough headroom the request truncates mid-thought (`finish_reason='length'`
+    or `'stop'` with empty content) and the answer never lands — callers see an empty
+    string and silently fall through to safe defaults, hiding the problem.
+
+    Cloud providers with stable, non-reasoning defaults (OpenAI, Anthropic, Gemini,
+    OpenRouter) keep their original tight caps so existing users see no behavior or
+    cost change. Ollama / OpenAI-compatible users can dial the multiplier down to 1x
+    in Settings → AI → Provider if they want to keep costs tight on a paid endpoint.
+
+    Activated when `llm_cfg['provider_kind']` is `'ollama'` or `'openai_compatible'`.
+    Multiplier defaults to 5x and is user-configurable in Settings → AI → Provider.
+    """
+    if (llm_cfg or {}).get('provider_kind') not in ('ollama', 'openai_compatible'):
+        return base_max_tokens
+    try:
+        multiplier = int(llm_cfg.get('local_token_multiplier') or 5)
+    except (TypeError, ValueError):
+        multiplier = 5
+    # Clamp to the same 1-20 range the form enforces. Defense-in-depth against
+    # corrupted datastore values that bypassed form validation (manual JSON edits,
+    # future migrations, plugins): a runaway multiplier could otherwise produce
+    # absurdly large max_tokens caps and exhaust local-endpoint memory.
+    multiplier = max(1, min(multiplier, 20))
+    return base_max_tokens * multiplier
+
+
+def _is_local_llm_endpoint(llm_cfg: dict) -> bool:
+    """
+    True when the configured `api_base` points at an IANA-restricted host
+    (private / loopback / link-local / reserved) — i.e. a local or LAN
+    self-hosted LLM (Ollama, vLLM, LM Studio, llama.cpp, ...).
+
+    Detection is purely by the api_base host, reusing the same IANA check the
+    SSRF guard uses (is_private_hostname). Because it resolves DNS, docker
+    service names (`http://ollama:11434`), `host.docker.internal`, and bare LAN
+    IPs are all recognised. No api_base (cloud providers) → False.
+    """
+    api_base = ((llm_cfg or {}).get('api_base') or '').strip()
+    if not api_base:
+        return False
+    try:
+        from urllib.parse import urlparse
+        from changedetectionio.validate_url import is_private_hostname
+        host = urlparse(api_base).hostname
+        return bool(host) and is_private_hostname(host)
+    except Exception:
+        # Never let timeout resolution break an LLM call — fall back to "not local".
+        return False
+
+
+def resolve_llm_timeout(llm_cfg: dict) -> int:
+    """
+    Per-request timeout (seconds) for an LLM call.
+
+    Cloud providers get client.DEFAULT_TIMEOUT (300s, tunable via LLM_TIMEOUT).
+    Local / self-hosted endpoints run on modest hardware and can spend many minutes
+    on prompt prefill before the first token, so a 300s cap trips prematurely
+    (issue #4225). When the api_base host is IANA-restricted (see
+    _is_local_llm_endpoint) we grant client.DEFAULT_LOCAL_TIMEOUT (1800s, tunable
+    via LLM_LOCAL_TIMEOUT) — mirroring how Hermes relaxes its timeouts for local
+    endpoints. An explicit LLM_TIMEOUT always wins, even for local endpoints, for
+    operators who want a single hard ceiling regardless.
+    """
+    if os.getenv('LLM_TIMEOUT', '').strip():
+        return llm_client.DEFAULT_TIMEOUT
+    if _is_local_llm_endpoint(llm_cfg):
+        return llm_client.DEFAULT_LOCAL_TIMEOUT
+    return llm_client.DEFAULT_TIMEOUT
+
+
 # ---------------------------------------------------------------------------
 # Intent resolution
 # ---------------------------------------------------------------------------
