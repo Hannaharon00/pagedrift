@@ -87,3 +87,10 @@ if 'pytest' not in sys.modules:
     except RuntimeError:
         logger.debug(f"Multiprocessing start method already set: {multiprocessing.get_start_method()}")
 
+# Only global so we can access it in the signal handler
+app = None
+datastore = None
+
+def get_version():
+    return __version__
+
