@@ -1,0 +1,32 @@
+{#
+  AI Intent + AI Change Summary section — shared include for watch edit and tag/group edit.
+
+  Required template context:
+    llm_configured  — bool: LLM provider is configured in settings
+    form            — the WTForms form (must have .llm_intent and .llm_change_summary fields)
+
+  Group/tag edit only:
+    llm_group_edit  — bool: True when rendering the tag/group edit page. This is the ONLY
+                      way to tell the two contexts apart — the tags blueprint also passes
+                      the tag dict as `watch`, so `watch` is truthy in both.
+                      form.llm_backend_profile is ternary here (On / Off / Leave it to each
+                      watch) and is the group's only AI control; on a watch it is a checkbox.
+
+  Watch edit only:
+    watch               — the Watch object (for processor check and prefilter display)
+    llm_group_overrides — dict returned by _resolve_llm_group_overrides():
+                          {'llm_intent': {'value': str, 'group_name': str} | None,
+                           'llm_change_summary': {'value': str, 'group_name': str} | None,
+                           'llm_backend_profile': {'value': bool, 'group_name': str} | None}
+                          The two prompt entries are non-None only when the watch has no own
+                          value AND a linked group set to "On" has one — that is what puts
+                          "From group '<name>': <value>" in the placeholder.
+                          llm_backend_profile is non-None when a linked group has taken the
+                          on/off decision (On or Off, not "leave it to each watch") — #4204.
+
+  Usage (both): {% include "edit/include_llm_intent.html" %}
+#}
+{% from '_helpers.html' import render_field, render_checkbox_field, render_ternary_field %}
+
+{% set llm_group_mode = llm_group_edit|default(false) %}
+
