@@ -105,6 +105,68 @@ msgstr "Not: Bu, ana uygulama ayarlarını geçersiz kılmaz, yalnızca izleyici
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr ""
 
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "Parola koruması kaldırıldı."
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr "Uyarı: Çalışan sayısı ({worker_count}), mevcut CPU çekirdek sayısına ({cpu_count}) yakın veya bunu aşıyor"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "Çalışan sayısı ayarlandı: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "Senkron çalışanlar için dinamik çalışan ayarı desteklenmiyor"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "Çalışanlar ayarlanırken hata oluştu: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection enabled."
+msgstr "Parola koruması etkinleştirildi."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+msgid "Settings updated."
+msgstr "Ayarlar güncellendi."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/processors/extract.py
+msgid "An error occurred, please see below."
+msgstr "Bir hata oluştu, lütfen aşağıya bakın."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "API Key was regenerated."
+msgstr "API Anahtarı yeniden oluşturuldu."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling paused - checks will not be queued."
+msgstr "Otomatik zamanlama duraklatıldı - kontroller sıraya alınmayacak."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling resumed - checks will be queued normally."
+msgstr "Otomatik zamanlama devam ettirildi - kontroller normal şekilde sıraya alınacak."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications muted."
+msgstr "Tüm bildirimler sessize alındı."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications unmuted."
+msgstr "Tüm bildirimlerin sesi açıldı."
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid ""
+"api_key is required when api_base differs from the saved configuration. Refusing to send the stored API key to a "
+"different endpoint."
+msgstr ""
+
 #: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
 msgid "Don't paste HTML here, use only CSS and XPath selectors"
 msgstr "Buraya HTML yapıştırmayın, yalnızca CSS ve XPath seçicilerini kullanın"
