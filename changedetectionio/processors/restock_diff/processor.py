@@ -128,3 +128,75 @@ def _deduplicate_prices(data):
 # =============================================================================
 
 
+def _extract_itemprop_availability_worker(pipe_conn):
+    """
+    Subprocess worker for itemprop extraction (Linux memory management).
+
+    Uses spawn multiprocessing to isolate extruct/lxml memory allocations.
+    When the subprocess exits, the OS reclaims ALL memory including lxml's
+    C-level allocations that Python's GC cannot release.
+
+    Args:
+        pipe_conn: Pipe connection to receive HTML and send result
+    """
+    import json
+    import gc
+
+    html_content = None
+    result_data = None
+
+    try:
+        # Receive HTML as raw bytes (no pickle)
+        html_bytes = pipe_conn.recv_bytes()
+        html_content = html_bytes.decode('utf-8')
+
+        # Explicitly delete html_bytes to free memory
+        del html_bytes
+        gc.collect()
+
+        # Perform extraction in subprocess (uses extruct/lxml)
+        result_data = get_itemprop_availability(html_content)
+
+        # Convert Restock object to dict for JSON serialization
+        result = {
+            'success': True,
+            'data': dict(result_data) if result_data else {}
+        }
+        pipe_conn.send_bytes(json.dumps(result).encode('utf-8'))
+
+        # Clean up before exit
+        del result_data, html_content, result
+        gc.collect()
+
+    except MoreThanOnePriceFound:
+        # Serialize the specific exception type
+        result = {
+            'success': False,
+            'exception_type': 'MoreThanOnePriceFound'
+        }
+        pipe_conn.send_bytes(json.dumps(result).encode('utf-8'))
+
+    except Exception as e:
+        # Serialize other exceptions
+        result = {
+            'success': False,
+            'exception_type': type(e).__name__,
+            'exception_message': str(e)
+        }
+        pipe_conn.send_bytes(json.dumps(result).encode('utf-8'))
+
+    finally:
+        # Final cleanup before subprocess exits
+        # Variables may already be deleted in try block, so use try/except
+        try:
+            del html_content
+        except (NameError, UnboundLocalError):
+            pass
+        try:
+            del result_data
+        except (NameError, UnboundLocalError):
+            pass
+        gc.collect()
+        pipe_conn.close()
+
+
