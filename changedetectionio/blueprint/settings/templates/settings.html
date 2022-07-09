@@ -63,6 +63,89 @@
                         </span>
                     </div>
 
+                    <div class="pure-control-group">
+                        {% if not hide_remove_pass %}
+                            {% if current_user.is_authenticated %}
+                                {{ render_button(form.application.form.removepassword_button) }}
+                            {% else %}
+                            {{ render_field(form.application.form.password) }}
+                            <span class="pure-form-message-inline">{{ _('Password protection for your changedetection.io application.') }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="pure-form-message-inline">{{ _('Password is locked.') }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="pure-control-group">
+                      <a href="{{url_for('ui.clear_all_history')}}" class="pure-button button-error">{{ _('Clear Snapshot History') }}</a>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.application.form.shared_diff_access, class="shared_diff_access") }}
+                        <span class="pure-form-message-inline">{{ _('Allow access to the watch change history page when password is enabled (Good for sharing the diff page)') }}</span>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.application.form.empty_pages_are_a_change) }}
+                        <span class="pure-form-message-inline">{{ _('When a request returns no content, or the HTML does not contain any text, is this considered a change?') }}</span>
+                    </div>
+                {% if form.requests.proxy %}
+                    <div>
+                    <br>
+                        <div class="inline-radio">
+                            {{ render_field(form.requests.form.proxy, class="fetch-backend-proxy") }}
+                            <span class="pure-form-message-inline">{{ _('Choose a default proxy for all watches') }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                </fieldset>
+            </div>
+
+            <div class="tab-pane-inner" id="fetching">
+                <div class="pure-control-group inline-radio">
+                    {{ render_field(form.application.form.fetch_backend, class="fetch-backend") }}
+                    <span class="pure-form-message-inline">
+                        <p>{{ _('Use the <strong>Basic</strong> method (default) where your watched sites don\'t need Javascript to render.')|safe }}</p>
+                        <p>{{ _('The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set by the ENV var \'WEBDRIVER_URL\'.')|safe }}</p>
+                    </span>
+                </div>
+                <fieldset class="pure-group" id="webdriver-override-options" data-visible-for="application-fetch_backend=html_webdriver">
+                    <div class="pure-form-message-inline">
+                        <strong>{{ _('If you\'re having trouble waiting for the page to be fully rendered (text missing etc), try increasing the \'wait\' time here.') }}</strong>
+                        <br>
+                        {{ _('This will wait <i>n</i> seconds before extracting the text.')|safe }}
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_field(form.application.form.webdriver_delay) }}
+                    </div>
+                </fieldset>
+                <div class="pure-control-group">
+                    {{ render_field(form.requests.form.workers) }}
+                    {% set worker_info = get_worker_status_info() %}
+                    <span class="pure-form-message-inline">{{ _('Number of concurrent workers to process watches. More workers = faster processing but higher memory usage.') }}<br>
+                    {{ _('Currently running:') }} <strong>{{ worker_info.count }}</strong> {{ _('operational') }} {{ worker_info.type }} {{ _('workers') }}{% if worker_info.active_workers > 0 %} ({{ worker_info.active_workers }} {{ _('actively processing') }}){% endif %}.</span>
+                </div>
+                <div class="pure-control-group">
+                    {{ render_field(form.requests.form.jitter_seconds, class="jitter_seconds") }}
+                    <span class="pure-form-message-inline">{{ _('Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later') }}</span>
+                </div>
+                <div class="pure-control-group">
+                    {{ render_field(form.requests.form.timeout) }}
+                    <span class="pure-form-message-inline">{{ _('For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999.') }}</span><br>
+                </div>
+                <div class="pure-control-group inline-radio">
+                    {{ render_field(form.requests.form.default_ua) }}
+                    <span class="pure-form-message-inline">
+                        {{ _('Applied to all requests.') }}<br><br>
+                        {{ _('Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it\'s important to consider') }} <a href="https://changedetection.io/tutorial/what-are-main-types-anti-robot-mechanisms">{{ _('all of the ways that the browser is detected') }}</a>.
+                    </span>
+                </div>
+                <div class="pure-control-group">
+                <br>
+                    {{ _('Tip:') }} <a href="{{ url_for('settings.settings_page')}}#proxies">{{ _('Connect using Bright Data proxies, find out more here.') }}</a>
+                </div>
+            </div>
+
+            <div class="tab-pane-inner" id="filters">
+
                     <fieldset class="pure-group">
                     {{ render_checkbox_field(form.application.form.ignore_whitespace) }}
                     <span class="pure-form-message-inline">{{ _('Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected.') }}<br>
