@@ -44,3 +44,56 @@ msgstr "Идти"
 msgid "Enter a URL to get started!"
 msgstr ""
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "Резервная копия создаётся в фоновом режиме, повторите попытку через несколько минут."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Резервные копии были удалены."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "Резервный zip-файл"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "Это должен быть файл резервной копии .zip!"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "Включить группы"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "Заменить существующие группы с одним и тем же UUID."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "Включить часы"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "Заменить существующие часы с тем же UUID"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "Восстановить резервную копию"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "Восстановление уже запущено. Повторите попытку через несколько минут."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "Ни один файл не загружен"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "Файл должен быть файлом резервной копии .zip."
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "Файл резервной копии слишком велик (максимум %(mb)s МБ)"
+
