@@ -745,3 +745,33 @@ class importForm(Form):
     xlsx_file = FileField(_l('Upload .xlsx file'), validators=[FileAllowed(['xlsx'], _l('Must be .xlsx file!'))])
     file_mapping = SelectField(_l('File mapping'), [validators.DataRequired()], choices={('wachete', 'Wachete mapping'), ('custom','Custom mapping')})
 
+class SingleExtraProxy(Form):
+    # maybe better to set some <script>var..
+    proxy_name = StringField(_l('Name'), [validators.Optional()], render_kw={"placeholder": _l("Name")})
+    proxy_url = StringField(_l('Proxy URL'), [
+        validators.Optional(),
+        ValidateStartsWithRegex(
+            regex=r'^(https?|socks5)://',  # ✅ main pattern
+            flags=re.IGNORECASE,  # ✅ makes it case-insensitive
+            message=_l('Proxy URLs must start with http://, https:// or socks5://'),
+        ),
+        ValidateSimpleURL()
+    ], render_kw={"placeholder": "socks5:// or regular proxy http://user:pass@...:3128", "size":50})
+
+class SingleExtraBrowser(Form):
+    browser_name = StringField(_l('Name'), [validators.Optional()], render_kw={"placeholder": _l("Name")})
+    browser_connection_url = StringField(_l('Browser connection URL'), [
+        validators.Optional(),
+        ValidateStartsWithRegex(
+            regex=r'^(wss?|ws)://',
+            flags=re.IGNORECASE,
+            message=_l('Browser URLs must start with wss:// or ws://')
+        ),
+        ValidateSimpleURL()
+    ], render_kw={"placeholder": "wss://brightdata... wss://oxylabs etc", "size":50})
+
+class DefaultUAInputForm(Form):
+    html_requests = StringField(_l('Plaintext requests'), validators=[validators.Optional()], render_kw={"placeholder": "<default>"})
+    if os.getenv("PLAYWRIGHT_DRIVER_URL") or os.getenv("WEBDRIVER_URL"):
+        html_webdriver = StringField(_l('Chrome requests'), validators=[validators.Optional()], render_kw={"placeholder": "<default>"})
+
