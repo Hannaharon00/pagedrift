@@ -226,3 +226,63 @@ msgstr "활발히 처리 중"
 msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
 msgstr "예: 무작위 지터를 3초로 설정하면 최대 3초 빠르거나 최대 3초 늦게 실행될 수 있습니다."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr "인증이 필요한 SOCKS5 프록시는 'plain requests' 가져오기 방식에서만 지원됩니다. 다른 가져오기 방식에서는 대신 IP 접근을 허용해야 합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr "가동 시간:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "파이썬 버전:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "최대 페이지 모니터링 수:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "활성화된 플러그인:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "활성화된 플러그인이 없습니다."
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "사용량"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Overview"
+msgstr "개요"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Provider"
+msgstr "프로바이더"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Prompts"
+msgstr "프롬프트"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Behaviour"
+msgstr "동작"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI-powered change monitoring"
+msgstr "AI 기반 변경 모니터링"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Connect an LLM to move from \"something changed\" to \"only the thing you care about changed\"."
+msgstr "LLM을 연결해 \"무언가 변경됨\"에서 \"관심 있는 내용만 변경됨\"으로 전환하세요."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Intent filtering"
+msgstr "판단 기준 필터링"
+
