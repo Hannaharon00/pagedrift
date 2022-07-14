@@ -7,6 +7,63 @@
 //   - the Add Watch UI drives it from inline snapshot data fetched on demand
 // Both share the same hover/highlight/select core.
 
+window.initVisualSelector = function (opts) {
+    // ---- DOM references (passed in, no globals) ----
+    const $selectorCanvasElem = opts.$canvas;
+    const $includeFiltersElem = opts.$includeFilters;
+    const $selectorBackgroundElem = opts.$background;
+    const $selectorCurrentXpathElem = opts.$xpathDisplay;          // the inner <span>
+    const $fetchingUpdateNoticeElem = opts.$fetchingNotice || $();
+    const $selectorWrapperElem = opts.$wrapper;
+    const $clearSelectorElem = opts.$clearButton || $();
+
+    // edit.html supplies an AJAX url for the element data; the add-watch UI supplies data inline
+    const xpathDataUrl = opts.xpathDataUrl;
+    const isImageProcessor = !!opts.processorIsImage;
+    // Stored watch screenshots are DPR-1, so X scales by the screenshot's natural width.
+    // The live browser-steps capture (used by Add Watch) may render at device-scale-factor != 1,
+    // so its X must scale by the page's CSS width (browser_width) instead - exactly like
+    // browser-steps.js does. Y always scales by the screenshot's natural height.
+    const scaleByBrowserWidth = !!opts.scaleByBrowserWidth;
+
+    // ---- state ----
+    let runInClearMode = false;
+    let selectionEnabled = opts.enableSelection !== false;
+    let currentSelections = [];
+    let currentSelection = null;
+    let appendToList = false;
+    let c, xctx, ctx;
+    let xScale = 1, yScale = 1;
+    let selectorImage, selectorImageRect, selectorData;
+    let elementHandlers = {}; // Store references to element selection handlers (needed for draw mode toggling)
+
+    // Box drawing mode variables (for image_ssim_diff processor)
+    let drawMode = false;
+    let isDrawing = false;
+    let isDragging = false;
+    let drawStartX, drawStartY;
+    let dragOffsetX, dragOffsetY;
+    let drawnBox = null;
+    let resizeHandle = null;
+    const HANDLE_SIZE = 8;
+
+    // Color constants
+    const FILL_STYLE_HIGHLIGHT = 'rgba(205,0,0,0.35)';
+    const FILL_STYLE_GREYED_OUT = 'rgba(205,205,205,0.95)';
+    const STROKE_STYLE_HIGHLIGHT = 'rgba(255,0,0, 0.9)';
+    const FILL_STYLE_REDLINE = 'rgba(255,0,0, 0.1)';
+    const STROKE_STYLE_REDLINE = 'rgba(225,0,0,0.9)';
+
+    function clearReset() {
+        if (ctx) {
+            ctx.clearRect(0, 0, c.width, c.height);
+        }
+
+        if ($includeFiltersElem.val().length) {
+            alert(i18nT('vsFiltersCleared', "Existing filters under the 'Filters & Triggers' tab were cleared."));
+        }
+        $includeFiltersElem.val('');
+
     function fetchData() {
         $fetchingUpdateNoticeElem.html(i18nT('vsFetching', "Fetching element data.."));
 
