@@ -45,6 +45,63 @@ msgstr "前往"
 msgid "Enter a URL to get started!"
 msgstr "輸入 URL 以開始使用！"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "正在背景建立備份，請稍後再回來查看。"
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "備份已刪除。"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "備份 ZIP 檔案"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "必須是 .zip 備份檔案！"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "包含群組"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "取代相同 UUID 的現有群組"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "包含監測任務"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "取代相同 UUID 的現有監測任務"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "還原備份"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "還原正在執行中，請稍後再回來查看"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "未上傳檔案"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "檔案必須是 .zip 備份檔案"
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "備份檔案太大（最大 %(mb)s MB）"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "無效或已損毀的 ZIP 檔案"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "File mapping type."
 msgstr "檔案對應類型。"
