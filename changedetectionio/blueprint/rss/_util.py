@@ -98,3 +98,60 @@ def add_watch_categories(fe, watch, datastore):
             fe.category(term=tag.get('title'))
 
 
+def build_notification_context(watch, timestamp_from, timestamp_to, watch_label,
+                               n_body_template, rss_content_format):
+    """Build the notification context object."""
+    return NotificationContextData(initial_data={
+        'notification_urls': ['null://just-sending-a-null-test-for-the-render-in-RSS'],
+        'notification_body': n_body_template,
+        'timestamp_to': timestamp_to,
+        'timestamp_from': timestamp_from,
+        'watch_label': watch_label,
+        'notification_format': rss_content_format
+    })
+
+
+def render_notification(n_object, notification_service, watch, datastore,
+                       date_index_from=None, date_index_to=None):
+    """Process and render the notification content."""
+    kwargs = {'n_object': n_object, 'watch': watch}
+
+    if date_index_from is not None and date_index_to is not None:
+        kwargs['date_index_from'] = date_index_from
+        kwargs['date_index_to'] = date_index_to
+
+    n_object = notification_service.queue_notification_for_watch(**kwargs)
+    n_object['watch_mime_type'] = None
+
+    res = process_notification(n_object=n_object, datastore=datastore)
+    return res[0]
+
+
+def populate_feed_entry(fe, watch, content, guid, timestamp, link=None, title_suffix=None):
+    """Populate a feed entry with content and metadata."""
+    watch_label = watch.get('url')  # Already determined by caller
+
+    # Set link
+    if link:
+        fe.link(link=link)
+
+    # Set title
+    if title_suffix:
+        fe.title(title=f"{watch_label} - {title_suffix}")
+    else:
+        fe.title(title=watch_label)
+
+    # Clean and set content
+    if scan_invalid_chars_in_rss(content):
+        content = clean_entry_content(content)
+    fe.content(content=content, type='CDATA')
+
+    # Set GUID
+    fe.guid(guid, permalink=False)
+
+    # Set pubDate using the timestamp of this specific change
+    # Note: tz= must be passed to fromtimestamp(), otherwise we get a naive datetime in the
+    # container's local timezone and relabelling it as UTC shifts every pubDate by the local offset
+    dt = datetime.datetime.fromtimestamp(int(timestamp), tz=pytz.UTC)
+    fe.pubDate(dt)
+
