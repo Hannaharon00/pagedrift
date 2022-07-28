@@ -1,2 +1,47 @@
 // Styles for /queue (blueprint/ui/templates/queue.html)
 
+#queue-page {
+  width: 100%;
+  color: var(--color-white);
+
+  h2,
+  h3 {
+    color: var(--color-white);
+  }
+
+  .queue-panel {
+    background: var(--color-background-new-watch-form);
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--color-white);
+  }
+
+  .queue-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .queue-stat {
+    .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+    }
+
+    .value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-white);
+    }
+
+    // Action cell holds the Clear Queue button in place of a stat
+    &.queue-stat--action {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
