@@ -109,3 +109,61 @@ msgstr "バックアップはすでに実行中です。数分後に再確認し
 msgid "Maximum number of backups reached, please remove some"
 msgstr "バックアップの最大数に達しました。いくつか削除してください。"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "同じ UUID の既存グループを置き換えますか？"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "バックアップに含まれるすべてのウォッチを含めますか？"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "同じ UUID の既存ウォッチを置き換えますか？"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "リストの最初の5,000件のURLをインポートしています。残りは再度インポートできます。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} 件をリストから {duration}秒でインポートしました。{skipped_count} 件をスキップしました。"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "JSONファイルを読み込めませんでした。ファイルが壊れていますか？"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "JSONの構造が無効のようです。ファイルが壊れていますか？"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} 件を Distill.io から {duration}秒でインポートしました。{skipped_count} 件をスキップしました。"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "エクスポートXLSXファイルを読み込めませんでした。ファイルに問題がありますか？"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "行番号 {} の処理中にエラーが発生しました。URL値が正しくないため、この行をスキップしました。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "行番号 {} の処理中にエラーが発生しました。すべてのセルのデータ型が正しいか確認してください。この行をスキップしました。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} 件を Wachete .xlsx から {duration}秒でインポートしました"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} 件をカスタム .xlsx から {duration}秒でインポートしました"
+
