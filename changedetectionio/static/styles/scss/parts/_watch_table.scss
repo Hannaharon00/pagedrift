@@ -11,3 +11,27 @@ $title-col-stack-breakpoint: 1200px;
   background-color: var(--watchlist-row-selected);
 }
 
+// Reveal the per-row action buttons on hover/focus/selection (hidden at rest —
+// see td.buttons below). The row-hover background itself comes from .cdio-table.
+.watch-table tbody tr:hover td.buttons *,
+.watch-table tbody tr:focus-within td.buttons *,
+.watch-table tbody tr:has(input[name="uuids"]:checked) td.buttons * {
+  opacity: 1;
+}
+
+// "Select all matching" banner shown under the bulk-operations bar when the
+// whole visible page is selected but more matching rows exist on other pages.
+.select-all-banner {
+  margin: 0.4rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--common-round-border);
+  background: var(--watchlist-row-selected);
+  color: var(--color-watch-table-row-text);
+  font-size: var(--body-main-text-size);
+
+  button {
+    margin-left: 0.5rem;
+    vertical-align: baseline;
+  }
+}
+
