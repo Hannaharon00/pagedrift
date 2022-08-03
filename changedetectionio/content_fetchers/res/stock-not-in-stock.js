@@ -152,3 +152,42 @@ async () => {
             return true;
         }
 
+// @todo - if it's SVG or IMG, go into image diff mode
+
+        function collectVisibleElements(parent, visibleElements) {
+            if (!parent) return; // Base case: if parent is null or undefined, return
+
+            // Add the parent itself to the visible elements array if it's of the specified types
+            visibleElements.push(parent);
+
+            // Iterate over the parent's children
+            const children = parent.children;
+            for (let i = 0; i < children.length; i++) {
+                const child = children[i];
+                if (
+                    child.nodeType === Node.ELEMENT_NODE &&
+                    window.getComputedStyle(child).display !== 'none' &&
+                    window.getComputedStyle(child).visibility !== 'hidden' &&
+                    child.offsetWidth >= 0 &&
+                    child.offsetHeight >= 0 &&
+                    window.getComputedStyle(child).contentVisibility !== 'hidden'
+                ) {
+                    // If the child is an element and is visible, recursively collect visible elements
+                    collectVisibleElements(child, visibleElements);
+                }
+            }
+        }
+
+        const elementsToScan = [];
+        collectVisibleElements(document.body, elementsToScan);
+
+        var elementText = "";
+
+        // REGEXS THAT REALLY MEAN IT'S IN STOCK
+        for (let i = elementsToScan.length - 1; i >= 0; i--) {
+            const element = elementsToScan[i];
+
+            if (!elementIsInEyeBallRange(element)) {
+                continue
+            }
+
