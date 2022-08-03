@@ -167,3 +167,66 @@ msgstr "{count} 件を Wachete .xlsx から {duration}秒でインポートし�
 msgid "{count} imported from custom .xlsx in {duration}s"
 msgstr "{count} 件をカスタム .xlsx から {duration}秒でインポートしました"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "URLリスト"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX & Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr "バックアップ復元"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "changedetection.io のバックアップ復元は"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "バックアップセクション"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr "1行に1つのURLを入力し、必要に応じてスペースの後にカンマ（,）区切りでタグを追加できます："
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "例"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "検証を通過しないURLはテキストエリアに残ります。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Distill.io ウォッチの「エクスポート」ファイルをコピーして貼り付けてください。JSONファイルである必要があります。"
+
+# 訳注: 日本語を斜体にすると字形が崩れるため、強調表示は<strong>に置き換える。
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"これは<strong>試験的機能</strong>です。サポートされているフィールドは <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code> で、残り（<code>schedule</code> を含む）は無視されます。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "エクスポート方法は？"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "必要に応じてデフォルトのフェッチャーを Chrome に設定してください。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "カスタム列とデータ型マッピングの表："
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "カスタムマッピング"
+
