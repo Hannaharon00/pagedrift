@@ -7,3 +7,9 @@ from changedetectionio import worker_pool
 from changedetectionio.queuedWatchMetaData import PrioritizedItem
 from changedetectionio.pluggy_interface import apply_update_handler_alter, apply_update_finalize
 
+import asyncio
+import os
+import re
+import sys
+import time
+
