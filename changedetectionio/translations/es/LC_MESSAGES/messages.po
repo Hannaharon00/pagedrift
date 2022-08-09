@@ -104,3 +104,60 @@ msgstr "Ya se está ejecutando una copia de seguridad. Vuelve a comprobarla en u
 msgid "Maximum number of backups reached, please remove some"
 msgstr "Se alcanzó el número máximo de copias de seguridad; elimine algunas"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "La copia de seguridad se está creando en segundo plano. Vuelve a comprobarlo en unos minutos."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Se eliminaron las copias de seguridad."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "Archivo zip de copia de seguridad"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "¡Debe ser un archivo de copia de seguridad .zip!"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "Incluir grupos"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "Reemplazar grupos existentes del mismo UUID"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "Incluir monitores"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "Reemplazar monitores existentes del mismo UUID"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "Restaurar copia de seguridad"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "Ya se está ejecutando una restauración, vuelve a comprobarlo en unos minutos"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "No se ha subido ningún archivo"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "El archivo debe ser un archivo de copia de seguridad .zip"
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "Archivo zip no válido o dañado"
+
