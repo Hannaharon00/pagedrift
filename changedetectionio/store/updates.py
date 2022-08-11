@@ -13,3 +13,10 @@ from loguru import logger
 from copy import deepcopy
 
 
+# Try to import orjson for faster JSON serialization
+try:
+    import orjson
+    HAS_ORJSON = True
+except ImportError:
+    HAS_ORJSON = False
+
