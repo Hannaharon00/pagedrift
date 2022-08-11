@@ -224,3 +224,65 @@ msgstr ""
 "Liczba procesów działających jednocześnie do przetwarzania obserwacji. Więcej procesów oznacza szybsze przetwarzanie,"
 " ale większe zużycie pamięci."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "Zmiana tej opcji spowoduje zmianę statusu istniejących obserwacji, co może wywołać powiadomienia itp."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "Wyświetla zawartość tagu kotwicy; domyślnie wyłączone; po włączeniu wyświetla linki jako"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "Zmiana tej opcji może wpłynąć na zawartość istniejących obserwacji, a także spowodować wygenerowanie powiadomień itp."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "Przed konwersją tekstu należy usunąć elementy HTML za pomocą selektorów CSS i XPath."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Nie wklejaj tutaj kodu HTML – używaj wyłącznie selektorów CSS i XPath"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Wpisz w jednym wierszu wiele elementów, selektorów CSS lub XPath, aby pominąć różne fragmenty kodu HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr ""
+"Uwaga: To ustawienie ma zastosowanie globalne i obowiązuje dodatkowo w stosunku do reguł dotyczących poszczególnych "
+"obserwacji."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "Zgodny tekst zostanie pominięty w migawce tekstu (nadal będzie widoczny, ale nie spowoduje to zmiany)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr ""
+"Każdy wiersz jest przetwarzany osobno; wszelkie pasujące wiersze zostaną pominięte (usunięte przed utworzeniem sumy "
+"kontrolnej)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Obsługa wyrażeń regularnych – cała linia powinna być otoczona ukośnikami"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Zmiana tej wartości wpłynie na sumę kontrolną służącą do porównania, co może spowodować wygenerowanie ostrzeżenia"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"Należy usunąć z wyniku wszelkie fragmenty tekstu wymienione w sekcji „Tekst do pominięcia” (w przeciwnym razie "
+"zostaną one po prostu pominięte podczas wykrywania zmian)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "Dostęp do API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Korzystaj z serwisu changedetection.io za pośrednictwem API. Więcej informacji na temat"
+
