@@ -46,3 +46,65 @@ msgstr "Ir"
 msgid "Enter a URL to get started!"
 msgstr ""
 
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr "Aviso: O número de workers ({worker_count}) está próximo ou excede os núcleos de CPU disponíveis ({cpu_count})"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "Contagem de workers ajustada: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "Ajuste dinâmico de workers não é suportado para workers síncronos"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "Erro ao ajustar workers: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection enabled."
+msgstr "Proteção por senha ativada."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+msgid "Settings updated."
+msgstr "Configurações atualizadas."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/processors/extract.py
+msgid "An error occurred, please see below."
+msgstr "Ocorreu um erro, veja abaixo."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "API Key was regenerated."
+msgstr "A chave da API foi regenerada."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling paused - checks will not be queued."
+msgstr "Agendamento automático pausado - as verificações não serão enfileiradas."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling resumed - checks will be queued normally."
+msgstr "Agendamento automático retomado - as verificações serão enfileiradas normalmente."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications muted."
+msgstr "Todas as notificações silenciadas."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications unmuted."
+msgstr "Todas as notificações reativadas."
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid ""
+"api_key is required when api_base differs from the saved configuration. Refusing to send the stored API key to a "
+"different endpoint."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid "AI / LLM configuration removed."
+msgstr ""
+
