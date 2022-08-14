@@ -94,3 +94,52 @@ datastore = None
 def get_version():
     return __version__
 
+# Parent wrapper or OS sends us a SIGTERM/SIGINT, do everything required for a clean shutdown
+def sigshutdown_handler(_signo, _stack_frame):
+    name = signal.Signals(_signo).name
+    logger.critical(f'Shutdown: Got Signal - {name} ({_signo}), Fast shutdown initiated')
+
+    # Set exit flag immediately to stop all loops
+    app.config.exit.set()
+    datastore.stop_thread = True
+
+    # Log memory consumption before shutting down workers (cross-platform)
+    try:
+        import psutil
+        process = psutil.Process()
+        mem_info = process.memory_info()
+        rss_mb = mem_info.rss / 1024 / 1024
+        vms_mb = mem_info.vms / 1024 / 1024
+        logger.info(f"Memory consumption before worker shutdown: RSS={rss_mb:,.2f} MB, VMS={vms_mb:,.2f} MB")
+    except Exception as e:
+        logger.warning(f"Could not retrieve memory stats: {str(e)}")
+
+    # Shutdown workers and queues immediately
+    try:
+        from changedetectionio import worker_pool
+        worker_pool.shutdown_workers()
+    except Exception as e:
+        logger.error(f"Error shutting down workers: {str(e)}")
+    
+    # Close janus queues properly
+    try:
+        from changedetectionio.flask_app import update_q, notification_q
+        update_q.close()
+        notification_q.close()
+        logger.debug("Queues closed successfully")
+    except Exception as e:
+        logger.critical(f"CRITICAL: Failed to close queues: {e}")
+    
+    # Shutdown socketio server fast
+    from changedetectionio.flask_app import socketio_server
+    if socketio_server and hasattr(socketio_server, 'shutdown'):
+        try:
+            socketio_server.shutdown()
+        except Exception as e:
+            logger.error(f"Error shutting down Socket.IO server: {str(e)}")
+    
+    # With immediate persistence, all data is already saved
+    logger.success('All data already persisted (immediate commits enabled).')
+
+    sys.exit()
+
