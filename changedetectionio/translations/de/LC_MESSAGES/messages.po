@@ -516,3 +516,70 @@ msgstr ""
 msgid "No AI usage recorded yet."
 msgstr ""
 
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use with caution!"
+msgstr "Mit Vorsicht verwenden!"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will easily fill up your email storage quota or flood other storages."
+msgstr "Dadurch wird Ihr E-Mail-Speicherkontingent leicht ausgeschöpft oder andere Speicher überflutet."
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Look out!"
+msgstr "Achtung!"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Lookout!"
+msgstr "Achtung!"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#, python-format
+msgid ""
+"There are <a href=\"%(url)s\">system-wide notification URLs enabled</a>, this form will override notification "
+"settings for this watch only &dash; an empty Notification URL list here will still send notifications."
+msgstr ""
+"<a href=\"%(url)s\">Es sind systemweite Benachrichtigungs-URLs aktiviert</a>. Dieses Formular überschreibt die "
+"Benachrichtigungseinstellungen nur für diese Überwachung &dash; auch wenn die Liste der Benachrichtigungs-URLs hier "
+"leer ist, werden dennoch Benachrichtigungen versendet."
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use system defaults"
+msgstr "Verwenden Sie Systemstandards"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Add a new organisational tag"
+msgstr "Fügen Sie ein neues Organisations-Tag hinzu"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Groups allows you to manage filters and notifications for multiple watches under a single organisational tag."
+msgstr ""
+"Mit Gruppen können Sie Filter und Benachrichtigungen für mehrere Überwachungen unter einem einzigen Organisations-Tag"
+" verwalten."
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "# Watches"
+msgstr "# Überwachungen"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Tag / Label name"
+msgstr "Tag-/Labelname"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "No website organisational tags/groups configured"
+msgstr "Keine Gruppen/Labels konfiguriert"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/menu.html
+msgid "Mute notifications"
+msgstr "Benachrichtigungen stummschalten"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck"
+msgstr "Neu prüfen"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/edit.py
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Edit"
+msgstr "Bearbeiten"
+
