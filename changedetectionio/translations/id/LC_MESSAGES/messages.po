@@ -219,3 +219,61 @@ msgstr "Atur ke <strong>0</strong> untuk menonaktifkan"
 msgid "Limit collection of history snapshots for each watch to this number of history items."
 msgstr "Batasi kumpulan snapshot riwayat setiap monitor hingga jumlah item riwayat ini."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "Mengubah ini dapat memengaruhi konten monitor Anda yang sudah ada, dan mungkin memicu peringatan, dll."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "Hapus elemen HTML berdasarkan selektor CSS dan XPath sebelum konversi teks."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Jangan tempel HTML di sini, gunakan hanya selektor CSS dan XPath"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Tambahkan beberapa elemen, selektor CSS atau XPath per baris untuk mengabaikan beberapa bagian HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Catatan: Ini diterapkan secara global selain aturan per monitor."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "Teks yang cocok akan diabaikan dalam snapshot teks (Anda tetap dapat melihatnya tetapi tidak akan memicu perubahan)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr "Setiap baris diproses secara terpisah, setiap baris yang cocok akan diabaikan (dihapus sebelum membuat checksum)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Dukungan Regular Expression, bungkus seluruh baris dengan garis miring"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Mengubah ini akan memengaruhi checksum perbandingan yang mungkin memicu peringatan"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"Hapus teks apa pun yang muncul dalam \"Abaikan teks\" dari output (jika tidak, teks hanya diabaikan untuk deteksi "
+"perubahan)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "Akses API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Kendalikan changedetection.io Anda melalui API, selengkapnya tentang"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "akses API dan contohnya di sini"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Batasi akses API menggunakan"
+
