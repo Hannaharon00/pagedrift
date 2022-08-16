@@ -48,6 +48,59 @@ msgstr "Mulai"
 msgid "Enter a URL to get started!"
 msgstr "Masukkan URL untuk memulai!"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "Cadangan sedang dibuat di latar belakang, periksa kembali beberapa menit lagi."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Cadangan telah dihapus."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "File ZIP cadangan"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "Harus berupa file cadangan .zip!"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "Sertakan grup"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "Ganti grup yang ada dengan UUID yang sama"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "Sertakan monitor"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "Ganti monitor yang ada dengan UUID yang sama"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "Pulihkan cadangan"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "Pemulihan sedang berjalan, periksa kembali beberapa menit lagi"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "Tidak ada file yang diunggah"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "File harus berupa file cadangan .zip"
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "File cadangan terlalu besar (maks. %(mb)s MB)"
+
 #: changedetectionio/blueprint/backups/restore.py
 msgid "Invalid or corrupted zip file"
 msgstr "File ZIP tidak valid atau rusak"
