@@ -34,3 +34,39 @@
   }
 }
 
+.llm-diff-summary-prompt {
+  margin: 0.4em 0 0;
+  font-size: 0.78rem;
+  font-style: italic;
+  overflow: hidden;
+  max-height: 3.8em;
+  animation: llm-prompt-reveal 0.7s ease-out both;
+
+  .llm-diff-summary-prompt-text {
+    display: block;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0) 100%);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    line-height: 1.45;
+  }
+}
+
+@keyframes llm-prompt-reveal {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.llm-diff-summary-loading {
+  opacity: 0.5;
+  font-style: italic;
+  animation: llm-pulse 1.4s ease-in-out infinite;
+  font-weight: bold;
+}
+
+@keyframes llm-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 0.2; }
+}
+
