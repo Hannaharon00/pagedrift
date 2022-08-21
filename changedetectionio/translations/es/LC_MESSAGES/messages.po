@@ -161,6 +161,70 @@ msgstr ""
 msgid "Invalid or corrupted zip file"
 msgstr "Archivo zip no válido o dañado"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "¿Incluir todos los grupos encontrados en la copia de seguridad?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "¿Reemplazar cualquier grupo existente del mismo UUID?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "¿Incluir todos los monitores encontrados en la copia de seguridad?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "¿Reemplazar cualquier monitor existente con el mismo UUID?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Importando 5.000 de las primeras URL de tu lista, el resto se puede importar nuevamente."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} importado de la lista en {duration}s, {skipped_count} omitido."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "No se puede leer el archivo JSON, ¿estaba roto?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "La estructura JSON parece no válida, ¿estaba rota?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} importado de Distill.io en {duration}s, {skipped_count} omitido."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "No se puede leer el archivo XLSX exportado, ¿hay algún problema con el archivo?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Error al procesar la fila número {}, el valor de la URL era incorrecto y se omitió la fila."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr ""
+"Error al procesar la fila número {}, compruebe que todos los tipos de datos de celda sean correctos; se omitió la "
+"fila."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} importado de Wachete .xlsx en {duration}s"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} importado desde .xlsx personalizado en {duration}s"
+
 #: changedetectionio/blueprint/settings/__init__.py
 msgid "Password protection removed."
 msgstr "Se eliminó la protección con contraseña."

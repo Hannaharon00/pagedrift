@@ -102,3 +102,57 @@ msgstr ""
 "Wystąpił błąd podczas przetwarzania wiersza o numerze {}; sprawdź, czy typy danych we wszystkich komórkach są "
 "prawidłowe; wiersz został pominięty."
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "General"
+msgstr "Ogólne informacje"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Fetching"
+msgstr "Pobieranie"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Global Filters"
+msgstr "Filtry globalne"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UI Options"
+msgstr "Opcje interfejsu użytkownika"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "Kopie zapasowe"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "Godzina i data"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "CAPTCHA i serwery proxy"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr "Sztuczna inteligencja / Wielkie modele językowe"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "Informacje"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "Domyślny czas ponownego sprawdzania dla wszystkich obserwacji; aktualne minimalne ustawienie systemowe wynosi"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "więcej informacji"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "Po wystąpieniu tak wielu kolejnych przypadków braku filtra CSS/xPath należy wysłać powiadomienie"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr "Aby wyłączyć tę funkcję, ustaw wartość na <strong>0</strong>"
+
