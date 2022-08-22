@@ -116,3 +116,19 @@
   }
 }
 
+/* Button styling */
+.fieldlist_formfields {
+  .addRuleRow, .removeRuleRow, .verifyRuleRow {
+    cursor: pointer;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-weight: bold;
+    background-color: #aaa;
+    color: var(--color-foreground-text, #fff);
+
+    &:hover {
+      background-color: #999;
+    }
+  }
+
