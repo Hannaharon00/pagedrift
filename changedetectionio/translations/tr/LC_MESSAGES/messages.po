@@ -46,3 +46,62 @@ msgstr "Git"
 msgid "Enter a URL to get started!"
 msgstr ""
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "Geri yükleme arka planda başladı, birkaç dakika sonra tekrar kontrol edin."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "Oluştur"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "Geri Yükle"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "Bir yedekleme çalışıyor!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr ""
+"Buradan yeni bir yedekleme indirebilir ve talep edebilirsiniz, yedekleme tamamlandığında aşağıda listelendiğini "
+"göreceksiniz."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "Mb"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "Yedek bulunamadı."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Yedek oluştur"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Yedekleri kaldır"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "Bir geri yükleme çalışıyor!"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr ""
+"Bir yedeği geri yükleyin. v0.53.1 veya sonrasında oluşturulmuş (yeni veritabanı düzeni) bir .zip yedek dosyası "
+"olmalıdır."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "Not: Bu, ana uygulama ayarlarını geçersiz kılmaz, yalnızca izleyicileri ve grupları geçersiz kılar."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr ""
+
