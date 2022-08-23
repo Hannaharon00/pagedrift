@@ -108,3 +108,61 @@ msgstr "이미 백업이 실행 중입니다. 잠시 후 다시 확인해 주세
 msgid "Maximum number of backups reached, please remove some"
 msgstr "백업 가능 개수를 초과했습니다. 일부를 삭제해 주세요."
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "파일 매핑 유형."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "열 #"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "유형"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "없음"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "CSS/XPath 필터"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "그룹 / 태그 이름"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "재확인 시간(분)"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr "가져오기"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch with UUID %(uuid)s not found"
+msgstr "UUID %(uuid)s의 모니터링을 찾을 수 없습니다."
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr "모니터링 %(uuid)s에 변경 내용을 표시할 기록 스냅샷이 충분하지 않습니다. (최소 2개 필요)"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "비밀번호 보호가 해제되었습니다."
+
