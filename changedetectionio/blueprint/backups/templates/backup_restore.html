@@ -29,3 +29,33 @@
                       enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.include_groups) }}
+                        <span class="pure-form-message-inline">{{ _('Include all groups found in backup?') }}</span>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.include_groups_replace_existing) }}
+                        <span class="pure-form-message-inline">{{ _('Replace any existing groups of the same UUID?') }}</span>
+                    </div>
+
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.include_watches) }}
+                        <span class="pure-form-message-inline">{{ _('Include all watches found in backup?') }}</span>
+                    </div>
+                    <div class="pure-control-group">
+                        {{ render_checkbox_field(form.include_watches_replace_existing) }}
+                        <span class="pure-form-message-inline">{{ _('Replace any existing watches of the same UUID?') }}</span>
+                    </div>
+
+                    <div class="pure-control-group">
+                        {{ render_field(form.zip_file) }}
+                    </div>
+
+                    <div class="pure-controls">
+                        <button type="submit" class="pure-button pure-button-primary">{{ _('Restore backup') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
