@@ -219,6 +219,71 @@ msgstr "Bagaimana cara mengekspor?"
 msgid "Be sure to set your default fetcher to Chrome if required."
 msgstr "Pastikan pengambil default Anda diatur ke Chrome jika diperlukan."
 
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications unmuted."
+msgstr "Semua notifikasi diaktifkan kembali."
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid ""
+"api_key is required when api_base differs from the saved configuration. Refusing to send the stored API key to a "
+"different endpoint."
+msgstr ""
+"api_key diperlukan ketika api_base berbeda dari konfigurasi yang tersimpan. Menolak mengirim kunci API tersimpan ke "
+"endpoint yang berbeda."
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid "AI / LLM configuration removed."
+msgstr "Konfigurasi AI / LLM dihapus."
+
+#: changedetectionio/blueprint/settings/llm.py
+#, python-brace-format
+msgid "AI summary cache cleared ({} file(s) removed)."
+msgstr "Cache ringkasan AI dibersihkan ({} file dihapus)."
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "Default Notifications"
+msgstr "Notifikasi Default"
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "These notifications apply to all web page watches, or you can configure them per group or per watch separately."
+msgstr ""
+"Notifikasi ini berlaku untuk semua monitor halaman web, atau Anda dapat mengonfigurasinya secara terpisah per grup "
+"atau per monitor."
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "Base URL used for the"
+msgstr "URL dasar yang digunakan untuk"
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "token in notification links."
+msgstr "token dalam tautan notifikasi."
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "Default value is the system environment variable"
+msgstr "Nilai default adalah variabel lingkungan sistem"
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+#: changedetectionio/templates/_common_fields.html
+msgid "read more here"
+msgstr "baca selengkapnya di sini"
+
+#: changedetectionio/blueprint/settings/notifications/templates/apprise.html
+msgid "Back to settings"
+msgstr "Kembali ke pengaturan"
+
+#: changedetectionio/blueprint/settings/templates/notification-log.html
+msgid "Notification debug log"
+msgstr "Log debug notifikasi"
+
+#: changedetectionio/blueprint/settings/templates/notification-log.html
+msgid "For security this log is emptied on restart."
+msgstr "Demi keamanan, log ini dikosongkan saat aplikasi dimulai ulang."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "General"
+msgstr "Umum"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Fetching"
 msgstr "Pengambilan"
