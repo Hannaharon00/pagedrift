@@ -166,3 +166,63 @@ msgstr "모니터링 %(uuid)s에 변경 내용을 표시할 기록 스냅샷이 
 msgid "Password protection removed."
 msgstr "비밀번호 보호가 해제되었습니다."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "스냅샷 기록 지우기"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr "비밀번호 활성화 시 변경 기록 페이지 액세스 허용 (diff 페이지 공유에 유용)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "요청 결과에 내용이 없거나 HTML에 텍스트가 없는 경우도 변경으로 간주"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "모든 모니터링의 기본 프록시 선택"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr "모니터링하는 사이트가 렌더링에 JavaScript를 필요로 하지 않는 경우 <strong>Basic</strong> 방식(기본값)을 사용하세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr "<strong>Chrome/Javascript</strong> 방식은 환경 변수 'WEBDRIVER_URL'로 설정된 실행 중인 WebDriver+Chrome 서버와의 네트워크 연결이 필요합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr "페이지가 완전히 렌더링될 때까지 기다리는 데 문제가 있다면 (텍스트 누락 등) 여기서 'wait' 시간을 늘려 보세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "텍스트를 추출하기 전에 <i>n</i>초 동안 기다립니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr "모니터링을 처리할 동시 워커 수입니다. 워커가 많을수록 처리는 빨라지지만 메모리 사용량도 늘어납니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "현재 실행 중:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "작동 중"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "워커"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "활발히 처리 중"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "예: 무작위 지터를 3초로 설정하면 최대 3초 빠르거나 최대 3초 늦게 실행될 수 있습니다."
+
