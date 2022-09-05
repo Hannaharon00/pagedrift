@@ -223,6 +223,67 @@ msgstr "Примечание. Это не отменяет основные на
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr "Максимальный размер загрузки: %(upload)s МБ. Максимальный размер в распакованном виде: %(decomp)s МБ."
 
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} импортирован из пользовательского файла .xlsx в {duration}."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "Список URL-адресов"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX и Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr "Восстановление резервной копии"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "Восстановление резервных копий Changetection.io находится в разделе"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "раздел резервных копий"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr ""
+"Введите по одному URL-адресу в каждой строке и при необходимости добавьте теги для каждого URL-адреса после пробела, "
+"разделенного запятой (,):"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "Пример"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "URL-адреса, не прошедшие проверку, останутся в текстовом поле."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Скопируйте и вставьте файл экспорта часов Distill.io. Это должен быть файл JSON."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"Это <i>experimental</i>, поддерживаются поля <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, остальные (включая <code>schedule</code>) игнорируются."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "Как экспортировать?"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "При необходимости обязательно установите сборщик данных по умолчанию в Chrome."
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Set to empty to disable / no limit"
 msgstr "Установите пустое значение, чтобы отключить/без ограничений"
