@@ -65,6 +65,95 @@ def _handle_operations(op, uuids, datastore, worker_pool, update_q, queuedWatchM
                 datastore.data['watching'][uuid].commit()
         result_message = gettext("{} watches un-muted").format(len(uuids))
 
+    elif (op == 'recheck'):
+        for uuid in uuids:
+            if datastore.data['watching'].get(uuid):
+                # Recheck and require a full reprocessing
+                worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid}))
+        result_message = gettext("{} watches queued for rechecking").format(len(uuids))
+
+    elif (op == 'clear-errors'):
+        for uuid in uuids:
+            if datastore.data['watching'].get(uuid):
+                datastore.data['watching'][uuid]["last_error"] = False
+                datastore.data['watching'][uuid].commit()
+        result_message = gettext("{} watches errors cleared").format(len(uuids))
+
+    elif (op == 'clear-history'):
+        for uuid in uuids:
+            if datastore.data['watching'].get(uuid):
+                datastore.clear_watch_history(uuid)
+        result_message = gettext("{} watches cleared/reset.").format(len(uuids))
+
+    elif (op == 'notification-default'):
+        from changedetectionio.notification import (
+            USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH
+        )
+        for uuid in uuids:
+            if datastore.data['watching'].get(uuid):
+                datastore.data['watching'][uuid]['notification_title'] = None
+                datastore.data['watching'][uuid]['notification_body'] = None
+                datastore.data['watching'][uuid]['notification_urls'] = []
+                datastore.data['watching'][uuid]['notification_format'] = USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH
+                datastore.data['watching'][uuid].commit()
+        result_message = gettext("{} watches set to use default notification settings").format(len(uuids))
+
+    elif (op == 'set-fetch-backend'):
+        # extra_data = the chosen fetch backend key (e.g. 'html_requests', 'html_webdriver')
+        from changedetectionio import content_fetchers
+        # 'system' = inherit the global default fetch method (resolved at fetch time), same as the edit page
+        valid = [f[0] for f in content_fetchers.available_fetchers()] + ['system']
+        if extra_data in valid:
+            for uuid in uuids:
+                if datastore.data['watching'].get(uuid):
+                    datastore.data['watching'][uuid]['fetch_backend'] = extra_data
+                    datastore.data['watching'][uuid].commit()
+            result_message = gettext("Browser / fetch method updated on {} watches").format(len(uuids))
+        else:
+            result_message = gettext("Invalid browser / fetch method selected")
+            result_type = 'error'
+
+    elif (op == 'set-proxy'):
+        # extra_data = proxy key; '' means the system default proxy
+        valid = [''] + (list(datastore.proxy_list.keys()) if datastore.proxy_list else [])
+        if (extra_data or '') in valid:
+            for uuid in uuids:
+                if datastore.data['watching'].get(uuid):
+                    datastore.data['watching'][uuid]['proxy'] = (extra_data or '')
+                    datastore.data['watching'][uuid].commit()
+            result_message = gettext("Proxy updated on {} watches").format(len(uuids))
+        else:
+            result_message = gettext("Invalid proxy selected")
+            result_type = 'error'
+
+    elif (op == 'assign-tag'):
+        op_extradata = extra_data
+        if op_extradata:
+            tag_uuid = datastore.add_tag(title=op_extradata)
+            if op_extradata and tag_uuid:
+                for uuid in uuids:
+                    if datastore.data['watching'].get(uuid):
+                        # Bug in old versions caused by bad edit page/tag handler
+                        if isinstance(datastore.data['watching'][uuid]['tags'], str):
+                            datastore.data['watching'][uuid]['tags'] = []
+
+                        datastore.data['watching'][uuid]['tags'].append(tag_uuid)
+                        datastore.data['watching'][uuid].commit()
+        result_message = gettext("{} watches were tagged").format(len(uuids))
+
+    if uuids:
+        for uuid in uuids:
+            watch_check_update.send(watch_uuid=uuid)
+
+    # Classic form-POST path flashes (shown after the redirect); the socket path uses the returned value
+    if result_message and emit_flash:
+        if result_type == 'error':
+            flash(result_message, 'error')
+        else:
+            flash(result_message)
+
+    return {'message': result_message, 'type': result_type} if result_message else None
+
 def construct_blueprint(datastore: ChangeDetectionStore, update_q, worker_pool, queuedWatchMetaData, watch_check_update):
     ui_blueprint = Blueprint('ui', __name__, template_folder="templates")
     
