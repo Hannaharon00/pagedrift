@@ -405,6 +405,65 @@ msgid "Watch %(uuid)s does not have enough history snapshots to show changes (ne
 msgstr ""
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Global Filters"
+msgstr "Globale Filter"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UI Options"
+msgstr "UI-Optionen"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "Backups"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "Uhrzeit und Datum"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "CAPTCHA & Proxys"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "Info"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "Standardmäßige Überprüfungszeit für alle Observationen, derzeitiges Systemminimum ist"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "Weitere Informationen"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr ""
+"Nach dieser Anzahl aufeinanderfolgender Male, dass der CSS/xPath-Filter fehlt, eine Benachrichtigung "
+"sendenHäufigkeit, mit der der Filter fehlen darf, bevor eine Benachrichtigung gesendet wird"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Password is locked."
 msgstr ""
 
