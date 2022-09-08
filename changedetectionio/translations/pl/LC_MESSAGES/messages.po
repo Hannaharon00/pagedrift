@@ -156,3 +156,71 @@ msgstr "Po wystąpieniu tak wielu kolejnych przypadków braku filtra CSS/xPath n
 msgid "Set to <strong>0</strong> to disable"
 msgstr "Aby wyłączyć tę funkcję, ustaw wartość na <strong>0</strong>"
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr "Ogranicz liczbę migawek historii dla każdego obserwowanego obiektu do tej liczby elementów historii."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "Ustaw na „puste”, aby wyłączyć / nie stosować ograniczenia"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "Ochrona hasłem aplikacji changedetection.io."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "Hasło jest zablokowane."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Wyczyść historię migawek"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Zezwól na dostęp do strony historii zmian, gdy hasło jest włączone (przydatne przy udostępnianiu strony pokazującej "
+"różnice)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr ""
+"Czy sytuacja, w której żądanie nie zwraca żadnej treści lub kod HTML nie zawiera żadnego tekstu, jest uznawana za "
+"zmianę?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Wybierz domyślny serwer proxy dla wszystkich obserwacji"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr ""
+"Użyj metody <strong>Basic</strong> (domyślnej), jeśli obserwowane strony nie wymagają obsługi JavaScript do "
+"wyświetlenia."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"Metoda <strong>Chrome/Javascript</strong> wymaga połączenia sieciowego z uruchomionym serwerem WebDriver+Chrome, "
+"którego adres jest określony przez zmienną środowiskową „WEBDRIVER_URL”."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Jeśli masz problem z oczekiwaniem na pełne wyświetlenie strony (brakujące fragmenty tekstu itp.), spróbuj wydłużyć "
+"tutaj czas „oczekiwania”."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Przed wyodrębnieniem tekstu system odczeka <i>n</i> sekund."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"Liczba procesów działających jednocześnie do przetwarzania obserwacji. Więcej procesów oznacza szybsze przetwarzanie,"
+" ale większe zużycie pamięci."
+
