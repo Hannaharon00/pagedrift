@@ -41,6 +41,63 @@ msgstr "Start"
 msgid "Enter a URL to get started!"
 msgstr "Wpisz adres URL, aby rozpocząć!"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Maximum number of backups reached, please remove some"
+msgstr "Osiągnięto maksymalną liczbę kopii zapasowych. Proszę usunąć część z nich."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "Tworzenie kopii zapasowej przebiega w tle – spróbuj ponownie za kilka minut."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Kopie zapasowe zostały usunięte."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "Plik ZIP z kopią zapasową"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "To musi być plik kopii zapasowej w formacie .zip!"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "Uwzględnij grupy"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "Zastąp istniejące grupy o tym samym identyfikatorze UUID"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "Uwzględnij obserwacje"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "Zastąp istniejące obserwacje o tym samym identyfikatorze UUID"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "Przywróć kopię zapasową"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "Trwa już przywracanie danych, spróbuj ponownie za kilka minut"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "Nie przesłano żadnego pliku"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "Plik musi być plikiem kopii zapasowej w formacie .zip"
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "Plik kopii zapasowej jest zbyt duży (maks. %(mb)s MB)"
+
 #: changedetectionio/blueprint/backups/templates/backup_restore.html
 #, python-format
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
