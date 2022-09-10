@@ -97,3 +97,71 @@ msgstr "Файл должен быть файлом резервной копи�
 msgid "Backup file is too large (max %(mb)s MB)"
 msgstr "Файл резервной копии слишком велик (максимум %(mb)s МБ)"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "Установите пустое значение, чтобы отключить/без ограничений"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "Защита паролем для вашего приложения Changetection.io."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "Пароль заблокирован."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Очистить историю снимков"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Разрешить доступ к странице истории изменений часов, когда пароль включен (хорошо для совместного использования "
+"страницы различий)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Если запрос не возвращает содержимого или HTML не содержит текста, считается ли это изменением?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Выберите прокси-сервер по умолчанию для всех часов"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr "Используйте метод <strong>Basic</strong> (по умолчанию), если для просмотра ваших сайтов не требуется Javascript."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"Для метода <strong>Chrome/Javascript</strong> требуется сетевое подключение к работающему серверу WebDriver+Chrome, "
+"заданное переменной ENV 'WEBDRIVER_URL'."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Если у вас возникли проблемы с ожиданием полной визуализации страницы (отсутствует текст и т. д.), попробуйте "
+"увеличить время ожидания здесь."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Это будет ждать <i>n</i> секунд, прежде чем извлекать текст."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"Количество одновременно работающих работников, обрабатывающих часы. Больше рабочих = более быстрая обработка, но "
+"более высокое использование памяти."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "В настоящее время работает:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "оперативный"
+
