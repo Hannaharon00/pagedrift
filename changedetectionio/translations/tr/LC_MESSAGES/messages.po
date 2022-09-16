@@ -290,3 +290,67 @@ msgstr "başlık - Chrome Eklentisinin çalışması için gereklidir"
 msgid "copy"
 msgstr "kopyala"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr "İzleyiciye özel RSS akışına dahil edilecek maksimum geçmiş anlık görüntü sayısı."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr ""
+"Diğer RSS akışlarını izlemek için - RSS/Atom akışlarını izlerken, daha iyi değişiklik tespiti için bunları temiz "
+"metne dönüştürün."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "Okuyucunuz HTML destekliyor mu? Buradan ayarlayın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr "Tüm öğeler için aynı şablon olarak 'Sistem varsayılanı' veya şablon olarak \"Bildirim Gövdesi\"nizi yeniden kullanın."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr ""
+"Aşağıdaki ayarların doğru olduğundan emin olun, bunlar web sayfası izleyicilerinizi kontrol etme zaman çizelgesini "
+"yönetmek için kullanılır."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "Sunucudan UTC Saat ve Tarihi:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "Tarayıcıdaki Yerel Saat ve Tarih:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr ""
+"Fark sayfasını yeni bir sekmede açmak için bu ayarı etkinleştirin. Devre dışı bırakılırsa, fark sayfası geçerli "
+"sekmede açılır."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
+msgstr "Gerçek Zamanlı Arayüz Güncellemeleri Etkinleştirildi - (Bu değiştirilirse yeniden başlatma gerekir)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable or Disable Favicons next to the watch list"
+msgstr "İzleme listesinin yanındaki Favicon'ları Etkinleştir veya Devre Dışı Bırak"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of items per page in the watch overview list, 0 to disable."
+msgstr "İzleyici genel bakış listesinde sayfa başına öğe sayısı, devre dışı bırakmak için 0."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "How \"Checked\" and \"Changed\" times are shown in the watch overview list."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "İpucu"
+
