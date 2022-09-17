@@ -289,3 +289,69 @@ msgid ""
 "different endpoint."
 msgstr ""
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr "Número máximo de instantáneas del historial que se incluirán en la fuente RSS específica del monitor."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr ""
+"Para ver otras fuentes RSS: cuando vea fuentes RSS/Atom, conviértalas en texto limpio para una mejor detección de "
+"cambios."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "¿Su lector soporta HTML? Ponlo aquí"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr ""
+"'Predeterminado del sistema' para la misma plantilla para todos los elementos, o reutilice su \"Cuerpo de "
+"notificación\" como plantilla."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr ""
+"Asegúrese de que las configuraciones a continuación sean correctas, se utilizan para administrar el horario para "
+"verificar las visitas a su página web."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "Hora y fecha UTC del servidor:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "Hora y fecha locales en el navegador:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr ""
+"Habilite esta configuración para abrir la página de diferencias en una nueva pestaña. Si está deshabilitado, la "
+"página de diferencias se abrirá en la pestaña actual."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
+msgstr "Actualizaciones de UI en tiempo real habilitadas: (es necesario reiniciar si se cambia esto)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable or Disable Favicons next to the watch list"
+msgstr "Habilitar o deshabilitar favicons junto a la lista de monitores"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of items per page in the watch overview list, 0 to disable."
+msgstr "Número de elementos por página en la lista general de monitores, 0 para desactivar."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "How \"Checked\" and \"Changed\" times are shown in the watch overview list."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "Consejo"
+
