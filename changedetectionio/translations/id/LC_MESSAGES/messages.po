@@ -107,6 +107,65 @@ msgstr "Catatan: Ini tidak menimpa pengaturan utama aplikasi, hanya monitor dan 
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr "Ukuran unggahan maks.: %(upload)s MB, ukuran hasil dekompresi maks.: %(decomp)s MB"
 
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} diimpor dari .xlsx kustom dalam {duration}dtk"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "Daftar URL"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX & Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr "Pemulihan Cadangan"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "Pemulihan cadangan changedetection.io tersedia di"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "bagian cadangan"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr "Masukkan satu URL per baris, dan opsional tambahkan tag untuk setiap URL setelah spasi, dipisahkan dengan koma (,):"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "Contoh"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "URL yang tidak lolos validasi akan tetap berada di area teks."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Salin dan tempel file 'export' monitor Distill.io Anda, file ini harus berupa JSON."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"Ini bersifat <i>eksperimental</i>, bidang yang didukung adalah <code>name</code>, <code>uri</code>, "
+"<code>tags</code>, <code>config:selections</code>, sisanya (termasuk <code>schedule</code>) diabaikan."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "Bagaimana cara mengekspor?"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "Pastikan pengambil default Anda diatur ke Chrome jika diperlukan."
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Fetching"
 msgstr "Pengambilan"
