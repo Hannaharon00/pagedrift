@@ -17,6 +17,121 @@ window.queueI18n = {
 };
 </script>
 
+<div id="queue-page" data-queue-json="{{ url_for('ui.ui_queue.queue_json') }}">
+
+  <div class="queue-panel">
+    <h2 style="margin: 0 0 0.3em 0;">{{ _('Check queue') }}</h2>
+    <div style="opacity:0.75; font-size:0.9rem;">
+      {{ _('Live view of what the workers are doing right now and what is waiting in line.') }}
+    </div>
+  </div>
+
+  <div class="queue-panel queue-stats">
+    <div class="queue-stat">
+      <div class="label">{{ _('Workers') }}</div>
+      <div class="value"><span data-stat="worker_count">{{ snapshot.worker_count }}</span></div>
+    </div>
+    <div class="queue-stat">
+      <div class="label">{{ _('Running now') }}</div>
+      <div class="value"><span data-stat="running_count">{{ snapshot.running_count }}</span></div>
+    </div>
+    <div class="queue-stat">
+      <div class="label">{{ _('Queued') }}</div>
+      <div class="value"><span data-stat="queued_count">{{ snapshot.queued_count }}</span></div>
+    </div>
+    <div class="queue-stat queue-stat--action">
+      <form method="POST" action="{{ url_for('ui.ui_queue.queue_clear') }}" style="margin:0;"
+            data-requires-confirm
+            data-confirm-type="danger"
+            data-confirm-title="{{ _('Clear Queue?') }}"
+            data-confirm-message="{{ _('<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>') }}"
+            data-confirm-button="{{ _('Clear') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="pure-button button-secondary button-xsmall" type="submit">
+          <i data-feather="trash-2" style="width:14px; height:14px; vertical-align:middle; margin-right:4px;"></i>
+          {{ _('Clear Queue') }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="queue-panel">
+    <h3 style="margin: 0 0 0.6em 0;">{{ _('Workers & queue') }}</h3>
+    <table class="pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th style="width:90px;">#</th>
+          <th>{{ _('Watch') }}</th>
+          <th style="width:110px;">{{ _('Elapsed') }}</th>
+          <th style="width:120px;">{{ _('Status') }}</th>
+        </tr>
+      </thead>
+      <tbody data-section="workers">
+        {# Worker slot rows — JS replaces this with one row per FETCH_WORKERS slot. #}
+        {% for w in snapshot.running %}
+        <tr class="worker-slot worker-busy" data-uuid="{{ w.uuid }}">
+          <td><strong>{{ _('Worker %(num)s', num=loop.index) }}</strong></td>
+          <td class="watch-cell">
+            {% if w.gone %}
+              <em>{{ _('Watch no longer exists') }}</em>
+            {% else %}
+              <strong>{{ w.title or w.url }}</strong>
+              {% if w.title and w.url %}<br><small>{{ w.url }}</small>{% endif %}
+            {% endif %}
+          </td>
+          <td class="time-cell" data-since="{{ w.started_at or '' }}"></td>
+          <td>
+            <span class="inline-tag inline-tag--running">{{ _('running') }}</span>
+            <a href="#" class="queue-cancel" data-uuid="{{ w.uuid }}">{{ _('cancel') }}</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% for idle_idx in range(snapshot.running|length, snapshot.worker_count) %}
+        <tr class="worker-slot worker-idle">
+          <td><strong>{{ _('Worker %(num)s', num=idle_idx + 1) }}</strong></td>
+          <td class="watch-cell"><small style="opacity:0.55;">{{ _('— idle') }}</small></td>
+          <td class="time-cell"><small style="opacity:0.4;">—</small></td>
+          <td><span class="inline-tag inline-tag--idle">{{ _('idle') }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tbody data-section="queued">
+        {% if snapshot.queued %}
+          {% for w in snapshot.queued %}
+          <tr data-uuid="{{ w.uuid }}">
+            <td>{{ w.position + 1 }}</td>
+            <td class="watch-cell">
+              {% if w.gone %}
+                <em>{{ _('Watch no longer exists') }}</em>
+              {% else %}
+                <strong>{{ w.title or w.url }}</strong>
+                {% if w.title and w.url %}<br><small>{{ w.url }}</small>{% endif %}
+              {% endif %}
+            </td>
+            <td class="time-cell" data-since="{{ w.enqueued_at or '' }}"></td>
+            <td><span class="inline-tag">{{ w.priority_label }}</span></td>
+          </tr>
+          {% endfor %}
+        {% elif snapshot.worker_count == 0 %}
+          <tr class="empty-row"><td colspan="4"><em>{{ _('No workers configured (FETCH_WORKERS=0) and queue is empty') }}</em></td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    {% if pagination and pagination.total > pagination.per_page %}
+      <div class="queue-pagination" data-current-page="{{ pagination.page }}">
+        {{ pagination.info }}
+        {{ pagination.links }}
+      </div>
+    {% endif %}
+
+    <div class="queue-waiting" data-show="{{ 'true' if not snapshot.running and not snapshot.queued else 'false' }}">
+      <span class="spinner"></span>
+      <span>{{ _('Waiting for new pages to check…') }}</span>
+    </div>
+  </div>
+
+
 </div>
 
 <script>
