@@ -287,6 +287,64 @@ msgstr "カスタム列とデータ型マッピングの表："
 msgid "Custom mapping"
 msgstr "カスタムマッピング"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "ファイルマッピングタイプ。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "列番号"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "種類"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "なし"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "CSS/XPath フィルタ"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "グループ / タグ名"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "再チェック時間（分）"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr "インポート"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch with UUID %(uuid)s not found"
+msgstr "UUID %(uuid)s のウォッチが見つかりません"
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr "ウォッチ %(uuid)s には変更を表示するためのスナップショット履歴が不足しています（最低2件必要）"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "パスワード保護が解除されました。"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
 msgstr "通常のプレーンリクエスト（Chrome以外）の場合、タイムアウトまでの最大秒数、1〜999。"
