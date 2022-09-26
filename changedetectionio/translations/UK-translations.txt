@@ -45,3 +45,60 @@ msgstr "Виконується резервне копіювання!"
 msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
 msgstr "Тут ви можете завантажити або створити нову резервну копію. Коли створення завершиться, вона з'явиться у списку нижче."
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "seconds before extracting the text."
+msgstr "секунд перед вилученням тексту."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr "Кількість одночасних процесів (воркерів). Більше воркерів = швидше, але потребує більше пам'яті."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Зараз запущено:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "активних"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "воркерів"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "в обробці"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "Приклад: 3 секунди випадкового джитера можуть запустити перевірку на 3 секунди раніше або пізніше"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "Для звичайних запитів (не Chrome): максимальний час очікування (тайм-аут) у секундах, 1-999."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "Застосовується до всіх запитів."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "Примітка: Проста зміна User-Agent часто не допомагає обійти захист від роботів, важливо враховувати"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "усі способи виявлення браузера"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "Порада:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
+msgstr "Підключення через проксі Bright Data та Oxylabs, дізнайтеся більше тут."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "Ігнорувати пробіли, табуляцію та переноси рядків під час виявлення змін."
+
