@@ -289,6 +289,66 @@ msgid ""
 "different endpoint."
 msgstr ""
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "No pegue HTML aquí, use solo selectores CSS y XPath"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Agregue múltiples elementos, selectores CSS o XPath por línea para ignorar múltiples partes del HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Nota: Esto se aplica globalmente además de las reglas por visualización."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "El texto coincidente se ignorará en la instantánea del texto (aún podrás verlo pero no activará un cambio)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr ""
+"Cada línea se procesa por separado, cualquier coincidencia de líneas se ignorará (se eliminará antes de crear la suma"
+" de verificación)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Soporte de expresión regular, ajuste toda la línea con una barra diagonal"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Cambiar esto afectará la suma de verificación de comparación, lo que puede generar una alerta"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"Elimine cualquier texto que aparezca en \"Ignorar texto\" de la salida (de lo contrario, simplemente se ignorará para"
+" la detección de cambios)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "Acceso API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Conduzca su changetection.io a través de API, más información"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "Acceso API y ejemplos aquí"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Restringir el límite de acceso a la API mediante el uso"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "encabezado: necesario para que funcione la extensión de Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "copiar"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
 msgstr "Número máximo de instantáneas del historial que se incluirán en la fuente RSS específica del monitor."
