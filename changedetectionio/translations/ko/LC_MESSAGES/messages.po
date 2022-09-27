@@ -224,6 +224,68 @@ msgstr "모니터링 %(uuid)s에 변경 내용을 표시할 기록 스냅샷이 
 msgid "Password protection removed."
 msgstr "비밀번호 보호가 해제되었습니다."
 
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr "경고: 워커 수({worker_count})가 사용 가능한 CPU 코어 수({cpu_count})에 근접하거나 초과합니다"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "워커 수가 조정되었습니다: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "동기 워커는 동적 워커 조정을 지원하지 않습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "워커 수 조정 중 오류가 발생했습니다: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection enabled."
+msgstr "비밀번호 보호가 활성화되었습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+msgid "Settings updated."
+msgstr "설정이 업데이트되었습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/processors/extract.py
+msgid "An error occurred, please see below."
+msgstr "오류가 발생했습니다. 아래 내용을 확인해 주세요."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "API Key was regenerated."
+msgstr "API 키가 재생성되었습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling paused - checks will not be queued."
+msgstr "자동 예약이 일시중지되었습니다. 확인 작업이 대기열에 추가되지 않습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling resumed - checks will be queued normally."
+msgstr "자동 예약이 재개되었습니다. 확인 작업이 정상적으로 대기열에 추가됩니다."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications muted."
+msgstr "모든 알림이 음소거되었습니다."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications unmuted."
+msgstr "모든 알림의 음소거가 해제되었습니다."
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid ""
+"api_key is required when api_base differs from the saved configuration. Refusing to send the stored API key to a "
+"different endpoint."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid "AI / LLM configuration removed."
+msgstr "AI / LLM 설정이 제거되었습니다."
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Clear Snapshot History"
 msgstr "스냅샷 기록 지우기"
