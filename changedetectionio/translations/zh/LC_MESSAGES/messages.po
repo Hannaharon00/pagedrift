@@ -103,6 +103,71 @@ msgstr "从 Wachete .xlsx 导入 {count} 条，用时 {duration} 秒"
 msgid "{count} imported from custom .xlsx in {duration}s"
 msgstr "从自定义 .xlsx 导入 {count} 条，用时 {duration} 秒"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "URL 列表"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX 与 Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr "每行输入一个 URL，可在 URL 后用空格追加标签，标签以逗号 (,) 分隔："
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "示例"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "未通过验证的 URL 会保留在文本框中。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "复制并粘贴 Distill.io 监控的“导出”文件（JSON）。"
+
+# TN: CJK scripts degrade when italicized; emphasis is rendered with <strong>
+# instead.
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"这项功能为<strong>实验性</strong>，支持的字段有 "
+"<code>name</code>、<code>uri</code>、<code>tags</code>、<code>config:selections</code>，其余字段（包括 "
+"<code>schedule</code>）将被忽略。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "如何导出？"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "如有需要，请将默认抓取器设置为 Chrome。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "用于以下内容的自定义列与数据类型映射表"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "自定义映射"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Clear Snapshot History"
 msgstr "清除快照历史"
