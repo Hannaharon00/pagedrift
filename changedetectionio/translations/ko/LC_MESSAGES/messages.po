@@ -465,6 +465,58 @@ msgid "Chrome Extension"
 msgstr "Chrome 확장 프로그램"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Easily add any web-page to your changedetection.io installation from within Chrome."
+msgstr "Chrome 안에서 어떤 웹페이지든 changedetection.io에 쉽게 추가할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 1"
+msgstr "1단계"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Install the extension,"
+msgstr "확장 프로그램을 설치하고"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 2"
+msgstr "2단계"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Navigate to this page,"
+msgstr "이 페이지로 이동하여"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 3"
+msgstr "3단계"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Open the extension from the toolbar and click"
+msgstr "도구 모음에서 확장 프로그램을 열고 다음 버튼을 클릭해 주세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Sync API Access"
+msgstr "API 액세스 동기화"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Try our new Chrome Extension!"
+msgstr "새 Chrome 확장 프로그램을 사용해 보세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome store icon"
+msgstr "Chrome 스토어 아이콘"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Webstore"
+msgstr "Chrome 웹스토어"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr "각 모니터링의 RSS 피드에 포함할 기록 스냅샷의 최대 개수입니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr "RSS/Atom 피드 자체를 모니터링할 때 더 정확한 변경 감지를 위해 피드 내용을 정리된 텍스트로 변환합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Does your reader support HTML? Set it here"
 msgstr "사용하는 리더가 HTML을 지원하나요? 여기에서 설정해 주세요."
 
