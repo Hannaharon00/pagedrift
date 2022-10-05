@@ -139,3 +139,48 @@ body {
   width: 1px;
 }
 
+// Row icons like chrome, pdf, share, etc
+.status-icon {
+  display: inline-block;
+  height: 1rem;
+  vertical-align: middle;
+}
+
+/*.pure-table-even {
+  background: var(--color-background);
+}*/
+
+/* Some styles from https://css-tricks.com/ */
+a {
+  text-decoration: none;
+  color: var(--color-link);
+}
+
+#search-result-info {
+  color: #fff;
+}
+
+button.toggle-button {
+  vertical-align: middle;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  color: var(--color-text-menu-heading);
+
+
+  svg {
+    fill: currentColor;
+  }
+
+  // Feather icons (light/dark sun/moon) are stroke-based — don't fill them.
+  svg.feather {
+    fill: none;
+    stroke: currentColor;
+  }
+
+  .icon-light {
+    display: block;
+  }
+
+
