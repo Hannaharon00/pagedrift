@@ -409,6 +409,62 @@ msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier o
 msgstr "예: 무작위 지터를 3초로 설정하면 최대 3초 빠르거나 최대 3초 늦게 실행될 수 있습니다."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "참고: 이 설정은 각 모니터링 규칙에 추가로 전역 적용됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "일치하는 텍스트는 텍스트 스냅샷 비교에서 무시됩니다. (화면에는 표시되지만 변경으로 감지되지는 않음)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr "각 줄을 별도로 처리하며, 일치하는 줄은 체크섬을 만들기 전에 제거되어 변경 감지에서 무시됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "줄 전체를 슬래시(/)로 감싸면 정규식을 사용할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "이 값을 바꾸면 비교 체크섬이 달라져 알림이 발생할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr "\"텍스트 무시\"에 해당하는 텍스트를 출력에서도 제거합니다. 끄면 변경 감지에서만 무시되고 출력에는 남습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "API 액세스"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "API로 changedetection.io를 제어할 수 있습니다. 자세한 내용은"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "API 액세스 및 예제"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "다음을 사용해 API 액세스를 제한합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "헤더입니다. Chrome 확장 프로그램이 작동하려면 필요합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "복사"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Regenerate API key"
+msgstr "API 키 재생성"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Extension"
+msgstr "Chrome 확장 프로그램"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid ""
 "SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
 "whitelist the IP access instead"
