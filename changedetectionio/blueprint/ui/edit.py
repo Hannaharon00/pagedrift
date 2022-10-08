@@ -151,6 +151,71 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMe
         # For the form widget tag UUID back to "string name" for the field
         form.tags.datastore = datastore
 
+        # Used by some forms that need to dig deeper
+        form.datastore = datastore
+        form.watch = default
+
+        # Load processor-specific config from JSON file for GET requests
+        if request.method == 'GET' and processor_name:
+            try:
+                from changedetectionio.processors.base import difference_detection_processor
+                # Create a processor instance to access config methods
+                processor_instance = difference_detection_processor(datastore, uuid)
+                # Use processor name as filename so each processor keeps its own config
+                config_filename = f'{processor_name}.json'
+                processor_config = processor_instance.get_extra_watch_config(config_filename)
+
+                if processor_config:
+                    from wtforms.fields.form import FormField
+                    # Populate processor-config-* fields from JSON
+                    for config_key, config_value in processor_config.items():
+                        if not isinstance(config_value, dict):
+                            continue
+                        # Try exact API-named field first (e.g., processor_config_restock_diff)
+                        target_field = getattr(form, f'processor_config_{config_key}', None)
+                        # Fallback: find any FormField sub-form whose fields cover config_value keys
+                        if target_field is None:
+                            for form_field in form:
+                                if isinstance(form_field, FormField) and all(k in form_field.form._fields for k in config_value):
+                                    target_field = form_field
+                                    break
+                        if target_field is not None:
+                            for sub_key, sub_value in config_value.items():
+                                sub_field = target_field.form._fields.get(sub_key)
+                                if sub_field is not None:
+                                    sub_field.data = sub_value
+                                    logger.debug(f"Loaded processor config from {config_filename}: {sub_key} = {sub_value}")
+            except Exception as e:
+                logger.warning(f"Failed to load processor config: {e}")
+
+        for p in datastore.extra_browsers:
+            form.fetch_backend.choices.append(p)
+
+        form.fetch_backend.choices.append(("system", gettext('System settings default')))
+
+        # form.browser_steps[0] can be assumed that we 'goto url' first
+
+        if datastore.proxy_list is None:
+            # @todo - Couldn't get setattr() etc dynamic addition working, so remove it instead
+            del form.proxy
+        else:
+            form.proxy.choices = [('', gettext('Default'))]
+            for p in datastore.proxy_list:
+                form.proxy.choices.append(tuple((p, datastore.proxy_list[p]['label'])))
+
+
+        if request.method == 'POST' and form.validate():
+
+            extra_update_obj = {
+                'consecutive_filter_failures': 0,
+                'last_error' : False
+            }
+
+            if request.args.get('unpause_on_save'):
+                extra_update_obj['paused'] = False
+
+            extra_update_obj['time_between_check'] = form.time_between_check.data
+
             # Handle processor-config-* fields separately (save to JSON, not datastore)
             # IMPORTANT: These must NOT be saved to url-watches.json, only to the processor-specific JSON file
             processor_config_data = processors.extract_processor_config_from_form_data(form.data)
