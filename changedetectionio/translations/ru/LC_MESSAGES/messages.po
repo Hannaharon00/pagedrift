@@ -160,6 +160,69 @@ msgstr "Файл должен быть файлом резервной копи�
 msgid "Backup file is too large (max %(mb)s MB)"
 msgstr "Файл резервной копии слишком велик (максимум %(mb)s МБ)"
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "Неверный или поврежденный zip-файл."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "Восстановление началось в фоновом режиме. Повторите попытку через несколько минут."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "Создавать"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "Восстановить"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "Резервное копирование запущено!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr ""
+"Здесь вы можете скачать и запросить новую резервную копию. Когда резервная копия будет завершена, вы увидите ее в "
+"списке ниже."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "Мб"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "Резервные копии не найдены."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Создать резервную копию"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Удаление резервных копий"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "Восстановление запущено!"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr ""
+"Восстановите резервную копию. Должен быть файл резервной копии .zip, созданный в версии 0.53.1 или после нее (новая "
+"структура базы данных)."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "Примечание. Это не отменяет основные настройки приложения, а только часы и группы."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr "Максимальный размер загрузки: %(upload)s МБ. Максимальный размер в распакованном виде: %(decomp)s МБ."
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Set to empty to disable / no limit"
 msgstr "Установите пустое значение, чтобы отключить/без ограничений"
