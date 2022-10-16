@@ -45,6 +45,68 @@ msgstr "Виконується резервне копіювання!"
 msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
 msgstr "Тут ви можете завантажити або створити нову резервну копію. Коли створення завершиться, вона з'явиться у списку нижче."
 
+#: changedetectionio/blueprint/backups/templates/overview.html
+msgid "Mb"
+msgstr "Мб"
+
+#: changedetectionio/blueprint/backups/templates/overview.html
+msgid "No backups found."
+msgstr "Резервних копій не знайдено."
+
+#: changedetectionio/blueprint/backups/templates/overview.html
+msgid "Create backup"
+msgstr "Створити резервну копію"
+
+#: changedetectionio/blueprint/backups/templates/overview.html
+msgid "Remove backups"
+msgstr "Видалити резервні копії"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Імпортуються перші 5000 URL з вашого списку, решту можна імпортувати повторно."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{} Imported from list in {:.2f}s, {} Skipped."
+msgstr "{} Імпортовано зі списку за {:.2f}с, {} Пропущено."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Не вдалося прочитати JSON-файл, можливо, він пошкоджений?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "Структура JSON виглядає некоректною, можливо, файл пошкоджений?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{} Imported from Distill.io in {:.2f}s, {} Skipped."
+msgstr "{} Імпортовано з Distill.io за {:.2f}с, {} Пропущено."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Не вдалося прочитати файл експорту XLSX, щось не так із файлом?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Помилка обробки рядка {}, значення URL некоректне, рядок пропущено."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Помилка обробки рядка {}, перевірте правильність типів даних у клітинках, рядок пропущено."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{} imported from Wachete .xlsx in {:.2f}s"
+msgstr "{} імпортовано з Wachete .xlsx за {:.2f}с"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{} imported from custom .xlsx in {:.2f}s"
+msgstr "{} імпортовано з власного .xlsx за {:.2f}с"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Список URL"
