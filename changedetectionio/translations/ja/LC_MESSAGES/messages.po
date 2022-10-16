@@ -231,6 +231,63 @@ msgid "Custom mapping"
 msgstr "カスタムマッピング"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "通常のプレーンリクエスト（Chrome以外）の場合、タイムアウトまでの最大秒数、1〜999。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "すべてのリクエストに適用されます。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "注意：User-Agentを変更するだけではボット対策技術を回避できない場合が多く、以下を考慮することが重要です"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "ブラウザが検出されるすべての方法"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Bright Data プロキシを使用して接続します。詳細はこちら。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "ヒント："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "変更検知時に空白、タブ、改行を無視します。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "注意："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "これを変更すると、既存のウォッチのステータスが変わり、アラートが発生する可能性があります。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "アンカータグのコンテンツをレンダリング（デフォルト無効）、有効にするとリンクを次のように表示："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "これを変更すると、既存のウォッチのコンテンツに影響し、アラートが発生する可能性があります。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "テキスト変換前に CSS および XPath セレクターで HTML 要素を削除します。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "ここにHTMLを貼り付けないでください。CSSとXPathセレクターのみを使用してください。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "1行に1つのCSSまたはXPathセレクターを追加して、HTMLの複数の部分を無視できます。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Note: This is applied globally in addition to the per-watch rules."
 msgstr "注意：これはウォッチごとのルールに加えてグローバルに適用されます。"
 
