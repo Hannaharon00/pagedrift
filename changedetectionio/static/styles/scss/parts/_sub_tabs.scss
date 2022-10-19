@@ -94,3 +94,119 @@
   overflow-x: hidden;
 }
 
+.stab-overview-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.6rem;
+}
+
+.stab-overview-feature {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.022);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.035);
+  }
+
+  .stab-overview-icon {
+    width: 1.6rem;
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+    opacity: 0.7;
+    display: flex;
+    justify-content: center;
+
+    svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      stroke: currentColor;
+      fill: none;
+    }
+  }
+
+  .stab-overview-text {
+    > strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    p {
+      color: var(--color-text-input-description);
+    }
+  }
+}
+
+.stab-overview-disclaimer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 0 0 1.1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(211, 136, 0, 0.35);
+  background: rgba(255, 180, 0, 0.07);
+
+  .stab-disclaimer-icon {
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+    color: #c07800;
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke: currentColor;
+      fill: none;
+    }
+  }
+
+  .stab-disclaimer-body {
+    font-size: 0.85rem;
+    line-height: 1.55;
+
+    > strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: #8a5500;
+      font-size: 0.87rem;
+    }
+
+    p {
+      margin: 0 0 0.45rem;
+      color: var(--color-text-input-description);
+    }
+
+    ul {
+      margin: 0 0 0.6rem;
+      padding-left: 1.25rem;
+      color: var(--color-text-input-description);
+
+      li {
+        margin-bottom: 0.2rem;
+      }
+    }
+  }
+
+  .stab-disclaimer-check {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--color-text-input-description);
+    font-weight: 600;
+
+    input[type="checkbox"] {
+      flex-shrink: 0;
+      margin-top: 0.18rem;
+      cursor: pointer;
+    }
+  }
+}
+
