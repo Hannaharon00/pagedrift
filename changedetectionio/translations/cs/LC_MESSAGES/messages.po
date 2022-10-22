@@ -283,6 +283,66 @@ msgid "Password is locked."
 msgstr "Heslo je uzamčeno."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Vymazat historii snímků"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr "Povolit přístup na stránku historie změn monitoru, když je povoleno heslo (Vhodné pro sdílení stránky rozdílů)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Pokud požadavek vrátí prázdný obsah, nebo pokud HTML neobsahuje žádný text, má být označeno jako změna?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Vyberte výchozí proxy pro všechna sledování"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr "Pokud máte potíže při čekání na plné vykreslení stránky (chybějící text atp.), zkuste navýšit čas 'prodlevy' zde."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Toto počká <i>n</i> sekund před extrahováním textu."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr "Počet souběžných pracovních procesů sledování. Více procesů = rychlejší zpracování, ale vyšší spotřeba paměti."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Aktuálně běží:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "funkční"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "pracovníci"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "aktivně zpracovává"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "Příklad - 3 sekundový náhodný rozptyl může spustit o 3 sekundy dříve nebo až 3 sekundy později"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Easily add any web-page to your changedetection.io installation from within Chrome."
 msgstr "Přidávejte jakékoliv webové stránky do své changedetection.io instalace přímo z prohlížeče Chrome."
 
