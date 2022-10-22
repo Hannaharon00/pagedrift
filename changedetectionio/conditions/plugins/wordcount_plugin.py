@@ -37,3 +37,51 @@ def register_operator_choices():
     # No custom operator choices needed
     return []
 
+@conditions_hookimpl
+def register_field_choices():
+    # Add a field that will be available in conditions
+    return [
+        ("word_count", _l("Word count of content")),
+    ]
+
+@conditions_hookimpl
+def add_data(current_watch_uuid, application_datastruct, ephemeral_data):
+    """Add word count data for conditions"""
+    result = {}
+    watch = application_datastruct['watching'].get(current_watch_uuid)
+    
+    if watch and 'text' in ephemeral_data:
+        word_count = count_words_in_history(watch, ephemeral_data['text'])
+        result['word_count'] = word_count
+    
+    return result
+
+def _generate_stats_html(watch):
+    """Generate the HTML content for the stats tab"""
+    word_count = count_words_in_history(watch)
+    
+    html = f"""
+    <div class="word-count-stats">
+        <h4>{_('Content Analysis')}</h4>
+        <table class="pure-table">
+            <tbody>
+                <tr>
+                    <td>{_('Word count (latest snapshot)')}</td>
+                    <td>{word_count}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 80%;">{_('Word count is a simple measure of content length, calculated by splitting text on whitespace.')}</p>
+    </div>
+    """
+    return html
+
+@conditions_hookimpl
+def ui_edit_stats_extras(watch):
+    """Add word count stats to the UI through conditions plugin system"""
+    return _generate_stats_html(watch)
+
+@global_hookimpl
+def ui_edit_stats_extras(watch):
+    """Add word count stats to the UI using the global plugin system"""
+    return _generate_stats_html(watch)
