@@ -102,3 +102,59 @@ msgstr "Підключення через проксі Bright Data та Oxylabs,
 msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
 msgstr "Ігнорувати пробіли, табуляцію та переноси рядків під час виявлення змін."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "Примітка:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "Зміна цього параметра вплине на статус існуючих завдань, можливе спрацювання сповіщень."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "Відображати вміст тегів посилань. За замовчуванням вимкнено. Якщо увімкнено, посилання відображаються як"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "Зміна цього параметра може вплинути на вміст ваших завдань та викликати хибні спрацювання."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "Видалити HTML-елемент(и) за допомогою CSS та XPath селекторів перед перетворенням у текст."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Не вставляйте сюди HTML, використовуйте лише CSS та XPath селектори"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Додайте кілька елементів, CSS або XPath селекторів (по одному на рядок), щоб ігнорувати частини HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Примітка: Це застосовується глобально на додаток до правил конкретних завдань."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Matching text will be"
+msgstr "Текст, що збігається, буде"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "ignored"
+msgstr "проігноровано"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "у текстовому знімку (ви будете його бачити, але він не викличе сповіщення про зміну)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr "Кожен рядок обробляється окремо; будь-який рядок, що збігається, буде проігноровано (видалено перед створенням контрольної суми)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Підтримка регулярних виразів: обгорніть весь рядок у скісні риски"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Зміна цього параметра вплине на контрольну суму порівняння, що може викликати спрацювання сповіщення"
+
