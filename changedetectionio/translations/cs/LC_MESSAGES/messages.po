@@ -108,6 +108,63 @@ msgstr "Tvorba souboru zálohy běží, vraťte se za pár minut"
 msgid "Maximum number of backups reached, please remove some"
 msgstr "Maximální počet souborů záloh dosažen, některé prosím smažte"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "Tvorba souboru zálohy běží na pozadí, vraťte se za pár minut."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Zálohy byly smazány"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "Záložní zip soubor"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr "Musí být .zip soubor zálohy!"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "Zahrnout skupiny"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "Nahradit existující skupiny obsahující stejné UUID"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "Zahrnout sledování"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "Nahradit existující sledování obsahující stejne UUID"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "Obnovit zálohu"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "Obnova již probíhá, vraťte se za pár minut"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "Nebyl nahrán žádný soubor"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "Soubor musí být .zip soubor zálohy!"
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "Záložní soubor moc velký (max %(mb)s MB)"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "Neplatný nebo poškozený zip soubor"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Seznam adres URL"

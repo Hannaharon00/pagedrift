@@ -45,3 +45,195 @@ class _LoguruInterceptHandler(logging.Handler):
 _debug_installed = False
 
 
+def _install_litellm_debug():
+    # Attach our loguru intercept and clear any pre-existing handlers so litellm's
+    # own stdout StreamHandler (installed by _turn_on_debug / set_verbose) doesn't
+    # double-emit. Setting the logger level to DEBUG is enough to make litellm
+    # produce debug records — we don't call _turn_on_debug() for that reason.
+    global _debug_installed
+    if _debug_installed:
+        return
+
+    handler = _LoguruInterceptHandler()
+    handler.setLevel(logging.DEBUG)
+    for _name in ('LiteLLM', 'litellm', 'litellm.utils', 'litellm.router'):
+        _lg = logging.getLogger(_name)
+        _lg.handlers = []
+        _lg.setLevel(logging.DEBUG)
+        _lg.addHandler(handler)
+        _lg.propagate = False
+
+    _debug_installed = True
+    logger.info("LLM client: litellm debug logging routed through loguru")
+
+
+def completion(  # noqa: C901
+    model: str,
+    messages: list,
+    api_key: str = None,
+    api_base: str = None,
+    timeout: int = DEFAULT_TIMEOUT,
+    max_tokens: int = None,
+    extra_body: dict = None,
+    debug: bool = False,
+) -> tuple[str, int, int, int]:
+    """
+    Call the LLM and return (response_text, total_tokens, input_tokens, output_tokens).
+    Retries up to DEFAULT_RETRIES times on timeout or connection errors.
+    Token counts are 0 if the provider doesn't return usage data.
+    Raises on network/auth errors — callers handle gracefully.
+
+    timeout: seconds for the request. Local endpoints get a longer value than cloud —
+    see evaluator.resolve_llm_timeout().
+    """
+    try:
+        import litellm
+    except ImportError:
+        raise RuntimeError("litellm is not installed. Add it to requirements.txt.") from None
+
+    if debug:
+        _install_litellm_debug()
+
+    _timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
+
+    kwargs = {
+        'model': model,
+        'messages': messages,
+        'timeout': _timeout,
+        'max_tokens': max_tokens if max_tokens is not None else _MAX_COMPLETION_TOKENS,
+    }
+    _m_lower = (model or '').lower()
+    if not any(k in _m_lower for k in _NO_TEMPERATURE_MODEL_KEYWORDS):
+        kwargs['temperature'] = 0
+
+    if api_key:
+        kwargs['api_key'] = api_key
+    if api_base:
+        kwargs['api_base'] = api_base
+    if extra_body:
+        kwargs['extra_body'] = extra_body
+
+    _retryable = (litellm.Timeout, litellm.APIConnectionError)
+
+    # Some models reject sampling params outright: Anthropic Claude Opus 4.7/4.8 and
+    # Fable return HTTP 400 for 'temperature', and OpenAI reasoning models (o1/o3/gpt-5)
+    # only accept the default. litellm's per-model param metadata lags new releases, so
+    # drop_params can't be relied on for freshly released models — instead, if the provider
+    # rejects a sampling param, strip them and retry once. Models that accept them are
+    # unaffected (they still receive temperature=0).
+    _sampling_params = ('temperature', 'top_p', 'top_k')
+    _stripped_sampling = False
+
+    logger.debug(
+        f"LLM client: calling model={model!r} api_base={api_base!r} "
+        f"timeout={_timeout}s max_tokens={kwargs['max_tokens']}"
+    )
+    logger.trace(messages)
+
+    attempt = 0
+    while attempt < DEFAULT_RETRIES:
+        attempt += 1
+        try:
+            response = litellm.completion(**kwargs)
+            choice = response.choices[0]
+            message = choice.message
+            finish = getattr(choice, 'finish_reason', None)
+
+            text = message.content or ''
+
+            if not text:
+                # Some providers (e.g. Gemini) put text in message.parts instead of .content
+                parts = getattr(message, 'parts', None)
+                if parts:
+                    text = ''.join(getattr(p, 'text', '') or '' for p in parts).strip()
+                    logger.debug(
+                        f"LLM client: extracted text from message.parts ({len(parts)} parts) model={model!r}"
+                    )
+
+            if finish == 'length':
+                logger.warning(
+                    f"LLM client: response truncated (finish_reason='length') model={model!r} "
+                    f"— increase max_tokens; got {len(text)} chars so far"
+                )
+
+            if not text:
+                logger.warning(
+                    f"LLM client: empty content from model={model!r} "
+                    f"finish_reason={finish!r} "
+                    f"message={message!r}"
+                )
+
+            usage = getattr(response, 'usage', None)
+            input_tokens = int(getattr(usage, 'prompt_tokens', 0) or 0) if usage else 0
+            output_tokens = int(getattr(usage, 'completion_tokens', 0) or 0) if usage else 0
+            total_tokens = (
+                int(getattr(usage, 'total_tokens', 0) or 0)
+                if usage
+                else (input_tokens + output_tokens)
+            )
+            logger.debug(
+                f"LLM client: model={model!r} finish={finish!r} "
+                f"tokens={total_tokens} (in={input_tokens} out={output_tokens}) "
+                f"text_len={len(text)}"
+            )
+            return text, total_tokens, input_tokens, output_tokens
+
+        except _retryable as e:
+            # litellm formats its Timeout message with None when the provider doesn't
+            # propagate the timeout value — patch the exception args in-place so every
+            # caller that logs str(e) sees the real number.
+            _fix = f'after {_timeout} seconds'
+            try:
+                e.args = tuple(str(a).replace('after None seconds', _fix) for a in e.args)
+            except Exception:
+                pass
+            if attempt < DEFAULT_RETRIES:
+                logger.warning(
+                    f"LLM call timed out/connection error (attempt {attempt}/{DEFAULT_RETRIES}), "
+                    f"retrying — model={model!r} timeout={_timeout}s error={e}"
+                )
+                continue
+            logger.warning(
+                f"LLM call failed after {DEFAULT_RETRIES} attempts ({_timeout}s timeout) "
+                f"model={model!r} error={e}"
+            )
+            raise
+
+        except litellm.BadRequestError as e:
+            # If the provider rejected an unsupported sampling param or extra_body
+            # (e.g. Gemini INVALID_ARGUMENT on thinkingConfig or temperature), drop
+            # them and retry once.
+            if not _stripped_sampling:
+                dropped = [p for p in _sampling_params if kwargs.pop(p, None) is not None]
+                extra_body = kwargs.get('extra_body')
+                if isinstance(extra_body, dict):
+                    gen_cfg = extra_body.get('generationConfig')
+                    if (
+                        isinstance(gen_cfg, dict)
+                        and gen_cfg.pop('thinkingConfig', None) is not None
+                    ):
+                        dropped.append('thinkingConfig')
+                        if not gen_cfg:
+                            extra_body.pop('generationConfig', None)
+                        if not extra_body:
+                            kwargs.pop('extra_body', None)
+                    elif 'thinkingConfig' in extra_body:
+                        extra_body.pop('thinkingConfig', None)
+                        dropped.append('thinkingConfig')
+                        if not extra_body:
+                            kwargs.pop('extra_body', None)
+
+                if dropped:
+                    _stripped_sampling = True
+                    attempt -= 1
+                    logger.warning(
+                        f"LLM client: model={model!r} rejected request ({e}); "
+                        f"stripped {dropped} and retrying once"
+                    )
+                    continue
+            logger.warning(f"LLM call failed: model={model!r} error={e}")
+            raise
+
+        except Exception as e:
+            logger.warning(f"LLM call failed: model={model!r} error={e}")
+            raise
