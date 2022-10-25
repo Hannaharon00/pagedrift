@@ -395,6 +395,76 @@ msgid "Limit collection of history snapshots for each watch to this number of hi
 msgstr "Batasi kumpulan snapshot riwayat setiap monitor hingga jumlah item riwayat ini."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "Kosongkan untuk menonaktifkan / tanpa batas"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "Perlindungan kata sandi untuk aplikasi changedetection.io Anda."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "Kata sandi dikunci."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Hapus Riwayat Snapshot"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Izinkan akses ke halaman riwayat perubahan monitor saat kata sandi diaktifkan (berguna untuk membagikan halaman "
+"perbedaan)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr ""
+"Jika permintaan tidak mengembalikan konten, atau HTML tidak berisi teks apa pun, apakah ini dianggap sebagai "
+"perubahan?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Pilih proksi default untuk semua monitor"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr "Gunakan metode <strong>Basic</strong> (default) jika situs yang dipantau tidak memerlukan Javascript untuk dirender."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"Metode <strong>Chrome/Javascript</strong> memerlukan koneksi jaringan ke server WebDriver+Chrome yang sedang "
+"berjalan, diatur melalui variabel ENV 'WEBDRIVER_URL'."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Jika Anda kesulitan menunggu halaman selesai dirender sepenuhnya (teks hilang, dll.), coba tingkatkan waktu 'wait' di"
+" sini."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Ini akan menunggu <i>n</i> detik sebelum mengekstrak teks."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"Jumlah worker bersamaan untuk memproses monitor. Lebih banyak worker = pemrosesan lebih cepat tetapi penggunaan "
+"memori lebih tinggi."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Sedang berjalan:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "operasional"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
 msgstr "Mengubah ini dapat memengaruhi konten monitor Anda yang sudah ada, dan mungkin memicu peringatan, dll."
 
