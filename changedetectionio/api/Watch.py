@@ -87,3 +87,121 @@ def validate_time_between_check_required(json_data):
     return "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
 
 
+class WatchHistoryDiff(Resource):
+    """
+    Generate diff between two historical snapshots.
+
+    Note: This API endpoint currently returns text-based diffs and works best
+    with the text_json_diff processor. Future processor types (like image_diff,
+    restock_diff) may want to implement their own specialized API endpoints
+    for returning processor-specific data (e.g., price charts, image comparisons).
+
+    The web UI diff page (/diff/<uuid>) is processor-aware and delegates rendering
+    to processors/{type}/difference.py::render() for processor-specific visualizations.
+    """
+    def __init__(self, **kwargs):
+        # datastore is a black box dependency
+        self.datastore = kwargs['datastore']
+
+    @auth.check_token
+    @validate_openapi_request('getWatchHistoryDiff')
+    def get(self, uuid, from_timestamp, to_timestamp):
+        """Generate diff between two historical snapshots."""
+        from changedetectionio import diff
+        from changedetectionio.notification.handler import apply_service_tweaks
+
+        watch = self.datastore.data['watching'].get(uuid)
+        if not watch:
+            abort(404, message=f"No watch exists with the UUID of {uuid}")
+
+        if not len(watch.history):
+            abort(404, message=f"Watch found but no history exists for the UUID {uuid}")
+
+        history_keys = list(watch.history.keys())
+
+        # Handle 'latest' keyword for to_timestamp
+        if to_timestamp == 'latest':
+            to_timestamp = history_keys[-1]
+
+        # Handle 'previous' keyword for from_timestamp (second-most-recent)
+        if from_timestamp == 'previous':
+            if len(history_keys) < 2:
+                abort(404, message=f"Not enough history entries. Need at least 2 snapshots for 'previous'")
+            from_timestamp = history_keys[-2]
+
+        # Validate timestamps exist
+        if from_timestamp not in watch.history:
+            abort(404, message=f"From timestamp {from_timestamp} not found in watch history")
+        if to_timestamp not in watch.history:
+            abort(404, message=f"To timestamp {to_timestamp} not found in watch history")
+
+        # Get the format parameter (default to 'text')
+        output_format = request.args.get('format', 'text').lower()
+
+        # Validate format
+        if output_format not in valid_notification_formats.keys():
+            abort(400, message=f"Invalid format. Must be one of: {', '.join(valid_notification_formats.keys())}")
+
+        # Get the word_diff parameter (default to False - line-level mode)
+        word_diff = strtobool(request.args.get('word_diff', 'false'))
+
+        # Get the no_markup parameter (default to False)
+        no_markup = strtobool(request.args.get('no_markup', 'false'))
+
+        # Retrieve snapshot contents
+        from_version_file_contents = watch.get_history_snapshot(from_timestamp)
+        to_version_file_contents = watch.get_history_snapshot(to_timestamp)
+
+        # Get diff preferences from query parameters (matching UI preferences in DIFF_PREFERENCES_CONFIG)
+        # Support both 'type' (UI parameter) and 'word_diff' (API parameter) for backward compatibility
+        diff_type = request.args.get('type', 'diffLines')
+        if diff_type == 'diffWords':
+            word_diff = True
+
+        # Get boolean diff preferences with defaults from DIFF_PREFERENCES_CONFIG
+        changes_only = strtobool(request.args.get('changesOnly', 'false'))
+        ignore_whitespace = strtobool(request.args.get('ignoreWhitespace', 'false'))
+        include_removed = strtobool(request.args.get('removed', 'true'))
+        include_added = strtobool(request.args.get('added', 'true'))
+        include_replaced = strtobool(request.args.get('replaced', 'true'))
+
+        # Generate the diff with all preferences
+        content = diff.render_diff(
+            previous_version_file_contents=from_version_file_contents,
+            newest_version_file_contents=to_version_file_contents,
+            ignore_junk=ignore_whitespace,
+            include_equal=not changes_only,
+            include_removed=include_removed,
+            include_added=include_added,
+            include_replaced=include_replaced,
+            word_diff=word_diff,
+        )
+
+        # Skip formatting if no_markup is set
+        if no_markup:
+            mimetype = "text/plain"
+        else:
+            # Apply formatting based on the requested format
+            if output_format == 'htmlcolor':
+                from changedetectionio.notification.handler import apply_html_color_to_body
+                content = apply_html_color_to_body(n_body=content)
+                mimetype = "text/html"
+            else:
+                # Apply service tweaks for text/html formats
+                # Pass empty URL and title as they're not used for the placeholder replacement we need
+                _, content, _ = apply_service_tweaks(
+                    url='',
+                    n_body=content,
+                    n_title='',
+                    requested_output_format=output_format
+                )
+                mimetype = "text/html" if output_format == 'html' else "text/plain"
+
+            if 'html' in output_format:
+                content = newline_re.sub('<br>\r\n', content)
+
+        response = make_response(content, 200)
+        response.mimetype = mimetype
+        return response
+
+
