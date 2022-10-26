@@ -486,3 +486,61 @@ msgstr ""
 msgid "Tag colour"
 msgstr ""
 
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "Düzenlenecek izleyici yok"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "{} UUID'li izleyici bulunamadı."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "{} moduna geçildi."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "'{}' işlemcisi yüklenemedi, işlemci eklentisi eksik olabilir. Lütfen farklı bir işlemci seçin."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "'{}' işlemcisi yüklenemedi, işlemci eklentisi eksik olabilir."
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "İzleyici güncellendi - duraklatma iptal edildi!"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "İzleyici güncellendi."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "Önizleme kullanılamıyor - Getirme/kontrol tamamlanmadı veya tetikleyicilere ulaşılamadı"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "toplam <b>{total}</b> içinde <b>{start} - {end}</b> {record_name} gösteriliyor"
+
