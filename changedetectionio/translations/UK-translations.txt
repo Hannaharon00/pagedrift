@@ -45,6 +45,69 @@ msgstr "Виконується резервне копіювання!"
 msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
 msgstr "Тут ви можете завантажити або створити нову резервну копію. Коли створення завершиться, вона з'явиться у списку нижче."
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "Таблиця зіставлення користувацьких стовпців і типів даних для"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "Власне зіставлення"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "Тип зіставлення файлу."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "Стовпець №"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "Тип"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "немає"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "Фільтр CSS/xPath"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "Група / Ім'я тегу(ів)"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "Час перевірки (хвилини)"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Import"
+msgstr "Імпорт"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "Захист паролем вимкнено."
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({}) is close to or exceeds available CPU cores ({})"
+msgstr "Увага: Кількість воркерів ({}) наближається до кількості доступних ядер процесора або перевищує її ({})"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "Кількість воркерів скориговано: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "Динамічне налаштування воркерів не підтримується для синхронних процесів"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "Помилка налаштування воркерів: {}"
+
 #: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
 msgid "seconds before extracting the text."
 msgstr "секунд перед вилученням тексту."
