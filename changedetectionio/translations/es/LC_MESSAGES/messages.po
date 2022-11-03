@@ -226,6 +226,66 @@ msgid "{count} imported from custom .xlsx in {duration}s"
 msgstr "{count} importado desde .xlsx personalizado en {duration}s"
 
 #: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "Lista de URL"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX y Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "Restaurar las copias de seguridad de changetection.io se encuentra en el"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "sección de copias de seguridad"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr ""
+"Ingrese una URL por línea y, opcionalmente, agregue etiquetas para cada URL después de un espacio, delimitado por una"
+" coma (,):"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "Ejemplo"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "Las URL que no pasen la validación permanecerán en el área de texto."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Copie y pegue el archivo de 'exportación' del monitor Distill.io, este debería ser un archivo JSON."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"Esto es <i>experimental</i>, los campos admitidos son <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, el resto (incluyendo <code>schedule</code>) es ignorado."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "¿Cómo exportar?"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "Asegúrese de configurar su buscador predeterminado en Chrome si es necesario."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "Tabla de asignación de tipos de datos y columnas personalizadas para el"
+
+#: changedetectionio/blueprint/imports/templates/import.html
 msgid "Custom mapping"
 msgstr "Mapeo personalizado"
 
