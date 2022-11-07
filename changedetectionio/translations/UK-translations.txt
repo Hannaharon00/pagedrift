@@ -277,3 +277,59 @@ msgstr "Підтримка регулярних виразів: обгорніт
 msgid "Changing this will affect the comparison checksum which may trigger an alert"
 msgstr "Зміна цього параметра вплине на контрольну суму порівняння, що може викликати спрацювання сповіщення"
 
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag deleted, removing from watches in background"
+msgstr "Тег видалено, видалення із завдань виконується у фоновому режимі"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Unlinking tag from watches in background"
+msgstr "Відв'язування тегу від завдань виконується у фоновому режимі"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "All tags deleted, clearing from watches in background"
+msgstr "Усі теги видалено, очищення завдань виконується у фоновому режимі"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag not found"
+msgstr "Тег не знайдено"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Updated"
+msgstr "Оновлено"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Filters & Triggers"
+msgstr "Фільтри та Тригери"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "These settings are"
+msgstr "Ці налаштування"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "added"
+msgstr "додаються"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "to any existing watch configurations."
+msgstr "до будь-яких існуючих конфігурацій завдань."
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Text filtering"
+msgstr "Фільтрація тексту"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use with caution!"
+msgstr "Використовуйте з обережністю!"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will easily fill up your email storage quota or flood other storages."
+msgstr "Це може швидко переповнити вашу поштову скриньку або інші сховища."
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Look out!"
+msgstr "Увага!"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Lookout!"
+msgstr "Обережно!"
+
