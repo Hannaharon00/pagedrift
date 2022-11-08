@@ -473,6 +473,63 @@ msgid "operational"
 msgstr "оперативный"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "рабочие"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "активно обрабатываю"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "Пример. Случайное дрожание длительностью 3 секунды может сработать на 3 секунды раньше или на 3 секунды позже."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr ""
+"Для обычных простых запросов (не на основе Chrome) максимальное количество секунд до истечения времени ожидания — "
+"1–999."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "Применяется ко всем запросам."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "Примечание. Простое изменение User-Agent часто не побеждает технологии защиты от роботов, это важно учитывать."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "все способы обнаружения браузера"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Подключайтесь с помощью прокси Bright Data, узнайте больше здесь."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "Кончик:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr ""
+"Игнорируйте пробелы, символы табуляции и символы новой строки/перевода строки при рассмотрении вопроса об обнаружении"
+" изменения."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "Примечание:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "Изменение этого параметра приведет к изменению статуса ваших существующих часов, возможно, вызовет оповещения и т. д."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "Отображение содержимого тега привязки (по умолчанию отключено). При включении ссылки отображаются как"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "header - required for the Chrome Extension to work"
 msgstr "заголовок — необходим для работы расширения Chrome."
 
