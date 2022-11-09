@@ -108,6 +108,63 @@ msgstr "이미 백업이 실행 중입니다. 잠시 후 다시 확인해 주세
 msgid "Maximum number of backups reached, please remove some"
 msgstr "백업 가능 개수를 초과했습니다. 일부를 삭제해 주세요."
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "백업을 백그라운드에서 생성하고 있습니다. 잠시 후 다시 확인해 주세요."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "백업이 삭제되었습니다."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr "백업 zip 파일"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr ".zip 백업 파일이어야 합니다."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr "그룹 포함"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr "같은 UUID의 기존 그룹 덮어쓰기"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr "모니터링 포함"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr "같은 UUID의 기존 모니터링 덮어쓰기"
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr "백업 복원"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr "이미 복원이 실행 중입니다. 잠시 후 다시 확인해 주세요."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr "업로드된 파일이 없습니다."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr "파일은 .zip 백업 파일이어야 합니다."
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr "백업 파일이 너무 큽니다. (최대 %(mb)s MB)"
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr "잘못되었거나 손상된 zip 파일입니다."
+
 #: changedetectionio/blueprint/backups/templates/backup_restore.html
 msgid "Replace any existing groups of the same UUID?"
 msgstr "같은 UUID의 기존 그룹을 덮어쓰시겠습니까?"
