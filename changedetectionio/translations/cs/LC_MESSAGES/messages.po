@@ -707,3 +707,65 @@ msgstr ""
 msgid "All-time total"
 msgstr ""
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Naklonováno, upravujete nové sledování."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "Sledování je již zařazeno do fronty ke kontrole."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "Zařazeno 1 sledování ke kontrole."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "Do fronty přidáno {count} sledování k opětovné kontrole ({skipped_count} již ve frontě nebo běží)."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "Do fronty přidáno {} sledování k opětovné kontrole."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "Přidává se sledování do fronty pro opětovnou kontrolu na pozadí..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "Sdílení selhalo, něco se pokazilo při komunikaci se sdílecím serverem = {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "Jazyk nastaven na automatickou detekci z prohlížeče"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "Historie pro vybraný odkaz nenalezena, chybný odkaz?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "Nedostatečná historie (vyžadovány 2 záchyty) pro zobrazení rozdílů tohoto sledování."
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr "Dosažen měsíční počet %(budget)s AI tokenů (%(used)s použito). Resetuje se příští měsíc."
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "Žádná sledování k úpravě"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "Sledování s UUID {} nenalezeno."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "Přepnuto na mód - {}."
+
