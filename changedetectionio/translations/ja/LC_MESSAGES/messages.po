@@ -944,3 +944,63 @@ msgstr "削除"
 msgid "Deletes and removes tag"
 msgstr "タグを完全に削除する"
 
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr "リンクをご利用ください。"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "確認テキスト"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr "次の単語を入力してください："
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr "理解したことを確認するため。"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr "履歴をクリア！"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr "差分を画像として共有"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr "画像として共有"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr "一致する行を無視"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr "数字を除いて一致する行を無視"
+
+#. 'From' labels the older snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "From"
+msgstr "変更前"
+
+#. 'To' labels the newer snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "To"
+msgstr "変更後"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Words"
+msgstr "単語"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Lines"
+msgstr "行"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Ignore Whitespace"
+msgstr "空白を無視"
+
