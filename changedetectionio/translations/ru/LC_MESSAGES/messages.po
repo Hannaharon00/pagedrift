@@ -404,3 +404,75 @@ msgstr "Доступ к API синхронизации"
 msgid "Try our new Chrome Extension!"
 msgstr "Попробуйте наше новое расширение для Chrome!"
 
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Prompts"
+msgstr "Подсказки"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Behaviour"
+msgstr "Поведение"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI-powered change monitoring"
+msgstr "Мониторинг изменений на базе искусственного интеллекта"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Connect an LLM to move from \"something changed\" to \"only the thing you care about changed\"."
+msgstr "Подключите LLM, чтобы перейти от «что-то изменилось» к «изменилось только то, что вам важно»."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Intent filtering"
+msgstr "Фильтрация намерений"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Each watch or tag can carry a plain-text intent — %(ex1)s or %(ex2)s. On every detected change the AI evaluates the "
+"diff against it and suppresses irrelevant noise."
+msgstr ""
+"Каждые часы или тег могут содержать текстовое намерение — %(ex1)s или %(ex2)s. При каждом обнаруженном изменении ИИ "
+"оценивает разницу и подавляет ненужный шум."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Tip: intent evaluation benefits from a capable model — recommended %(local)s locally, or %(gpt)s / %(gemini)s. Very "
+"small models (≤3B) may misjudge numeric comparisons."
+msgstr ""
+"Совет: оценка намерений выигрывает от работоспособной модели — локально рекомендуется %(local)s или "
+"%(gpt)s/%(gemini)s. Очень маленькие модели (≤3B) могут давать ошибочные результаты при числовом сравнении."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Instead of raw diffs, receive plain-language summaries in notifications — %(ex1)s or %(ex2)s. Set a global default "
+"prompt here, or override per watch or tag."
+msgstr ""
+"Вместо необработанных различий получайте в уведомлениях сводку на простом языке — %(ex1)s или %(ex2)s. Установите "
+"здесь глобальное приглашение по умолчанию или переопределите его для каждого просмотра или тега."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Minimal cost"
+msgstr "Минимальная стоимость"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"The AI sees only a unified diff of what changed — never full page HTML. Low-cost models like %(gpt)s or %(gemini)s "
+"handle this well, typically fractions of a cent per check."
+msgstr ""
+"ИИ видит только единую разницу того, что изменилось, а не полный HTML-код страницы. Недорогие модели, такие как "
+"%(gpt)s или %(gemini)s, справляются с этим хорошо, обычно доли цента за чек."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI / LLM configured:"
+msgstr "AI/LLM настроено:"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Configure AI Provider"
+msgstr "Настройка поставщика AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI Provider"
+msgstr "Поставщик ИИ"
+
