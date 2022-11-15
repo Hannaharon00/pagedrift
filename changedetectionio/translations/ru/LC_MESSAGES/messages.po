@@ -476,3 +476,72 @@ msgstr "Настройка поставщика AI"
 msgid "AI Provider"
 msgstr "Поставщик ИИ"
 
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
+"scales every <code>max_tokens</code> cap for this endpoint to leave reasoning room. Defaults to %(default)s; raise it"
+" if responses come back truncated or empty, lower it (down to 1x) if you want tighter limits on a paid endpoint. "
+"Applied to Ollama and OpenAI-compatible endpoints — other cloud providers (OpenAI, Anthropic, Gemini) keep their "
+"original tight caps."
+msgstr ""
+"Модели рассуждений (Qwen3, DeepSeek-R1, Gemma 3 и т. д.) перед окончательным ответом выдают цепочку мыслей. Этот "
+"множитель масштабирует каждое ограничение <code>max_tokens</code> для этой конечной точки, чтобы оставить место для "
+"рассуждений. По умолчанию %(default)s; поднимите его, если ответы возвращаются усеченными или пустыми, уменьшите его "
+"(до 1x), если вы хотите более жесткие ограничения для платной конечной точки. Применительно к Ollama и конечным "
+"точкам, совместимым с OpenAI: другие облачные провайдеры (OpenAI, Anthropic, Gemini) сохраняют свои первоначальные "
+"жесткие ограничения."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Load available models"
+msgstr "Загрузить доступные модели"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Available models"
+msgstr "Доступные модели"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "choose a model"
+msgstr "выбрать модель"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Enter API key and click 'Load available models'"
+msgstr "Введите ключ API и нажмите «Загрузить доступные модели»."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove AI / LLM configuration?"
+msgstr "Удалить конфигурацию AI/LLM?"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "This will remove your saved AI provider, model, and API key."
+msgstr "Это приведет к удалению сохраненного поставщика AI, модели и ключа API."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove"
+msgstr "Удалять"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html changedetectionio/templates/base.html
+msgid "Cancel"
+msgstr "Отмена"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Test connection"
+msgstr "Тестовое соединение"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"Your API key is stored locally and sent only to your chosen provider. On each detected change, the watch's diff and "
+"extracted text are sent to the LLM — no full page HTML."
+msgstr ""
+"Ваш ключ API хранится локально и отправляется только выбранному вами провайдеру. При каждом обнаруженном изменении "
+"разница часов и извлеченный текст отправляются в LLM — без полностраничного HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Cache"
+msgstr "Кэш"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Clear all summary cache?"
+msgstr "Очистить весь кэш сводки?"
+

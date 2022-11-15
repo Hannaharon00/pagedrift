@@ -231,6 +231,59 @@ msgid "AI / LLM configuration removed."
 msgstr ""
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "备份"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "时间与日期"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "验证码与代理"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "信息"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "所有监控项的默认复检间隔，当前系统最小值为"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "更多信息"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "CSS/xPath 过滤器连续缺失此次数后发送通知"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr "设置为 <strong>0</strong> 以禁用"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "为你的 changedetection.io 应用启用密码保护。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "密码已锁定。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Clear Snapshot History"
 msgstr "清除快照历史"
 
