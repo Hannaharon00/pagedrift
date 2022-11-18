@@ -278,6 +278,58 @@ msgstr ""
 "Wystąpił błąd podczas przetwarzania wiersza o numerze {}; sprawdź, czy typy danych we wszystkich komórkach są "
 "prawidłowe; wiersz został pominięty."
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Table of custom column and data types mapping for the"
+msgstr "Tabela przyporządkowania niestandardowych kolumn i typów danych dla"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "Mapowanie niestandardowe"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "Typ mapowania plików."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "Kolumna nr"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "Typ"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "brak"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "Filtr CSS/xPath"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "Nazwa grupy / nazwy tagów"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "Czas ponownej kontroli (w minutach)"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr "Importuj"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr "Zawsze rozwinięte"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
 #: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "General"
