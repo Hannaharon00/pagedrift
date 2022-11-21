@@ -465,6 +465,64 @@ msgid "Chrome Extension"
 msgstr "Chrome 확장 프로그램"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "사용하는 리더가 HTML을 지원하나요? 여기에서 설정해 주세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr "모든 항목에 같은 템플릿을 사용하려면 'System default'를 선택하거나, \"Notification Body\"를 템플릿으로 다시 사용할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr "아래 설정이 올바른지 확인해 주세요. 웹페이지 모니터링 확인 일정을 관리하는 데 사용됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "서버의 UTC 날짜 및 시간:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "브라우저의 로컬 날짜 및 시간:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr "이 설정을 활성화하면 diff 페이지가 새 탭에서 열립니다. 비활성화하면 현재 탭에서 열립니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
+msgstr "실시간 UI 업데이트 활성화 (변경 시 재시작 필요)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable or Disable Favicons next to the watch list"
+msgstr "모니터링 목록 옆 파비콘 표시 여부"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of items per page in the watch overview list, 0 to disable."
+msgstr "모니터링 목록 페이지당 항목 수입니다. 0이면 비활성화됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "How \"Checked\" and \"Changed\" times are shown in the watch overview list."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "팁"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr "차단된 웹사이트에서는 \"Data Center\"보다 \"Residential\" 및 \"Mobile\" 프록시가 더 잘 동작할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "\"Name\"은 모니터링 편집 설정에서 프록시를 선택할 때 사용됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid ""
 "SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
 "whitelist the IP access instead"
