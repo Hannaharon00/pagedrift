@@ -722,6 +722,59 @@ msgstr "Кэш"
 msgid "Clear all summary cache?"
 msgstr "Очистить весь кэш сводки?"
 
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "— choose a model —"
+msgstr "— выбрать модель —"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "models available with your key"
+msgstr "модели доступны с вашим ключом"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Request failed"
+msgstr "Запрос не выполнен"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Testing…"
+msgstr "Тестирование…"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Connected"
+msgstr "Подключено"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Failed"
+msgstr "Неуспешный"
+
+#: changedetectionio/blueprint/tags/__init__.py
+#, python-brace-format
+msgid "The tag \"{}\" already exists"
+msgstr "Тег \"{}\" уже существует."
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag added"
+msgstr "Тег добавлен"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag deleted, removing from watches in background"
+msgstr "Тег удален, часы удалены в фоновом режиме"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Unlinking tag from watches in background"
+msgstr "Отключение тега от часов в фоновом режиме"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "All tags deleted, clearing from watches in background"
+msgstr "Все теги удалены, часы в фоновом режиме удалены."
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag not found"
+msgstr "Тег не найден"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Updated"
+msgstr "Обновлено"
+
 #: changedetectionio/blueprint/tags/templates/edit-tag.html
 msgid "Leave unchecked to use the auto-generated colour based on the tag name."
 msgstr "Оставьте этот флажок снятым, чтобы использовать автоматически сгенерированный цвет на основе имени тега."
