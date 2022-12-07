@@ -30,3 +30,32 @@
 
 {% set llm_group_mode = llm_group_edit|default(false) %}
 
+{# Processor check only applies in watch-edit context.                                 #}
+{# In tag/group edit context the AI section is always visible.                         #}
+{# Processors whose edit form carries the AI Intent / Change Summary fields (i.e. those whose
+   form inherits processor_text_json_diff_form). text_json_diff + restock_diff today. #}
+{% if llm_group_mode %}
+    {% set show_ai_section = true %}
+{% else %}
+    {% set show_ai_section = not watch.get('processor') or watch.get('processor') in ['text_json_diff', 'restock_diff'] %}
+{% endif %}
+
+{# An unrendered switch is absent from the POST, and WTForms reads that as off. So whenever we
+   do NOT render the AI switch (no LLM provider configured, or a processor whose form has no AI
+   fields) we carry its saved state through in a hidden input — otherwise merely saving the page
+   would silently switch AI off. #}
+{% if not (show_ai_section and llm_configured) %}
+    {% if llm_group_mode %}
+        {# Group: ternary, so preserve whichever of the three states it is in #}
+        {% if form.llm_backend_profile.data is not none %}<input type="hidden" name="llm_backend_profile" value="{{ 'true' if form.llm_backend_profile.data else 'false' }}">{% endif %}
+    {% elif form.llm_backend_profile.data %}
+        <input type="hidden" name="llm_backend_profile" value="y">
+    {% endif %}
+{% endif %}
+
+{% if show_ai_section %}
+
+{# ── Configured: show the intent + summary fields ────────────────── #}
+{% if llm_configured %}
+<div id="llm-intent-section">
+
