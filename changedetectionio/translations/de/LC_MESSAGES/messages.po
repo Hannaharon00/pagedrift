@@ -1204,6 +1204,66 @@ msgstr "{} Überwachungen fortgesetzt"
 msgid "{} watches updated"
 msgstr "{} Überwachungen aktualisiert"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "History clearing started in background"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Incorrect confirmation text."
+msgstr "Falscher Bestätigungstext"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "The watch by UUID {} does not exist."
+msgstr "Die Beobachtung mit der UUID {} existiert nicht."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Deleted."
+msgstr "Gelöscht."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Geklont, Sie bearbeiten die neue Beobachtung."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "Überwachung ist bereits in der Warteschlange oder wird gerade geprüft."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "1 Überwachung zur erneuten Überprüfung in Warteschlange gestellt."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "{count} Überwachungen zur erneuten Überprüfung eingereiht ({skipped_count} bereits in Warteschlange oder laufend)."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "In der Warteschlange {} zur erneuten Überprüfung."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "Überwachungen werden im Hintergrund zur erneuten Prüfung eingereiht..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "Die Freigabe konnte nicht erfolgen, bei der Kommunikation mit dem Freigabeserver ist ein Fehler aufgetreten – {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "Sprache auf automatische Erkennung vom Browser gesetzt"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "Keinen Verlauf für den angegebenen Link gefunden, fehlerhafter Link?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "Nicht genügend Verlauf (2 snapshots erforderlich), um die Änderungsseite für diese Überwachung anzuzeigen."
+
 #: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
 msgid "Next"
 msgstr "Nächste"
