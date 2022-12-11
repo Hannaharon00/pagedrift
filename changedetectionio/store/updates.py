@@ -24,6 +24,11 @@ try:
 except ImportError:
     HAS_ORJSON = False
 
+from ..html_tools import TRANSLATE_WHITESPACE_TABLE
+from ..processors.restock_diff import Restock, get_price_from_history_str
+from ..blueprint.rss import RSS_CONTENT_FORMAT_DEFAULT
+from ..model import USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH
+
 def create_backup_tarball(datastore_path, update_number):
     """
     Create a tarball backup of the entire datastore structure before running an update.
