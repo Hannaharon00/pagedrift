@@ -184,3 +184,50 @@ button.toggle-button {
   }
 
 
+.button-warning {
+  background: var(--color-background-button-warning);
+  color: var(--color-text-button-warning);
+}
+
+.button-secondary {
+  background: var(--color-background-button-secondary);
+}
+
+.button-cancel {
+  background: var(--color-background-button-cancel);
+}
+
+.messages {
+  li {
+    list-style: none;
+    padding: 1em;
+    border-radius: 10px;
+    color: var(--color-text-messages);
+    font-weight: bold;
+
+    &.message {
+      background: var(--color-background-messages-message);
+    }
+
+    &.error {
+      background: var(--color-background-messages-error);
+    }
+
+    &.notice {
+      background: var(--color-background-messages-notice);
+    }
+  }
+
+  &.with-share-link {
+    >*:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+label {
+ &:hover {
+   cursor: pointer;
+ }  
+}
+
