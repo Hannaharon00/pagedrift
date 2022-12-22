@@ -51,6 +51,77 @@ _FAVICON_FILENAME_CACHE: dict = {}
 minimum_seconds_recheck_time = int(os.getenv('MINIMUM_SECONDS_RECHECK_TIME', 3))
 mtable = {'seconds': 1, 'minutes': 60, 'hours': 3600, 'days': 86400, 'weeks': 86400 * 7}
 
+def _brotli_save(contents, filepath, mode=None, fallback_uncompressed=False):
+    """
+    Save compressed data using native brotli with streaming compression.
+    Uses chunked compression to minimize peak memory usage and malloc_trim()
+    to force release of C-level memory back to the OS.
+
+    Args:
+        contents: data to compress (str or bytes)
+        filepath: destination file path
+        mode: brotli compression mode (e.g., brotli.MODE_TEXT)
+        fallback_uncompressed: if True, save uncompressed on failure; if False, raise exception
+
+    Returns:
+        str: actual filepath saved (may differ from input if fallback used)
+
+    Raises:
+        Exception: if compression fails and fallback_uncompressed is False
+    """
+    import brotli
+    import gc
+    import ctypes
+
+    # Ensure contents are bytes
+    if isinstance(contents, str):
+        contents = contents.encode('utf-8')
+
+    try:
+        original_size = len(contents)
+        logger.debug(f"Starting brotli streaming compression of {original_size} bytes.")
+
+        # Create streaming compressor
+        compressor = brotli.Compressor(quality=6, mode=mode if mode is not None else brotli.MODE_GENERIC)
+
+        # Stream compress in chunks to minimize memory usage
+        chunk_size = 65536  # 64KB chunks
+        total_compressed_size = 0
+
+        with open(filepath, 'wb') as f:
+            # Process data in chunks
+            offset = 0
+            while offset < len(contents):
+                chunk = contents[offset:offset + chunk_size]
+                compressed_chunk = compressor.process(chunk)
+                if compressed_chunk:
+                    f.write(compressed_chunk)
+                    total_compressed_size += len(compressed_chunk)
+                offset += chunk_size
+
+            # Finalize compression - critical for proper cleanup
+            final_chunk = compressor.finish()
+            if final_chunk:
+                f.write(final_chunk)
+                total_compressed_size += len(final_chunk)
+
+        logger.debug(f"Finished brotli compression - From {original_size} to {total_compressed_size} bytes.")
+
+        # Cleanup: Delete compressor, force Python GC, then force C-level memory release
+        del compressor
+        gc.collect()
+
+        # Force release of C-level memory back to OS (since brotli is a C library)
+        try:
+            ctypes.CDLL('libc.so.6').malloc_trim(0)
+        except Exception:
+            pass  # malloc_trim not available on all systems (e.g., macOS)
+
+        return filepath
+
+    except Exception as e:
+        logger.error(f"Brotli compression error: {e}")
+
         # Compression failed
         if fallback_uncompressed:
             logger.warning(f"Brotli compression failed for {filepath}, saving uncompressed")
