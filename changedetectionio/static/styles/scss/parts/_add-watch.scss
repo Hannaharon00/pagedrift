@@ -11,3 +11,71 @@ body {
  }
 }
 
+#add-watch-ui {
+  padding: 0;
+  /* TOP : URL input + Go */
+  #add-watch-url-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+
+    // render_nolabel_field wraps the input in a <span>
+    > span {
+      flex: 1 1 auto;
+      min-width: 0;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    #add-watch-go {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+  }
+
+  /* PANES */
+  #add-watch-panes {
+    display: flex;
+    gap: $common-gap;
+    align-items: stretch;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+  }
+
+  /* LEFT : live visual-selector preview */
+  #add-watch-selector-pane {
+    flex: 1 1 62%;
+    min-width: 0;
+    min-height: 380px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; // pane clips to its (flex-bounded) height; the wrapper below is the scroller
+    border: 1px solid var(--color-background-tab);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 0.75rem;
+
+    // Transient states fill and centre over the whole pane (only one is visible at a time)
+    #add-watch-empty-state,
+    #add-watch-spinner,
+    #add-watch-error {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    #add-watch-empty-state {
+      opacity: 0.8;
+
