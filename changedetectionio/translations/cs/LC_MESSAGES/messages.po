@@ -165,6 +165,65 @@ msgstr "Záložní soubor moc velký (max %(mb)s MB)"
 msgid "Invalid or corrupted zip file"
 msgstr "Neplatný nebo poškozený zip soubor"
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "Obnova běží na pozadí, vraťte se za pár minut."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "Vytvořit"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "Obnovit"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "Probíhá zálohování!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr "Zde můžete stáhnout a vyžádat vytvoření zálohy, dostupné vytvořené zálohy jsou vypsané níže."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "Mb"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "Nenalezeny žádné zálohy."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Vytvořit zálohu"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Odstranit zálohy"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "Probíhá obnova!"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr "Obnovit ze zálohy. Musí být .zip soubor zálohy vytvořený nejméně v0.53.1 (nové rozvržení databáze)"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "Pozn.: Nepřepíše hlavní nastavení aplikaci, pouze sledování a skupiny."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr "Max. velikost nahrání: %(upload)s MB, Max. velikost k rozbalení: %(decomp)s MB"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "Zahrnout všechny skupiny nalezené v záloze?"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Seznam adres URL"
