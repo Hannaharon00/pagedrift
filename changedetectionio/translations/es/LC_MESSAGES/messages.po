@@ -225,6 +225,64 @@ msgstr "{count} importado de Wachete .xlsx en {duration}s"
 msgid "{count} imported from custom .xlsx in {duration}s"
 msgstr "{count} importado desde .xlsx personalizado en {duration}s"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Custom mapping"
+msgstr "Mapeo personalizado"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "Tipo de asignación de archivos."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "Columna #"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "Tipo"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "ninguno"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "Filtro CSS/xPath"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "Nombre(s) de grupo/etiqueta"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "Tiempo de revisión (minutos)"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr "Importar"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch with UUID %(uuid)s not found"
+msgstr "Ver con UUID%(uuid)sextraviado"
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr "Mirar%(uuid)sno tiene suficientes instantáneas del historial para mostrar los cambios (se necesitan al menos 2)"
+
 #: changedetectionio/blueprint/settings/__init__.py
 msgid "Password protection removed."
 msgstr "Se eliminó la protección con contraseña."
