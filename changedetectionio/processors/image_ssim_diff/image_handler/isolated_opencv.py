@@ -9,6 +9,10 @@ import multiprocessing
 import numpy as np
 from .. import POLL_TIMEOUT_ABSOLUTE
 
+# Public implementation name for logging
+IMPLEMENTATION_NAME = "OpenCV"
+
+
 def _worker_compare(conn, img_bytes_from, img_bytes_to, pixel_difference_threshold, blur_sigma, crop_region):
     """
     Worker function for image comparison (must be top-level for pickling with spawn).
