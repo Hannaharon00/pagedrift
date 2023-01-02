@@ -462,3 +462,60 @@ msgstr "Dostęp do API"
 msgid "Drive your changedetection.io via API, More about"
 msgstr "Korzystaj z serwisu changedetection.io za pośrednictwem API. Więcej informacji na temat"
 
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Browser / fetch method updated on {} watches"
+msgstr "Zaktualizowano przeglądarkę / metodę pobierania w obserwacjach {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid browser / fetch method selected"
+msgstr "Wybrano nieprawidłową przeglądarkę lub metodę pobierania"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Proxy updated on {} watches"
+msgstr "Zaktualizowano serwer proxy dla {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid proxy selected"
+msgstr "Wybrano nieprawidłowy serwer proxy"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches were tagged"
+msgstr "Oznaczono {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/watchlist/__init__.py
+msgid "Watch not found"
+msgstr "Nie znaleziono obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Cleared snapshot history for watch {}"
+msgstr "Wyczyszczono historię migawek dla obserwacji {}"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "clear"
+msgstr "wyraźny"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "History clearing started in background"
+msgstr "Czyszczenie historii rozpoczęto w tle"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Incorrect confirmation text."
+msgstr "Nieprawidłowy tekst potwierdzenia."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "The watch by UUID {} does not exist."
+msgstr "Obserwacja o identyfikatorze UUID {} nie istnieje."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Deleted."
+msgstr "Usunięto."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Sklonowano. Edytujesz nową obserwację."
+
