@@ -107,6 +107,63 @@ msgstr "Резервне копіювання вже виконується, п�
 msgid "Maximum number of backups reached, please remove some"
 msgstr "Досягнуто максимальної кількості резервних копій, будь ласка, видаліть старі"
 
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backup building in background, check back in a few minutes."
+msgstr "Резервна копія створюється у фоновому режимі, перевірте через кілька хвилин."
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Backups were deleted."
+msgstr "Резервні копії було видалено."
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Backup zip file"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Must be a .zip backup file!"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include groups"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing groups of the same UUID"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Include watches"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Replace existing watches of the same UUID"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore backup"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "A restore is already running, check back in a few minutes"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "No file uploaded"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "File must be a .zip backup file"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+#, python-format
+msgid "Backup file is too large (max %(mb)s MB)"
+msgstr ""
+
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Invalid or corrupted zip file"
+msgstr ""
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Список URL"
