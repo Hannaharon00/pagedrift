@@ -1088,3 +1088,60 @@ msgstr "오류 텍스트"
 msgid "Error Screenshot"
 msgstr "오류 스크린샷"
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "경고: URL {}가 이미 존재합니다."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "모니터링이 일시중지 상태로 추가되었습니다. 저장하면 일시중지가 해제됩니다."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "모니터링이 추가되었습니다."
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "항목"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr "확인 일시중지"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr "확인 재개"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr "알림 음소거"
+
