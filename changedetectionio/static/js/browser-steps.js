@@ -403,3 +403,50 @@ $(document).ready(function () {
         var current_data = $(event.currentTarget).closest('li');
         var step_n = $(event.currentTarget).data('step-index');
 
+        // Determine if this is the last configured step
+        var is_last_step = 0;
+        $('ul#browser_steps li select').each(function (i) {
+            if ($(this).val() !== 'Choose one') {
+                is_last_step += 1;
+            }
+        });
+        is_last_step = (is_last_step == (step_n + 1));
+
+        console.log("Requesting step via POST " + $("select[id$='operation']", current_data).first().val());
+
+        // Execute the browser step
+        executeBrowserStep(
+            browser_steps_sync_url + "&browsersteps_session_id=" + browsersteps_session_id,
+            {
+                'operation': $("select[id$='operation']", current_data).first().val(),
+                'selector': $("input[id$='selector']", current_data).first().val(),
+                'optional_value': $("input[id$='optional_value']", current_data).first().val(),
+                'step_n': step_n,
+                'is_last_step': is_last_step
+            }
+        );
+    });
+
+    $('ul#browser_steps li .control .show-screenshot').click(function (element) {
+        var step_n = $(event.currentTarget).data('step-index');
+        w = window.open(this.href, "_blank", "width=640,height=480");
+        const t = $(event.currentTarget).data('type');
+
+        const url = browser_steps_fetch_screenshot_image_url + `&step_n=${step_n}&type=${t}`;
+        w.document.body.innerHTML = `<!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <img src="${url}" style="width: 100%" alt="Browser Step at step ${step_n} from last run." title="Browser Step at step ${step_n} from last run."/>
+                </body>
+        </html>`;
+        w.document.title = `Browser Step at step ${step_n} from last run.`;
+    });
+
+    if (browser_steps_last_error_step) {
+        $("ul#browser_steps>li:nth-child("+browser_steps_last_error_step+")").addClass("browser-step-with-error");
+    }
+
+    $("ul#browser_steps select").change(function () {
+        set_greyed_state();
+    }).change();
+
