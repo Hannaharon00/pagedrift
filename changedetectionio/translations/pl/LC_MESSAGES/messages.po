@@ -786,6 +786,85 @@ msgstr "Sprawdź połączenie"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid ""
+"Your API key is stored locally and sent only to your chosen provider. On each detected change, the watch's diff and "
+"extracted text are sent to the LLM — no full page HTML."
+msgstr ""
+"Twój klucz API jest przechowywany lokalnie i przesyłany wyłącznie do wybranego przez Ciebie dostawcy. Przy każdej "
+"wykrytej zmianie do modelu LLM przesyłane są różnice w treści oraz wyodrębniony tekst — nie jest przesyłany pełny kod"
+" HTML strony."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Cache"
+msgstr "Pamięć podręczna"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Clear all summary cache?"
+msgstr "Wyczyścić całą pamięć podręczną podsumowań?"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "This will remove all cached AI change summaries across all watches."
+msgstr "Spowoduje to usunięcie wszystkich zapisanych w pamięci podręcznej podsumowań zmian AI ze wszystkich obserwacji."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "They will be regenerated on the next check."
+msgstr "Zostaną odnowione przy następnym sprawdzeniu."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Clear cache"
+msgstr "Wyczyść pamięć podręczną"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Clear all summary cache"
+msgstr "Wyczyść całą pamięć podręczną podsumowań"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Removes all cached AI change summaries across all watches. They will be regenerated on the next check."
+msgstr ""
+"Usuwa wszystkie zapisane w pamięci podręcznej podsumowania zmian AI ze wszystkich obserwacji. Zostaną one ponownie "
+"wygenerowane przy następnym sprawdzeniu."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"Enables litellm verbose output (routed through loguru). Useful when diagnosing provider errors or empty responses. "
+"Leave off in production — generates a lot of log volume."
+msgstr ""
+"Włącza szczegółowe wyjście litellm (przekierowywane przez loguru). Przydatne podczas diagnozowania błędów dostawcy "
+"lub pustych odpowiedzi. Należy wyłączyć tę opcję w środowisku produkcyjnym — generuje dużą ilość danych dziennika."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Default AI Change Summary"
+msgstr "Domyślne podsumowanie zmian AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Used for all watches unless overridden by the watch or its tag/group."
+msgstr "Stosowane w przypadku wszystkich obserwacji, o ile nie zostanie nadpisane przez samą obserwację lub jej tag/grupę."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Modify default prompt"
+msgstr "Modyfikuj domyślny prompt"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"When enabled, the <code>%(diff)s</code> notification token shows the AI summary instead of the raw diff. Use "
+"<code>%(raw_diff)s</code> to always get the original."
+msgstr ""
+"Po włączeniu tej opcji token powiadomień <code>%(diff)s</code> wyświetla podsumowanie generowane przez sztuczną "
+"inteligencję zamiast surowego pliku różnicowego. Aby zawsze otrzymywać oryginalny plik, należy użyć "
+"<code>%(raw_diff)s</code>."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"When enabled, the AI will be used as a last resort to extract price and stock status from product pages where no "
+"structured metadata (JSON-LD, microdata, OpenGraph) is found."
+msgstr ""
+"Po włączeniu tej funkcji sztuczna inteligencja będzie wykorzystywana w ostateczności do pozyskiwania informacji o "
+"cenie i stanie zapasów ze stron produktów, na których nie znaleziono ustrukturyzowanych metadanych (JSON-LD, "
+"mikrodane, OpenGraph)."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
 "For Gemini 2.5+ models only. Thinking tokens improve reasoning quality but count against the output budget. Set to "
 "Off if summaries are being cut short."
 msgstr ""
