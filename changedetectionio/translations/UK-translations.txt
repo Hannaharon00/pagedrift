@@ -570,3 +570,65 @@ msgstr "Увага!"
 msgid "Lookout!"
 msgstr "Обережно!"
 
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "Помилки очищено у {} завдань"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} завдань очищено/скинуто."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "Для {} завдань встановлено налаштування сповіщень за замовчуванням"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches were tagged"
+msgstr "{} завдань було позначено тегами"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch not found"
+msgstr "Завдання не знайдено"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Cleared snapshot history for watch {}"
+msgstr "Очищено історію знімків для завдання {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "History clearing started in background"
+msgstr "Очищення історії запущено у фоновому режимі"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Incorrect confirmation text."
+msgstr "Невірний текст підтвердження."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Marking watches as viewed in background..."
+msgstr "Позначення завдань як переглянутих у фоновому режимі..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "The watch by UUID {} does not exist."
+msgstr "Завдання з UUID {} не існує."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Deleted."
+msgstr "Видалено."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Клоновано, ви редагуєте нове завдання."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "Завдання вже в черзі або перевіряється."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "1 завдання додано в чергу на перевірку."
+
