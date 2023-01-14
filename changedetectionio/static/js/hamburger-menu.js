@@ -33,3 +33,37 @@
       }
     }
 
+    // Toggle menu on hamburger click
+    hamburgerToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    // Close menu when clicking overlay
+    mobileMenuOverlay.addEventListener('click', closeMenu);
+
+    // Close menu when clicking a menu item
+    const menuItems = mobileMenuDrawer.querySelectorAll('.mobile-menu-items a');
+    menuItems.forEach(function(item) {
+      item.addEventListener('click', closeMenu);
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenuDrawer.classList.contains('active')) {
+        closeMenu();
+      }
+    });
+
+    // Close menu when window is resized above mobile breakpoint
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (window.innerWidth > 768 && mobileMenuDrawer.classList.contains('active')) {
+          closeMenu();
+        }
+      }, 250);
+    });
+  });
+})();
