@@ -166,6 +166,65 @@ msgstr "バックアップファイルが大きすぎます（最大 %(mb)s MB�
 msgid "Invalid or corrupted zip file"
 msgstr "無効または破損した zip ファイルです"
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "復元をバックグラウンドで開始しました。数分後に再確認してください。"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "作成"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "復元"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "バックアップが実行中です！"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr "ここでバックアップのダウンロードや新規作成を依頼できます。バックアップが完了すると、以下に一覧表示されます。"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "MB"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "バックアップが見つかりません。"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "バックアップを作成"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "バックアップを削除"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "復元が実行中です！"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr "バックアップを復元します。v0.53.1以降に作成された .zip バックアップファイル（新しいデータベース形式）である必要があります。"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "注意：これはメインアプリケーションの設定を上書きしません。ウォッチとグループのみが対象です。"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr "最大アップロードサイズ: %(upload)s MB、最大解凍サイズ: %(decomp)s MB"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "バックアップに含まれるすべてのグループを含めますか？"
+
 #: changedetectionio/blueprint/backups/templates/backup_restore.html
 msgid "Replace any existing groups of the same UUID?"
 msgstr "同じ UUID の既存グループを置き換えますか？"
