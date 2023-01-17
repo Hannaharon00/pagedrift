@@ -1004,3 +1004,59 @@ msgstr "行"
 msgid "Ignore Whitespace"
 msgstr "空白を無視"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The interval/amount of time between each check."
+msgstr "各チェック間の間隔/時間。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set to empty to use system settings default"
+msgstr "空欄にするとシステム設定のデフォルトを使用します"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
+msgstr "Bright Data と Oxylabs プロキシを使用して接続できます。詳しくはこちら。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check/Scan all"
+msgstr "すべてをチェック/スキャン"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Choose a proxy for this watch"
+msgstr "このウォッチのプロキシを選択"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Using the current global default settings"
+msgstr "現在のグローバルデフォルト設定を使用中"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Show advanced options"
+msgstr "詳細オプションを表示"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "変更検知を実行する前にこのコードを実行します。フィールドへの入力などのアクションに便利です。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "詳細なヘルプと例はこちら"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "リクエストボディで変数を使用できます"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "リクエストヘッダー値で変数を使用できます"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "アラート！追加ヘッダーファイルが見つかりました。このウォッチに追加されます！"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "ヘッダーはデータディレクトリのファイルからも読み込めます"
+
