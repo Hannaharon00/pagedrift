@@ -219,6 +219,68 @@ msgstr "監測任務 %(uuid)s 沒有足夠的歷史快照來顯示變更（至�
 msgid "Password protection removed."
 msgstr "密碼保護已移除。"
 
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr "警告：工作程序數量（{worker_count}）接近或超過可用 CPU 核心數（{cpu_count}）"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "工作程序數量已調整：{}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "同步工作程序不支援動態調整"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "調整工作程序時發生錯誤：{}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection enabled."
+msgstr "已啟用密碼保護。"
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+msgid "Settings updated."
+msgstr "設定已更新。"
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/processors/extract.py
+msgid "An error occurred, please see below."
+msgstr "發生錯誤，請參見下方。"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "API Key was regenerated."
+msgstr "API 金鑰已重新產生。"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling paused - checks will not be queued."
+msgstr "自動排程已暫停 - 檢查將不會排入佇列。"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling resumed - checks will be queued normally."
+msgstr "自動排程已恢復 - 檢查將正常排入佇列。"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications muted."
+msgstr "所有通知已靜音。"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications unmuted."
+msgstr "所有通知已取消靜音。"
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid ""
+"api_key is required when api_base differs from the saved configuration. Refusing to send the stored API key to a "
+"different endpoint."
+msgstr "當 api_base 與儲存的設定不同時，必須提供 api_key。拒絕將儲存的 API 金鑰發送到不同的端點。"
+
+#: changedetectionio/blueprint/settings/llm.py
+msgid "AI / LLM configuration removed."
+msgstr "AI / LLM 設定已移除。"
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Backups"
 msgstr "備份"
