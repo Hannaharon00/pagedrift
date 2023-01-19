@@ -1391,3 +1391,60 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p>Are you sure you want to clear history for the selected items?</p><p>This action cannot be undone.</p>"
+msgstr ""
+"<p>Möchten Sie den Verlauf für die ausgewählten Elemente wirklich löschen?</p><p>Diese Aktion kann nicht rückgängig "
+"gemacht werden.</p>"
+
+#. Universally recognized; typically left as-is. dennis-ignore: W302
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "OK"
+msgstr "OK"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear/reset history"
+msgstr "Verlauf löschen/zurücksetzen"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Delete Watches?"
+msgstr "Überwachungen löschen?"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p><strong>Are you sure you want to delete the selected watches?</strong></p><p>This action cannot be undone.</p>"
+msgstr ""
+"<p><strong>Möchten Sie die ausgewählten Überwachungen wirklich löschen?</strong></p><p>Diese Aktion kann nicht "
+"rückgängig gemacht werden.</p>"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Close"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Web page"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "Auffüllen und Preis"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "Es sind keine Website-Überwachungen konfiguriert. Bitte fügen Sie im Feld oben eine URL hinzu, oder"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "eine Liste importieren"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr ""
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr ""
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr ""
+
