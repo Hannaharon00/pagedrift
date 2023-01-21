@@ -70,3 +70,42 @@
   50%       { opacity: 0.2; }
 }
 
+.llm-budget-exceeded,
+.llm-error {
+  color: #c0392b;
+  font-weight: 600;
+  font-style: normal;
+  opacity: 1;
+}
+
+// ── Menu: AI mode toggle button ───────────────────────────────────────────────
+.toggle-ai-mode {
+  opacity: 0.4;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-menu-link);
+
+  svg {
+    height: 1.2rem;
+    width: 1.2rem;
+  }
+
+  .ai-mode-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+}
+
+html[data-ai-mode="true"] .toggle-ai-mode {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(160, 100, 255, 0.7));
+}
+
+// ── Watchlist: History/Summary dual-label button ──────────────────────────────
+.btn-label-summary {
+  display: none;
+}
+
