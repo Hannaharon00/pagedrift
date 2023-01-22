@@ -405,6 +405,66 @@ msgid "Password protection removed."
 msgstr "パスワード保護が解除されました。"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "スナップショット履歴をクリア"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr "パスワードが有効な場合でもウォッチの変更履歴ページへのアクセスを許可（差分ページの共有に便利）"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "リクエストがコンテンツを返さない、またはHTMLにテキストが含まれていない場合、これを変更とみなしますか？"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "すべてのウォッチのデフォルトプロキシを選択"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr "<strong>基本</strong>方式（デフォルト）は、監視しているサイトがJavascriptなしでレンダリングできる場合に使用します。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr "<strong>Chrome/Javascript</strong>方式はENV変数「WEBDRIVER_URL」で設定された実行中のWebDriver+Chromeサーバーへのネットワーク接続が必要です。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr "ページが完全にレンダリングされるのを待つのに問題がある場合（テキストが欠けているなど）、ここで「待機」時間を増やしてみてください。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "テキスト抽出前に <i>n</i> 秒間待機します。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr "ウォッチを処理する同時ワーカー数。ワーカーが多いほど処理は速くなりますが、メモリ使用量も増えます。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "現在稼働中："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "動作中"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "ワーカー"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "処理中"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "例：3秒のランダムジッターは、最大3秒早くまたは最大3秒遅くトリガーされる可能性があります"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
 msgstr "通常のプレーンリクエスト（Chrome以外）の場合、タイムアウトまでの最大秒数、1〜999。"
 
