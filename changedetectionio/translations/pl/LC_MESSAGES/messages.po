@@ -514,6 +514,70 @@ msgstr "Dostęp do API"
 msgid "Drive your changedetection.io via API, More about"
 msgstr "Korzystaj z serwisu changedetection.io za pośrednictwem API. Więcej informacji na temat"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Sync API Access"
+msgstr "Dostęp do interfejsu API synchronizacji"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Try our new Chrome Extension!"
+msgstr "Wypróbuj nasze nowe rozszerzenie do przeglądarki Chrome!"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome store icon"
+msgstr "Ikona sklepu Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Webstore"
+msgstr "Sklep internetowy Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr ""
+"Maksymalna liczba migawek historii, które mają zostać uwzględnione w kanale RSS poświęconym danemu obserwowanemu "
+"obiektowi."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr ""
+"W przypadku śledzenia innych kanałów RSS — podczas śledzenia kanałów RSS/Atom należy przekształcić je w zwykły tekst,"
+" aby ułatwić wykrywanie zmian."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "Czy Twój czytnik obsługuje HTML? Ustaw to tutaj"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr ""
+"„Ustawienie domyślne systemu” dla tego samego szablonu dla wszystkich pozycji lub ponowne wykorzystanie „treści "
+"powiadomienia” jako szablonu."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr ""
+"Upewnij się, że poniższe ustawienia są prawidłowe – służą one do zarządzania harmonogramem sprawdzania obserwowanych "
+"stron internetowych."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "Czas i data UTC z serwera:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "Lokalna godzina i data w przeglądarce:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr ""
+"Włącz to ustawienie, aby strona z różnicami otwierała się w nowej karcie. Jeśli opcja jest wyłączona, strona z "
+"różnicami otworzy się w bieżącej karcie."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
+msgstr ""
+"Włączono aktualizacje interfejsu użytkownika w czasie rzeczywistym – (w przypadku zmiany tej opcji konieczne jest "
+"ponowne uruchomienie systemu)"
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "Overview"
 msgstr "Przegląd"
