@@ -465,6 +465,59 @@ msgid "operational"
 msgstr "operasional"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "worker"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "sedang aktif memproses"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "Contoh - jitter acak 3 detik dapat memicu hingga 3 detik lebih awal atau hingga 3 detik lebih lambat"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "Untuk permintaan biasa (bukan berbasis Chrome), jumlah detik maksimum hingga timeout, 1-999."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "Diterapkan ke semua permintaan."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "Catatan: Mengubah User-Agent saja sering kali tidak dapat melewati teknologi antirobot, penting untuk mempertimbangkan"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "semua cara browser terdeteksi"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Hubungkan menggunakan proksi Bright Data, cari tahu selengkapnya di sini."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "Kiat:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "Abaikan spasi, tab, dan baris baru/line-feed saat menentukan apakah perubahan terdeteksi."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "Catatan:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "Mengubah ini akan mengubah status monitor Anda yang sudah ada, dan mungkin memicu peringatan, dll."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "Render konten tag anchor, default dinonaktifkan, saat diaktifkan tautan dirender sebagai"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
 msgstr "Mengubah ini dapat memengaruhi konten monitor Anda yang sudah ada, dan mungkin memicu peringatan, dll."
 
