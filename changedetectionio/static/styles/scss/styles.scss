@@ -184,6 +184,50 @@ button.toggle-button {
   }
 
 
+.tab-pane-inner {
+  // .tab-pane-inner will have the #id that the tab button jumps/anchors to
+  scroll-margin-top: 200px;
+}
+
+section.content {
+  // The top menu (.header) now sits in-flow above this section inside .app-main,
+  // so the old fixed-header clearance (padding-top: 80px) is no longer needed.
+  // Inset the content from the rail (and the window's right edge) so it doesn't
+  // butt against the left action bar — the header above stays flush to the rail.
+  padding-bottom: 1em;
+  padding-left: $common-gap;
+  padding-right: $common-gap;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+details summary {
+  cursor: pointer;
+  // Make disclosures clearly clickable: bold + link-coloured so they invite a click,
+  // not just a faint arrow + plain text.
+  font-weight: 600;
+  color: var(--color-link);
+  width: fit-content;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+code {
+  background: var(--color-background-code);
+  color: var(--color-text);
+}
+
+.inline-tag {
+  white-space: nowrap;
+  border-radius: 5px;
+  padding: 2px 5px;
+  margin-right: 4px;
+}
+
 .button-warning {
   background: var(--color-background-button-warning);
   color: var(--color-text-button-warning);
