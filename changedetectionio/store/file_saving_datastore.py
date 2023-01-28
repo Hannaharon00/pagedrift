@@ -28,3 +28,15 @@ except ImportError:
 # Set to True for mission-critical deployments requiring crash consistency
 FORCE_FSYNC_DATA_IS_CRITICAL = bool(strtobool(os.getenv('FORCE_FSYNC_DATA_IS_CRITICAL', 'False')))
 
+class _EntityFileMissing:
+    """Sentinel: the directory exists but holds no file of this entity type."""
+    __slots__ = ()
+    def __repr__(self):
+        return '<ENTITY_FILE_MISSING>'
+    def __bool__(self):
+        return False
+
+
+ENTITY_FILE_MISSING = _EntityFileMissing()
+
+
