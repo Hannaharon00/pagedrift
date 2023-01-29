@@ -98,3 +98,91 @@ def construct_blueprint(datastore: ChangeDetectionStore):
             except Exception as e:
                 content.append({'line': f"File doesnt exist or unable to read timestamp {timestamp}", 'classes': ''})
 
+        from changedetectionio.pluggy_interface import get_fetcher_capabilities
+        capabilities = get_fetcher_capabilities(watch, datastore)
+
+        output = render_template("preview.html",
+                                 capabilities=capabilities,
+                                 content=content,
+                                 current_diff_url=watch.open_link,
+                                 current_version=timestamp,
+                                 extra_stylesheets=extra_stylesheets,
+                                 extra_title=f" - {gettext('Diff')} - {watch.label} @ {timestamp}",
+                                 highlight_ignored_line_numbers=ignored_line_numbers,
+                                 highlight_triggered_line_numbers=triggered_line_numbers,
+                                 highlight_blocked_line_numbers=blocked_line_numbers,
+                                 history_n=watch.history_n,
+                                 is_html_webdriver=is_html_webdriver,
+                                 last_error=watch['last_error'],
+                                 last_error_screenshot=watch.get_error_snapshot(),
+                                 last_error_text=watch.get_error_text(),
+                                 screenshot=watch.get_screenshot(),
+                                 uuid=uuid,
+                                 versions=versions,
+                                 watch=watch,
+                                 )
+
+        return output
+
+    @preview_blueprint.route("/preview/<uuid_str:uuid>/processor-asset/<string:asset_name>", methods=['GET'])
+    @login_optionally_required
+    def processor_asset(uuid, asset_name):
+        """
+        Serve processor-specific binary assets for preview (images, files, etc.).
+
+        This route is processor-aware: it delegates to the processor's
+        preview.py module, allowing different processor types to serve
+        custom assets without embedding them as base64 in templates.
+
+        This solves memory issues with large binary data by streaming them
+        as separate HTTP responses instead of embedding in the HTML template.
+
+        Each processor implements processors/{type}/preview.py::get_asset()
+        which returns (binary_data, content_type, cache_control_header).
+
+        Example URLs:
+        - /preview/{uuid}/processor-asset/screenshot?version=123456789
+        """
+        from flask import make_response
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        try:
+            watch = datastore.data['watching'][uuid]
+        except KeyError:
+            flash(gettext("No history found for the specified link, bad link?"), "error")
+            return redirect(url_for('watchlist.index'))
+
+        # Get the processor type for this watch
+        processor_name = watch.get('processor', 'text_json_diff')
+
+        # Try to get the processor's preview module (works for both built-in and plugin processors)
+        from changedetectionio.processors import get_processor_submodule
+        processor_module = get_processor_submodule(processor_name, 'preview')
+
+        # Call the processor's get_asset() function
+        if processor_module and hasattr(processor_module, 'get_asset'):
+            result = processor_module.get_asset(
+                asset_name=asset_name,
+                watch=watch,
+                datastore=datastore,
+                request=request
+            )
+
+            if result is None:
+                from flask import abort
+                abort(404, description=f"Asset '{asset_name}' not found")
+
+            binary_data, content_type, cache_control = result
+
+            response = make_response(binary_data)
+            response.headers['Content-Type'] = content_type
+            if cache_control:
+                response.headers['Cache-Control'] = cache_control
+            return response
+        else:
+            logger.warning(f"Processor {processor_name} does not implement get_asset()")
+            from flask import abort
+            abort(404, description=f"Processor '{processor_name}' does not support assets")
+
+    return preview_blueprint
