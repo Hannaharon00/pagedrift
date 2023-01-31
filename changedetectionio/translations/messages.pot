@@ -509,6 +509,71 @@ msgid "Uptime:"
 msgstr ""
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "I have read and understood the above. I accept full responsibility and indemnify the creator(s) of this software."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/templates/_common_fields.html
+msgid "Note"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"AI / LLM is configured via environment variables (<code>LLM_MODEL=%(model)s</code>%(api_base)s). Remove the "
+"<code>LLM_MODEL</code> environment variable to configure via this form instead."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "select a provider"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "OpenAI-compatible (vLLM, LM Studio, llama.cpp)"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Only needed for Ollama or custom/self-hosted endpoints. Leave blank for cloud providers."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
+"scales every <code>max_tokens</code> cap for this endpoint to leave reasoning room. Defaults to %(default)s; raise it"
+" if responses come back truncated or empty, lower it (down to 1x) if you want tighter limits on a paid endpoint. "
+"Applied to Ollama and OpenAI-compatible endpoints — other cloud providers (OpenAI, Anthropic, Gemini) keep their "
+"original tight caps."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Load available models"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Available models"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "choose a model"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Enter API key and click 'Load available models'"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove AI / LLM configuration?"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "This will remove your saved AI provider, model, and API key."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #: changedetectionio/blueprint/ui/templates/clear_all_history.html changedetectionio/templates/base.html
 msgid "Cancel"
 msgstr ""
