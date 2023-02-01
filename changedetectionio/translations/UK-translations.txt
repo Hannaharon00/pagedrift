@@ -454,6 +454,66 @@ msgid "Step 2"
 msgstr "Крок 2"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Navigate to this page,"
+msgstr "Перейдіть на цю сторінку,"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 3"
+msgstr "Крок 3"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Open the extension from the toolbar and click"
+msgstr "Відкрийте розширення на панелі інструментів і натисніть"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Sync API Access"
+msgstr "Синхронізувати доступ до API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Try our new Chrome Extension!"
+msgstr "Спробуйте наше нове розширення для Chrome!"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome store icon"
+msgstr "Іконка магазину Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Webstore"
+msgstr "Магазин Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr "Максимальна кількість знімків історії для включення в RSS-стрічку конкретного завдання."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr "Для відстеження інших RSS-каналів — при відстеженні RSS/Atom перетворювати їх на чистий текст для кращого виявлення змін."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "Ваша читалка підтримує HTML? Налаштуйте тут"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr "'Системний за замовчуванням' для єдиного шаблону або використовуйте ваше 'Тіло сповіщення' як шаблон."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr "Переконайтеся, що налаштування нижче вірні, вони використовуються для керування розкладом перевірок веб-сторінок."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "Час і дата UTC із сервера:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "Місцевий час і дата у браузері:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr "Увімкніть, щоб відкривати сторінку різниці у новій вкладці. Якщо вимкнено, сторінка відкриється у поточній вкладці."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
 msgstr "Оновлення інтерфейсу в реальному часі увімкнено — (Потрібен перезапуск при зміні)"
 
