@@ -220,6 +220,65 @@ msgstr ""
 msgid "File mapping type."
 msgstr ""
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr ""
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch with UUID %(uuid)s not found"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr ""
+
 #: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Install the extension,"
 msgstr ""
