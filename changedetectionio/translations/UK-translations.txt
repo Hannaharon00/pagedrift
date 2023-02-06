@@ -398,6 +398,62 @@ msgid "Changing this will affect the comparison checksum which may trigger an al
 msgstr "Зміна цього параметра вплине на контрольну суму порівняння, що може викликати спрацювання сповіщення"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr "Видалити будь-який текст, вказаний у «Ігнорувати текст», із виводу (інакше він просто ігнорується під час перевірки змін)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "Доступ до API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Керуйте changedetection.io через API. Детальніше про"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "доступ до API та приклади тут"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Обмежити доступ до API за допомогою"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "заголовок - необхідний для роботи розширення Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Key"
+msgstr "Ключ API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "копіювати"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Regenerate API key"
+msgstr "Перестворити ключ API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Extension"
+msgstr "Розширення Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Easily add any web-page to your changedetection.io installation from within Chrome."
+msgstr "Легко додавайте будь-яку веб-сторінку до вашої інсталяції changedetection.io прямо з Chrome."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 1"
+msgstr "Крок 1"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Install the extension,"
+msgstr "Встановіть розширення,"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 2"
+msgstr "Крок 2"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
 msgstr "Оновлення інтерфейсу в реальному часі увімкнено — (Потрібен перезапуск при зміні)"
 
