@@ -406,6 +406,59 @@ msgid "AI / LLM configuration removed."
 msgstr "AI / LLM 설정이 제거되었습니다."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "백업"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "시간 및 날짜"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "보안 문자 및 프록시"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr "AI / LLM"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "정보"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "모든 모니터링의 기본 재확인 간격입니다. 현재 시스템 최소값은"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "추가 정보"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "CSS/XPath 필터가 지정한 횟수만큼 연속으로 누락되면 알림 보내기"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr "비활성화하려면 <strong>0</strong>으로 설정하세요"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr "각 모니터링의 기록 스냅샷은 설정한 개수만큼만 보관합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "공란이면 비활성화됩니다. (제한 없음)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "changedetection.io 애플리케이션에 비밀번호를 적용합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "비밀번호가 설정되어 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Clear Snapshot History"
 msgstr "스냅샷 기록 지우기"
 
