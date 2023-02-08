@@ -263,3 +263,80 @@
         </div>
     {% endif %}
 
+    <!-- Language Selection Modal -->
+    <dialog id="language-modal" class="modal-dialog" aria-labelledby="language-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="language-modal-title">{{ _('Select Language') }}</h2>
+      </div>
+      <div class="modal-body">
+        <div class="language-list">
+          {% for locale, lang_data in available_languages.items()|sort %}
+          <form method="POST" action="{{ url_for('set_language', locale=locale, redirect=request.path) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="language-option" data-locale="{{ locale }}">
+              <span class="lang-option {{ lang_data.flag }}"></span> <span class="language-name">{{ lang_data.name }}</span>
+            </button>
+          </form>
+          {% endfor %}
+        </div>
+        <div>
+            <form method="POST" action="{{ url_for('ui.delete_locale_language_session_var_if_it_exists', redirect=request.path) }}" style="display: inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="bare-btn">{{ _('Auto-detect from browser') }}</button>
+            </form>
+        </div>
+        <div>
+            {{ _('Language support is in beta, please help us improve by opening a PR on GitHub with any updates.') }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pure-button" id="close-language-modal">{{ _('Cancel') }}</button>
+      </div>
+    </dialog>
+
+    {% if not llm_features_disabled %}
+    <!-- LLM Not Configured Modal -->
+    <dialog id="llm-not-configured-modal" class="modal-dialog" aria-labelledby="llm-not-configured-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="llm-not-configured-modal-title">{{ _('AI / LLM not configured') }}</h2>
+      </div>
+      <div class="modal-body">
+        <p>{{ _('LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started.') }}</p>
+        <p><a href="{{ url_for('settings.settings_page') }}#ai" class="pure-button pure-button-primary">{{ _('Go to AI / LLM Settings') }}</a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pure-button" id="close-llm-not-configured-modal">{{ _('Close') }}</button>
+      </div>
+    </dialog>
+    {% endif %}
+
+    <!-- Search Modal -->
+    {% if current_user.is_authenticated or not has_password %}
+    <dialog id="search-modal" class="modal-dialog" aria-labelledby="search-modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="search-modal-title">{{ _('Search') }}</h2>
+      </div>
+      <div class="modal-body">
+        <form id="search-form" method="GET">
+          <div class="pure-control-group">
+            <label for="search-modal-input">{% if active_tag_uuid %}{{ _("URL or Title in '%(title)s'", title=active_tag.title) }}{% else %}{{ _('URL or Title') }}{% endif %}</label>
+            <input id="search-modal-input" class="m-d" name="q" placeholder="{{ _('Enter search term...') }}" required type="text" value="" autofocus>
+            <input name="tags" type="hidden" value="{% if active_tag_uuid %}{{active_tag_uuid}}{% endif %}">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pure-button button-cancel" id="close-search-modal">{{ _('Cancel') }}</button>
+        <button type="submit" form="search-form" class="pure-button pure-button-primary">{{ _('Search') }}</button>
+      </div>
+    </dialog>
+    {% endif %}
+
+  <div id="pure-menu-horizontal-spinner"></div>
+
+  <script>
+  (function() {
+      /* AUTOMATIC TAB COLUMN-IZER FOR WHEN TABS WRAP */
+    // Exit early if no tabs on page
+    if (!document.querySelector('.tab')) return;
+
