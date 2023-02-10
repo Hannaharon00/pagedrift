@@ -161,6 +161,64 @@ msgstr "最大上傳大小：%(upload)s MB，最大解壓縮大小：%(decomp)s 
 msgid "Include all groups found in backup?"
 msgstr "包含備份中找到的所有群組？"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "是否取代任何相同 UUID 的現有群組？"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "包含備份中找到的所有監測任務？"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "是否取代任何相同 UUID 的現有監測任務？"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "正在匯入清單中的前 5,000 個 URL，其餘的可以再次匯入。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} 已從清單匯入，耗時 {duration} 秒，跳過 {skipped_count} 筆。"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "無法讀取 JSON 檔案，檔案是否已損毀？"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "JSON 結構看起來無效，檔案是否已損毀？"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} 已從 Distill.io 匯入，耗時 {duration} 秒，跳過 {skipped_count} 筆。"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "無法讀取匯出的 XLSX 檔案，檔案是否有問題？"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "處理第 {} 行時發生錯誤，URL 數值不正確，已跳過該行。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "處理第 {} 行時發生錯誤，請檢查所有儲存格資料類型是否正確，已跳過該行。"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} 已從 Wachete .xlsx 匯入，耗時 {duration} 秒"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} 已從自訂 .xlsx 匯入，耗時 {duration} 秒"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "File mapping type."
 msgstr "檔案對應類型。"
