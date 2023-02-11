@@ -79,3 +79,88 @@ $(function () {
         e.preventDefault();
         e.stopImmediatePropagation();
 
+        if (!dataUrl) { showError(); return; }
+
+        $.getJSON(dataUrl).done(function (data) {
+            var series = (data && data.series) || [];
+            var graphI18n = {
+                in_stock: i18n.inStock, out_of_stock: i18n.outOfStock,
+                no_data: i18n.noPriceData, load_error: i18n.priceHistoryError,
+                changes: i18n.changes, avg_price: i18n.avgPrice,
+                price_low: i18n.priceLow, price_typical: i18n.priceTypical, price_high: i18n.priceHigh,
+                cheaper_than: i18n.cheaperThan, pricier_than: i18n.pricierThan,
+                typical_note: i18n.typicalNote, avg_label: i18n.avgLabel
+            };
+            if (window.renderRestockGraph) {
+                // Shorter graph inline in the watchlist roll-down than on the full /diff page.
+                window.renderRestockGraph($r.find('.restock-inline-graph')[0], series, (data && data.currency) || '', graphI18n, (data && data.summary) || null, 230);
+            }
+        }).fail(showError);
+    });
+
+    $('.with-share-link > *').click(function () {
+        $("#copied-clipboard").remove();
+
+        var range = document.createRange();
+        var n = $("#share-link")[0];
+        range.selectNode(n);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+        window.getSelection().removeAllRanges();
+
+        $('.with-share-link').append('<span style="font-size: 80%; color: #fff;" id="copied-clipboard">Copied to clipboard</span>');
+        $("#copied-clipboard").fadeOut(2500, function () {
+            $(this).remove();
+        });
+    });
+
+    $(".watch-table tr").click(function (event) {
+        var tagName = event.target.tagName.toLowerCase();
+        if (tagName === 'tr' || tagName === 'td') {
+            var cb = $('input[type=checkbox]', this)[0];
+            if (cb) {
+                // Forward the shiftKey so shift-clicking anywhere on a row does a
+                // range-select (a plain $(cb).click() would drop the modifier).
+                cb.dispatchEvent(new MouseEvent('click', { bubbles: true, shiftKey: event.shiftKey }));
+            }
+        }
+    });
+
+    // ---- Cross-page selection store -------------------------------------------
+    // Selection is a Set of watch UUIDs (the source of truth) rather than the DOM,
+    // so it spans paginated pages. Persisted in sessionStorage scoped to the
+    // watch-list page + the active tag (only): a selection survives switching the
+    // status/processor/search/pagination views, but each tag group (and the
+    // untagged "all" view) gets its own selection bucket. The "/uuids" endpoint
+    // supplies the full matching id list for "select all matching".
+    const sel = window.cdioWatchSelection = (function () {
+        const KEY = 'cdio-watch-selection';
+        function scopeKey() {
+            const tag = new URLSearchParams(location.search).get('tag') || '';
+            return location.pathname + (tag ? '?tag=' + tag : '');
+        }
+        let uuids = new Set();
+        try {
+            const obj = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+            if (obj && obj.scope === scopeKey() && Array.isArray(obj.uuids)) {
+                uuids = new Set(obj.uuids);
+            }
+        } catch (e) { /* private mode / corrupt — best effort */ }
+        function persist() {
+            try {
+                sessionStorage.setItem(KEY, JSON.stringify({ scope: scopeKey(), uuids: Array.from(uuids) }));
+            } catch (e) { /* quota / private mode */ }
+        }
+        return {
+            has: (u) => uuids.has(u),
+            add: (u) => { uuids.add(u); persist(); },
+            remove: (u) => { uuids.delete(u); persist(); },
+            toggle: (u) => { if (uuids.has(u)) { uuids.delete(u); } else { uuids.add(u); } persist(); },
+            addMany: (arr) => { arr.forEach((u) => uuids.add(u)); persist(); },
+            clear: () => { uuids.clear(); persist(); },
+            all: () => Array.from(uuids),
+            size: () => uuids.size
+        };
+    })();
+
