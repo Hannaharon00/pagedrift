@@ -1133,6 +1133,59 @@ msgstr "Usunięto."
 msgid "Cloned, you are editing the new watch."
 msgstr "Sklonowano. Edytujesz nową obserwację."
 
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Ignore Whitespace"
+msgstr "Ignoruj spacje"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Same/non-changed"
+msgstr "Tak samo / bez zmian"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Removed"
+msgstr "Usunięto"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Added"
+msgstr "Dodano"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Replaced"
+msgstr "Wymieniono"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Include all intermediate snapshots between the selected versions in the AI summary"
+msgstr "Uwzględnij w podsumowaniu AI wszystkie migawki pośrednie pomiędzy wybranymi wersjami"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "AI: every change between versions"
+msgstr "AI: wszystkie zmiany między wersjami"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Keyboard:"
+msgstr "Klawiatura:"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Previous"
+msgstr "Poprzedni"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Next"
+msgstr "Dalej"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump to next difference"
+msgstr "Przejdź do następnej różnicy"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump"
+msgstr "Przejdź do"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Error Text"
+msgstr "Tekst błędu"
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Automatically uses the page title if found, you can also use your own title/description here"
 msgstr "Jeśli tytuł strony zostanie znaleziony, zostanie on automatycznie użyty; można tu również wpisać własny tytuł/opis"
