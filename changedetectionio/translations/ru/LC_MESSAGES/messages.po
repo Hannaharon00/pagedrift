@@ -581,6 +581,66 @@ msgstr "Доступ к API синхронизации"
 msgid "Try our new Chrome Extension!"
 msgstr "Попробуйте наше новое расширение для Chrome!"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "Кончик"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr "«Жилой» и «Мобильный» тип прокси могут быть более успешными, чем «Дата-центр» для заблокированных веб-сайтов."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "«Имя» будет использоваться для выбора прокси в настройках Watch Edit."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr ""
+"Прокси-серверы SOCKS5 с аутентификацией поддерживаются только с помощью сборщика «простых запросов», для других "
+"сборщиков вместо этого следует внести в белый список доступ по IP."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr "Время работы:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "Версия Python:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "Максимальное количество отслеживаний страниц:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "Плагины активны:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "Нет активных плагинов"
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "Использование"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Overview"
+msgstr "Обзор"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Provider"
+msgstr "Поставщик"
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "Prompts"
 msgstr "Подсказки"
