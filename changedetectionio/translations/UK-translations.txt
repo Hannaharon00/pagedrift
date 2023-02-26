@@ -692,3 +692,59 @@ msgstr "Завдання вже в черзі або перевіряється.
 msgid "Queued 1 watch for rechecking."
 msgstr "1 завдання додано в чергу на перевірку."
 
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "Це видалить історію версій (знімки) для ВСІХ завдань, але збереже ваш список URL!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Можливо, ви захочете спочатку використати"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "РЕЗЕРВНЕ КОПІЮВАННЯ"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr "."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "Текст підтвердження"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr "Введіть слово"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "clear"
+msgstr "clear"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr ", щоб підтвердити розуміння наслідків."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr "Очистити історію!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html changedetectionio/templates/base.html
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr "Поділитися різницею як зображенням"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr "Поділитися як зображенням"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr "Ігнорувати рядки, що збігаються з"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr "Ігнорувати рядки, що збігаються з (виключаючи цифри)"
+
