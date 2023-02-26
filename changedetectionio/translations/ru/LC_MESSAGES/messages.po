@@ -530,6 +530,68 @@ msgid "Render anchor tag content, default disabled, when enabled renders links a
 msgstr "Отображение содержимого тега привязки (по умолчанию отключено). При включении ссылки отображаются как"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "Изменение этого параметра может повлиять на содержимое ваших существующих часов, возможно, вызвать оповещения и т. д."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "Удалите элементы HTML с помощью селекторов CSS и XPath перед преобразованием текста."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Не вставляйте сюда HTML, используйте только селекторы CSS и XPath."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Добавьте несколько элементов, селекторов CSS или XPath в каждую строку, чтобы игнорировать несколько частей HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Примечание. Это применяется глобально в дополнение к правилам для каждого просмотра."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr ""
+"Соответствующий текст будет игнорироваться в текстовом снимке (вы все еще можете видеть его, но он не приведет к "
+"изменению)."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr ""
+"Каждая строка обрабатывается отдельно, любое совпадение строк будет игнорироваться (удаляется перед созданием "
+"контрольной суммы)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Поддержка регулярных выражений, оберните всю строку косой чертой"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Изменение этого параметра повлияет на контрольную сумму сравнения, что может вызвать предупреждение."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"Удалите из вывода любой текст, который появляется в поле «Игнорировать текст» (в противном случае он просто "
+"игнорируется для обнаружения изменений)."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "API-доступ"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Управляйте своим Changetection.io через API. Подробнее о"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "Доступ к API и примеры здесь"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Ограничьте лимит доступа к API, используя"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "header - required for the Chrome Extension to work"
 msgstr "заголовок — необходим для работы расширения Chrome."
 
