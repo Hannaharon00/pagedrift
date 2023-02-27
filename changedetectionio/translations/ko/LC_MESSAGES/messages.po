@@ -578,6 +578,63 @@ msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier o
 msgstr "예: 무작위 지터를 3초로 설정하면 최대 3초 빠르거나 최대 3초 늦게 실행될 수 있습니다."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "일반 요청(Chrome 기반이 아님)의 최대 타임아웃 시간(초)입니다. 1~999 사이여야 합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "모든 요청에 적용됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "참고: User-Agent만 바꾼다고 해서 반봇 기술을 우회할 수 있는 것은 아닙니다. 다음 요소도 함께 고려해야 합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "브라우저가 탐지되는 모든 방식"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Bright Data 프록시로 연결합니다. 자세한 내용은 여기에서 확인해 보세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "팁:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "변경 감지 시 공백, 탭, 줄바꿈을 무시합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "참고:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "이 값을 변경하면 기존 모니터링의 상태가 바뀌고 알림 등이 발생할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "앵커 태그 콘텐츠 렌더링은 기본적으로 비활성화되어 있으며, 활성화하면 링크가 다음 형식으로 렌더링됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "이 값을 변경하면 기존 모니터링의 콘텐츠에 영향을 주고 알림 등이 발생할 수 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "텍스트로 변환하기 전에 CSS 또는 XPath 선택자로 HTML 요소를 제거합니다."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "여기에 HTML을 붙여 넣지 말고 CSS 및 XPath 선택자만 사용하세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "여러 HTML 영역을 무시하려면 줄마다 CSS 또는 XPath 선택자를 하나씩 추가하세요."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Note: This is applied globally in addition to the per-watch rules."
 msgstr "참고: 이 설정은 각 모니터링 규칙에 추가로 전역 적용됩니다."
 
