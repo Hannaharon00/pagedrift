@@ -1276,3 +1276,55 @@ msgstr "Извлечение данных"
 msgid "seconds ago."
 msgstr "секунды назад."
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
+msgstr "Подключайтесь с помощью Bright Data и прокси-серверов Oxylabs. Подробную информацию можно найти здесь."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check/Scan all"
+msgstr "Проверить/сканировать все"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Choose a proxy for this watch"
+msgstr "Выберите прокси для этих часов"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Using the current global default settings"
+msgstr "Использование текущих глобальных настроек по умолчанию"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Show advanced options"
+msgstr "Показать дополнительные параметры"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "Запустите этот код перед обнаружением изменений, что удобно для заполнения полей и других действий."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "Дополнительная помощь и примеры здесь"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "В теле запроса поддерживаются переменные."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "Переменные поддерживаются в значениях заголовка запроса."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "Тревога! Найден дополнительный файл заголовков, который будет добавлен в эти часы!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Заголовки также можно прочитать из файла в вашем каталоге данных."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Подробнее здесь"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Не поддерживается браузером Selenium."
+
