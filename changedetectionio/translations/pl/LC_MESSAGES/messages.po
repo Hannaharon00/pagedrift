@@ -1133,6 +1133,66 @@ msgstr "Usunięto."
 msgid "Cloned, you are editing the new watch."
 msgstr "Sklonowano. Edytujesz nową obserwację."
 
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "Nie udało się załadować procesora „{}” — prawdopodobnie brakuje wtyczki procesora. Wybierz inny procesor."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "Nie udało się załadować procesora „{}” — prawdopodobnie brakuje wtyczki procesora."
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr "Domyślne ustawienia systemowe"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr "Domyślnie"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "Zaktualizowano obserwację – wznowiono!"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "Zaktualizowano obserwację."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "Podgląd niedostępny — nie zakończono pobierania/sprawdzania lub nie osiągnięto wyzwalaczy"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "Różnice"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "wyświetlanie <b>{start} – {end}</b> łącznie {record_name} <b>{total}</b>"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr "pozycje w kolejce"
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr "Kolejka została wyczyszczona (usunięto {} elementów)."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "Spowoduje to usunięcie historii wersji (migawek) dla WSZYSTKICH obserwacji, ale lista adresów URL zostanie zachowana!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Być może zechcesz skorzystać z"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "KOPIA ZAPASOWA"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Ignore Whitespace"
 msgstr "Ignoruj spacje"
