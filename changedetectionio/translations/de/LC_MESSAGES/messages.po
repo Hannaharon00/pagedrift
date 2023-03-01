@@ -1205,6 +1205,72 @@ msgid "{} watches updated"
 msgstr "{} Überwachungen aktualisiert"
 
 #: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "{} Überwachungen stummgeschaltet"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "{} Überwachungen nicht stummgeschaltet"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "{} Überwachungen zur erneuten Überprüfung in der Warteschlange"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} Überwachungfehler behoben"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} Überwachungen gelöscht/zurückgesetzt."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "{} Überwachungen, die auf die Verwendung der Standardbenachrichtigungseinstellungen eingestellt sind"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Browser / fetch method updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid browser / fetch method selected"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Proxy updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid proxy selected"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches were tagged"
+msgstr "{} Überwachungen wurde markiert"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/watchlist/__init__.py
+msgid "Watch not found"
+msgstr "Überwachung nicht gefunden"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Cleared snapshot history for watch {}"
+msgstr "Snapshot-Verlauf für Beobachtung {} gelöscht"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "clear"
+msgstr "löschen"
+
+#: changedetectionio/blueprint/ui/__init__.py
 msgid "History clearing started in background"
 msgstr ""
 
