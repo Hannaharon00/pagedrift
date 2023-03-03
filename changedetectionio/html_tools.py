@@ -642,3 +642,131 @@ def extract_json_blob_from_html(content, ensure_is_ldjson_info_type, json_filter
 
     return stripped_text_from_html
 
+# content - json
+# json_filter - ie json:$..price
+# ensure_is_ldjson_info_type - str "product", optional, "@type == product" (I dont know how to do that as a json selector)
+def extract_json_as_string(content, json_filter, ensure_is_ldjson_info_type=None):
+
+    stripped_text_from_html = False
+# https://github.com/dgtlmoon/changedetection.io/pull/2041#issuecomment-1848397161w
+    # Try to parse/filter out the JSON, if we get some parser error, then maybe it's embedded within HTML tags
+
+    # Looks like clean JSON, dont bother extracting from HTML
+
+    content_start = content.lstrip("\ufeff").strip()[:100]
+
+    if content_start[0] == '{' or content_start[0] == '[':
+        try:
+            # .lstrip("\ufeff") strings ByteOrderMark from UTF8 and still lets the UTF work
+            stripped_text_from_html = _parse_json(json.loads(content.lstrip("\ufeff")), json_filter)
+        except json.JSONDecodeError as e:
+            logger.warning(f"Error processing JSON {content[:20]}...{str(e)})")
+    else:
+        # Check for JSONP wrapper: someCallback({...}) or some.namespace({...})
+        # Server may claim application/json but actually return JSONP
+        jsonp_match = re.match(r'^\w[\w.]*\s*\((.+)\)\s*;?\s*$', content.lstrip("\ufeff").strip(), re.DOTALL)
+        if jsonp_match:
+            try:
+                inner = jsonp_match.group(1).strip()
+                logger.warning(f"Content looks like JSONP, attempting to extract inner JSON for filter '{json_filter}'")
+                stripped_text_from_html = _parse_json(json.loads(inner), json_filter)
+            except json.JSONDecodeError as e:
+                logger.warning(f"Error processing JSONP inner content {content[:20]}...{str(e)})")
+
+        if not stripped_text_from_html:
+            # Probably something else, go fish inside for it
+            try:
+                stripped_text_from_html = extract_json_blob_from_html(content=content,
+                                                                      ensure_is_ldjson_info_type=ensure_is_ldjson_info_type,
+                                                                      json_filter=json_filter)
+            except json.JSONDecodeError as e:
+                logger.warning(f"Error processing JSON while extracting JSON from HTML blob {content[:20]}...{str(e)})")
+
+    if not stripped_text_from_html:
+        # Re 265 - Just return an empty string when filter not found
+        return ''
+
+    return stripped_text_from_html
+
+# Mode     - "content" return the content without the matches (default)
+#          - "line numbers" return a list of line numbers that match (int list)
+#
+# wordlist - list of regex's (str) or words (str)
+# Preserves all linefeeds and other whitespacing, its not the job of this to remove that
+def strip_ignore_text(content, wordlist, mode="content"):
+    ignore_text = []
+    ignore_regex = []
+    ignore_regex_multiline = []
+    ignored_lines = []
+
+    if not content:
+        return ''
+
+    for k in wordlist:
+        # Skip empty strings to avoid matching everything
+        if not k or not k.strip():
+            continue
+        # Is it a regex?
+        res = re.search(PERL_STYLE_REGEX, k, re.IGNORECASE)
+        if res:
+            res = re.compile(perl_style_slash_enclosed_regex_to_options(k))
+            if res.flags & re.DOTALL or res.flags & re.MULTILINE:
+                ignore_regex_multiline.append(res)
+            else:
+                ignore_regex.append(res)
+        else:
+            ignore_text.append(k.strip())
+
+    for r in ignore_regex_multiline:
+        for match in r.finditer(content):
+            content_lines = content[:match.end()].splitlines(keepends=True)
+            match_lines = content[match.start():match.end()].splitlines(keepends=True)
+
+            end_line = len(content_lines)
+            start_line = end_line - len(match_lines)
+
+            if end_line - start_line <= 1:
+                # Match is empty or in the middle of the line
+                ignored_lines.append(start_line)
+            else:
+                for i in range(start_line, end_line):
+                    ignored_lines.append(i)
+
+    line_index = 0
+    lines = content.splitlines(keepends=True)
+    for line in lines:
+        # Always ignore blank lines in this mode. (when this function gets called)
+        got_match = False
+        for l in ignore_text:
+            if l.lower() in line.lower():
+                got_match = True
+
+        if not got_match:
+            for r in ignore_regex:
+                if r.search(line):
+                    got_match = True
+
+        if got_match:
+            ignored_lines.append(line_index)
+
+        line_index += 1
+
+    ignored_lines = set([i for i in ignored_lines if i >= 0 and i < len(lines)])
+
+    # Used for finding out what to highlight
+    if mode == "line numbers":
+        return [i + 1 for i in ignored_lines]
+
+    output_lines = set(range(len(lines))) - ignored_lines
+    return ''.join([lines[i] for i in output_lines])
+
+def cdata_in_document_to_text(html_content: str, render_anchor_tag_content=False) -> str:
+    from xml.sax.saxutils import escape as xml_escape
+    pattern = '<!\[CDATA\[(\s*(?:.(?<!\]\]>)\s*)*)\]\]>'
+    def repl(m):
+        text = m.group(1)
+        return xml_escape(html_to_text(html_content=text)).strip()
+
+    return re.sub(pattern, repl, html_content)
+
+
