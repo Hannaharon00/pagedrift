@@ -590,3 +590,71 @@ msgstr "%(percent)s%% / %(budget)s"
 msgid "All-time total"
 msgstr "歷史總計"
 
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Unlink Group?"
+msgstr "解除群組連結？"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from group <strong>%(title)s</strong>?</p><p>The tag will be kept but "
+"watches will be removed from it.</p>"
+msgstr "<p>您確定要將所有監測任務從群組 <strong>%(title)s</strong> 解除連結嗎？</p><p>標籤將被保留，但監測任務將從中移除。</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
+msgid "Unlink"
+msgstr "解除連結"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Keep the tag but unlink any watches"
+msgstr "保留標籤但解除任何監測任務的連結"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "RSS Feed for this watch"
+msgstr "此監測任務的 RSS Feed"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches deleted"
+msgstr "{} 個監測任務已刪除"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches paused"
+msgstr "{} 個監測任務已暫停"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches unpaused"
+msgstr "{} 個監測任務已取消暫停"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches updated"
+msgstr "{} 個監測任務已更新"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "{} 個監測任務已靜音"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "{} 個監測任務已取消靜音"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "{} 個監測任務已排入複查佇列"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} 個監測任務錯誤已清除"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} 個監測任務已清除 / 重置。"
+
