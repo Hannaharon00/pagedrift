@@ -1006,6 +1006,66 @@ msgstr "{} monitores sin pausa"
 msgid "{} watches updated"
 msgstr "{} monitores actualizados"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "History clearing started in background"
+msgstr "La limpieza del historial comenzó en segundo plano."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Incorrect confirmation text."
+msgstr "Texto de confirmación incorrecto."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "The watch by UUID {} does not exist."
+msgstr "El monitor por UUID{} no existe."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Deleted."
+msgstr "Eliminado."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Clonado, estás editando el nuevo monitor."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "El monitor ya está en cola o en proceso de verificación."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "1 monitor en cola para volver a verificar."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "{count} monitores en cola para volver a comprobar ({skipped_count} ya en cola o en ejecución)."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "{} monitores en cola para volver a comprobar."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "Poniendo monitores en cola para volver a comprobar en segundo plano..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "No se pudo compartir, algo salió mal al comunicarse con el servidor compartido.{}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "Idioma configurado para detectarse automáticamente desde el navegador"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "No se encontró historial para el enlace especificado, ¿enlace incorrecto?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "No hay suficiente historial (se requieren 2 instantáneas) para mostrar la página de diferencias para este monitor."
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Highlight text to share or add to ignore lists."
 msgstr "Resalte el texto para compartir o agregar a las listas de ignorados."
