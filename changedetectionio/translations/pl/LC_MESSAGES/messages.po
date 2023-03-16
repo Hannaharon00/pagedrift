@@ -278,6 +278,72 @@ msgstr ""
 "Wystąpił błąd podczas przetwarzania wiersza o numerze {}; sprawdź, czy typy danych we wszystkich komórkach są "
 "prawidłowe; wiersz został pominięty."
 
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} plików zaimportowano z pliku Wachete .xlsx w {duration} sekund"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} plików zaimportowano z niestandardowego pliku .xlsx w ciągu {duration} sekund"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URL List"
+msgstr "Lista adresów URL"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ".XLSX & Wachete"
+msgstr ".XLSX i Wachete"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Backup Restore"
+msgstr "Tworzenie kopii zapasowej i przywracanie danych"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Restoring changedetection.io backups is in the"
+msgstr "Przywracanie kopii zapasowych ze strony changedetection.io odbywa się w"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "backups section"
+msgstr "sekcja dotycząca kopii zapasowych"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Enter one URL per line, and optionally add tags for each URL after a space, delineated by comma (,):"
+msgstr ""
+"Wpisz jeden adres URL w każdym wierszu i opcjonalnie dodaj tagi dla każdego adresu URL po spacji, oddzielając je "
+"przecinkami (,):"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/edit/include_subtract.html
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example"
+msgstr "Przykład"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "URLs which do not pass validation will stay in the textarea."
+msgstr "Adresy URL, które nie przejdą walidacji, pozostaną w polu tekstowym."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Copy and Paste your Distill.io watch 'export' file, this should be a JSON file."
+msgstr "Skopiuj i wklej plik „export” ze swojego konta w serwisie Distill.io – powinien to być plik w formacie JSON."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid ""
+"This is <i>experimental</i>, supported fields are <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>, the rest (including <code>schedule</code>) are ignored."
+msgstr ""
+"Jest to <i>funkcja eksperymentalna</i>; obsługiwane pola to <code>name</code>, <code>uri</code>, <code>tags</code>, "
+"<code>config:selections</code>; pozostałe (w tym <code>schedule</code>) są ignorowane."
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "How to export?"
+msgstr "Jak wyeksportować?"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Be sure to set your default fetcher to Chrome if required."
+msgstr "W razie potrzeby pamiętaj, aby ustawić przeglądarkę Chrome jako domyślną przeglądarkę do pobierania treści."
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "Table of custom column and data types mapping for the"
 msgstr "Tabela przyporządkowania niestandardowych kolumn i typów danych dla"
