@@ -9,3 +9,5 @@ import os
 # NOTE - RELIES ON mailserver as hostname running, see github build recipes
 smtp_test_server = os.getenv('SMTP_TEST_MAILSERVER', 'mailserver')
 
+ALL_MARKUP_TOKENS = ''.join(f"TOKEN: '{t}'\n{{{{{t}}}}}\n" for t in NotificationContextData().keys())
+
