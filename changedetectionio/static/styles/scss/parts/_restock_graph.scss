@@ -12,3 +12,49 @@
   flex-wrap: wrap;
 }
 
+.restock-latest-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.restock-badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.in-stock { background: rgba(31, 164, 99, 0.15); color: #1fa463; }
+  &.out-of-stock { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+}
+
+// Diff page: tab content sits in a white box connected to the tabs, exactly like #diff-ui on
+// the text-diff page. This is the readable surface for the graph/table/screenshot, and it sets
+// the theme text colour so the chart's labels/line (currentColor) contrast (the parent .box
+// uses white text, which would be invisible on this light surface).
+#restock-tabs {
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: 1rem;
+  border-radius: 5px;
+
+  // Current-screenshot pane: centre the image like the text-diff page does.
+  .tab-pane-inner#screenshot {
+    text-align: center;
+    img { max-width: 99%; }
+  }
+}
+
+#restock-graph {
+  margin-top: 1rem;
+  box-sizing: border-box;   // width:100% (from .js-restock-graph) + padding must fit the parent
+
+  // On wide screens, cap the chart width and centre it so it doesn't stretch too far.
+  @media (min-width: 1200px) {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
