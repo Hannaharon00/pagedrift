@@ -87,6 +87,44 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Auto-generated processor badge colors */
 {{ processor_badge_css|safe }}
 
+/* Auto-generated tag colors */
+{%- for uuid, tag in tags -%}
+    {%- if tag and tag.title -%}
+    {%- set class_name = tag.title|sanitize_tag_class -%}
+    {#- Anything but a hex colour would inject CSS rules here, fall back to the generated colour -#}
+    {%- set tag_colour = tag.get('tag_colour')|safe_css_colour -%}
+        {%- if tag_colour -%}
+            .button-tag.tag-{{ class_name }},
+            .watch-tag-list.tag-{{ class_name }} {
+              background-color: {{ tag_colour }};
+              color: {{ wcag_text_color(tag_colour) }};
+            }
+            {%- else -%}
+                {%- set colors = generate_tag_colors(tag.title) -%}
+                .button-tag.tag-{{ class_name }} {
+                  background-color: {{ colors['light']['bg'] }};
+                  color: {{ colors['light']['color'] }};
+                }
+
+                .watch-tag-list.tag-{{ class_name }} {
+                  background-color: {{ colors['light']['bg'] }};
+                  color: {{ colors['light']['color'] }};
+                }
+
+                html[data-darkmode="true"] .button-tag.tag-{{ class_name }} {
+                  background-color: {{ colors['dark']['bg'] }};
+                  color: {{ colors['dark']['color'] }};
+                }
+
+                html[data-darkmode="true"] .watch-tag-list.tag-{{ class_name }} {
+                  background-color: {{ colors['dark']['bg'] }};
+                  color: {{ colors['dark']['color'] }};
+                }
+            {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+</style>
+
 {% if llm_configured %}
 <script>
 window.watchOverviewI18n = {
