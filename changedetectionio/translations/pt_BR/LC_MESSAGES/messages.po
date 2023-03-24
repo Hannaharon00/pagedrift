@@ -648,3 +648,59 @@ msgstr "Atenção!"
 msgid "Lookout!"
 msgstr "Atenção!"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The interval/amount of time between each check."
+msgstr "O intervalo/quantidade de tempo entre cada verificação."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set to empty to use system settings default"
+msgstr "Deixe vazio para usar o padrão das configurações do sistema"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
+msgstr "Conecte-se usando proxies da Bright Data e Oxylabs, saiba mais aqui."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check/Scan all"
+msgstr "Verificar/Escanear tudo"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Choose a proxy for this watch"
+msgstr "Escolha um proxy para este monitoramento"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Using the current global default settings"
+msgstr "Usando as configurações globais padrão atuais"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Show advanced options"
+msgstr "Mostrar opções avançadas"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "Execute este código antes de realizar a detecção de mudanças, útil para preencher campos e outras ações"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "Mais ajuda e exemplos aqui"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "Variáveis são suportadas no corpo da solicitação (body)"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "Variáveis são suportadas nos valores dos cabeçalhos da solicitação"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "Alerta! Arquivo de cabeçalhos extras encontrado e será adicionado a este monitoramento!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Cabeçalhos também podem ser lidos de um arquivo no seu diretório de dados"
+
