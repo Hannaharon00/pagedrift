@@ -884,3 +884,62 @@ msgstr "{} monitores sin pausa"
 msgid "{} watches updated"
 msgstr "{} monitores actualizados"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "Clonar y editar"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "Seleccionar marca de tiempo"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "Captura de pantalla con error actual de la solicitud más reciente"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr ""
+"La captura de pantalla requiere un buscador de contenido (Sockpuppetbrowser, selenium, etc.) que admita capturas de "
+"pantalla."
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "running"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "idle"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "done"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "cancel"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured and queue is empty"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Watch no longer exists"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Nothing running"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Check queue"
+msgstr ""
+
