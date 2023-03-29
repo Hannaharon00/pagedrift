@@ -953,3 +953,61 @@ msgstr "若检测到页面标题将自动使用，你也可以在此自定义标
 msgid "Extra Page Title and Link options"
 msgstr ""
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "使用验证（✓）按钮测试条件是否符合当前快照。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "阅读快速教程"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "在此了解如何使用条件式网页变更"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "启用预览"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "小贴士："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "在预览页查看高亮的过滤器和触发器。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "将触发/忽略/阻止/提取限定为;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr "注意：根据每行文本长度与相似度，算法可能把 <strong>替换</strong> 视为 <strong>新增</strong>，例如。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "因此当你关注新增内容时，最好选择"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "当内容仅在列表中移动时，也会触发"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "新增"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "建议启用"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "仅当出现新的唯一行时触发"
+
