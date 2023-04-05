@@ -466,6 +466,44 @@
     const kindField     = document.querySelector('[name="llm-provider_kind"]');
     const hint          = document.getElementById('llm-key-hint');
 
+    fetchGroup.style.display = LIVE_PROVIDERS.includes(provider) ? '' : 'none';
+
+    const needsBase = provider === 'ollama' || provider === 'openai_compatible';
+    baseGroup.style.display = needsBase ? '' : 'none';
+    if (BASE_DEFAULTS[provider] !== undefined) {
+      if (!baseField.value) baseField.value = BASE_DEFAULTS[provider];
+    }
+
+    // Persist the dropdown selection so the backend can branch on provider kind
+    // (self-hosted endpoints — 'ollama' and 'openai_compatible' — trigger the
+    // local-multiplier code path; cloud providers do not).
+    if (kindField) kindField.value = provider || '';
+
+    // Show the local-endpoint advanced settings (token multiplier) for self-hosted
+    // endpoints. Cloud providers get the original tight caps and don't see this
+    // section at all.
+    if (localAdvGrp) localAdvGrp.style.display = (provider === 'ollama' || provider === 'openai_compatible') ? '' : 'none';
+
+    hint.textContent = KEY_HINTS[provider] || '';
+    modelSelGrp.style.display = 'none';
+    document.getElementById('llm-fetch-status').textContent = '';
+  };
+
+  window.llmFetchModels = async function () {
+    const provider  = document.getElementById('llm-provider').value;
+    const apiKey    = document.querySelector('[name="llm-api_key"]').value.trim();
+    const apiBase   = document.querySelector('[name="llm-api_base"]').value.trim();
+    const btn       = document.getElementById('llm-fetch-btn');
+    const statusEl  = document.getElementById('llm-fetch-status');
+    const selGroup  = document.getElementById('llm-model-select-group');
+    const modelSel  = document.getElementById('llm-model-select');
+
+    if (!provider) { statusEl.textContent = '{{ _("Select a provider first.") }}'; return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ {{ _("Loading…") }}';
+    statusEl.textContent = '';
+
     const params = new URLSearchParams({ provider });
     if (apiKey)  params.set('api_key',  apiKey);
     if (apiBase) params.set('api_base', apiBase);
