@@ -1125,6 +1125,62 @@ msgid "Variables are supported in the URL"
 msgstr "Las variables son compatibles con la URL"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "Ejecute este código antes de realizar la detección de cambios, útil para completar campos y otras acciones"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "Más ayuda y ejemplos aquí"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "Las variables se admiten en el cuerpo de la solicitud"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "Las variables se admiten en los valores del encabezado de la solicitud"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "¡Alerta! ¡Se encontró un archivo de encabezados adicional que se agregará a este monitor!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Los encabezados también se pueden leer desde un archivo en su directorio de datos"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Leer más aquí"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "No es compatible con el navegador Selenium"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Activar el buscador de texto"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Espere, el primer paso del navegador puede tardar un poco en cargarse."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Haga clic aquí para comenzar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Espere entre 10 y 15 segundos para que se conecte el navegador."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Presione \"Reproducir\" para comenzar."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Los datos del selector visual no están listos; es necesario revisar el monitor al menos una vez."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Clone & Edit"
 msgstr "Clonar y editar"
 
