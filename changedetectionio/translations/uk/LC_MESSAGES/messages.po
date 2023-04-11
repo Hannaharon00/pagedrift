@@ -699,6 +699,66 @@ msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple
 msgstr "Додайте кілька елементів, CSS або XPath селекторів (по одному на рядок), щоб ігнорувати частини HTML."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: This is applied globally in addition to the per-watch rules."
+msgstr "Примітка: Це застосовується глобально на додаток до правил конкретних завдань."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "Текст, що збігається, буде проігноровано у текстовому знімку (ви його побачите, але він не викличе сповіщення)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Each line processed separately, any line matching will be ignored (removed before creating the checksum)"
+msgstr ""
+"Кожен рядок обробляється окремо; будь-який рядок, що збігається, буде проігноровано (видалено перед створенням "
+"контрольної суми)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Regular Expression support, wrap the entire line in forward slash"
+msgstr "Підтримка регулярних виразів: обгорніть весь рядок у скісні риски"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/text-options.html
+msgid "Changing this will affect the comparison checksum which may trigger an alert"
+msgstr "Зміна цього параметра вплине на контрольну суму порівняння, що може викликати спрацювання сповіщення"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Remove any text that appears in the \"Ignore text\" from the output (otherwise its just ignored for change-detection)"
+msgstr ""
+"Видалити будь-який текст, вказаний у «Ігнорувати текст», із виводу (інакше він просто ігнорується під час перевірки "
+"змін)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API Access"
+msgstr "Доступ до API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Drive your changedetection.io via API, More about"
+msgstr "Керуйте changedetection.io через API. Детальніше про"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "доступ до API та приклади тут"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Обмежити доступ до API за допомогою"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "заголовок - необхідний для роботи розширення Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "копіювати"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Regenerate API key"
+msgstr "Перестворити ключ API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Extension"
+msgstr "Розширення Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Does your reader support HTML? Set it here"
 msgstr "Ваша читалка підтримує HTML? Налаштуйте тут"
 
