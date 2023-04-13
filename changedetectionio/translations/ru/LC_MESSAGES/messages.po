@@ -223,6 +223,63 @@ msgstr "Примечание. Это не отменяет основные на
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr "Максимальный размер загрузки: %(upload)s МБ. Максимальный размер в распакованном виде: %(decomp)s МБ."
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "Включить все группы, найденные в резервной копии?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Заменить существующие группы с одним и тем же UUID?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Включить все найденные часы в резервную копию?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Заменить существующие часы с тем же UUID?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Импортируйте 5000 первых URL-адресов из вашего списка, остальные можно импортировать снова."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Импортировано из списка в {duration}, {skipped_count} пропущено."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Не удалось прочитать файл JSON, он сломан?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "Структура JSON выглядит недействительной, она сломана?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Импортирован из Distill.io в {duration}, {skipped_count} пропущен."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Невозможно прочитать экспортированный файл XLSX. Что-то не так с файлом?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Ошибка обработки номера строки {}, неверное значение URL, строка пропущена."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Ошибка обработки номера строки {}, проверьте правильность всех типов данных ячеек, строка пропущена."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} импортирован из Wachete .xlsx в {duration}."
+
 #: changedetectionio/blueprint/imports/importer.py
 #, python-brace-format
 msgid "{count} imported from custom .xlsx in {duration}s"
