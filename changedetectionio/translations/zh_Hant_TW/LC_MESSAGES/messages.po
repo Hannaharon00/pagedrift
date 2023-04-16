@@ -452,6 +452,80 @@ msgid "Password is locked."
 msgstr "密碼已鎖定。"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Each watch or tag can carry a plain-text intent — %(ex1)s or %(ex2)s. On every detected change the AI evaluates the "
+"diff against it and suppresses irrelevant noise."
+msgstr "每個監測任務或標籤都可以包含純文字意圖 — %(ex1)s 或 %(ex2)s。在每次檢測到變更時，AI 會根據該意圖評估差異（Diff）並抑制不相關的雜訊。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Tip: intent evaluation benefits from a capable model — recommended %(local)s locally, or %(gpt)s / %(gemini)s. Very "
+"small models (≤3B) may misjudge numeric comparisons."
+msgstr "提示：意圖評估受益於效能較佳的模型 — 本地推薦 %(local)s，或雲端 %(gpt)s / %(gemini)s。極小型模型（≤3B）可能會誤判數值比較。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Instead of raw diffs, receive plain-language summaries in notifications — %(ex1)s or %(ex2)s. Set a global default "
+"prompt here, or override per watch or tag."
+msgstr "在通知中接收通俗易懂的語言摘要，而非原始差異 — %(ex1)s 或 %(ex2)s。在此處設定全域預設提示詞，或針對每個監測任務或標籤進行獨立覆寫。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Minimal cost"
+msgstr "極低成本"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"The AI sees only a unified diff of what changed — never full page HTML. Low-cost models like %(gpt)s or %(gemini)s "
+"handle this well, typically fractions of a cent per check."
+msgstr "AI 僅會看到變更內容的統一差異（Unified Diff）— 絕非全頁 HTML。像 %(gpt)s 或 %(gemini)s 這樣的低成本模型可以很好地處理此任務，每次檢查通常只需幾分之一個美分。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI / LLM configured:"
+msgstr "已設定 AI / LLM："
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Configure AI Provider"
+msgstr "設定 AI 供應商"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI Provider"
+msgstr "AI 供應商"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Master switch — when off, all AI lookups are skipped even if a provider is configured below."
+msgstr "總開關 — 關閉時，即使下方已設定供應商，也將跳過所有 AI 查詢。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Third-party data transfer — please read"
+msgstr "第三方資料傳輸 — 請閱讀"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"When AI features are active, change data from the websites you monitor — including page diffs and extracted text — is"
+" sent to an external AI provider of your choice."
+msgstr "當 AI 功能啟用時，來自您監測網站的變更資料 — 包括網頁差異（Diff）和提取的文字 — 將會發送至您選擇的外部 AI 供應商。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "You are solely responsible for ensuring this complies with the terms of service of each website you monitor."
+msgstr "您必須全權負責確保此行為符合您監測之每個網站服務條款。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"You are solely responsible for compliance with applicable data-protection laws (e.g. GDPR) regarding any personal "
+"data that may appear in monitored content."
+msgstr "對於可能出現在監測內容中的任何個人資料，您必須全權負責遵守適用的資料保護法規（例如 GDPR）。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"API costs charged by your chosen provider are your own responsibility; this software has no visibility into or "
+"control over those charges."
+msgstr "您選擇的供應商所收取的 API 費用由您自行承擔；本軟體無法查看或控制這些費用。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid ""
 "AI / LLM models are known to hallucinate — producing plausible-sounding but factually incorrect or entirely "
 "fabricated output with apparent confidence — and by design may omit or truncate relevant data during summarisation. "
