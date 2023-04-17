@@ -161,6 +161,65 @@ msgstr ""
 msgid "Invalid or corrupted zip file"
 msgstr "Archivo zip no válido o dañado"
 
+#: changedetectionio/blueprint/backups/restore.py
+msgid "Restore started in background, check back in a few minutes."
+msgstr "La restauración comenzó en segundo plano, vuelve a comprobarlo en unos minutos."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Create"
+msgstr "Crear"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore"
+msgstr "Restaurar"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "A backup is running!"
+msgstr "¡Se está ejecutando una copia de seguridad!"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Here you can download and request a new backup, when a backup is completed you will see it listed below."
+msgstr ""
+"Aquí puede descargar y solicitar una nueva copia de seguridad; cuando se complete una copia de seguridad, la verá en "
+"la lista a continuación."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Mb"
+msgstr "Mb"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "No backups found."
+msgstr "No se encontraron copias de seguridad."
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Create backup"
+msgstr "Crear copia de seguridad"
+
+#: changedetectionio/blueprint/backups/templates/backup_create.html
+msgid "Remove backups"
+msgstr "Eliminar copias de seguridad"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "A restore is running!"
+msgstr "¡Se está ejecutando una restauración!"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Restore a backup. Must be a .zip backup file created on/after v0.53.1 (new database layout)."
+msgstr ""
+"Restaurar una copia de seguridad. Debe ser un archivo de copia de seguridad .zip creado a partir de la versión 0.53.1"
+" (nuevo diseño de base de datos)."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Note: This does not override the main application settings, only watches and groups."
+msgstr "Nota: Esto no sobrescribe la configuración principal de la aplicación, solo monitores y grupos."
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+#, python-format
+msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
+msgstr ""
+
 #: changedetectionio/blueprint/backups/templates/backup_restore.html
 msgid "Include all groups found in backup?"
 msgstr "¿Incluir todos los grupos encontrados en la copia de seguridad?"
