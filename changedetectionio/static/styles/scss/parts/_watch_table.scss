@@ -81,3 +81,8 @@ body.has-queue {
 }
 
 
+.pure-table.watch-table td {
+  /* override of pure-css */
+    padding: .7em 0.7em;
+}
+
