@@ -162,6 +162,64 @@ msgstr ""
 msgid "Include all groups found in backup?"
 msgstr "Incluir todos os grupos encontrados no backup?"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Substituir grupos existentes com o mesmo UUID?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Incluir todos os monitoramentos encontrados no backup?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Substituir monitoramentos existentes com o mesmo UUID?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Importando as primeiras 5.000 URLs da sua lista, o restante pode ser importado novamente."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Importados da lista em {duration}s, {skipped_count} Ignorados."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Não foi possível ler o arquivo JSON, ele está corrompido?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "A estrutura do JSON parece inválida, ele está corrompido?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} Importados do Distill.io em {duration}s, {skipped_count} Ignorados."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Não foi possível ler o arquivo XLSX, há algo errado com o arquivo?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Erro ao processar a linha número {}, o valor da URL estava incorreto, a linha foi ignorada."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Erro ao processar a linha {}, verifique se os tipos de dados das células estão corretos, a linha foi ignorada."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} importados do Wachete .xlsx em {duration}s"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} importados do .xlsx personalizado em {duration}s"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Lista de URLs"
