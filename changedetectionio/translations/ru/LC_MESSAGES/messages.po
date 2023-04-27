@@ -1151,6 +1151,74 @@ msgstr "# Часы"
 msgid "Tag / Label name"
 msgstr "Имя тега/метки"
 
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches deleted"
+msgstr "{} часы удалены"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches paused"
+msgstr "{} часы приостановлены"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches unpaused"
+msgstr "{} смотрит без паузы"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches updated"
+msgstr "{} часы обновлены"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "{} часы отключены"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "{} смотрит без звука"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "{} часов поставлено в очередь на перепроверку"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} наблюдает за устранением ошибок"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} часы очищены/сброшены."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "Часы {} настроены на использование настроек уведомлений по умолчанию."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Browser / fetch method updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid browser / fetch method selected"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Proxy updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid proxy selected"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Include all intermediate snapshots between the selected versions in the AI summary"
 msgstr "Включить все промежуточные снимки между выбранными версиями в сводку AI."
