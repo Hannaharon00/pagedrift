@@ -160,6 +160,63 @@ msgstr "Catatan: Ini tidak menimpa pengaturan utama aplikasi, hanya monitor dan 
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr "Ukuran unggahan maks.: %(upload)s MB, ukuran hasil dekompresi maks.: %(decomp)s MB"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "Sertakan semua grup yang ditemukan dalam cadangan?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Ganti grup yang sudah ada dengan UUID yang sama?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Sertakan semua monitor yang ditemukan dalam cadangan?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Ganti monitor yang sudah ada dengan UUID yang sama?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Mengimpor 5.000 URL pertama dari daftar Anda, sisanya dapat diimpor kembali."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} diimpor dari daftar dalam {duration}dtk, {skipped_count} dilewati."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Tidak dapat membaca file JSON, apakah file rusak?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "Struktur JSON tampak tidak valid, apakah file rusak?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} diimpor dari Distill.io dalam {duration}dtk, {skipped_count} dilewati."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Tidak dapat membaca file ekspor XLSX, apakah ada masalah dengan file tersebut?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Kesalahan saat memproses baris nomor {}, nilai URL salah, baris dilewati."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Kesalahan saat memproses baris nomor {}, pastikan semua tipe data sel benar, baris dilewati."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} diimpor dari Wachete .xlsx dalam {duration}dtk"
+
 #: changedetectionio/blueprint/imports/importer.py
 #, python-brace-format
 msgid "{count} imported from custom .xlsx in {duration}s"
