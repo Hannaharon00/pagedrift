@@ -275,6 +275,43 @@ def available_processors():
     return _available_processors_cached(locale_str)
 
 
+def get_default_processor():
+    """
+    Get the default processor to use when none is specified.
+    Returns the first available processor based on weight (lowest weight = highest priority).
+    This ensures forms auto-select a valid processor even when DISABLED_PROCESSORS filters the list.
+
+    :return: The processor name string (e.g., 'text_json_diff')
+    """
+    available = available_processors()
+    if available:
+        return available[0][0]  # Return the processor name from first tuple
+    return 'text_json_diff'  # Fallback if somehow no processors are available
+
+
+def get_processor_badge_texts():
+    """
+    Get a dictionary mapping processor names to their list_badge_text values.
+    Translations are applied based on the current request locale.
+
+    :return: A dict mapping processor name to badge text (e.g., {'text_json_diff': 'Text', 'restock_diff': 'Restock'})
+    """
+    processor_classes = find_processors()
+    badge_texts = {}
+
+    for module, sub_package_name in processor_classes:
+        # Try to get the 'list_badge_text' attribute from the processor module
+        if hasattr(module, 'list_badge_text'):
+            badge_texts[sub_package_name] = gettext(module.list_badge_text)
+        else:
+            # Fall back to parent module's __init__.py
+            parent_module = get_parent_module(module)
+            if parent_module and hasattr(parent_module, 'list_badge_text'):
+                badge_texts[sub_package_name] = gettext(parent_module.list_badge_text)
+
+    return badge_texts
+
+
 def save_processor_config(datastore, watch_uuid, config_data):
     """
     Save processor-specific configuration to JSON file.
