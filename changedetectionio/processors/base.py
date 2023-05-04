@@ -9,6 +9,9 @@ import os
 from urllib.parse import urlparse
 from loguru import logger
 
+SCREENSHOT_FORMAT_JPEG = 'JPEG'
+SCREENSHOT_FORMAT_PNG = 'PNG'
+
         data_dir = watch.data_dir
         if not data_dir:
             self.last_raw_content_checksum = None

@@ -854,3 +854,65 @@ msgstr "{} 個監測任務錯誤已清除"
 msgid "{} watches cleared/reset."
 msgstr "{} 個監測任務已清除 / 重置。"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "已複製，您正在編輯新的監測任務。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "監測任務已在佇列中或正在檢查。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "已將 1 個監測任務排入複查佇列。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "已將 {count} 個監測任務排入複查佇列（{skipped_count} 個已在佇列中或正在執行）。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "已將 {} 個監測任務排入複查佇列。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "背景將監測任務排入複查佇列 ..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "無法分享，與分享伺服器通訊時發生錯誤 - {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "已設定為從瀏覽器自動偵測語言"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "找不到指定連結的歷史記錄，連結無效？"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "歷史記錄不足（需要 2 個快照）以顯示此監測任務的差異頁面。"
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr "已達到每月 %(budget)s 權杖的 AI 權杖配額（已使用 %(used)s）。將於下個月重置。"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "沒有可編輯的監測任務"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "找不到 UUID 為 {} 的監測任務。"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "已切換至模式 - {}。"
+
