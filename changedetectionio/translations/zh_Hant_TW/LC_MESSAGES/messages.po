@@ -514,6 +514,64 @@ msgstr "您的 changedetection.io 應用程式密碼保護。"
 msgid "Password is locked."
 msgstr "密碼已鎖定。"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Does your reader support HTML? Set it here"
+msgstr "您的閱讀器支援 HTML 嗎？在此處設定"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "'System default' for the same template for all items, or re-use your \"Notification Body\" as the template."
+msgstr "所有項目皆使用相同範本的「系統預設」，或重複使用您的「通知內容」作為範本。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ensure the settings below are correct, they are used to manage the time schedule for checking your web page watches."
+msgstr "請確保以下設定正確，它們用於管理檢查您網頁監測任務的時間排程。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UTC Time & Date from Server:"
+msgstr "來自伺服器的 UTC 時間與日期："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Local Time & Date in Browser:"
+msgstr "瀏覽器中的本地時間與日期："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable this setting to open the diff page in a new tab. If disabled, the diff page will open in the current tab."
+msgstr "啟用此設定以在新分頁中開啟差異（Diff）頁面。如果停用，差異頁面將在目前分頁中開啟。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Realtime UI Updates Enabled - (Restart required if this is changed)"
+msgstr "已啟用即時 UI 更新 -（若變更此項需要重新啟動）"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable or Disable Favicons next to the watch list"
+msgstr "啟用或停用監測列表旁的網站圖示（Favicons）"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of items per page in the watch overview list, 0 to disable."
+msgstr "監測概覽列表中每頁的項目數量，設為 0 以停用。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "How \"Checked\" and \"Changed\" times are shown in the watch overview list."
+msgstr "「檢查時間」和「變更時間」在監測概覽列表中的顯示方式。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr "「摺疊式圖示列」可保持左側導覽列精簡，並在滑鼠懸停時顯示標籤；「一律展開」則讓標籤保持可見。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "提示"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr "對於被封鎖的網站，「住宅」與「行動網路」代理伺服器類型可能比「資料中心」更容易成功。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "「名稱」將用於在監測任務編輯設定中選擇代理伺服器"
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid ""
