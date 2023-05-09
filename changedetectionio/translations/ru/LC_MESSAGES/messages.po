@@ -521,6 +521,59 @@ msgid "General"
 msgstr "Общий"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Fetching"
+msgstr "Получение"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Global Filters"
+msgstr "Глобальные фильтры"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UI Options"
+msgstr "Параметры пользовательского интерфейса"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "Резервные копии"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "Время и дата"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "Капча и прокси"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr "ИИ/LLM"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "Информация"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "Время перепроверки по умолчанию для всех часов, текущий системный минимум:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "больше информации"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "После этого много раз подряд, когда фильтр CSS/xPath отсутствует, отправьте уведомление."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr "Установите значение <strong>0</strong>, чтобы отключить"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr "Ограничьте сбор снимков истории для каждых часов указанным количеством элементов истории."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Set to empty to disable / no limit"
 msgstr "Установите пустое значение, чтобы отключить/без ограничений"
 
