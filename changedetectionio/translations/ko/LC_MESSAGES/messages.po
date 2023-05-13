@@ -1260,6 +1260,67 @@ msgid "Error Screenshot"
 msgstr "오류 스크린샷"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr "사이트가 콘텐츠 위치만 자주 바꾸고 새 콘텐츠가 추가될 때만 알고 싶을 때 유용합니다. 새 줄을 이 모니터링의 전체 기록과 비교합니다."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr "사이트가 줄 순서를 섞어 발생하는 변경 감지를 줄이는 데 도움이 됩니다. 아래의 <i>고유한 줄 확인</i>과 함께 사용해 보세요."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "각 텍스트 줄 앞뒤 공백 제거"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr "AI 판단 기준 미리보기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "불러오는 중..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "시각 선택기 도구로 변경 감지에 사용할"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "텍스트"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr "요소를 선택할 수 있습니다. 선택한 요소는"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "탭의 \"CSS/JSONPath/JQ/XPath 필터\" 입력란에 자동으로 채워집니다. 여러 항목을 선택하려면"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+클릭을"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "사용하세요."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "선택 모드:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "그리기 영역"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "잠시만 기다려 주세요. 스크린샷과 요소 정보를 가져오는 중입니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
 msgstr "죄송합니다. 이 기능은 JavaScript와 스크린샷을 지원하는 가져오기 방식(예: Playwright 등)에서만 작동합니다."
 

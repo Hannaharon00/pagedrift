@@ -895,6 +895,68 @@ msgstr "Memuat…"
 msgid "No models returned by the provider."
 msgstr "Penyedia tidak mengembalikan model."
 
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "No website organisational tags/groups configured"
+msgstr "Tidak ada tag/grup organisasi situs web yang dikonfigurasi"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/menu.html
+msgid "Mute notifications"
+msgstr "Bisukan notifikasi"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck"
+msgstr "Periksa ulang"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/edit.py
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Edit"
+msgstr "Edit"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Delete Group?"
+msgstr "Hapus Grup?"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid "<p>Are you sure you want to delete group <strong>%(title)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Anda yakin ingin menghapus grup <strong>%(title)s</strong>?</p><p>Tindakan ini tidak dapat dibatalkan.</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Delete"
+msgstr "Hapus"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Deletes and removes tag"
+msgstr "Menghapus tag"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Unlink Group?"
+msgstr "Lepas Tautan Grup?"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from group <strong>%(title)s</strong>?</p><p>The tag will be kept but "
+"watches will be removed from it.</p>"
+msgstr ""
+"<p>Anda yakin ingin melepas semua monitor dari grup <strong>%(title)s</strong>?</p><p>Tag akan dipertahankan tetapi "
+"monitor akan dihapus dari tag tersebut.</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
+msgid "Unlink"
+msgstr "Lepas tautan"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Keep the tag but unlink any watches"
+msgstr "Pertahankan tag tetapi lepas semua monitor"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "RSS Feed for this watch"
+msgstr "Feed RSS untuk monitor ini"
+
 #: changedetectionio/blueprint/ui/__init__.py
 #, python-brace-format
 msgid "{} watches deleted"
