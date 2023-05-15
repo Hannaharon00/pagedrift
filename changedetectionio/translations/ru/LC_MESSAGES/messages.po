@@ -1503,6 +1503,63 @@ msgstr "Подробнее здесь"
 msgid "Not supported by Selenium browser"
 msgstr "Не поддерживается браузером Selenium."
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "Внимание, URL {} уже существует."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "Просмотр добавлен в состоянии «Приостановлено», сохранение возобновится."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "Часы добавлены."
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "записи"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr "Приостановить проверки"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr "Возобновить проверку"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr "Отключить уведомление"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnMute notification"
+msgstr "Включить уведомление"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 msgid "Goto web page"
 msgstr ""
