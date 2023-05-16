@@ -75,3 +75,40 @@
   }
 }
 
+// Standard radio button styling
+input[type="radio"].pure-radio:checked + label,
+input[type="radio"].pure-radio:checked {
+  background: var(--color-link);
+  color: var(--color-text-button);
+}
+
+html[data-darkmode="true"] {
+  .ternary-radio-group {
+    .ternary-radio-option {
+      .ternary-radio-label {
+        background: var(--color-grey-350);
+      }
+
+      &:hover .ternary-radio-label {
+        background: var(--color-grey-400);
+      }
+
+      input:checked + .ternary-radio-label {
+        background: var(--color-link);
+        color: var(--color-text-button);
+
+        &.ternary-default {
+          background: var(--color-grey-600);
+        }
+
+        &:hover {
+          background: #1a7bc4;
+
+          &.ternary-default {
+            background: var(--color-grey-500);
+          }
+        }
+      }
+    }
+  }
+}
