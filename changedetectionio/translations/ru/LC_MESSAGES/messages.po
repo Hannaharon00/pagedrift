@@ -1622,3 +1622,55 @@ msgstr "Краткое содержание"
 msgid "History"
 msgstr "История"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Web page"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "Пополнение и цена"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "Не настроено наблюдение за обнаружением изменений веб-страниц. Добавьте URL-адрес в поле выше или"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "импортировать список"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr "Выберите один - Оператор"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr "Больше, чем"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr "Меньше, чем"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than or Equal To"
+msgstr "Больше или равно"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than or Equal To"
+msgstr "Меньше или равно"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Equals"
+msgstr "Равно"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Not Equals"
+msgstr "Не Равно"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Contains"
+msgstr "Содержит"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Field"
+msgstr "Выберите один — Поле"
+
