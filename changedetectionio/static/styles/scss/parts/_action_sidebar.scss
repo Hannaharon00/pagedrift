@@ -151,3 +151,37 @@ ul.action-sidebar-list {
   }
 }
 
+// When the inner block expands in MINIMAL mode, reveal every label/badge
+// together with a smooth enter. Always-expanded mode handles labels via the
+// `body.actionside-bar-on` block below — no hover gate needed there.
+body.actionsidebar-minimal:not(.actionsidebar-no-expand) .action-sidebar-inner:hover,
+body.actionsidebar-minimal:not(.actionsidebar-no-expand) .action-sidebar-inner:focus-within {
+  .action-sidebar-item {
+    .action-label {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.18s ease 0.05s, transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s;
+    }
+    .action-badge {
+      opacity: 1;
+      transition: opacity 0.18s ease 0.05s;
+    }
+  }
+}
+
+// Always-expanded mode: labels and badges are visible at rest (no hover gate),
+// and the main content gutter grows from 64px → 240px to keep the rail from
+// overlapping page content.
+body.actionside-bar-on {
+  .action-sidebar .action-sidebar-item {
+    .action-label {
+      opacity: 1;
+      transform: translateX(0);
+      transition: none;
+    }
+    .action-badge {
+      opacity: 1;
+      transition: none;
+    }
+  }
+
