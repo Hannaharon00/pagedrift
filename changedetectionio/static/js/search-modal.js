@@ -25,3 +25,84 @@
       }, 100);
     }
 
+    // Close modal
+    function closeSearchModal() {
+      searchModal.close();
+      if (searchInput) {
+        searchInput.value = '';
+      }
+    }
+
+    // Open search modal on button click (desktop + mobile drawer)
+    openSearchButtons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        // Close mobile drawer if open, so the modal isn't behind it
+        const drawer = document.getElementById('mobile-menu-drawer');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const toggle = document.getElementById('hamburger-toggle');
+        if (drawer && drawer.classList.contains('active')) {
+          drawer.classList.remove('active');
+          if (overlay) overlay.classList.remove('active');
+          if (toggle) toggle.classList.remove('active');
+        }
+        openSearchModal();
+      });
+    });
+
+    // Close modal on cancel button
+    if (closeSearchButton) {
+      closeSearchButton.addEventListener('click', closeSearchModal);
+    }
+
+    // Close modal on escape key (native behavior for dialog)
+    searchModal.addEventListener('cancel', function(e) {
+      if (searchInput) {
+        searchInput.value = '';
+      }
+    });
+
+    // Close modal when clicking the backdrop
+    searchModal.addEventListener('click', function(e) {
+      const rect = searchModal.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        closeSearchModal();
+      }
+    });
+
+    // Keyboard shortcuts: Alt+S, and "/" (when not already typing in a field).
+    document.addEventListener('keydown', function(e) {
+      if (e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        openSearchModal();
+        return;
+      }
+      if (e.key === '/' && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        const t = e.target;
+        const tag = t && t.tagName ? t.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) {
+          return; // let "/" type normally in form fields
+        }
+        e.preventDefault();
+        openSearchModal();
+      }
+    });
+
+    // Handle Enter key in search input
+    if (searchInput) {
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (searchForm) {
+            // Trigger form submission programmatically
+            searchForm.dispatchEvent(new Event('submit'));
+          }
+        }
+      });
+    }
+
