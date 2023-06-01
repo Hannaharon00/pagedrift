@@ -133,3 +133,90 @@
             return;
         }
 
+    function buildTable($table, series, currency, i18n) {
+        const $tbody = $table.find('tbody');
+        if (!$tbody.length) return;
+        $tbody.empty();
+        series.slice().reverse().forEach(p => {
+            let stock = '-';
+            if (p.in_stock === true) stock = $('<span class="restock-badge in-stock"></span>').text(i18n.in_stock);
+            else if (p.in_stock === false) stock = $('<span class="restock-badge out-of-stock"></span>').text(i18n.out_of_stock);
+            const price = (p.price !== null && p.price !== undefined) ? fmtPrice(p.price, currency) : '-';
+            $('<tr></tr>')
+                .append($('<td></td>').text(fmtDateTime(p.timestamp)))
+                .append($('<td></td>').append(stock))
+                .append($('<td></td>').text(price))
+                .appendTo($tbody);
+        });
+    }
+
+    // Redraw a graph only if its container width actually changed (skips redundant redraws and
+    // prevents ResizeObserver feedback loops).
+    function redraw($c) {
+        const ctx = $c.data('rg');
+        if (!ctx) return;
+        const w = Math.round($c.width());
+        if (w === ctx.lastWidth) return;
+        ctx.lastWidth = w;
+        draw($c, ctx.series, ctx.currency, ctx.i18n, ctx.summary, ctx.height);
+    }
+
+    // Watch the container's own size, not just the window: the content area also changes width
+    // when the action sidebar expands on hover (no window 'resize' event fires for that).
+    const hasRO = typeof ResizeObserver !== 'undefined';
+    let ro = null;
+    if (hasRO) {
+        let roTimer;
+        const pending = new Set();
+        ro = new ResizeObserver(function (entries) {
+            entries.forEach(e => pending.add(e.target));
+            clearTimeout(roTimer);
+            roTimer = setTimeout(function () {
+                pending.forEach(t => redraw($(t)));
+                pending.clear();
+            }, 120);
+        });
+    } else {
+        // Fallback for browsers without ResizeObserver: window resize only.
+        let resizeTimer;
+        $(window).on('resize.restockgraph', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                $('.js-restock-graph').each(function () { redraw($(this)); });
+            }, 150);
+        });
+    }
+
+    // Public reusable renderer. Stores its context on the element and observes the element so
+    // it redraws on any size change; usable from anywhere (e.g. the watchlist inline roll-down).
+    window.renderRestockGraph = function (container, series, currency, i18n, summary, height) {
+        const $c = $(container);
+        if (!$c.length) return;
+        const merged = $.extend({}, DEFAULT_I18N, i18n || {});
+        // Seed lastWidth to the current width so the immediate ResizeObserver callback (which
+        // fires once on observe()) doesn't trigger a redundant redraw.
+        $c.addClass('js-restock-graph').data('rg', {
+            series: series || [], currency: currency || '', i18n: merged, summary: summary || null,
+            height: height || HEIGHT, lastWidth: Math.round($c.width())
+        });
+        draw($c, series || [], currency || '', merged, summary || null, height || HEIGHT);
+        if (ro) {
+            try { ro.unobserve($c[0]); } catch (e) {}
+            ro.observe($c[0]);
+        }
+    };
+
+    // Diff page bootstrap: fetch the timeline, render the graph + the data table.
+    $(function () {
+        const $container = $('#restock-graph');
+        if (!$container.length || !window.restock_data_url) return;
+        const i18n = $.extend({}, DEFAULT_I18N, window.restock_i18n || {});
+        $.getJSON(window.restock_data_url).done(function (data) {
+            const series = (data && data.series) || [];
+            window.renderRestockGraph($container, series, (data && data.currency) || '', i18n, (data && data.summary) || null);
+            buildTable($('#restock-history-table'), series, (data && data.currency) || '', i18n);
+        }).fail(function () {
+            $container.html($('<p class="pure-form-message-inline"></p>').text(i18n.load_error));
+        });
+    });
+
