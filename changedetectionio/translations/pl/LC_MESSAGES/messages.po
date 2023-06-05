@@ -1479,3 +1479,59 @@ msgstr "Więcej wskazówek i przykładów znajdziesz tutaj"
 msgid "Variables are supported in the request body"
 msgstr "W treści żądania obsługiwane są zmienne"
 
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Does NOT Match Regex"
+msgstr "Tekst NIE pasuje do wyrażenia regularnego"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Extracted number after 'Filters & Triggers'"
+msgstr "Liczba wyodrębniona po pozycji „Filtry i wyzwalacze”"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Page text after 'Filters & Triggers'"
+msgstr "Tekst strony po sekcji „Filtry i wyzwalacze”"
+
+#: changedetectionio/conditions/form.py
+msgid "Field"
+msgstr "Pole"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator"
+msgstr "Operator"
+
+#: changedetectionio/conditions/form.py
+msgid "A value"
+msgstr "Wartość"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator is required."
+msgstr "Wymagany jest operator."
+
+#: changedetectionio/conditions/form.py
+msgid "Field is required."
+msgstr "To pole jest obowiązkowe."
+
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr "Wartość jest wymagana."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text similarity ratio"
+msgstr "Wskaźnik podobieństwa tekstu według Levenshteina"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text change distance"
+msgstr "Levenshtein – odległość zmian tekstowych"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Not enough history to calculate Levenshtein metrics"
+msgstr "Brak wystarczającej historii do obliczenia metryk Levenshteina"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Snapshot too large for edit statistics, skipping."
+msgstr "Migawka jest zbyt duża, aby obliczyć statystyki edycji — pomijam."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Unable to calculate Levenshtein metrics"
+msgstr "Nie można obliczyć metryk Levenshteina"
+
