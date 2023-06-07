@@ -228,6 +228,28 @@ code {
   margin-right: 4px;
 }
 
+body::before {
+  // background-image set in base.html so it works with reverse proxies etc
+  content: "";
+}
+
+/* Wave clip-path removed — flat colored band looks cleaner */
+
+.button-small {
+  font-size: 85%;
+}
+
+.button-xsmall {
+  font-size: 70%;
+}
+
+.fetch-error {
+  padding-top: 1em;
+  font-size: 80%;
+  max-width: 400px;
+  display: block;
+}
+
 .button-warning {
   background: var(--color-background-button-warning);
   color: var(--color-text-button-warning);
