@@ -1726,6 +1726,72 @@ msgstr "Drücken Sie „Play“, um zu starten."
 msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
 msgstr "Die Daten des visuellen Selektors sind noch nicht bereit, die Überwachung muss mindestens einmal überprüft werden."
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Leider funktioniert diese Funktion nur mit Fetchern, die interaktives JavaScript unterstützen (bisher nur Playwright-"
+"basierte Fetcher)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "zu einer, die interaktives Javascript unterstützt."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Das musst du"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Legen Sie die Fetch-Methode fest"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Sendet eine Benachrichtigung, wenn der Filter auf der Seite nicht mehr sichtbar ist. So wissen Sie, wann sich die "
+"Seite geändert hat und Ihr Filter nicht mehr funktioniert."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr ""
+"Verwenden Sie die Schaltfläche „Überprüfen“ (✓), um zu testen, ob eine Bedingung für den aktuellen Snapshot erfüllt "
+"ist."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Lesen Sie ein kurzes Tutorial darüber"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "Verwenden Sie hier bedingte Webseitenänderungen"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Vorschau aktivieren"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Profi-Tipps:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Verwenden Sie die Vorschauseite, um Ihre Filter und Auslöser hervorgehoben anzuzeigen."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Auslösen/Ignorieren/Blockieren/Extrahieren beschränken auf;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Hinweis: Je nach Länge und Ähnlichkeit des Textes in jeder Zeile kann der Algorithmus zum Beispiel einen "
+"<strong>Zusatz</strong> anstatt eines <strong>Ersatzes</strong> erkennen."
+
 #: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
 msgid "Yes"
 msgstr "Ja"
