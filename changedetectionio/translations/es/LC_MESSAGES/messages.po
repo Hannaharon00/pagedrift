@@ -1390,6 +1390,63 @@ msgstr "No se encontró historial para el enlace especificado, ¿enlace incorrec
 msgid "Not enough history (2 snapshots required) to show difference page for this watch."
 msgstr "No hay suficiente historial (se requieren 2 instantáneas) para mostrar la página de diferencias para este monitor."
 
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "Esto eliminará el historial de versiones (instantáneas) de TODOS los monitores, ¡pero mantendrá su lista de URL!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Es posible que desee utilizar el"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "RESPALDO"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr "enlace primero."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "Texto de confirmación"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr "Escribe la palabra"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr "para confirmar que entiende."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr "¡Borrar historial!"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr "Compartir diferencias como imagen"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr "Compartir como imagen"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr "Ignora cualquier línea que coincida"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr "Ignore cualquier línea que coincida excluyendo dígitos"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Highlight text to share or add to ignore lists."
 msgstr "Resalte el texto para compartir o agregar a las listas de ignorados."
