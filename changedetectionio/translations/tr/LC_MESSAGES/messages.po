@@ -525,6 +525,64 @@ msgstr ""
 msgid "Tip"
 msgstr "İpucu"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "\"Ad\", İzleyici Düzenleme ayarlarında proxy'yi seçmek için kullanılacaktır"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr ""
+"Kimlik doğrulamalı SOCKS5 proxy'leri yalnızca 'düz istekler' getiricisi ile desteklenir, diğer getiriciler için bunun"
+" yerine IP erişimini beyaz listeye almalısınız"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr "Çalışma Süresi:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "Python sürümü:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "Maksimum sayfa izleyici sayısı:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "Aktif eklentiler:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "Aktif eklenti yok"
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "Kullanım"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Overview"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Provider"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Prompts"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Behaviour"
+msgstr ""
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "AI-powered change monitoring"
 msgstr ""
