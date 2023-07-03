@@ -643,6 +643,65 @@ msgstr ""
 " ale większe zużycie pamięci."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Obecnie uruchomione:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "operacyjny"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "procesy robocze"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "aktywnie przetwarzając"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr ""
+"Przykład – losowe odchylenie wynoszące 3 sekundy może spowodować uruchomienie nawet o 3 sekundy wcześniej lub nawet o"
+" 3 sekundy później"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr ""
+"W przypadku zwykłych żądań (nieopartych na przeglądarce Chrome) maksymalny czas w sekundach do wygaśnięcia połączenia"
+" wynosi od 1 do 999."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "Dotyczy wszystkich żądań."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr ""
+"Uwaga: Sama zmiana wartości User-Agent często nie pozwala obejść technologii przeciwdziałających robotom, dlatego "
+"należy wziąć pod uwagę"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "wszystkie sposoby wykrywania przeglądarki"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Połącz się za pomocą serwerów proxy Bright Data – więcej informacji znajdziesz tutaj."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "Wskazówka:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "Przy sprawdzaniu, czy wykryto zmianę, należy pominąć spacje, tabulatory oraz znaki końca linii/przesunięcia wiersza."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "Uwaga:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
 msgstr "Zmiana tej opcji spowoduje zmianę statusu istniejących obserwacji, co może wywołać powiadomienia itp."
 
