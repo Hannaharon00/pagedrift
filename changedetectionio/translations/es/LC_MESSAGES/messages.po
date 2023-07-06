@@ -1618,6 +1618,73 @@ msgid "Visual Selector data is not ready, watch needs to be checked atleast once
 msgstr "Los datos del selector visual no están listos; es necesario revisar el monitor al menos una vez."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Por eso siempre es mejor seleccionar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "cuando esté interesado en contenido nuevo."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Cuando el contenido simplemente se mueve en una lista, también activará una"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "suma"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "considere habilitar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Solo se activa cuando aparecen líneas únicas"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Bueno para sitios web que simplemente mueven el contenido y desea saber cuándo se agrega contenido NUEVO, compara "
+"nuevas líneas con todo el historial de este monitor."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+"Ayuda a reducir los cambios detectados causados por sitios que cambian las líneas, combine con <i>comprobar líneas "
+"únicas</i> abajo."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Eliminar cualquier espacio en blanco antes y después de cada línea de texto"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "La herramienta Selector visual le permite seleccionar el"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "texto"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+"elementos que se utilizarán para la detección de cambios. Completa automáticamente los filtros en el cuadro \"Filtros"
+" CSS/JSONPath/JQ/XPath\" del"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Clone & Edit"
 msgstr "Clonar y editar"
 
