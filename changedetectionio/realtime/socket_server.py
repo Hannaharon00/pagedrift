@@ -158,6 +158,51 @@ class SignalHandler:
 
 
 
+def handle_watch_update(socketio, **kwargs):
+    """Handle watch update signal from blinker"""
+    try:
+        watch = kwargs.get('watch')
+        datastore = kwargs.get('datastore')
+
+        # Emit the watch update to all connected clients
+        from changedetectionio.flask_app import update_q
+        from changedetectionio.flask_app import _jinja2_filter_datetime, _jinja2_filter_datetimestamp
+        from changedetectionio import worker_pool
+
+        # Get list of watches that are currently running
+        running_uuids = worker_pool.get_running_uuids()
+
+        # Get list of watches in the queue (efficient single-lock method)
+        queue_list = update_q.get_queued_uuids()
+
+        # Get the error texts from the watch
+        error_texts = watch.compile_error_texts()
+        # Create a simplified watch data object to send to clients
+
+        watch_data = {
+            'checking_now': True if watch.get('uuid') in running_uuids else False,
+            'error_text': error_texts,
+            'event_timestamp': time.time(),
+            'fetch_time': watch.get('fetch_time'),
+            'has_error': True if error_texts else False,
+            'has_favicon': True if watch.get_favicon_filename() else False,
+            'history_n': watch.history_n,
+            # Uses the same filter as the server-rendered list so the long/short (timeago_format) setting is honoured.
+            'last_changed_text': _jinja2_filter_datetimestamp(int(watch.last_changed)) if watch.history_n >= 2 and int(watch.last_changed) > 0 else gettext('Not yet'),
+            'last_checked': watch.get('last_checked'),
+            'last_checked_text': _jinja2_filter_datetime(watch),
+            'notification_muted': True if watch.get('notification_muted') else False,
+            'paused': True if watch.get('paused') else False,
+            'queued': True if watch.get('uuid') in queue_list else False,
+            'unviewed': watch.has_unviewed,
+            'uuid': watch.get('uuid'),
+        }
+
+        errored_count = 0
+        for watch_uuid_iter, watch_iter in datastore.data['watching'].items():
+            if watch_iter.get('last_error'):
+                errored_count += 1
+
         general_stats = {
             'count_errors': errored_count,
             'unread_changes_count': datastore.unread_changes_count
