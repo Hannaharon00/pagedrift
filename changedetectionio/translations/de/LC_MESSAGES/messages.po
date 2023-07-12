@@ -1619,6 +1619,58 @@ msgstr "Drücken Sie „Play“, um zu starten."
 msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
 msgstr "Die Daten des visuellen Selektors sind noch nicht bereit, die Überwachung muss mindestens einmal überprüft werden."
 
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr "Ja"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "No"
+msgstr "Nein"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (last check)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (total)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download latest HTML snapshot"
+msgstr "Laden Sie den neuesten HTML-Snapshot herunter"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download watch data package"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr "Überwachung löschen?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "Sind Sie sicher, dass Sie die Überwachung löschen möchten für:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "Verlauf löschen?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "Sind Sie sicher, dass Sie den gesamten Verlauf löschen möchten für:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "Dadurch werden alle Snapshots und früheren Versionen entfernt. Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "Verlauf löschen"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 #, python-format
 msgid "Price change since previous price (%(prev)s)"
