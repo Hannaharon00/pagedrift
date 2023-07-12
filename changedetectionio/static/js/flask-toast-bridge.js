@@ -96,3 +96,4 @@
     return typeMap[category] || 'info';
   }
 
+})();
