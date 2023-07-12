@@ -1145,6 +1145,66 @@ msgstr "UUID {}의 모니터링이 존재하지 않습니다."
 msgid "Deleted."
 msgstr "삭제되었습니다."
 
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "'{}' 프로세서를 불러올 수 없습니다. 프로세서 플러그인이 없을 수 있습니다. 다른 프로세서를 선택해 주세요."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "'{}' 프로세서를 불러올 수 없습니다. 프로세서 플러그인이 없을 수 있습니다."
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr "시스템 설정 기본값"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr "기본값"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "모니터링이 업데이트되었고 일시중지가 해제되었습니다."
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "모니터링 설정이 업데이트되었습니다."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "미리보기를 사용할 수 없습니다. 아직 가져오기/확인이 완료되지 않았거나 트리거 조건에 도달하지 않았습니다."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "비교"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "총 <b>{total}</b>개 중 <b>{start} - {end}</b>개 {record_name} 표시"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "이 작업은 모든 모니터링의 버전 기록(스냅샷)을 삭제하지만 URL 목록은 유지합니다."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "먼저 "
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "백업"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Same/non-changed"
 msgstr "동일/변경되지 않음"
