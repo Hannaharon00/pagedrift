@@ -256,3 +256,12 @@ class fetcher(Fetcher):
                     logger.warning(f"Failed to unlink screenshot: {screenshot} - {e}")
 
 
+# Plugin registration for built-in fetcher
+class RequestsFetcherPlugin:
+    """Plugin class that registers the requests fetcher as a built-in plugin."""
+
+    def register_content_fetcher(self):
+        """Register the requests fetcher"""
+        return ('html_requests', fetcher)
+
+
