@@ -357,6 +357,65 @@ def _jinja2_filter_regex_search(value, pattern):
     return re.search(pattern, str(value)) is not None
 
 
+@app.template_filter('pagination_slice')
+def _jinja2_filter_pagination_slice(arr, skip):
+    per_page = datastore.data['settings']['application'].get('pager_size', 50)
+    if per_page:
+        return arr[skip : skip + per_page]
+
+    return arr
+
+
+@app.template_filter('format_seconds_ago')
+def _jinja2_filter_seconds_precise(timestamp):
+    if timestamp == False:
+        return gettext('Not yet')
+
+    return format(int(time.time() - timestamp), ',d')
+
+
+@app.template_filter('format_duration')
+def _jinja2_filter_format_duration(seconds):
+    """Format a duration in seconds into human readable string like '5 days, 3 hours, 30 minutes'"""
+    from datetime import timedelta
+
+    if not seconds or seconds < 0:
+        return gettext('0 seconds')
+
+    td = timedelta(seconds=int(seconds))
+
+    # Calculate components
+    years = td.days // 365
+    remaining_days = td.days % 365
+    months = remaining_days // 30
+    remaining_days = remaining_days % 30
+    weeks = remaining_days // 7
+    days = remaining_days % 7
+
+    hours = td.seconds // 3600
+    minutes = (td.seconds % 3600) // 60
+    secs = td.seconds % 60
+
+    # Build parts list
+    parts = []
+    if years > 0:
+        parts.append(f"{years} {gettext('year') if years == 1 else gettext('years')}")
+    if months > 0:
+        parts.append(f"{months} {gettext('month') if months == 1 else gettext('months')}")
+    if weeks > 0:
+        parts.append(f"{weeks} {gettext('week') if weeks == 1 else gettext('weeks')}")
+    if days > 0:
+        parts.append(f"{days} {gettext('day') if days == 1 else gettext('days')}")
+    if hours > 0:
+        parts.append(f"{hours} {gettext('hour') if hours == 1 else gettext('hours')}")
+    if minutes > 0:
+        parts.append(f"{minutes} {gettext('minute') if minutes == 1 else gettext('minutes')}")
+    if secs > 0 or not parts:
+        parts.append(f"{secs} {gettext('second') if secs == 1 else gettext('seconds')}")
+
+    return ", ".join(parts)
+
+
 @app.template_filter('sanitize_tag_class')
 def _jinja2_filter_sanitize_tag_class(tag_title):
     """Sanitize a tag title to create a valid CSS class name.
