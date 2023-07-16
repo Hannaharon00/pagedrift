@@ -1261,6 +1261,68 @@ msgstr "削除"
 msgid "Deletes and removes tag"
 msgstr "タグを完全に削除する"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "複製しました。新しいウォッチを編集しています。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "ウォッチはすでにキュー済みまたはチェック中です。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "1件のウォッチを再チェックのためキューに追加しました。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "{count} 件のウォッチを再チェックのためキューに追加しました（{skipped_count} 件はすでにキュー済みまたは実行中）。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "{} 件のウォッチを再チェックのためキューに追加しました。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "バックグラウンドで再チェックのためウォッチをキューに追加しています..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "共有できませんでした。共有サーバーとの通信中にエラーが発生しました。- {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "言語をブラウザから自動検出に設定しました"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "指定したリンクの履歴が見つかりません。リンクが正しくないですか？"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "このウォッチの差分ページを表示するための履歴が不足しています（スナップショットが2件以上必要です）。"
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "編集するウォッチがありません"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "UUID {} のウォッチが見つかりません。"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "モードを {} に切り替えました。"
+
 #: changedetectionio/blueprint/ui/templates/clear_all_history.html
 msgid "link first."
 msgstr "リンクをご利用ください。"
