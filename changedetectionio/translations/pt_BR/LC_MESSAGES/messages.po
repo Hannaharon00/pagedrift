@@ -404,6 +404,76 @@ msgid "UI Options"
 msgstr "Opções de Interface"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Limpar Histórico de Instantâneos"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Permitir acesso à página de histórico de mudanças quando a senha estiver ativada (Útil para compartilhar a página de "
+"diff)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Quando uma solicitação não retorna conteúdo, ou o HTML não contém nenhum texto, isso é considerado uma mudança?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Escolha um proxy padrão para todos os monitoramentos"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr ""
+"Use o método <strong>Básico</strong> (padrão) quando os sites monitorados não precisarem de Javascript para "
+"renderizar."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"O método <strong>Chrome/Javascript</strong> requer uma conexão de rede a um servidor WebDriver+Chrome em execução, "
+"definido pela variável de ambiente 'WEBDRIVER_URL'."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Se você tiver problemas esperando a página carregar totalmente (texto faltando, etc), tente aumentar o tempo de "
+"espera aqui."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Isso esperará <i>n</i> segundos antes de extrair o texto."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"Número de workers simultâneos para processar monitoramentos. Mais workers = processamento rápido, mas maior uso de "
+"memória."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Executando no momento:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "operacional"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "workers"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "processando ativamente"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "Exemplo - 3 segundos de jitter aleatório podem disparar até 3 segundos antes ou até 3 segundos depois"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Note: This is applied globally in addition to the per-watch rules."
 msgstr "Nota: Isso é aplicado globalmente além das regras por monitoramento."
 
