@@ -442,3 +442,749 @@ from changedetectionio.auth_decorator import (
 )
 
 
+def changedetection_app(config=None, datastore_o=None):
+    logger.trace("TRACE log is enabled")
+
+    global datastore, socketio_server
+    datastore = datastore_o
+
+    # Set datastore reference in notification queue for all_muted checking
+    notification_q.set_datastore(datastore)
+
+    # One-shot validation/repair of persisted settings that may have gone stale between runs.
+    clean_startup_state(datastore)
+
+    # Import and create a wrapper for is_safe_url that has access to app
+    from changedetectionio.is_safe_url import is_safe_url as _is_safe_url
+
+    def is_safe_url(target):
+        """Wrapper for is_safe_url that passes the app instance"""
+        return _is_safe_url(target, app)
+
+    # so far just for read-only via tests, but this will be moved eventually to be the main source
+    # (instead of the global var)
+    app.config['DATASTORE'] = datastore_o
+
+    # Store batch mode flag to skip background threads when running in batch mode
+    app.config['batch_mode'] = config.get('batch_mode', False) if config else False
+
+    # Store the signal in the app config to ensure it's accessible everywhere
+    app.config['watch_check_update_SIGNAL'] = watch_check_update
+
+    login_manager = flask_login.LoginManager(app)
+    login_manager.login_view = 'login'
+    app.secret_key = init_app_secret(config['datastore_path'])
+
+    # Initialize Flask-Babel for i18n support
+    available_languages = get_available_languages()
+    language_codes = get_language_codes()
+
+    _locale_aliases = {
+        'zh-TW': 'zh_Hant_TW',  # Traditional Chinese: browser sends zh-TW, we use zh_Hant_TW
+        'zh_TW': 'zh_Hant_TW',  # Also handle underscore variant
+    }
+    _locale_match_list = language_codes + list(_locale_aliases.keys())
+
+    def get_locale():
+        # 1. Try to get locale from session (user explicitly selected)
+        if 'locale' in session:
+            return session['locale']
+
+        # 2. Fall back to Accept-Language header
+        browser_locale = request.accept_languages.best_match(_locale_match_list)
+        # 3. Map browser locale to our internal locale if needed
+        return _locale_aliases.get(browser_locale, browser_locale)
+
+    # Initialize Babel with locale selector
+    babel = Babel(app, locale_selector=get_locale)
+
+    # Make i18n functions available to templates
+    app.jinja_env.globals.update(
+        _=gettext,
+        get_locale=get_locale,
+        get_flag_for_locale=get_flag_for_locale,
+        available_languages=available_languages,
+    )
+
+    @app.context_processor
+    def inject_llm_features_disabled():
+        from changedetectionio.llm.evaluator import is_llm_features_disabled
+
+        return dict(llm_features_disabled=is_llm_features_disabled())
+
+    @app.context_processor
+    def inject_has_visual_browser():
+        # Whether any installed content fetcher can render the Add-Watch live preview -
+        # sidebar-nav.html hides the Add-Watch link without one. Same capability lookup the
+        # page's browser picker and /snapshot use, so they can't disagree.
+        from changedetectionio.blueprint.add_watch_ui import browser_config
+
+        return dict(has_visual_browser=browser_config.has_visual_browser(datastore))
+
+    # Set up a request hook to check authentication for all routes
+    @app.before_request
+    def check_authentication():
+        has_password_enabled = datastore.data['settings']['application'].get(
+            'password'
+        ) or os.getenv("SALTED_PASS", False)
+
+        if has_password_enabled and not flask_login.current_user.is_authenticated:
+            # Permitted
+            if request.endpoint and request.endpoint == 'static_content' and request.view_args:
+                # Handled by static_content handler
+                return None
+            # Permitted - static flag icons need to load on login page
+            elif request.endpoint and request.endpoint == 'static_flags':
+                return None
+            # Permitted - language selection should work on login page.
+            # Both halves of the language modal must be exempt: it renders for anonymous
+            # users (base.html deliberately leaves it outside the is_authenticated guard),
+            # so exempting only set_language let you pick a language but bounced
+            # "Auto-detect from browser" to /login without clearing the session locale.
+            elif request.endpoint and request.endpoint in (
+                'set_language',
+                'ui.delete_locale_language_session_var_if_it_exists',
+            ):
+                return None
+            # Permitted
+            elif request.endpoint and 'login' in request.endpoint:
+                return None
+            elif request.endpoint in SHARED_DIFF_READ_ONLY_ENDPOINTS and datastore.data['settings'][
+                'application'
+            ].get('shared_diff_access'):
+                return None
+            elif request.method in flask_login.config.EXEMPT_METHODS:
+                return None
+            elif app.config.get('LOGIN_DISABLED'):
+                return None
+            # RSS access with token is allowed
+            elif request.blueprint == 'rss':
+                return None
+            # Socket.IO routes - need separate handling
+            elif request.path.startswith('/socket.io/'):
+                return None
+            # API routes - use their own auth mechanism (@auth.check_token)
+            elif request.path.startswith('/api/'):
+                return None
+            else:
+                return login_manager.unauthorized()
+
+    watch_api.add_resource(
+        WatchHistoryDiff,
+        '/api/v1/watch/<uuid_str:uuid>/difference/<string:from_timestamp>/<string:to_timestamp>',
+        resource_class_kwargs={'datastore': datastore},
+    )
+    watch_api.add_resource(
+        WatchSingleHistory,
+        '/api/v1/watch/<uuid_str:uuid>/history/<string:timestamp>',
+        resource_class_kwargs={'datastore': datastore, 'update_q': update_q},
+    )
+    watch_api.add_resource(
+        WatchFavicon,
+        '/api/v1/watch/<uuid_str:uuid>/favicon',
+        resource_class_kwargs={'datastore': datastore},
+    )
+    watch_api.add_resource(
+        WatchHistory,
+        '/api/v1/watch/<uuid_str:uuid>/history',
+        resource_class_kwargs={'datastore': datastore},
+    )
+
+    watch_api.add_resource(
+        CreateWatch,
+        '/api/v1/watch',
+        resource_class_kwargs={'datastore': datastore, 'update_q': update_q},
+    )
+
+    watch_api.add_resource(
+        Watch,
+        '/api/v1/watch/<uuid_str:uuid>',
+        resource_class_kwargs={'datastore': datastore, 'update_q': update_q},
+    )
+
+    watch_api.add_resource(
+        SystemInfo,
+        '/api/v1/systeminfo',
+        resource_class_kwargs={'datastore': datastore, 'update_q': update_q},
+    )
+
+    watch_api.add_resource(Import, '/api/v1/import', resource_class_kwargs={'datastore': datastore})
+
+    watch_api.add_resource(Tags, '/api/v1/tags', resource_class_kwargs={'datastore': datastore})
+
+    watch_api.add_resource(
+        Tag,
+        '/api/v1/tag',
+        '/api/v1/tag/<uuid_str:uuid>',
+        resource_class_kwargs={'datastore': datastore, 'update_q': update_q},
+    )
+
+    watch_api.add_resource(Search, '/api/v1/search', resource_class_kwargs={'datastore': datastore})
+
+    watch_api.add_resource(
+        Notifications, '/api/v1/notifications', resource_class_kwargs={'datastore': datastore}
+    )
+
+    watch_api.add_resource(Spec, '/api/v1/full-spec')
+
+    @login_manager.user_loader
+    def user_loader(email):
+        user = User()
+        user.get_user(email)
+        return user
+
+    @login_manager.unauthorized_handler
+    def unauthorized_handler():
+        # Pass the current request path so users are redirected back after login
+        return redirect(url_for('login', redirect=request.path))
+
+    @app.route('/logout', methods=['POST'])
+    def logout():
+        flask_login.logout_user()
+
+        # Check if there's a redirect parameter to return to after re-login
+        redirect_url = request.args.get('redirect')
+
+        # If redirect is provided and safe, pass it to login page
+        if redirect_url and is_safe_url(redirect_url):
+            return redirect(url_for('login', redirect=redirect_url))
+
+        # Otherwise just go to watchlist
+        return redirect(url_for('watchlist.index'))
+
+    @app.route('/set-language/<locale>', methods=['POST'])
+    def set_language(locale):
+        """Set the user's preferred language in the session"""
+        if not request.cookies:
+            logger.error("Cannot set language without session cookie")
+            flash("Cannot set language without session cookie", 'error')
+            return redirect(url_for('watchlist.index'))
+
+        # Validate the locale against available languages
+        if locale in language_codes:
+            # Make session permanent so language preference persists across browser sessions
+            # NOTE: This is the Flask session cookie (separate from Flask-Login's remember-me auth cookie)
+            session.permanent = True
+            session['locale'] = locale
+
+            # CRITICAL: Flask-Babel caches the locale in the request context (ctx.babel_locale)
+            # We must refresh to clear this cache so the new locale takes effect immediately
+            # This is especially important for tests where multiple requests happen rapidly
+            from flask_babel import refresh
+
+            refresh()
+        else:
+            logger.error(f"Invalid locale {locale}, available: {language_codes}")
+
+        # Check if there's a redirect parameter to return to the same page
+        redirect_url = request.args.get('redirect')
+
+        # If redirect is provided and safe, use it
+        if redirect_url and is_safe_url(redirect_url):
+            return redirect(redirect_url)
+
+        # Otherwise redirect to watchlist
+        return redirect(url_for('watchlist.index'))
+
+    # https://github.com/pallets/flask/blob/93dd1709d05a1cf0e886df6223377bdab3b077fb/examples/tutorial/flaskr/__init__.py#L39
+    # You can divide up the stuff like this
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        # Extract and validate the redirect parameter
+        redirect_url = request.args.get('redirect') or request.form.get('redirect')
+
+        # Validate the redirect URL - default to watchlist if invalid
+        if redirect_url and is_safe_url(redirect_url):
+            validated_redirect = redirect_url
+        else:
+            validated_redirect = url_for('watchlist.index')
+
+        if request.method == 'GET':
+            if flask_login.current_user.is_authenticated:
+                # Already logged in - redirect immediately to the target
+                flash(gettext("Already logged in"))
+                return redirect(validated_redirect)
+            flash(gettext("You must be logged in, please log in."), 'error')
+            output = render_template("login.html", redirect_url=validated_redirect)
+            return output
+
+        user = User()
+        user.id = "defaultuser@changedetection.io"
+
+        password = request.form.get('password')
+
+        if user.check_password(password):
+            flask_login.login_user(user, remember=True)
+            # Redirect to the validated URL after successful login
+            return redirect(validated_redirect)
+
+        else:
+            flash(gettext('Incorrect password'), 'error')
+
+        return redirect(url_for('login', redirect=redirect_url if redirect_url else None))
+
+    @app.before_request
+    def before_request_handle_cookie_x_settings():
+        # Set the auth cookie path if we're running as X-settings/X-Forwarded-Prefix
+        if os.getenv('USE_X_SETTINGS') and 'X-Forwarded-Prefix' in request.headers:
+            app.config['REMEMBER_COOKIE_PATH'] = request.headers['X-Forwarded-Prefix']
+            app.config['SESSION_COOKIE_PATH'] = request.headers['X-Forwarded-Prefix']
+        return None
+
+    @app.route("/static/flags/<path:flag_path>", methods=['GET'])
+    def static_flags(flag_path):
+        """Handle flag icon files with subdirectories"""
+        import re
+
+        from flask import make_response
+
+        # flag_path comes in as "1x1/de.svg" or "4x3/de.svg"
+        if re.match(r'^(1x1|4x3)/[a-z0-9-]+\.svg$', flag_path.lower()):
+            # Reconstruct the path safely with additional validation
+            parts = flag_path.lower().split('/')
+            if len(parts) != 2:
+                abort(404)
+
+            subdir = parts[0]
+            svg_file = parts[1]
+
+            # Extra validation: ensure subdir is exactly 1x1 or 4x3
+            if subdir not in ['1x1', '4x3']:
+                abort(404)
+
+            # Extra validation: ensure svg_file only contains safe characters
+            if not re.match(r'^[a-z0-9-]+\.svg$', svg_file):
+                abort(404)
+
+            try:
+                response = make_response(send_from_directory(f"static/flags/{subdir}", svg_file))
+                response.headers['Content-type'] = 'image/svg+xml'
+                response.headers['Cache-Control'] = 'max-age=86400, public'  # Cache for 24 hours
+                return response
+            except FileNotFoundError:
+                abort(404)
+        else:
+            abort(404)
+
+    @app.route("/static/<string:group>/<string:filename>", methods=['GET'])
+    def static_content(group, filename):
+        import re
+
+        from flask import make_response
+
+        # Strict sanitization: only allow a-z, 0-9, and underscore (blocks .. and other traversal)
+        group = re.sub(r'[^a-z0-9_-]+', '', group.lower())
+        filename = filename
+
+        # Additional safety: reject if sanitization resulted in empty strings
+        if not group or not filename:
+            abort(404)
+
+        if group == 'screenshot':
+            # Could be sensitive, follow password requirements
+            if (
+                datastore.data['settings']['application']['password']
+                and not flask_login.current_user.is_authenticated
+            ):
+                if not datastore.data['settings']['application'].get('shared_diff_access'):
+                    abort(403)
+
+            screenshot_filename = (
+                "last-screenshot.png"
+                if not request.args.get('error_screenshot')
+                else "last-error-screenshot.png"
+            )
+
+            # These files should be in our subdirectory
+            try:
+                # set nocache, set content-type
+                response = make_response(
+                    send_from_directory(
+                        os.path.join(datastore_o.datastore_path, filename), screenshot_filename
+                    )
+                )
+                response.headers['Content-type'] = 'image/png'
+                response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                response.headers['Pragma'] = 'no-cache'
+                response.headers['Expires'] = 0
+                return response
+
+            except FileNotFoundError:
+                abort(404)
+
+        if group == 'favicon':
+            # Could be sensitive, follow password requirements
+            if (
+                datastore.data['settings']['application']['password']
+                and not flask_login.current_user.is_authenticated
+            ):
+                abort(403)
+            # Get the watch object
+            watch = datastore.data['watching'].get(filename)
+            if not watch:
+                abort(404)
+
+            favicon_filename = watch.get_favicon_filename()
+            if favicon_filename:
+                # Use cached MIME type detection
+                filepath = os.path.join(watch.data_dir, favicon_filename)
+
+                mime = get_favicon_mime_type(filepath)
+                if 'text' in mime:
+                    logger.debug(
+                        f"Aborting favicon request for {filename} because mimetype might be text (bad mimetype) '{mime}'"
+                    )
+                    abort(404)
+
+                response = make_response(send_from_directory(watch.data_dir, favicon_filename))
+                response.headers['Content-type'] = mime
+                response.headers['Cache-Control'] = (
+                    'max-age=300, must-revalidate'  # Cache for 5 minutes, then revalidate
+                )
+                return response
+
+        if group == 'visual_selector_data':
+            # Could be sensitive, follow password requirements
+            if (
+                datastore.data['settings']['application']['password']
+                and not flask_login.current_user.is_authenticated
+            ):
+                abort(403)
+
+            # These files should be in our subdirectory
+            try:
+                # set nocache, set content-type,
+                # `filename` is actually directory UUID of the watch
+                watch_directory = str(os.path.join(datastore_o.datastore_path, filename))
+                response = None
+                if os.path.isfile(os.path.join(watch_directory, "elements.deflate")):
+                    response = make_response(
+                        send_from_directory(watch_directory, "elements.deflate")
+                    )
+                    response.headers['Content-Type'] = 'application/json'
+                    response.headers['Content-Encoding'] = 'deflate'
+                else:
+                    logger.error(
+                        f'Request elements.deflate at "{watch_directory}" but was not found.'
+                    )
+                    abort(404)
+
+                if response:
+                    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                    response.headers['Pragma'] = 'no-cache'
+                    response.headers['Expires'] = "0"
+
+                return response
+
+            except FileNotFoundError:
+                abort(404)
+
+        # Handle plugin group specially
+        if group == 'plugin':
+            # Serve files from plugin static directories
+            import os as os_check
+
+            from changedetectionio.pluggy_interface import plugin_manager
+
+            for plugin_name, plugin_obj in plugin_manager.list_name_plugin():
+                if hasattr(plugin_obj, 'plugin_static_path'):
+                    try:
+                        static_path = plugin_obj.plugin_static_path()
+                        if static_path and os_check.path.isdir(static_path):
+                            # Check if file exists in plugin's static directory
+                            plugin_file_path = os_check.path.join(static_path, filename)
+                            if os_check.path.isfile(plugin_file_path):
+                                # Found the file in a plugin
+                                response = make_response(send_from_directory(static_path, filename))
+                                response.headers['Cache-Control'] = (
+                                    'max-age=3600, public'  # Cache for 1 hour
+                                )
+                                return response
+                    except Exception as e:
+                        logger.debug(f"Error checking plugin {plugin_name} for static file: {e}")
+                        pass
+
+            # File not found in any plugin
+            abort(404)
+
+        # These files should be in our subdirectory
+        try:
+            return send_from_directory(f"static/{group}", path=filename)
+        except FileNotFoundError:
+            abort(404)
+
+    import changedetectionio.blueprint.browser_steps as browser_steps
+
+    app.register_blueprint(
+        browser_steps.construct_blueprint(datastore), url_prefix='/browser-steps'
+    )
+
+    from changedetectionio.blueprint.imports import (
+        construct_blueprint as construct_import_blueprint,
+    )
+
+    app.register_blueprint(
+        construct_import_blueprint(datastore, update_q, queuedWatchMetaData), url_prefix='/imports'
+    )
+
+    from changedetectionio.blueprint.add_watch_ui import (
+        construct_blueprint as construct_add_watch_ui_blueprint,
+    )
+
+    app.register_blueprint(construct_add_watch_ui_blueprint(datastore), url_prefix='/add-watch-ui')
+
+    import changedetectionio.blueprint.price_data_follower as price_data_follower
+
+    app.register_blueprint(
+        price_data_follower.construct_blueprint(datastore, update_q),
+        url_prefix='/price_data_follower',
+    )
+
+    import changedetectionio.blueprint.tags as tags
+
+    app.register_blueprint(tags.construct_blueprint(datastore), url_prefix='/tags')
+
+    import changedetectionio.blueprint.check_proxies as check_proxies
+
+    app.register_blueprint(
+        check_proxies.construct_blueprint(datastore=datastore), url_prefix='/check_proxy'
+    )
+
+    import changedetectionio.blueprint.backups as backups
+
+    app.register_blueprint(backups.construct_blueprint(datastore), url_prefix='/backups')
+
+    import changedetectionio.blueprint.settings as settings
+
+    app.register_blueprint(settings.construct_blueprint(datastore), url_prefix='/settings')
+
+    import changedetectionio.conditions.blueprint as conditions
+
+    app.register_blueprint(conditions.construct_blueprint(datastore), url_prefix='/conditions')
+
+    import changedetectionio.blueprint.rss.blueprint as rss
+
+    app.register_blueprint(rss.construct_blueprint(datastore), url_prefix='/rss')
+
+    # watchlist UI buttons etc
+    import changedetectionio.blueprint.ui as ui
+
+    app.register_blueprint(
+        ui.construct_blueprint(
+            datastore, update_q, worker_pool, queuedWatchMetaData, watch_check_update
+        )
+    )
+
+    import changedetectionio.blueprint.watchlist as watchlist
+
+    app.register_blueprint(
+        watchlist.construct_blueprint(
+            datastore=datastore, update_q=update_q, queuedWatchMetaData=queuedWatchMetaData
+        ),
+        url_prefix='',
+    )
+
+    # Initialize Socket.IO server conditionally based on settings
+    socket_io_enabled = (
+        datastore.data['settings']['application'].get('ui', {}).get('socket_io_enabled', True)
+    )
+    if socket_io_enabled and app.config.get('batch_mode'):
+        socket_io_enabled = False
+    if socket_io_enabled:
+        from changedetectionio.realtime.socket_server import init_socketio
+
+        global socketio_server
+        socketio_server = init_socketio(app, datastore)
+        logger.info("Socket.IO server initialized")
+    else:
+        logger.info("Socket.IO server disabled via settings")
+        socketio_server = None
+
+    # Memory cleanup endpoint
+    @app.route('/gc-cleanup', methods=['GET'])
+    @login_optionally_required
+    def gc_cleanup():
+        from flask import jsonify
+
+        from changedetectionio.gc_cleanup import memory_cleanup
+
+        result = memory_cleanup(app)
+        return jsonify(
+            {"status": "success", "message": "Memory cleanup completed", "result": result}
+        )
+
+    # Worker health check endpoint
+    @app.route('/worker-health', methods=['GET'])
+    @login_optionally_required
+    def worker_health():
+        from flask import jsonify
+
+        expected_workers = int(
+            os.getenv("FETCH_WORKERS", datastore.data['settings']['requests']['workers'])
+        )
+
+        # Get basic status
+        status = worker_pool.get_worker_status()
+
+        # Perform health check
+        health_result = worker_pool.check_worker_health(
+            expected_count=expected_workers,
+            update_q=update_q,
+            notification_q=notification_q,
+            app=app,
+            datastore=datastore,
+        )
+
+        return jsonify(
+            {
+                "status": "success",
+                "worker_status": status,
+                "health_check": health_result,
+                "expected_workers": expected_workers,
+            }
+        )
+
+    # Queue status endpoint
+    @app.route('/queue-status', methods=['GET'])
+    @login_optionally_required
+    def queue_status():
+        from flask import jsonify, request
+
+        # Get specific UUID position if requested
+        target_uuid = request.args.get('uuid')
+
+        if target_uuid:
+            position_info = update_q.get_uuid_position(target_uuid)
+            return jsonify(
+                {"status": "success", "uuid": target_uuid, "queue_position": position_info}
+            )
+        else:
+            # Get pagination parameters
+            limit = request.args.get('limit', type=int)
+            offset = request.args.get('offset', type=int, default=0)
+            summary_only = request.args.get('summary', type=bool, default=False)
+
+            if summary_only:
+                # Fast summary for large queues
+                summary = update_q.get_queue_summary()
+                return jsonify({"status": "success", "queue_summary": summary})
+            else:
+                # Get queued items with pagination support
+                if limit is None:
+                    # Default limit for large queues to prevent performance issues
+                    queue_size = update_q.qsize()
+                    if queue_size > 100:
+                        limit = 50
+                        logger.warning(
+                            f"Large queue ({queue_size} items) detected, limiting to {limit} items. Use ?limit=N for more."
+                        )
+
+                all_queued = update_q.get_all_queued_uuids(limit=limit, offset=offset)
+                return jsonify(
+                    {"status": "success", "queue_size": update_q.qsize(), "queued_data": all_queued}
+                )
+
+    if strtobool(os.getenv('HISTORY_SNAPSHOT_FILE_ALLOW_OUTSIDE_WATCH_DATADIR', 'False')):
+        logger.warning(
+            "SECURITY WARNING: HISTORY_SNAPSHOT_FILE_ALLOW_OUTSIDE_WATCH_DATADIR is enabled — "
+            "snapshot reads are NOT confined to the watch data directory. "
+            "This disables protection against path traversal via restored backups (GHSA-8757-69j2-hx56)."
+        )
+
+    # Memory/CPU management -
+    # Freeze the startup object graph into the "permanent generation" so that the cyclic
+    # garbage collector never traverses it again, this allows more of the app to swap into 'cold' RAM
+    if (
+        'pytest' not in sys.modules
+        and 'PYTEST_CURRENT_TEST' not in os.environ
+        and not strtobool(os.getenv('DISABLE_GC_FREEZE', 'no'))
+    ):
+        gc.collect()
+        gc.freeze()
+        logger.debug(
+            f"GC: froze {gc.get_freeze_count()} startup objects into the permanent generation"
+        )
+
+    # Start the async workers during app initialization
+    # Can be overridden by ENV or use the default settings
+    n_workers = int(os.getenv("FETCH_WORKERS", datastore.data['settings']['requests']['workers']))
+    logger.info(f"Starting {n_workers} workers during app initialization")
+    worker_pool.start_workers(n_workers, update_q, notification_q, app, datastore)
+
+    # Skip background threads in batch mode (just process queue and exit)
+    batch_mode = app.config.get('batch_mode', False)
+    if not batch_mode:
+        # @todo handle ctrl break
+        # Supervised: if the ticker ever returns or raises it is logged CRITICAL and
+        # restarted. A bare Thread cannot be restarted once its target returns, and a
+        # dead ticker means no watch is ever checked again while the process keeps
+        # looking healthy. Note this keeps a real Thread handle - Thread(...).start()
+        # returns None, so the old assignment left `ticker_thread` permanently None.
+        ticker_thread = start_supervised_thread(
+            target=ticker_thread_check_time_launch_checks,
+            name="TickerThread-ScheduleChecker",
+            exit_event=app.config.exit,
+            # sigshutdown_handler() sets both of these; check both so a restart
+            # can never race an in-progress shutdown.
+            is_shutting_down=lambda: bool(getattr(datastore, 'stop_thread', False)),
+        )
+
+        # Start configurable number of notification workers (default 1)
+        notification_workers = int(os.getenv("NOTIFICATION_WORKERS", "1"))
+        for i in range(notification_workers):
+            threading.Thread(
+                target=notification_runner, args=(i,), daemon=True, name=f"NotificationRunner-{i}"
+            ).start()
+        logger.info(f"Started {notification_workers} notification worker(s)")
+
+        in_pytest = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
+        # Check for new release version, but not when running in test/build or pytest
+        if (
+            not os.getenv("GITHUB_REF", False)
+            and not strtobool(os.getenv('DISABLE_VERSION_CHECK', 'no'))
+            and not in_pytest
+        ):
+            threading.Thread(
+                target=check_for_new_version, daemon=True, name="VersionChecker"
+            ).start()
+    else:
+        logger.info("Batch mode: Skipping ticker thread, notification runner, and version checker")
+
+    # Return the Flask app - the Socket.IO will be attached to it but initialized separately
+    # This avoids circular dependencies
+    return app
+
+
+# Check for new version and anonymous stats
+def check_for_new_version():
+    import requests
+    import urllib3
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    session = requests.Session()
+    session.verify = False
+
+    while not app.config.exit.is_set():
+        try:
+            r = session.post(
+                "https://changedetection.io/check-ver.php",
+                data={
+                    'version': __version__,
+                    'app_guid': datastore.data['app_guid'],
+                    'watch_count': len(datastore.data['watching']),
+                },
+            )
+        except:
+            pass
+
+        try:
+            if "new_version" in r.text:
+                app.config['NEW_VERSION_AVAILABLE'] = True
+        except:
+            pass
+
+        # Check daily
+        app.config.exit.wait(86400)
+
+
