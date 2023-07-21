@@ -780,6 +780,75 @@ msgstr "Atenção!"
 msgid "Lookout!"
 msgstr "Atenção!"
 
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#, python-format
+msgid ""
+"There are <a href=\"%(url)s\">system-wide notification URLs enabled</a>, this form will override notification "
+"settings for this watch only &dash; an empty Notification URL list here will still send notifications."
+msgstr ""
+"Existem <a href=\"%(url)s\">URLs de notificação de todo o sistema ativadas</a>; este formulário substituirá as "
+"configurações de notificação apenas para este monitoramento &dash; uma lista de URLs de Notificação vazia aqui ainda "
+"enviará notificações."
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use system defaults"
+msgstr "Usar padrões do sistema"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Add a new organisational tag"
+msgstr "Adicionar uma nova tag organizacional"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Groups allows you to manage filters and notifications for multiple watches under a single organisational tag."
+msgstr ""
+"Grupos permitem que você gerencie filtros e notificações para múltiplos monitoramentos sob uma única tag "
+"organizacional."
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "# Watches"
+msgstr "# Monitoramentos"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Tag / Label name"
+msgstr "Nome da Tag / Rótulo"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "No website organisational tags/groups configured"
+msgstr "Nenhum grupo ou tag organizacional configurado"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/menu.html
+msgid "Mute notifications"
+msgstr "Silenciar notificações"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck"
+msgstr "Rechecar"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/edit.py
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Edit"
+msgstr "Editar"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Delete Group?"
+msgstr "Excluir Grupo?"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid "<p>Are you sure you want to delete group <strong>%(title)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Tem certeza que deseja excluir o grupo <strong>%(title)s</strong>?</p><p>Esta ação não pode ser desfeita.</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Delete"
+msgstr "Excluir"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Deletes and removes tag"
+msgstr "Exclui e remove a tag"
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked."
 msgstr ""
