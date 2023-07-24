@@ -333,6 +333,63 @@ msgstr ""
 msgid "Watch with UUID %(uuid)s not found"
 msgstr "Monitor dengan UUID %(uuid)s tidak ditemukan"
 
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr "Monitor %(uuid)s tidak memiliki cukup snapshot riwayat untuk menampilkan perubahan (perlu minimal 2)"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "Perlindungan kata sandi dihapus."
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
+msgstr "Peringatan: Jumlah worker ({worker_count}) mendekati atau melebihi inti CPU yang tersedia ({cpu_count})"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Worker count adjusted: {}"
+msgstr "Jumlah worker disesuaikan: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Dynamic worker adjustment not supported for sync workers"
+msgstr "Penyesuaian worker dinamis tidak didukung untuk worker sinkron"
+
+#: changedetectionio/blueprint/settings/__init__.py
+#, python-brace-format
+msgid "Error adjusting workers: {}"
+msgstr "Kesalahan saat menyesuaikan worker: {}"
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection enabled."
+msgstr "Perlindungan kata sandi diaktifkan."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+msgid "Settings updated."
+msgstr "Pengaturan diperbarui."
+
+#: changedetectionio/blueprint/settings/__init__.py changedetectionio/blueprint/settings/notifications/__init__.py
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/processors/extract.py
+msgid "An error occurred, please see below."
+msgstr "Terjadi kesalahan, silakan lihat di bawah."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "API Key was regenerated."
+msgstr "Kunci API dibuat ulang."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling paused - checks will not be queued."
+msgstr "Penjadwalan otomatis dijeda - pemeriksaan tidak akan dimasukkan ke antrean."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Automatic scheduling resumed - checks will be queued normally."
+msgstr "Penjadwalan otomatis dilanjutkan - pemeriksaan akan dimasukkan ke antrean seperti biasa."
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "All notifications muted."
+msgstr "Semua notifikasi dibisukan."
+
 #: changedetectionio/blueprint/settings/__init__.py
 msgid "All notifications unmuted."
 msgstr "Semua notifikasi diaktifkan kembali."
