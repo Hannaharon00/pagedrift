@@ -461,6 +461,72 @@ msgid "Fetching"
 msgstr "Getiriliyor"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "Parola kilitli."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Anlık Görüntü Geçmişini Temizle"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Parola etkinleştirildiğinde izleyici değişiklik geçmişi sayfasına erişime izin ver (Fark sayfasını paylaşmak için "
+"iyidir)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Bir istek içerik döndürmediğinde veya HTML hiç metin içermediğinde, bu bir değişiklik olarak kabul edilir mi?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Tüm izleyiciler için varsayılan bir proxy seçin"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr ""
+"İzlenen sitelerinizin oluşturulması için Javascript gerektirmeyen <strong>Temel</strong> yöntemini (varsayılan) "
+"kullanın."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"Şu <strong>Chrome/Javascript</strong> yöntemi, 'WEBDRIVER_URL' ENV değişkeni tarafından ayarlanan, çalışan bir "
+"WebDriver+Chrome sunucusuna ağ bağlantısı gerektirir."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Sayfanın tam olarak oluşturulmasını beklerken sorun yaşıyorsanız (eksik metin vb.), buradaki 'bekleme' süresini "
+"artırmayı deneyin."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Metni çıkarmadan önce <i>n</i> saniye bekleyecek."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"İzleyicileri işlemek için eşzamanlı çalışan sayısı. Daha fazla çalışan = daha hızlı işleme ancak daha yüksek bellek "
+"kullanımı."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Şu anda çalışan:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "operasyonel"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "çalışanlar"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "actively processing"
 msgstr "aktif olarak işleniyor"
 
