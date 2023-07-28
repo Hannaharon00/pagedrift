@@ -1565,6 +1565,65 @@ msgstr "Подробнее здесь"
 msgid "Not supported by Selenium browser"
 msgstr "Не поддерживается браузером Selenium."
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "Вы уверены, что хотите удалить часы для:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "Это действие невозможно отменить."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "Очистить историю?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "Вы уверены, что хотите очистить всю историю:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "Это приведет к удалению всех снимков и предыдущих версий. Это действие невозможно отменить."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "Очистить историю"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "Клонировать и редактировать"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "Выберите временную метку"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "Текущий скриншот с ошибкой из последнего запроса"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr ""
+"Для создания снимков экрана требуется сборщик контента (Sockpuppetbrowser, selenium и т. д.), поддерживающий снимки "
+"экрана."
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "running"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "idle"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "Clear Queue"
 msgstr ""
