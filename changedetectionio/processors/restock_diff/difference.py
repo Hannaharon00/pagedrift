@@ -156,3 +156,52 @@ def export_xlsx(watch, datastore):
     return out.getvalue(), f"price-history-{watch.get('uuid')}.xlsx"
 
 
+def get_data(watch, datastore, request):
+    """JSON payload for the price/stock graph, fetched via /diff/<uuid>/processor-data.
+    Keeps the full timeline out of the HTML page."""
+    series = _build_series(watch)
+    priced = sum(1 for p in series if p['price'] is not None)
+    logger.info(f"Restock diff get_data for {watch.get('uuid')}: {len(series)} snapshots, {priced} with a price")
+    return {
+        'series': series,
+        'currency': _currency(watch),
+        'summary': compute_price_summary(series),
+    }
+
+
+def render(watch, datastore, request, url_for, render_template, flash, redirect, extract_form=None):
+    """Render the price/stock timeline page (shell + summary). The graph data is loaded
+    asynchronously from get_data() so this stays light regardless of history length."""
+    uuid = watch.get('uuid')
+    dates = list(watch.history.keys())
+
+    # Light render: read only the most recent snapshot for the summary badge/price.
+    latest = None
+    if dates:
+        try:
+            price, in_stock = _parse_restock_snapshot(watch.get_history_snapshot(timestamp=dates[-1]))
+            latest = {'timestamp': int(dates[-1]), 'price': price, 'in_stock': in_stock}
+        except Exception as e:
+            logger.error(f"Restock diff: unable to read latest snapshot for {uuid}: {e}")
+
+    # Opening the history page counts as viewing it (mirrors the text diff page).
+    datastore.set_last_viewed(uuid, time.time())
+
+    return render_template(
+        'restock_diff/difference.html',
+        uuid=uuid,
+        watch=watch,
+        current_diff_url=watch.open_link,
+        extra_title=f" - {watch.label} - {gettext('Price history')}",
+        last_error=watch['last_error'],
+        screenshot=watch.get_screenshot(),
+        last_error_screenshot=watch.get_error_snapshot(),
+        last_error_text=watch.get_error_text(),
+        versions=dates,
+        from_version=str(dates[-2]) if len(dates) >= 2 else (str(dates[-1]) if dates else ''),
+        to_version=str(dates[-1]) if dates else '',
+        restock_latest=latest,
+        restock_currency=_currency(watch),
+        has_enough_history=len(dates) >= 2,
+        processor_data_url=url_for('ui.ui_diff.diff_history_page_processor_data', uuid=uuid),
+    )
