@@ -22,3 +22,9 @@ os.environ['ALLOW_IANA_RESTRICTED_ADDRESSES'] = 'true'
 from changedetectionio.flask_app import init_app_secret, changedetection_app
 from changedetectionio.tests.util import live_server_setup, new_live_server_setup
 
+# https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/test_auth.py
+# Much better boilerplate than the docs
+# https://www.python-boilerplate.com/py3+flask+pytest/
+
+global app
+
