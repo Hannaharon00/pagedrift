@@ -149,3 +149,40 @@
   }
 }
 
+// Logo styling
+.logo-cdio {
+  font-weight: bold;
+  font-size: 1.1rem;
+
+  .logo-cd {
+    color: var(--color-grey-500);
+  }
+
+  .logo-io {
+    color: var(--color-text);
+  }
+}
+
+// Always visible items container
+.menu-always-visible {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+// Hide regular menu items on mobile (but not in mobile drawer)
+@media only screen and (max-width: $desktop-wide-breakpoint) {
+  #top-right-menu .menu-collapsible {
+    display: none !important;
+  }
+
+  .pure-menu-horizontal {
+    overflow-x: visible !important;
+  }
+
+  #nav-menu {
+    overflow-x: visible !important;
+  }
+}
+
