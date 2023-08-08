@@ -1390,6 +1390,69 @@ msgstr "UUID {} のウォッチが見つかりません。"
 msgid "Switched to mode - {}."
 msgstr "モードを {} に切り替えました。"
 
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "「{}」プロセッサーを読み込めませんでした。プロセッサープラグインが見つからない可能性があります。別のプロセッサーを選択してください。"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "「{}」プロセッサーを読み込めませんでした。プロセッサープラグインが見つからない可能性があります。"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr "システム設定のデフォルト"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr "デフォルト"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "ウォッチを更新しました - 一時停止を解除しました！"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "ウォッチを更新しました。"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "プレビューを表示できません - 取得/チェックが完了していないか、トリガーに達していません"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "差分"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "<b>{start} - {end}</b> {record_name} を表示中 / 合計 <b>{total}</b>"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "これにより、すべてのウォッチのバージョン履歴（スナップショット）が削除されますが、URLのリストは保持されます！"
+
+# 訳注: "You may like to use the [BACKUP] link first."
+# → 「先に[バックアップ]リンクをご利用ください。」
+# 副詞と述語の訳を入れ替えた
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "先に"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "バックアップ"
+
 #: changedetectionio/blueprint/ui/templates/clear_all_history.html
 msgid "link first."
 msgstr "リンクをご利用ください。"
