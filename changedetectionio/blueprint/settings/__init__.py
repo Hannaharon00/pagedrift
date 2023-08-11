@@ -159,3 +159,51 @@ def construct_blueprint(datastore: ChangeDetectionStore):
                     from changedetectionio import worker_pool
                     from changedetectionio.flask_app import update_q, notification_q, app, datastore as ds
 
+        return output
+
+    @settings_blueprint.route("/reset-api-key", methods=['POST'])
+    @login_optionally_required
+    def settings_reset_api_key():
+        secret = secrets.token_hex(16)
+        datastore.data['settings']['application']['api_access_token'] = secret
+        datastore.commit()
+        flash(gettext("API Key was regenerated."))
+        return redirect(url_for('settings.settings_page')+'#api')
+        
+    @settings_blueprint.route("/notification-logs", methods=['GET'])
+    @login_optionally_required
+    def notification_logs():
+        from changedetectionio.flask_app import notification_debug_log
+        output = render_template("notification-log.html",
+                               logs=notification_debug_log if len(notification_debug_log) else ["Notification logs are empty - no notifications sent yet."])
+        return output
+
+    @settings_blueprint.route("/toggle-all-paused", methods=['POST'])
+    @login_optionally_required
+    def toggle_all_paused():
+        current_state = datastore.data['settings']['application'].get('all_paused', False)
+        datastore.data['settings']['application']['all_paused'] = not current_state
+        datastore.commit()
+
+        if datastore.data['settings']['application']['all_paused']:
+            flash(gettext("Automatic scheduling paused - checks will not be queued."), 'notice')
+        else:
+            flash(gettext("Automatic scheduling resumed - checks will be queued normally."), 'notice')
+
+        return redirect(url_for('watchlist.index'))
+
+    @settings_blueprint.route("/toggle-all-muted", methods=['POST'])
+    @login_optionally_required
+    def toggle_all_muted():
+        current_state = datastore.data['settings']['application'].get('all_muted', False)
+        datastore.data['settings']['application']['all_muted'] = not current_state
+        datastore.commit()
+
+        if datastore.data['settings']['application']['all_muted']:
+            flash(gettext("All notifications muted."), 'notice')
+        else:
+            flash(gettext("All notifications unmuted."), 'notice')
+
+        return redirect(url_for('watchlist.index'))
+
+    return settings_blueprint
