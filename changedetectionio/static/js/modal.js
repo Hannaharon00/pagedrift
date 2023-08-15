@@ -172,3 +172,53 @@ const ModalDialog = {
 // Make available globally
 window.ModalDialog = ModalDialog;
 
+/**
+ * Auto-attach modal confirmations to links with data-requires-confirm attribute
+ * Usage in HTML:
+ * <a href="/delete"
+ *    data-requires-confirm
+ *    data-confirm-type="danger"
+ *    data-confirm-title="Delete Item?"
+ *    data-confirm-message="Are you sure?"
+ *    data-confirm-button="Delete">
+ */
+$(document).ready(function() {
+  $(document).on('click', 'a[data-requires-confirm], button[data-requires-confirm]', function(e) {
+    e.preventDefault();
+    const $element = $(this);
+    const url = $element.attr('href');
+
+    const config = {
+      type: $element.attr('data-confirm-type') || 'danger',
+      title: $element.attr('data-confirm-title') || _modalT('confirmTitle', 'Confirm Action'),
+      message: $element.attr('data-confirm-message') || _modalT('proceedMessage', '<p>Are you sure you want to proceed?</p>'),
+      confirmText: $element.attr('data-confirm-button') || _modalT('confirm', 'Confirm'),
+      cancelText: $element.attr('data-cancel-button') || _modalT('cancel', 'Cancel'),
+      onConfirm: function() {
+        // data-method="POST" — build a body-level hidden form with the CSRF
+        // token and submit it. Avoids nested-form HTML invalidity when the
+        // anchor lives inside an outer <form> (e.g. settings tabs). The CSRF
+        // token comes from the global `csrftoken` set in base.html.
+        // GHSA-g36r-fm2p-87xm: anchors that mutate server state must not fire
+        // on a bare GET, since <img src=...> CSRF relies on GET firing.
+        const method = ($element.attr('data-method') || 'GET').toUpperCase();
+        if (method === 'POST') {
+          postWithCsrf(url);
+          return;
+        }
+
+        // If it's a link, navigate to the URL
+        if ($element.is('a')) {
+          window.location.href = url;
+        }
+        // If it's a button in a form, submit the form
+        else if ($element.is('button')) {
+          // Use requestSubmit() to include the button's name/value in the form data
+          $element.closest('form')[0].requestSubmit($element[0]);
+        }
+      }
+    };
+
+    ModalDialog.confirm(config);
+  });
+});
