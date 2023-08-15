@@ -1674,3 +1674,59 @@ msgstr "Содержит"
 msgid "Choose one - Field"
 msgstr "Выберите один — Поле"
 
+#: changedetectionio/conditions/default_plugin.py
+msgid "Does NOT Contain"
+msgstr "НЕ содержит"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Starts With"
+msgstr "Текст начинается с"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Ends With"
+msgstr "Текст заканчивается на"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length minimum"
+msgstr "Минимальная длина"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length maximum"
+msgstr "Максимальная длина"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Matches Regex"
+msgstr "Текст соответствует регулярному выражению"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Does NOT Match Regex"
+msgstr "Текст НЕ соответствует регулярному выражению"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Extracted number after 'Filters & Triggers'"
+msgstr "Извлеченный номер после «Фильтры и триггеры»"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Page text after 'Filters & Triggers'"
+msgstr "Текст страницы после «Фильтры и триггеры»"
+
+#: changedetectionio/conditions/form.py
+msgid "Field"
+msgstr "Поле"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator"
+msgstr "Оператор"
+
+#: changedetectionio/conditions/form.py
+msgid "A value"
+msgstr "Значение"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator is required."
+msgstr "Требуется оператор."
+
+#: changedetectionio/conditions/form.py
+msgid "Field is required."
+msgstr "Поле обязательно."
+
