@@ -579,6 +579,72 @@ msgid "Password protection for your changedetection.io application."
 msgstr "Protección con contraseña para su aplicación changetection.io."
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "La contraseña está bloqueada."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "Borrar historial de instantáneas"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr ""
+"Permitir el acceso a la página del historial de cambios del monitor cuando la contraseña está habilitada (bueno para "
+"compartir la página de diferencias)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Cuando una solicitud no devuelve contenido o el HTML no contiene ningún texto, ¿se considera esto un cambio?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Elija un proxy predeterminado para todos los monitores"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr ""
+"Utilice el método <strong>Básico</strong> (predeterminado) cuando los sitios observados no necesiten Javascript para "
+"renderizarse."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr ""
+"El método <strong>Chrome/Javascript</strong> requiere una conexión de red a un servidor WebDriver+Chrome en "
+"ejecución, establecido por la variable ENV 'WEBDRIVER_URL'."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Si tiene problemas para esperar a que la página se represente por completo (falta texto, etc.), intente aumentar el "
+"tiempo de \"espera\" aquí."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "Esto esperará <i>n</i> segundos antes de extraer el texto."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr ""
+"Número de trabajadores simultáneos para procesar monitores. Más trabajadores = procesamiento más rápido pero mayor "
+"uso de memoria."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "Actualmente en funcionamiento:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "operacional"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "trabajadores"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "actively processing"
 msgstr "procesando activamente"
 
