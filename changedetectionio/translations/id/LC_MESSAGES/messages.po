@@ -835,6 +835,59 @@ msgid "Which baseline the watchlist “Summary” link compares the latest versi
 msgstr "Baseline yang digunakan tautan “Ringkasan” pada daftar monitor untuk membandingkan versi terbaru secara default."
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Configure a provider first to unlock behaviour settings."
+msgstr "Konfigurasikan penyedia terlebih dahulu untuk membuka pengaturan perilaku."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Token & Cost Tracking"
+msgstr "Pelacakan Token & Biaya"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "This month"
+msgstr "Bulan ini"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "tokens"
+msgstr "token"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid "%(percent)s%% of %(budget)s"
+msgstr "%(percent)s%% dari %(budget)s"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "All-time total"
+msgstr "Total sepanjang waktu"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Monthly token budget reached. AI summarisation is paused until next month."
+msgstr "Anggaran token AI bulanan tercapai. Ringkasan AI dijeda hingga bulan berikutnya."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Token budget this period"
+msgstr "Anggaran token periode ini"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "(set via <code>LLM_TOKEN_BUDGET_MONTH</code>)"
+msgstr "(diatur melalui <code>LLM_TOKEN_BUDGET_MONTH</code>)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "0 = unlimited"
+msgstr "0 = tanpa batas"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "tokens (0 = unlimited)"
+msgstr "token (0 = tanpa batas)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Current billing period"
+msgstr "Periode penagihan saat ini"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "(set via <code>LLM_MAX_INPUT_CHARS</code>)"
+msgstr "(diatur melalui <code>LLM_MAX_INPUT_CHARS</code>)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid "characters — currently enforcing: %(limit)s"
 msgstr "karakter — batas yang diterapkan saat ini: %(limit)s"
