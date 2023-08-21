@@ -347,6 +347,64 @@ msgstr "用于以下内容的自定义列与数据类型映射表"
 msgid "Custom mapping"
 msgstr "自定义映射"
 
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "File mapping type."
+msgstr "文件映射类型。"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Column #"
+msgstr "列 #"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Type"
+msgstr "类型"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "none"
+msgstr "无"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "CSS/xPath filter"
+msgstr "CSS/XPath 过滤器"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Group / Tag name(s)"
+msgstr "分组/标签名称"
+
+#: changedetectionio/blueprint/imports/templates/import.html
+msgid "Recheck time (minutes)"
+msgstr "复检间隔（分钟）"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/templates/sidebar-nav.html
+msgid "Import"
+msgstr "导入"
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Expand on hover"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Always expanded"
+msgstr ""
+
+#: changedetectionio/blueprint/menu_modes.py
+msgid "Stays minimal"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch with UUID %(uuid)s not found"
+msgstr ""
+
+#: changedetectionio/blueprint/rss/single_watch.py
+#, python-format
+msgid "Watch %(uuid)s does not have enough history snapshots to show changes (need at least 2)"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/__init__.py
+msgid "Password protection removed."
+msgstr "已移除密码保护。"
+
 #: changedetectionio/blueprint/settings/__init__.py
 #, python-brace-format
 msgid "Warning: Worker count ({worker_count}) is close to or exceeds available CPU cores ({cpu_count})"
