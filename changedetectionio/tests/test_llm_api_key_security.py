@@ -18,3 +18,21 @@ from flask import url_for
 
 from changedetectionio.tests.util import live_server_setup, delete_all_watches
 
+CANARY_KEY = 'sk-CANARY-SECRET-DO-NOT-EXPOSE-12345'
+
+
+def _configure_llm(datastore, api_key=CANARY_KEY):
+    """Inject a recognisable API key into the datastore LLM settings."""
+    app = datastore.data['settings']['application']
+    if 'llm' not in app:
+        app['llm'] = {}
+    app['llm'].update({
+        'model': 'gpt-4o-mini',
+        'api_key': api_key,
+    })
+
+
+def _api_token(client):
+    return client.application.config.get('DATASTORE').data['settings']['application'].get('api_access_token')
+
+
