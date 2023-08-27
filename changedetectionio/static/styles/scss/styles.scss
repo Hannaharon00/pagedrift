@@ -184,6 +184,41 @@ button.toggle-button {
   }
 
 
+}
+
+body.spinner-active {
+  #pure-menu-horizontal-spinner {
+    animation: gradient 1s ease infinite;
+  }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#cdio-logo {
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+.pure-menu-link {
+  color: var(--color-text-menu-link);
+
+  &:hover {
+    background-color: var(--color-background-menu-link-hover);
+    color: var(--color-text-menu-link-hover);
+  }
+}
+
+
 .tab-pane-inner {
   // .tab-pane-inner will have the #id that the tab button jumps/anchors to
   scroll-margin-top: 200px;
