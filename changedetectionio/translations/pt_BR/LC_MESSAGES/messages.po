@@ -1145,6 +1145,62 @@ msgstr "Alerta! Arquivo de cabeçalhos extras encontrado e será adicionado a es
 msgid "Headers can be also read from a file in your data-directory"
 msgstr "Cabeçalhos também podem ser lidos de um arquivo no seu diretório de dados"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
+msgstr "Desculpe, esta funcionalidade só funciona com fetchers que suportam Javascript e screenshots (como playwright, etc)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports Javascript and screenshots."
+msgstr "para um que suporte Javascript e screenshots."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check count"
+msgstr "Contagem de verificações"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Consecutive filter failures"
+msgstr "Falhas consecutivas do filtro"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "History length"
+msgstr "Tamanho do histórico"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Last fetch duration"
+msgstr "Duração da última busca"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Notification alert count"
+msgstr "Contagem de alertas de notificação"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Server type reply"
+msgstr "Resposta do tipo de servidor"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr "Sim"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "No"
+msgstr "Não"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (last check)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (total)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download latest HTML snapshot"
+msgstr "Baixar último instantâneo HTML"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download watch data package"
+msgstr "Baixar pacote de dados do monitoramento"
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "Clear"
 msgstr ""
