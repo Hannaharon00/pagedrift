@@ -838,3 +838,33 @@ def has_ldjson_product_info(content):
             re.search(r'"pricecurrency"', content, re.IGNORECASE)):
             return True
 
+#       On some pages this is really terribly expensive when they dont really need it
+#       (For example you never want price monitoring, but this runs on every watch to suggest it)
+#        for filter in LD_JSON_PRODUCT_OFFER_SELECTORS:
+#            pricing_data += extract_json_as_string(content=content,
+#                                                  json_filter=filter,
+#                                                  ensure_is_ldjson_info_type="product")
+    except Exception as e:
+        # OK too
+        return False
+
+    return False
+
+
+
+def workarounds_for_obfuscations(content):
+    """
+    Some sites are using sneaky tactics to make prices and other information un-renderable by Inscriptis
+    This could go into its own Pip package in the future, for faster updates
+    """
+
+    # HomeDepot.com style <span>$<!-- -->90<!-- -->.<!-- -->74</span>
+    # https://github.com/weblyzard/inscriptis/issues/45
+    if not content:
+        return content
+
+    content = re.sub('<!--\s+-->', '', content)
+
+    return content
+
+
