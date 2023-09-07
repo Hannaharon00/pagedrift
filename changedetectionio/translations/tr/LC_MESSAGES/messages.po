@@ -1080,6 +1080,72 @@ msgid "Tag colour"
 msgstr ""
 
 #: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "{} izleyici sessize alındı"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "{} izleyicinin sesi açıldı"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "{} izleyici yeniden kontrol için sıraya alındı"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} izleyicinin hataları temizlendi"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} izleyici temizlendi/sıfırlandı."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "{} izleyici varsayılan bildirim ayarlarını kullanacak şekilde ayarlandı"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Browser / fetch method updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid browser / fetch method selected"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Proxy updated on {} watches"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid proxy selected"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches were tagged"
+msgstr "{} izleyici etiketlendi"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/watchlist/__init__.py
+msgid "Watch not found"
+msgstr "İzleyici bulunamadı"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Cleared snapshot history for watch {}"
+msgstr "{} izleyicisi için anlık görüntü geçmişi temizlendi"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "clear"
+msgstr "temizle"
+
+#: changedetectionio/blueprint/ui/__init__.py
 msgid "History clearing started in background"
 msgstr "Geçmiş temizleme arka planda başladı"
 
