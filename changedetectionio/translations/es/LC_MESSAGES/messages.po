@@ -1791,6 +1791,70 @@ msgstr "En stock"
 msgid "Price"
 msgstr "Precio"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#, python-format
+msgid "Price change since previous price (%(prev)s)"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "No information"
+msgstr "Sin información"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Checked"
+msgstr "Comprobado"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/templates/base.html
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Checking now"
+msgstr "Comprobando ahora"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changed"
+msgstr "Cambiado"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Summary"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/processors/text_json_diff/difference.py
+msgid "History"
+msgstr "Historia"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Preview"
+msgstr "Avance"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changedetection.io can monitor more than just web-pages! See our plugins!"
+msgstr "¡Changedetection.io puede monitorear más que solo páginas web! ¡Vea nuestros complementos!"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "More info"
+msgstr "Más información"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "You can also add 'shared' watches."
+msgstr "También puedes agregar monitores 'compartidos'."
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Goto full history"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Loading price history…"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Out of stock"
+msgstr ""
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html
 #, python-format
 msgid "Select all %(total)s matching"
