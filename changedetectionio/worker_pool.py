@@ -92,3 +92,44 @@ class WorkerThread:
         # Don't wait - thread is daemon and will die when needed
 
 
+def start_workers(n_workers, update_q, notification_q, app, datastore):
+    """Start async workers - sync workers are deprecated"""
+    start_async_workers(n_workers, update_q, notification_q, app, datastore)
+
+
+def _ensure_queue_executor():
+    """Recreate queue_executor if a prior shutdown_workers() left it in the
+    shutdown state. Without this, any add_worker() / start_async_workers()
+    after a brutal shutdown spawns workers that immediately crash with
+    'cannot schedule new futures after shutdown'."""
+    global queue_executor
+    if queue_executor is None or getattr(queue_executor, '_shutdown', False):
+        queue_executor = ThreadPoolExecutor(
+            max_workers=_max_executor_workers,
+            thread_name_prefix="QueueGetter-",
+        )
+
+
+def add_worker(update_q, notification_q, app, datastore):
+    """Add a new async worker (for dynamic scaling)"""
+    global worker_threads
+
+    _ensure_queue_executor()
+
+    # Reuse lowest available ID to prevent unbounded growth over time
+    used_ids = {w.worker_id for w in worker_threads}
+    worker_id = 0
+    while worker_id in used_ids:
+        worker_id += 1
+    logger.info(f"Adding async worker {worker_id}")
+
+    try:
+        worker = WorkerThread(worker_id, update_q, notification_q, app, datastore)
+        worker.start()
+        worker_threads.append(worker)
+        return True
+    except Exception as e:
+        logger.error(f"Failed to add worker {worker_id}: {e}")
+        return False
+
+
