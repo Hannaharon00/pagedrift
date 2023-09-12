@@ -755,6 +755,74 @@ msgid "Restrict API access limit by using"
 msgstr "Batasi akses API menggunakan"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
+"scales every <code>max_tokens</code> cap for this endpoint to leave reasoning room. Defaults to %(default)s; raise it"
+" if responses come back truncated or empty, lower it (down to 1x) if you want tighter limits on a paid endpoint. "
+"Applied to Ollama and OpenAI-compatible endpoints — other cloud providers (OpenAI, Anthropic, Gemini) keep their "
+"original tight caps."
+msgstr ""
+"Model reasoning (Qwen3, DeepSeek-R1, Gemma 3, dll.) menghasilkan chain-of-thought sebelum jawaban akhir. Pengali ini "
+"menskalakan setiap batas <code>max_tokens</code> untuk endpoint ini agar tersedia ruang reasoning. Default "
+"%(default)s; tingkatkan jika respons terpotong atau kosong, turunkan (hingga 1x) jika Anda menginginkan batas lebih "
+"ketat pada endpoint berbayar. Berlaku untuk endpoint Ollama dan yang kompatibel dengan OpenAI — penyedia cloud lain "
+"(OpenAI, Anthropic, Gemini) tetap menggunakan batas ketat aslinya."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Load available models"
+msgstr "Muat model yang tersedia"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Available models"
+msgstr "Model yang tersedia"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "choose a model"
+msgstr "pilih model"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Enter API key and click 'Load available models'"
+msgstr "Masukkan kunci API lalu klik 'Muat model yang tersedia'"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove AI / LLM configuration?"
+msgstr "Hapus konfigurasi AI / LLM?"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "This will remove your saved AI provider, model, and API key."
+msgstr "Ini akan menghapus penyedia AI, model, dan kunci API yang tersimpan."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Remove"
+msgstr "Hapus"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html changedetectionio/templates/base.html
+msgid "Cancel"
+msgstr "Batal"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Test connection"
+msgstr "Uji koneksi"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"Your API key is stored locally and sent only to your chosen provider. On each detected change, the watch's diff and "
+"extracted text are sent to the LLM — no full page HTML."
+msgstr ""
+"Kunci API Anda disimpan secara lokal dan hanya dikirim ke penyedia yang Anda pilih. Pada setiap perubahan yang "
+"terdeteksi, diff monitor dan teks yang diekstrak dikirim ke LLM — bukan HTML halaman penuh."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Cache"
+msgstr "Cache"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Clear all summary cache?"
+msgstr "Hapus seluruh cache ringkasan?"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "This will remove all cached AI change summaries across all watches."
 msgstr "Ini akan menghapus semua ringkasan perubahan AI yang tersimpan di cache dari seluruh monitor."
 
