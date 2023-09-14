@@ -77,3 +77,34 @@ function expandRangeToFullLines(range, container) {
     return newRange;
 }
 
+/**
+ * Create footer with metadata (URL, version info, line count)
+ */
+function createFooter(selectedLines, totalLines) {
+    const url = getTargetUrl();
+    const versionInfo = getVersionInfo();
+    const lineInfo = (selectedLines && totalLines) ? ` - ${selectedLines} of ${totalLines} lines selected` : '';
+
+    const footer = document.createElement("div");
+    footer.innerHTML = `
+        <div style="
+            position: relative;
+            z-index: 1;
+            background-color: #1324fd;
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            border-top: 1px solid #ccc;
+        ">
+            Watched URL: <strong>${url}</strong><br>
+            ${versionInfo}${lineInfo}<br>
+            Monitored via automated content change detection on public webpages. Data reflects observed text updates, not editorial verification.
+        </div>
+    `;
+
+    return footer.firstElementChild;
+}
+
