@@ -1368,6 +1368,66 @@ msgstr "Sledování s UUID {} nenalezeno."
 msgid "Switched to mode - {}."
 msgstr "Přepnuto na mód - {}."
 
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "Nelze načíst '{}' procesor, zásuvný modul procesoru nejspíše chybí. Vyberte prosím jiný procesor."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "Nelze načíst '{}' procesor, zásuvný modul procesoru nejspíše chybí."
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr "Výchozí systémová nastavení"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr "Výchozí"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "Sledování aktualizováno - znovu spuštěno!"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "Sledování aktualizováno."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "Náhled nedostupný - stažení/kontrola nedokončena nebo nebyly splněny podmínky kontroly"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "Rozdíly"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "zobrazeno <b>{start} - {end}</b> {record_name} z celkem <b>{total}</b>"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "Toto odstraní historii verzí (snímky) pro VŠECHNA sledování, ale ponechá seznam URL adres!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Možná budete chtít použít"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "ZÁLOHA"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Screenshot requires Playwright/WebDriver enabled"
 msgstr "Snímek obrazovky vyžaduje aktivaci nástroje Playwright/WebDriver"
