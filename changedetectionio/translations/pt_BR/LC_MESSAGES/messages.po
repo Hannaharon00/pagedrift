@@ -46,6 +46,69 @@ msgstr "Ir"
 msgid "Enter a URL to get started!"
 msgstr ""
 
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+msgid "Enter a URL in the input box above to get started."
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+msgid "Fetching screenshot and element information…"
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Currently:"
+msgstr "Atualmente:"
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+#, python-format
+msgid "%(browser)s cannot render a live preview, choose a browser below"
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Select by element"
+msgstr "Selecionar por elemento"
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+msgid "Hover & click the preview to watch just one part of the page."
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear selection"
+msgstr "Limpar seleção"
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "What matters — when to notify me"
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid ""
+"e.g. Notify me when products go in/out of stock, lead times change by more than a week, or new product variants "
+"appear. Skip review additions."
+msgstr ""
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Watch group / tag"
+msgstr "Grupo / Tag de monitoramento"
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+msgid "Watch this URL!"
+msgstr "Monitorar esta URL!"
+
+#: changedetectionio/blueprint/add_watch_ui/templates/add-watch-ui.html
+msgid "Edit first then Watch"
+msgstr "Editar primeiro, depois Monitorar"
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "A backup is already running, check back in a few minutes"
+msgstr "Um backup já está em execução, verifique novamente em alguns minutos"
+
+#: changedetectionio/blueprint/backups/__init__.py
+msgid "Maximum number of backups reached, please remove some"
+msgstr "Número máximo de backups atingido, por favor remova alguns"
+
 #: changedetectionio/blueprint/backups/__init__.py
 msgid "Backup building in background, check back in a few minutes."
 msgstr "Construindo backup em segundo plano, verifique novamente em alguns minutos."
