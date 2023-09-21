@@ -39,3 +39,51 @@ def is_valid_uuid(val):
    #  live_server_setup(live_server) # Setup on conftest per function
 
 
+def test_api_simple(client, live_server, measure_memory_usage, datastore_path):
+
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Create a watch
+    set_original_response(datastore_path=datastore_path)
+
+    # Validate bad URL
+    test_url = url_for('test_endpoint', _external=True )
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "h://xxxxxxxxxom"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400
+
+    # Create new
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": test_url, 'tag': "One, Two", "title": "My test URL"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    assert is_valid_uuid(res.json.get('uuid'))
+    watch_uuid = res.json.get('uuid')
+    assert res.status_code == 201
+
+    wait_for_all_checks(client)
+
+    # Verify its in the list and that recheck worked
+    res = client.get(
+        url_for("createwatch", tag="OnE"),
+        headers={'x-api-key': api_key}
+    )
+    assert watch_uuid in res.json.keys()
+    before_recheck_info = res.json[watch_uuid]
+
+    assert before_recheck_info['last_checked'] != 0
+
+    #705 `last_changed` should be zero on the first check
+    assert before_recheck_info['last_changed'] == 0
+    assert before_recheck_info['title'] == 'My test URL'
+    assert isinstance(before_recheck_info['link'], str), "link must be a plain string, not a tuple or list"
+    assert before_recheck_info['link'] == test_url
+
