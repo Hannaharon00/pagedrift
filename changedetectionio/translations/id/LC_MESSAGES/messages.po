@@ -1016,6 +1016,66 @@ msgstr "Memuat…"
 msgid "No models returned by the provider."
 msgstr "Penyedia tidak mengembalikan model."
 
+#: changedetectionio/blueprint/tags/form.py
+msgid "Activate for individual watches in this tag/group?"
+msgstr "Aktifkan untuk masing-masing monitor dalam tag/grup ini?"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Auto-apply to watches with URLs matching"
+msgstr "Terapkan otomatis ke monitor dengan URL yang cocok"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "e.g. *://example.com/* or github.com/myorg"
+msgstr "mis. *://example.com/* atau github.com/myorg"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Tag colour"
+msgstr "Warna tag"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Must be a hex colour, for example #4f8ef7"
+msgstr "Harus berupa warna hex, misalnya #4f8ef7"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "AI for watches in this group"
+msgstr "AI untuk monitor dalam grup ini"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "On, use the settings below"
+msgstr "Aktif, gunakan pengaturan di bawah"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Off for every watch"
+msgstr "Nonaktif untuk setiap monitor"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Leave it to each watch"
+msgstr "Biarkan ditentukan oleh masing-masing monitor"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Tag name"
+msgstr "Nama tag"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Filters & Triggers"
+msgstr "Filter & Pemicu"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid ""
+"Automatically applies this tag to any watch whose URL matches. Supports wildcards: <code>*example.com*</code> or "
+"plain substring: <code>github.com/myorg</code>"
+msgstr ""
+"Secara otomatis menerapkan tag ini ke setiap monitor yang URL-nya cocok. Mendukung wildcard: "
+"<code>*example.com*</code> atau substring biasa: <code>github.com/myorg</code>"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Currently matching watches"
+msgstr "Monitor yang cocok saat ini"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Custom colour"
+msgstr "Warna kustom"
+
 #: changedetectionio/blueprint/tags/templates/groups-overview.html
 msgid "No website organisational tags/groups configured"
 msgstr "Tidak ada tag/grup organisasi situs web yang dikonfigurasi"
