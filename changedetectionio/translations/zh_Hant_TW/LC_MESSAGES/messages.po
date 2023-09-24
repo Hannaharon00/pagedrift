@@ -579,6 +579,63 @@ msgid "Password is locked."
 msgstr "密碼已鎖定。"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "對於一般常規請求（非基於 Chrome），逾時前的最大秒數，1-999。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "套用至所有請求。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "注意：僅更改 User-Agent 通常無法破解反機器人技術，考慮瀏覽器被偵測的所有方式非常重要"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "瀏覽器被偵測的所有方式"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "使用 Bright Data 代理伺服器進行連線，在此處了解更多資訊。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "提示："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "判斷是否檢測到變更時，忽略空白、定位字元（Tabs）和換行符號（New-lines / Line-feeds）。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "注意："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "變更此項將會改變您現有監測任務的狀態，並可能觸發警報等。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "渲染超連結（Anchor Tag）內容，預設停用，啟用時會將連結渲染為"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "變更此項可能會影響您現有監測任務的內容，並可能觸發警報等。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "在進行文字轉換之前，透過 CSS 和 XPath 選擇器移除 HTML 元素。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "請勿在此處貼上 HTML，僅使用 CSS 和 XPath 選擇器"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "每行新增多個元素、CSS 或 XPath 選擇器，以忽略 HTML 的多個部分。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Note: This is applied globally in addition to the per-watch rules."
 msgstr "注意：除了每個監測任務的規則外，此設定還會套用至全域。"
 
