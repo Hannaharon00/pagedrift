@@ -40,3 +40,107 @@ def overlay_locales():
     return sorted(d for d in os.listdir(OVERLAY_DIR) if os.path.isfile(_po_path(OVERLAY_DIR, d)))
 
 
+def _load(path):
+    with open(path, 'rb') as fp:
+        return read_po(fp)
+
+
+def _message_ids(catalog):
+    """Real (non-header, non-obsolete) message ids in a catalog."""
+    return {m.id for m in catalog if m.id}
+
+
+def cmd_check(_args):
+    """Validate every overlay catalog against the base catalogs. Returns an exit code."""
+    if not os.path.isfile(POT_FILE):
+        print(
+            f"error: {POT_FILE} missing - run `python setup.py extract_messages` first",
+            file=sys.stderr,
+        )
+        return 1
+
+    known_ids = _message_ids(_load(POT_FILE))
+    problems = []
+
+    for locale in overlay_locales():
+        overlay = _load(_po_path(OVERLAY_DIR, locale))
+
+        # 1. Every overridden msgid must still exist upstream, or the override is dead weight.
+        for message in overlay:
+            if message.id and message.id not in known_ids:
+                problems.append(
+                    f"{locale}: msgid no longer exists in messages.pot, override is dead:\n"
+                    f"         {message.id!r}"
+                )
+
+        # 2. An override with an empty msgstr is dropped by the compiler, so it does nothing
+        #    while looking like it does something.
+        for message in overlay:
+            if message.id and not message.string:
+                problems.append(
+                    f"{locale}: empty msgstr, override will be a no-op:\n         {message.id!r}"
+                )
+
+        base_po = _po_path(BASE_DIR, locale)
+        if not os.path.isfile(base_po):
+            problems.append(f"{locale}: no base catalog at {base_po} - is this a real locale?")
+        else:
+            # 3. Flask-Babel copies `plural` from the last catalog that has one, so a wrong
+            #    Plural-Forms header here breaks plurals for every string in the language,
+            #    not just the overridden ones.
+            base_plural = _load(base_po).plural_expr
+            if overlay.plural_expr != base_plural:
+                problems.append(
+                    f"{locale}: Plural-Forms disagrees with the base catalog and would override it\n"
+                    f"         overlay: {overlay.plural_expr}\n"
+                    f"         base:    {base_plural}"
+                )
+
+        # 4. The .mo is what actually gets loaded; a stale one means edits to the .po do nothing.
+        mo_file = _mo_path(OVERLAY_DIR, locale)
+        expected = {m.id for m in overlay if m.id and m.string}
+        if not expected:
+            if os.path.isfile(mo_file) and _message_ids(_read_mo(mo_file)):
+                problems.append(
+                    f"{locale}: .po has no overrides but .mo still contains some - recompile"
+                )
+        elif not os.path.isfile(mo_file):
+            problems.append(
+                f"{locale}: {os.path.basename(mo_file)} missing - run `manage.py compile`"
+            )
+        elif _message_ids(_read_mo(mo_file)) != expected:
+            problems.append(f"{locale}: .mo is out of date with .po - run `manage.py compile`")
+
+    if problems:
+        print(f"{len(problems)} problem(s) in the translation overlay:\n", file=sys.stderr)
+        for problem in problems:
+            print(f"  - {problem}", file=sys.stderr)
+        return 1
+
+    total = sum(
+        len({m.id for m in _load(_po_path(OVERLAY_DIR, loc)) if m.id}) for loc in overlay_locales()
+    )
+    print(
+        f"overlay ok: {total} override(s) across {len(overlay_locales())} locale(s): {', '.join(overlay_locales()) or '-'}"
+    )
+    return 0
+
+
+def _read_mo(path):
+    with open(path, 'rb') as fp:
+        return read_mo(fp)
+
+
+def cmd_compile(_args):
+    for locale in overlay_locales():
+        catalog = _load(_po_path(OVERLAY_DIR, locale))
+        mo_file = _mo_path(OVERLAY_DIR, locale)
+        with open(mo_file, 'wb') as fp:
+            write_mo(fp, catalog)
+        overrides = len({m.id for m in catalog if m.id and m.string})
+        print(
+            f"compiled {locale}: {overrides} override(s) -> {os.path.relpath(mo_file, os.getcwd())}"
+        )
+    return 0
+
+
