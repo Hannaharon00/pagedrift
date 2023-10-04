@@ -310,3 +310,84 @@ class AsyncSignalPriorityQueue(asyncio.PriorityQueue):
         except Exception as e:
             logger.critical(f"Exception: {e}")
 
+        return {
+            'position': position,
+            'total_items': total_items,
+            'priority': target_priority,
+            'found': True
+        }
+    
+    def get_all_queued_uuids(self, limit=None, offset=0):
+        """
+        Get UUIDs currently in the async queue with their positions.
+        For large queues, use limit/offset for pagination.
+        
+        Args:
+            limit: Maximum number of items to return (None = all)
+            offset: Number of items to skip (for pagination)
+        
+        Returns:
+            dict: Contains items and metadata (same structure as sync version)
+        """
+        queue_list = list(self._queue)
+        total_items = len(queue_list)
+        
+        if total_items == 0:
+            return {
+                'items': [],
+                'total_items': 0,
+                'returned_items': 0,
+                'has_more': False
+            }
+        
+        # Same logic as sync version but without mutex
+        if limit is not None and limit <= 100:
+            queue_items = sorted(queue_list)
+            end_idx = min(offset + limit, len(queue_items)) if limit else len(queue_items)
+            items_to_process = queue_items[offset:end_idx]
+            
+            result = []
+            for position, item in enumerate(items_to_process, start=offset):
+                if (hasattr(item, 'item') and 
+                    isinstance(item.item, dict) and 
+                    'uuid' in item.item):
+                    
+                    result.append({
+                        'uuid': item.item['uuid'],
+                        'position': position,
+                        'priority': item.priority
+                    })
+            
+            return {
+                'items': result,
+                'total_items': total_items,
+                'returned_items': len(result),
+                'has_more': (offset + len(result)) < total_items
+            }
+        else:
+            # Fast approximate positions for large queues
+            result = []
+            processed = 0
+            skipped = 0
+            
+            for item in queue_list:
+                if (hasattr(item, 'item') and 
+                    isinstance(item.item, dict) and 
+                    'uuid' in item.item):
+                    
+                    if skipped < offset:
+                        skipped += 1
+                        continue
+                    
+                    if limit and processed >= limit:
+                        break
+                    
+                    approx_position = sum(1 for other in queue_list if other.priority < item.priority)
+                    
+                    result.append({
+                        'uuid': item.item['uuid'],
+                        'position': approx_position,
+                        'priority': item.priority
+                    })
+                    processed += 1
+            
