@@ -224,6 +224,64 @@ msgstr "Max. velikost nahrání: %(upload)s MB, Max. velikost k rozbalení: %(de
 msgid "Include all groups found in backup?"
 msgstr "Zahrnout všechny skupiny nalezené v záloze?"
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Nahradit všechny existující skupiny se stejným UUID?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Zahrnout všechna sledování nalezená v záloze?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Nahradit všechna existující sledování se stejným UUID?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Importuje se prvních 5000 URL adres, další lze načíst opakovaným importem."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} importováno ze seznamu za {duration}s, {skipped_count} přeskočeno."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "Nelze načíst JSON soubor, byl poškozen?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "Strukturovaný JSON text je neplatný, byl poškozen?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} importováno z Distill.io za {duration}s, {skipped_count} přeskočeno."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Nelze přečíst vyexportovaný XLSX soubor, je s ním něco v nepořádku?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Chyba při zpracování řádku {}, hodnota URL neplatná, řádek přeskočen."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Chyba při zpracování řádku {}, zkontrolujte že všechny typy dat v buňkách jsou správné, řádka přeskočena."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} importováno z Wachete .xlsx za {duration}s"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} importováno z vlastního .xlsx za {duration}s"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "Seznam adres URL"
