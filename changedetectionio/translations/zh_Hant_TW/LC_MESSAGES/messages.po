@@ -1440,3 +1440,56 @@ msgstr "警報！找到額外的標頭檔案，將新增至此監測任務！"
 msgid "Headers can be also read from a file in your data-directory"
 msgstr "標頭也可以從您的資料目錄中的檔案讀取"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr "刪除監測任務？"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "您確定要刪除以下對象的監測任務："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "此動作無法復原。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "清除歷史記錄？"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "您確定要清除以下項目的所有歷史記錄："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "這將移除所有快照和先前版本。此動作無法復原。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "清除歷史記錄"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "複製並編輯"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "選擇時間戳記"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "最近請求的目前錯誤截圖"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr "截圖需要支援截圖的內容抓取器 (Sockpuppetbrowser, selenium 等)。"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr "工作程序 %(num)s"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr " — 閒置"
+
