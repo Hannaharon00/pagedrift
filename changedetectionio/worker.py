@@ -19,6 +19,8 @@ import time
 _MINITEXT_STATUS_SAFE_RE = re.compile(r'[^A-Za-z0-9 ().,/:\-]')
 _MINITEXT_STATUS_MAX_LEN = 80
 
+from loguru import logger
+
 IN_PYTEST = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
 DEFER_SLEEP_TIME_ALREADY_QUEUED = 0.3 if IN_PYTEST else 10.0
 
