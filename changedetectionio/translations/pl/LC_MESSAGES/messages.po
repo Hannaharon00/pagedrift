@@ -1253,6 +1253,58 @@ msgstr "(ustawiane za pomocą <code>LLM_TOKEN_BUDGET_MONTH</code>)"
 msgid "0 = unlimited"
 msgstr "0 = bez ograniczeń"
 
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "All tags deleted, clearing from watches in background"
+msgstr "Wszystkie tagi zostały usunięte; są usuwane z obserwacji w tle"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag not found"
+msgstr "Nie znaleziono tagu"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Updated"
+msgstr "Zaktualizowano"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Activate for individual watches in this tag/group?"
+msgstr "Czy włączyć tę opcję dla poszczególnych obserwacji w tym tagu/grupie?"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Auto-apply to watches with URLs matching"
+msgstr "Automatycznie stosuj do obserwacji z adresami URL pasującymi do"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "e.g. *://example.com/* or github.com/myorg"
+msgstr "np. *://example.com/* lub github.com/myorg"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Tag colour"
+msgstr "Kolor etykiety"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Must be a hex colour, for example #4f8ef7"
+msgstr "Musi być kolorem szesnastkowym, na przykład #4f8ef7"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "AI for watches in this group"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "On, use the settings below"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Off for every watch"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Leave it to each watch"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Tag name"
+msgstr "Nazwa tagu"
+
 #: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
 msgid "Unlink"
 msgstr "Usuń powiązanie"
