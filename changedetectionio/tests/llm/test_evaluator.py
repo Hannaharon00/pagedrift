@@ -7,6 +7,34 @@ import pytest
 from unittest.mock import patch, MagicMock
 
 
+def _make_datastore(llm_cfg=None, tags=None):
+    """Build a minimal datastore-like dict for testing."""
+    ds = MagicMock()
+    app_settings = {
+        'llm': llm_cfg or {},
+        'tags': tags or {},
+    }
+    ds.data = {
+        'settings': {
+            'application': app_settings,
+        }
+    }
+    return ds
+
+
+def _make_tag(ai=True, **fields):
+    """Build a tag dict.
+
+    `ai` is the group's single AI control (llm_backend_profile): True = on, and its AI
+    settings apply to its watches; False = off for every watch in the group; None = the
+    group has no say. Defaults to True because most cases here are about what a group set
+    to "On" does.
+    """
+    tag = {'title': 'grp', 'llm_backend_profile': ai}
+    tag.update(fields)
+    return tag
+
+
 def _make_watch(llm_intent='', llm_change_summary='', tags=None, uuid='test-uuid-1234'):
     w = {}
     w['llm_intent'] = llm_intent
