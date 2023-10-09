@@ -945,6 +945,98 @@ msgid "AI Provider"
 msgstr "Поставщик ИИ"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Master switch — when off, all AI lookups are skipped even if a provider is configured below."
+msgstr "Главный переключатель — если он выключен, все запросы AI пропускаются, даже если провайдер настроен ниже."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Third-party data transfer — please read"
+msgstr "Передача данных третьим лицам — прочтите"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"When AI features are active, change data from the websites you monitor — including page diffs and extracted text — is"
+" sent to an external AI provider of your choice."
+msgstr ""
+"Когда функции искусственного интеллекта активны, данные об изменениях с веб-сайтов, которые вы отслеживаете, включая "
+"различия страниц и извлеченный текст, отправляются внешнему поставщику искусственного интеллекта по вашему выбору."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "You are solely responsible for ensuring this complies with the terms of service of each website you monitor."
+msgstr ""
+"Вы несете единоличную ответственность за обеспечение соответствия условиям обслуживания каждого веб-сайта, который вы"
+" отслеживаете."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"You are solely responsible for compliance with applicable data-protection laws (e.g. GDPR) regarding any personal "
+"data that may appear in monitored content."
+msgstr ""
+"Вы несете единоличную ответственность за соблюдение применимых законов о защите данных (например, GDPR) в отношении "
+"любых личных данных, которые могут появляться в отслеживаемом контенте."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"API costs charged by your chosen provider are your own responsibility; this software has no visibility into or "
+"control over those charges."
+msgstr ""
+"Затраты на API, взимаемые выбранным вами провайдером, являются вашей собственной ответственностью; это программное "
+"обеспечение не имеет возможности отслеживать и контролировать эти платежи."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"AI / LLM models are known to hallucinate — producing plausible-sounding but factually incorrect or entirely "
+"fabricated output with apparent confidence — and by design may omit or truncate relevant data during summarisation. "
+"AI output must never be relied upon as complete or accurate. This software is provided as-is with no warranty of any "
+"kind."
+msgstr ""
+"Известно, что модели AI/LLM галлюцинируют — выдавая правдоподобно звучащие, но фактически неверные или полностью "
+"сфабрикованные результаты с очевидной уверенностью — и по замыслу могут опускать или усекать соответствующие данные "
+"во время обобщения. Никогда нельзя полагаться на результаты искусственного интеллекта как на полные и точные. Это "
+"программное обеспечение предоставляется «как есть», без каких-либо гарантий."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"By enabling AI features you personally indemnify and hold harmless the creator(s) and contributor(s) of this software"
+" from any claims, damages, or liability arising from this data transfer or your use of AI features."
+msgstr ""
+"Включая функции ИИ, вы лично освобождаете от ответственности и ограждаете создателей и участников этого программного "
+"обеспечения от любых претензий, ущерба или ответственности, возникающих в результате такой передачи данных или "
+"использования вами функций ИИ."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "I have read and understood the above. I accept full responsibility and indemnify the creator(s) of this software."
+msgstr ""
+"Я прочитал и понял вышесказанное. Я принимаю на себя полную ответственность и возмещаю ущерб создателям этого "
+"программного обеспечения."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/templates/_common_fields.html
+msgid "Note"
+msgstr "Примечание"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"AI / LLM is configured via environment variables (<code>LLM_MODEL=%(model)s</code>%(api_base)s). Remove the "
+"<code>LLM_MODEL</code> environment variable to configure via this form instead."
+msgstr ""
+"AI/LLM настраивается через переменные среды (<code>LLM_MODEL=%(model)s</code>%(api_base)s). Вместо этого удалите "
+"переменную среды <code>LLM_MODEL</code>, чтобы настроить ее с помощью этой формы."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "select a provider"
+msgstr "выберите провайдера"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "OpenAI-compatible (vLLM, LM Studio, llama.cpp)"
+msgstr "Совместимость с OpenAI (vLLM, LM Studio, llama.cpp)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Only needed for Ollama or custom/self-hosted endpoints. Leave blank for cloud providers."
+msgstr ""
+"Требуется только для Ollama или пользовательских/автономных конечных точек. Оставьте пустым для поставщиков облачных "
+"услуг."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid ""
 "Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
