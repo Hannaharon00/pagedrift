@@ -1263,6 +1263,68 @@ msgstr "Видалити"
 msgid "Deletes and removes tag"
 msgstr "Видаляє тег повністю"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "Клоновано, ви редагуєте нове завдання."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "Завдання вже в черзі або перевіряється."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "1 завдання додано в чергу на перевірку."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "Додано {count} завдань у чергу ({skipped_count} вже в черзі або виконуються)."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "Додано {} завдань у чергу на перевірку."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "Додавання завдань у чергу виконується у фоновому режимі..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "Не вдалося поділитися, помилка зв'язку із сервером обміну - {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "Мову встановлено на автовизначення з браузера"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "Історію для вказаного посилання не знайдено, невірне посилання?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "Недостатньо історії (потрібно 2 знімки) для відображення різниці."
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "Немає завдань для редагування"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "Завдання з UUID {} не знайдено."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "Переключено в режим - {}."
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Same/non-changed"
 msgstr "Однакове/без змін"
