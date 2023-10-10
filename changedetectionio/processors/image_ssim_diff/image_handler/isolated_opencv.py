@@ -390,3 +390,65 @@ def _worker_draw_bounding_box(conn, img_bytes, x, y, width, height, color, thick
         conn.close()
 
 
+def _worker_calculate_percentage(conn, img_bytes_from, img_bytes_to, pixel_difference_threshold, blur_sigma, max_width, max_height):
+    """
+    Worker function for calculating change percentage.
+    """
+    import time
+    try:
+        import cv2
+
+        cv2.setNumThreads(1)
+
+        # Decode images
+        img_from = cv2.imdecode(np.frombuffer(img_bytes_from, np.uint8), cv2.IMREAD_COLOR)
+        img_to = cv2.imdecode(np.frombuffer(img_bytes_to, np.uint8), cv2.IMREAD_COLOR)
+
+        # Resize if needed
+        if img_from.shape != img_to.shape:
+            img_from = cv2.resize(img_from, (img_to.shape[1], img_to.shape[0]))
+
+        # Downscale to max dimensions
+        h, w = img_to.shape[:2]
+        if w > max_width or h > max_height:
+            scale = min(max_width / w, max_height / h)
+            new_w = int(w * scale)
+            new_h = int(h * scale)
+            img_from = cv2.resize(img_from, (new_w, new_h))
+            img_to = cv2.resize(img_to, (new_w, new_h))
+
+        # Convert to grayscale
+        gray_from = cv2.cvtColor(img_from, cv2.COLOR_BGR2GRAY)
+        gray_to = cv2.cvtColor(img_to, cv2.COLOR_BGR2GRAY)
+
+        # Optional blur
+        if blur_sigma > 0:
+            ksize = int(2 * round(3 * blur_sigma)) + 1
+            if ksize % 2 == 0:
+                ksize += 1
+            gray_from = cv2.GaussianBlur(gray_from, (ksize, ksize), blur_sigma)
+            gray_to = cv2.GaussianBlur(gray_to, (ksize, ksize), blur_sigma)
+
+        # Calculate difference
+        diff = cv2.absdiff(gray_from, gray_to)
+
+        # Apply threshold
+        _, thresholded = cv2.threshold(diff, int(pixel_difference_threshold), 255, cv2.THRESH_BINARY)
+
+        # Calculate percentage
+        total_pixels = thresholded.size
+        changed_pixels = np.count_nonzero(thresholded)
+        change_percentage = (changed_pixels / total_pixels) * 100.0
+
+        conn.send(float(change_percentage))
+
+    except Exception as e:
+        print(f"[{time.time():.3f}] [Worker] Calculate percentage error: {e}", flush=True)
+        import traceback
+        traceback.print_exc()
+        # Send error info as dict so parent can re-raise
+        conn.send({'error': str(e), 'traceback': traceback.format_exc()})
+    finally:
+        conn.close()
+
+
