@@ -537,6 +537,63 @@ msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier o
 msgstr "Exemplo - 3 segundos de jitter aleatório podem disparar até 3 segundos antes ou até 3 segundos depois"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
+msgstr "Para solicitações comuns (não baseadas em Chrome), número máximo de segundos até o timeout, 1-999."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Applied to all requests."
+msgstr "Aplicado a todas as solicitações."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note: Simply changing the User-Agent often does not defeat anti-robot technologies, it's important to consider"
+msgstr "Nota: Mudar apenas o User-Agent geralmente não supera tecnologias anti-robô, é importante considerar"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "all of the ways that the browser is detected"
+msgstr "todas as formas como o navegador é detectado"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Connect using Bright Data proxies, find out more here."
+msgstr "Conecte-se usando proxies da Bright Data, saiba mais aqui."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/templates/_common_fields.html
+msgid "Tip:"
+msgstr "Dica:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Ignore whitespace, tabs and new-lines/line-feeds when considering if a change was detected."
+msgstr "Ignorar espaços em branco, abas e quebras de linha ao considerar se uma mudança foi detectada."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Note:"
+msgstr "Nota:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this will change the status of your existing watches, possibly trigger alerts etc."
+msgstr "Alterar isso mudará o status dos seus monitoramentos existentes, possivelmente disparando alertas, etc."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Render anchor tag content, default disabled, when enabled renders links as"
+msgstr "Renderizar conteúdo da tag âncora, desativado por padrão. Se ativado, renderiza links como"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Changing this could affect the content of your existing watches, possibly trigger alerts etc."
+msgstr "Alterar isso pode afetar o conteúdo dos seus monitoramentos existentes, possivelmente disparando alertas, etc."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Remove HTML element(s) by CSS and XPath selectors before text conversion."
+msgstr "Remover elementos HTML por seletores CSS e XPath antes da conversão de texto."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Don't paste HTML here, use only CSS and XPath selectors"
+msgstr "Não cole HTML aqui, use apenas seletores CSS e XPath"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/edit/include_subtract.html
+msgid "Add multiple elements, CSS or XPath selectors per line to ignore multiple parts of the HTML."
+msgstr "Adicione múltiplos elementos, seletores CSS ou XPath por linha para ignorar várias partes do HTML."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Note: This is applied globally in addition to the per-watch rules."
 msgstr "Nota: Isso é aplicado globalmente além das regras por monitoramento."
 
