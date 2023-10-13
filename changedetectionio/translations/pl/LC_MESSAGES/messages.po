@@ -1199,6 +1199,68 @@ msgstr "(ustawiane za pomocą <code>LLM_TOKEN_BUDGET_MONTH</code>)"
 msgid "0 = unlimited"
 msgstr "0 = bez ograniczeń"
 
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
+msgid "Unlink"
+msgstr "Usuń powiązanie"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Keep the tag but unlink any watches"
+msgstr "Zachowaj tag, ale usuń powiązania ze wszystkimi obserwowanymi"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "RSS Feed for this watch"
+msgstr "Kanał RSS dla tej obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches deleted"
+msgstr "Usunięto {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches paused"
+msgstr "Wstrzymano {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches unpaused"
+msgstr "Wznowiono {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches updated"
+msgstr "Zaktualizowano {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "Wyciszono {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "Usunięto wyciszenie dla {} obserwacji"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "Dodano {} obserwacji do kolejki ponownego sprawdzenia"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} – usunięto błędy"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} liczników wyzerowano."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "Ustawiono domyślne ustawienia powiadomień dla {} obserwacji"
+
 #: changedetectionio/blueprint/ui/__init__.py
 #, python-brace-format
 msgid "Browser / fetch method updated on {} watches"
