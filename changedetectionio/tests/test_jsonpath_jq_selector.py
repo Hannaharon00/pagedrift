@@ -9,3 +9,147 @@ import pytest
 import os
 jq_support = True
 
+def test_unittest_inline_html_extract():
+    # So lets pretend that the JSON we want is inside some HTML
+    content="""
+    <html>
+    
+    food and stuff and more
+    <script>
+    alert('nothing really good here');
+    </script>
+    
+    <script type="application/ld+json">
+  xx {"@context":"http://schema.org","@type":"Product","name":"Nan Optipro Stage 1 Baby Formula  800g","description":"During the first year of life, nutrition is critical for your baby. NAN OPTIPRO 1 is tailored to ensure your formula fed infant receives balanced, high quality nutrition.<br />Starter infant formula. The age optimised protein source (whey dominant) is from cow’s milk.<br />Backed by more than 150 years of Nestlé expertise.<br />For hygiene and convenience, it is available in an innovative packaging format with a separate storage area for the scoop, and a semi-transparent window which allows you to see how much powder is left in the can without having to open it.","image":"https://cdn0.woolworths.media/content/wowproductimages/large/155536.jpg","brand":{"@context":"http://schema.org","@type":"Organization","name":"Nan"},"gtin13":"7613287517388","offers":{"@context":"http://schema.org","@type":"Offer","potentialAction":{"@context":"http://schema.org","@type":"BuyAction"},"availability":"http://schema.org/InStock","itemCondition":"http://schema.org/NewCondition","price":23.5,"priceCurrency":"AUD"},"review":[],"sku":"155536"}
+</script>
+<body>
+and it can also be repeated
+<script type="application/ld+json">
+  {"@context":"http://schema.org","@type":"Product","name":"Nan Optipro Stage 1 Baby Formula  800g","description":"During the first year of life, nutrition is critical for your baby. NAN OPTIPRO 1 is tailored to ensure your formula fed infant receives balanced, high quality nutrition.<br />Starter infant formula. The age optimised protein source (whey dominant) is from cow’s milk.<br />Backed by more than 150 years of Nestlé expertise.<br />For hygiene and convenience, it is available in an innovative packaging format with a separate storage area for the scoop, and a semi-transparent window which allows you to see how much powder is left in the can without having to open it.","image":"https://cdn0.woolworths.media/content/wowproductimages/large/155536.jpg","brand":{"@context":"http://schema.org","@type":"Organization","name":"Nan"},"gtin13":"7613287517388","offers":{"@context":"http://schema.org","@type":"Offer","potentialAction":{"@context":"http://schema.org","@type":"BuyAction"},"availability":"http://schema.org/InStock","itemCondition":"http://schema.org/NewCondition","price":23.5,"priceCurrency":"AUD"},"review":[],"sku":"155536"}
+</script>
+<h4>ok</h4>
+</body>
+</html>
+
+    """
+    from .. import html_tools
+
+    # See that we can find the second <script> one, which is not broken, and matches our filter
+    text = html_tools.extract_json_as_string(content, "json:$.offers.priceCurrency")
+    assert text == '"AUD"'
+
+    text = html_tools.extract_json_as_string('{"id":5}', "json:$.id")
+    assert text == "5"
+
+    # also check for jq
+    if jq_support:
+        text = html_tools.extract_json_as_string(content, "jq:.offers.priceCurrency")
+        assert text == '"AUD"'
+
+        text = html_tools.extract_json_as_string('{"id":5}', "jq:.id")
+        assert text == "5"
+
+        text = html_tools.extract_json_as_string(content, "jqraw:.offers.priceCurrency")
+        assert text == "AUD"
+
+        text = html_tools.extract_json_as_string('{"id":5}', "jqraw:.id")
+        assert text == "5"
+
+
+    # When nothing at all is found, it should throw JSONNOTFound
+    # Which is caught and shown to the user in the watch-overview table
+    with pytest.raises(html_tools.JSONNotFound) as e_info:
+        html_tools.extract_json_as_string('COMPLETE GIBBERISH, NO JSON!', "json:$.id")
+
+    if jq_support:
+        with pytest.raises(html_tools.JSONNotFound) as e_info:
+            html_tools.extract_json_as_string('COMPLETE GIBBERISH, NO JSON!', "jq:.id")
+
+        with pytest.raises(html_tools.JSONNotFound) as e_info:
+            html_tools.extract_json_as_string('COMPLETE GIBBERISH, NO JSON!', "jqraw:.id")
+
+
+def test_lone_surrogate_escapes_do_not_break_filters():
+    """A \\uD800-style escape in the watched JSON must not take the whole document down.
+
+    jq re-serializes the document for its own C parser, which rejects a lone high surrogate,
+    so every jq:/jqraw: filter on the page used to error even when pointing at an unrelated
+    field. On the json: path the surrogate instead reached the caller intact and blew up later
+    in checksums and history writes. Valid pairs must keep working untouched.
+    See: https://github.com/dgtlmoon/changedetection.io/issues/4273
+    """
+    from .. import html_tools
+
+    BS = chr(92)  # build the escapes at runtime so no quoting layer eats them
+    lone_high = '{"title": "Example ' + BS + 'uD800", "other": "untouched"}'
+    lone_low = '{"title": "Example ' + BS + 'uDC00", "other": "untouched"}'
+    valid_pair = '{"title": "smile ' + BS + 'uD83D' + BS + 'uDE00", "other": "untouched"}'
+
+    filters = ["json:$.%s", "jq:.%s", "jqraw:.%s"] if jq_support else ["json:$.%s"]
+
+    for content in (lone_high, lone_low):
+        for f in filters:
+            # An unrelated field must still be reachable
+            text = html_tools.extract_json_as_string(content, f % "other")
+            assert "untouched" in text
+
+            # And the offending field itself resolves, with the surrogate replaced
+            text = html_tools.extract_json_as_string(content, f % "title")
+            assert "Example" in text
+            assert not any(0xD800 <= ord(c) <= 0xDFFF for c in text)
+            # Whatever comes back has to survive the downstream checksum/history write
+            text.encode('utf-8')
+
+    # A well-formed surrogate pair is a normal emoji and must be preserved as-is
+    for f in filters:
+        text = html_tools.extract_json_as_string(valid_pair, f % "title")
+        assert '\U0001F600' in text
+        text.encode('utf-8')
+
+    # The surrogate can just as easily land in an object *key*, which has to be sanitized too -
+    # otherwise the whole-document re-serialization still trips over it
+    lone_key = '{"ti' + BS + 'uD800tle": "value", "other": "untouched"}'
+    for f in ("json:$.other", "jq:.other", "jqraw:.other") if jq_support else ("json:$.other",):
+        text = html_tools.extract_json_as_string(lone_key, f)
+        assert "untouched" in text
+        text.encode('utf-8')
+
+    # Dumping the whole document exercises the key path directly
+    for f in ("json:$", "jq:.") if jq_support else ("json:$",):
+        text = html_tools.extract_json_as_string(lone_key, f)
+        assert "value" in text
+        assert not any(0xD800 <= ord(c) <= 0xDFFF for c in text)
+        text.encode('utf-8')
+
+    # Nested arrays and non-string scalars have to be walked too. The scalars come first
+    # deliberately: detection short-circuits on the first surrogate it finds, so anything after
+    # the offending value would never be visited.
+    nested = ('{"count": 3, "flag": null, "ok": true, '
+              '"items": ["clean", "bad' + BS + 'uD800", [1, "deep' + BS + 'uDC00"]]}')
+    for f in ("json:$", "jq:.") if jq_support else ("json:$",):
+        text = html_tools.extract_json_as_string(nested, f)
+        assert "clean" in text and "deep" in text
+        assert not any(0xD800 <= ord(c) <= 0xDFFF for c in text)
+        text.encode('utf-8')
+
+    # ...and the scalars must survive the round-trip unmangled
+    assert html_tools.extract_json_as_string(nested, "json:$.count").strip() == "3"
+
+
+def test_unittest_inline_extract_body():
+    content = """
+    <html>
+        <head></head>
+        <body>
+            <pre style="word-wrap: break-word; white-space: pre-wrap;">
+                {"testKey": 42}
+            </pre>
+        </body>
+    </html>
+    """
+    from .. import html_tools
+
+    # See that we can find the second <script> one, which is not broken, and matches our filter
+    text = html_tools.extract_json_as_string(content, "json:$.testKey")
+    assert text == '42'
+
