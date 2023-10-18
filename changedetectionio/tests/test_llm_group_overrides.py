@@ -26,3 +26,28 @@ def _page_text(res):
     return html.unescape(res.data.decode('utf-8', errors='replace'))
 
 
+def _input_tags(body, name):
+    """Every whole <input ...> tag carrying name="<name>", in document order."""
+    tags = []
+    pos = body.find(f'name="{name}"')
+    while pos != -1:
+        start = body.rfind('<input', 0, pos)
+        end = body.find('>', pos)
+        tags.append(body[start:end + 1])
+        pos = body.find(f'name="{name}"', end)
+    return tags
+
+
+def _input_tag(body, name):
+    """Return the first <input ...> tag carrying name="<name>", or '' if there isn't one."""
+    tags = _input_tags(body, name)
+    return tags[0] if tags else ''
+
+
+def _checkbox_is_checked(body, name):
+    """True when that checkbox renders as checked (attribute order is not guaranteed)."""
+    tag = _input_tag(body, name)
+    assert tag, f'no <input name="{name}"> in the page'
+    return 'checked' in tag
+
+
