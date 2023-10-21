@@ -179,3 +179,62 @@
 
 </div>
 
+<script>
+    const newest_version_timestamp = {{newest_version_timestamp}};
+</script>
+<script src="{{url_for('static_content', group='js', filename='diff-render.js')}}"></script>
+
+{% if llm_configured %}
+<script>
+$(function () {
+    var $area = $('#llm-diff-summary-area');
+    if (!$area.length || !$area.data('pending')) return;
+
+    var fromVersion = $('#diff-from-version').val();
+    var toVersion   = $('#diff-to-version').val();
+    var summaryUrl  = "{{ url_for('ui.ui_diff.diff_llm_summary', uuid=uuid) }}";
+
+    function showLlmError(msg) {
+        $area.find('.llm-diff-summary-text')
+             .removeClass('llm-diff-summary-loading')
+             .addClass('llm-error')
+             .text(msg);
+        $area.removeAttr('data-pending');
+    }
+
+    var llmAllChanges      = $('#llm_all_changes').is(':checked')    ? 1 : 0;
+    var ignoreWhitespace   = $('#ignoreWhitespace').is(':checked')   ? 1 : 0;
+    var showRemoved        = $('#removed').is(':checked')            ? 1 : 0;
+    var showAdded          = $('#added').is(':checked')              ? 1 : 0;
+    $.getJSON(summaryUrl, {
+        from_version:      fromVersion,
+        to_version:        toVersion,
+        all_changes:       llmAllChanges,
+        ignore_whitespace: ignoreWhitespace,
+        removed:           showRemoved,
+        added:             showAdded,
+    })
+        .done(function (data) {
+            if (data.summary) {
+                $area.find('.llm-diff-summary-text')
+                     .removeClass('llm-diff-summary-loading')
+                     .text(data.summary);
+                $area.removeAttr('data-pending');
+            } else if (data.error) {
+                showLlmError(data.error);
+            } else {
+                $area.remove();
+            }
+        })
+        .fail(function (xhr) {
+            var resp = xhr.responseJSON;
+            if (resp && resp.error) {
+                showLlmError(resp.error);
+            } else {
+                showLlmError('AI summary request failed (HTTP ' + xhr.status + ').');
+            }
+        });
+});
+</script>
+{% endif %}
+
