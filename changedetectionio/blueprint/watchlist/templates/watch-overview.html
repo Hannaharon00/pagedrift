@@ -151,3 +151,27 @@ window.watchOverviewI18n = {
 {% endif %}
 
 
+<div class="box" id="add-watch-ui">
+    <form class="pure-form" action="{{ url_for('ui.ui_views.form_quick_watch_add') }}" method="POST" id="new-watch-form">
+        <div id="add-watch-url-row">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="url"><strong>{{ _('Web page URL') }}</strong></label><br>
+            {{ render_nolabel_field(form.url, placeholder="https://...", required=true, class="pure-input-1") }}
+            <button type="submit"  id="add-watch-go" class="pure-button pure-button-primary">{{ _('Watch') }}</button>
+        </div>
+        {% if llm_configured %}
+        <div class="add-watch-option-group" id="quick-watch-llm-intent">
+            <label for="quick_watch_llm_intent"><strong>{{ _('What matters — when to notify me') }}</strong></label>
+            <textarea name="llm_intent"
+                      id="quick_watch_llm_intent"
+                      rows="4"
+                      class="pure-input-1"
+                      placeholder="{{ _('e.g. Notify me when products go in/out of stock, lead times change by more than a week, or new product variants appear. Skip review additions.') }}"></textarea>
+        </div>
+        {% endif %}
+        <div class="add-watch-option-group" id="quick-watch-processor-type">
+            {{ render_simple_field(form.processor) }}
+        </div>
+    </form>
+</div>
+
