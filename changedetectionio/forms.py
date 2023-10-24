@@ -775,3 +775,22 @@ class DefaultUAInputForm(Form):
     if os.getenv("PLAYWRIGHT_DRIVER_URL") or os.getenv("WEBDRIVER_URL"):
         html_webdriver = StringField(_l('Chrome requests'), validators=[validators.Optional()], render_kw={"placeholder": "<default>"})
 
+class globalSettingsForm(Form):
+    # Define these as FormFields/"sub forms", this way it matches the JSON storage
+    # datastore.data['settings']['application']..
+    # datastore.data['settings']['requests']..
+    def __init__(self, formdata=None, obj=None, prefix="", data=None, meta=None, **kwargs):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        self.application.notification_body.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+        self.application.notification_title.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+        self.application.notification_urls.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+
+    requests = FormField(globalSettingsRequestForm)
+    application = FormField(globalSettingsApplicationForm)
+    llm = FormField(globalSettingsLLMForm)
+    save_button = SubmitField(_l('Save'), render_kw={"class": "pure-button pure-button-primary"})
+
+
+class extractDataForm(Form):
+    extract_regex = StringField(_l('RegEx to extract'), validators=[validators.DataRequired(), ValidateSinglePythonRegexString()])
+    extract_submit_button = SubmitField(_l('Extract as CSV'), render_kw={"class": "pure-button pure-button-primary"})
