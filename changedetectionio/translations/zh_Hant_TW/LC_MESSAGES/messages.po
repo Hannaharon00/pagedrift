@@ -1143,6 +1143,66 @@ msgstr "找不到 UUID 為 {} 的監測任務。"
 msgid "Switched to mode - {}."
 msgstr "已切換至模式 - {}。"
 
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr "無法載入「{}」處理器，可能缺少處理器外掛程式。請選擇不同的處理器。"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "無法載入「{}」處理器，可能缺少處理器外掛程式。"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr "系統設定預設值"
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr "預設值"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "已更新監測任務 - 已取消暫停！"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "已更新監測任務。"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "預覽無法使用 - 未完成抓取 / 檢查或未觸發"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "差異"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "顯示第 <b>{start} - {end}</b> 條{record_name}，共 <b>{total}</b> 條"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr "個排程項目"
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr "已清除排程佇列（已移除 {} 個項目）。"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "這將移除「所有」監測任務的版本歷史記錄（快照），外加保留您的 URL 列表！"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "您可能想先使用"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "備份"
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked."
 msgstr ""
