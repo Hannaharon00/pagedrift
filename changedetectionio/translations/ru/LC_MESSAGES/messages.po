@@ -1722,6 +1722,69 @@ msgid "Not supported by Selenium browser"
 msgstr "Не поддерживается браузером Selenium."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Активировать предварительный просмотр"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Советы:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Используйте страницу предварительного просмотра, чтобы увидеть выделенные фильтры и триггеры."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Ограничить триггер/игнорирование/блокировку/извлечение до;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Примечание. В зависимости от длины и сходства текста в каждой строке алгоритм может учитывать, например, "
+"<strong>addition</strong> вместо <strong>replacement</strong>."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Поэтому всегда лучше выбрать"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "когда вы заинтересованы в новом контенте."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Когда контент просто перемещается в списке, это также вызывает"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "добавление"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "рассмотреть возможность включения"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Срабатывает только при появлении уникальных строк"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Подходит для веб-сайтов, которые просто перемещают контент, и вы хотите знать, когда добавляется НОВЫЙ контент, "
+"сравнивает новые строки со всей историей для этих часов."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+"Помогает уменьшить количество обнаруженных изменений, вызванных перетасовкой строк на сайтах. В сочетании с "
+"<i>проверьте уникальные строки</i> ниже."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Are you sure you want to delete the watch for:"
 msgstr "Вы уверены, что хотите удалить часы для:"
 
