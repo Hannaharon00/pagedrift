@@ -333,3 +333,66 @@ class RecheckPriorityQueue:
             logger.critical(f"CRITICAL: Failed to emit get signals: {str(e)}")
 
 
+class NotificationQueue:
+    """
+    Ultra-reliable notification queue using pure janus.
+    
+    CRITICAL DESIGN NOTE: Both sync_q and async_q are required because:
+    - sync_q: Used by Flask routes, ticker threads, and other synchronous code
+    - async_q: Used by async workers and coroutines
+    
+    DO NOT REMOVE EITHER INTERFACE - they bridge different execution contexts.
+    See RecheckPriorityQueue docstring above for detailed explanation.
+    
+    Simple wrapper around janus with bulletproof error handling.
+    """
+    
+    def __init__(self, maxsize: int = 0, datastore=None):
+        try:
+            # Use pure threading.Queue to avoid event loop binding issues
+            self._notification_queue = queue.Queue(maxsize=maxsize if maxsize > 0 else 0)
+            self.notification_event_signal = signal('notification_event')
+            self.datastore = datastore  # For checking all_muted setting
+            self._lock = threading.RLock()
+            logger.debug("NotificationQueue initialized successfully")
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to initialize NotificationQueue: {str(e)}")
+            raise
+
+    def set_datastore(self, datastore):
+        """Set datastore reference after initialization (for circular dependency handling)"""
+        self.datastore = datastore
+    
+    def put(self, item: Dict[str, Any], block: bool = True, timeout: Optional[float] = None):
+        """Thread-safe sync put with signal emission"""
+        logger.trace(f"NotificationQueue.put() called for item: {item.get('uuid', 'unknown')}, block={block}, timeout={timeout}")
+        try:
+            # Check if all notifications are muted
+            if self.datastore and self.datastore.data['settings']['application'].get('all_muted', False):
+                logger.debug(f"Notification blocked - all notifications are muted: {item.get('uuid', 'unknown')}")
+                return False
+
+            with self._lock:
+                self._notification_queue.put(item, block=block, timeout=timeout)
+            self._emit_notification_signal(item)
+            logger.trace(f"NotificationQueue.put() successfully queued notification: {item.get('uuid', 'unknown')}")
+            return True
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to put notification {item.get('uuid', 'unknown')}: {str(e)}")
+            return False
+    
+    async def async_put(self, item: Dict[str, Any], executor=None):
+        """Async put with signal emission - uses thread pool
+
+        Args:
+            item: Notification item to queue
+            executor: Optional ThreadPoolExecutor
+        """
+        logger.trace(f"NotificationQueue.async_put() called for item: {item.get('uuid', 'unknown')}, executor={executor}")
+        import asyncio
+        try:
+            # Check if all notifications are muted
+            if self.datastore and self.datastore.data['settings']['application'].get('all_muted', False):
+                logger.debug(f"Notification blocked - all notifications are muted: {item.get('uuid', 'unknown')}")
+                return False
+
