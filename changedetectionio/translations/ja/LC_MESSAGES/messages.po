@@ -1621,6 +1621,62 @@ msgstr "アラート！追加ヘッダーファイルが見つかりました。
 msgid "Headers can be also read from a file in your data-directory"
 msgstr "ヘッダーはデータディレクトリのファイルからも読み込めます"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "詳しくはこちら"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Seleniumブラウザではサポートされていません"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "テキスト検索をオンにする"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "お待ちください。最初のブラウザステップの読み込みに少し時間がかかる場合があります.."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "クリックして開始"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "ブラウザの接続に10〜15秒お待ちください。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "「Play」を押して開始してください。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "ビジュアルセレクターのデータが準備できていません。ウォッチを少なくとも1回チェックする必要があります。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr "申し訳ありませんが、この機能はインタラクティブなJavascriptをサポートするフェッチャー（現在はPlaywrightベースのフェッチャーのみ）でのみ動作します"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "インタラクティブなJavascriptをサポートするものに変更してください。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "次の操作が必要です："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "取得方式を設定する"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr "フィルタがページで見つからなくなったときに通知を送信します。ページが変更されてフィルタが機能しなくなったことを把握するのに便利です。"
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "running"
 msgstr ""
