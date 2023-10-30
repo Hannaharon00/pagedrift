@@ -126,6 +126,29 @@ def pytest_runtest_makereport(item, call):
     setattr(item, f"rep_{rep.when}", rep)
 
 
+@pytest.fixture
+def environment(mocker):
+    """Mock arrow.now() to return a fixed datetime for testing jinja2 time extension."""
+    # Fixed datetime: Wed, 09 Dec 2015 23:33:01 UTC
+    # This is calculated to match the test expectations when offsets are applied
+    fixed_datetime = arrow.Arrow(2015, 12, 9, 23, 33, 1, tzinfo='UTC')
+    # Patch on the arrow module itself - TimeExtension imports arrow lazily inside its methods
+    # (import diet), so there is no module-level TimeExtension.arrow attribute to patch
+    mocker.patch('arrow.now', return_value=fixed_datetime)
+    return fixed_datetime
+
+
+def format_memory_human(bytes_value):
+    """Format memory in human-readable units (KB, MB, GB)"""
+    if bytes_value < 1024:
+        return f"{bytes_value} B"
+    elif bytes_value < 1024 ** 2:
+        return f"{bytes_value / 1024:.2f} KB"
+    elif bytes_value < 1024 ** 3:
+        return f"{bytes_value / (1024 ** 2):.2f} MB"
+    else:
+        return f"{bytes_value / (1024 ** 3):.2f} GB"
+
 def track_memory(memory_usage, ):
     process = psutil.Process(os.getpid())
     while not memory_usage["stop"]:
