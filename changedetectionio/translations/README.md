@@ -30,6 +30,75 @@ The GNU gettext manual is explicit on this:
 > guideline applies. The manual also notes that "in some languages the translator might want to swap the
 > order" of components.
 
+> **[No embedded URLs](https://www.gnu.org/software/gettext/manual/html_node/No-embedded-URLs.html)**:
+> URLs should not be written directly inside `msgid`s; they should be injected via `%(name)s` placeholders
+> and values passed as kwargs.
+
+> **[No unusual markup](https://www.gnu.org/software/gettext/manual/html_node/No-unusual-markup.html)**:
+> "HTML markup, however, is common enough that it's probably ok to use in translatable strings."
+
+Fragments break differently depending on language family:
+
+| Language family | How fragmentation breaks it |
+|---|---|
+| SOV (Japanese, Korean, Turkish) | Verb-final word order can't be achieved when verb and subject are in separate fragments |
+| Germanic (German) | Gender/case agreement between article and noun is lost across fragment boundaries |
+| Romance (French, Spanish, Italian, Portuguese) | Adjective placement, subjunctive mood, verb agreement can't be maintained |
+| Slavic (Czech, Ukrainian) | Case (driven by preposition/verb relationships) is easy to get wrong |
+| CJK (Chinese, Japanese, Korean) | Modifier position and SVO-vs-topic-prominent differences can't be applied at fragment level |
+
+A past workaround was redistributing translations across adjacent fragments and using `msgstr " "` (a
+single space) to suppress unused fragments. This is fragile: as soon as the same short `msgid` is reused
+in a different template, the redistributed translation is applied verbatim and breaks the new context.
+
+---
+
+## The four correct patterns
+
+### Pattern 1 — Inline HTML embedding
+
+Keep markup **inside** the `msgid`. Render with `| safe`. This also lets CJK translators decide how to
+handle `<i>` (see CJK section below).
+
+```jinja
+{# BAD: three fragments; CJK translators can't see the <i> at all #}
+{{ _('Helps reduce changes detected caused by sites shuffling lines around, combine with') }}
+<i>{{ _('check unique lines') }}</i>
+{{ _('below.') }}
+
+{# GOOD: one msgid, rendered with |safe #}
+{{ _('Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below.') | safe }}
+```
+
+### Pattern 2 — URL as kwarg
+
+Pass URLs via `%(name)s` so translators can freely reorder them.
+
+```jinja
+{# BAD: URL hardcoded between three fragments #}
+{{ _('Use') }}
+<a target="newwindow" href="https://github.com/caronc/apprise">{{ _('AppRise Notification URLs') }}</a>
+{{ _('for notification to just about any service!') }}
+
+{# GOOD: URL passed as kwarg, <a> embedded in the msgid #}
+{{ _('Use <a target="newwindow" href="%(url)s">AppRise Notification URLs</a> for notification to just about any service!',
+     url='https://github.com/caronc/apprise') | safe }}
+```
+
+### Pattern 3 — Literal `{{}}` escape as kwarg
+
+Jinja2 would double-interpolate `{{token}}` inside a `_()` call. Pass it as a kwarg instead.
+
+```jinja
+{# BAD: literal {{token}} in the middle forces splitting #}
+{{ _('Accepts the') }} <code>{{ '{{token}}' }}</code> {{ _('placeholders listed below') }}
+
+{# GOOD: literal passed as kwarg; msgid stays as an entire sentence #}
+{{ _('Accepts the <code>%(token)s</code> placeholders listed below', token='{{token}}') | safe }}
+```
+
+### Pattern 4 — `{% if %}` outside the `msgid`
+
 Move conditional branches outside `_()` so each branch is a complete sentence, not a fragment.
 
 ```jinja
