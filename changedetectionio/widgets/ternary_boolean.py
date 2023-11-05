@@ -50,3 +50,55 @@ class TernaryNoneBooleanWidget:
 
         return Markup(''.join(html))
 
+class TernaryNoneBooleanField(Field):
+    """
+    A field that can handle True, False, or None values, represented as a horizontal radio group.
+    When boolean_mode=True, it acts like a BooleanField (only Yes/No options).
+    When boolean_mode=False (default), it shows Yes/No/Default options.
+    
+    Custom text can be provided for each option:
+    - yes_text: Text for True option (default: "Yes")
+    - no_text: Text for False option (default: "No")  
+    - none_text: Text for None option (default: "Default")
+    """
+    widget = TernaryNoneBooleanWidget()
+    
+    def __init__(self, label=None, validators=None, false_values=None, boolean_mode=False,
+                 yes_text=None, no_text=None, none_text=None, **kwargs):
+        super(TernaryNoneBooleanField, self).__init__(label, validators, **kwargs)
+        
+        self.boolean_mode = boolean_mode
+        self.yes_text = yes_text if yes_text is not None else _l('Yes')
+        self.no_text = no_text if no_text is not None else _l('No')
+        self.none_text = none_text if none_text is not None else _l('Main settings')
+        
+        if false_values is None:
+            self.false_values = {'false', ''}
+        else:
+            self.false_values = false_values
+
+    def process_formdata(self, valuelist):
+        if not valuelist or not valuelist[0]:
+            # In boolean mode, default to False instead of None
+            self.data = False if self.boolean_mode else None
+        elif valuelist[0].lower() == 'true':
+            self.data = True
+        elif valuelist[0].lower() == 'false':
+            self.data = False
+        elif valuelist[0].lower() == 'none':
+            # In boolean mode, treat 'none' as False
+            self.data = False if self.boolean_mode else None
+        else:
+            self.data = False if self.boolean_mode else None
+
+    def _value(self):
+        if self.data is True:
+            return 'true'
+        elif self.data is False:
+            return 'false'
+        else:
+            # In boolean mode, None should be treated as False
+            if self.boolean_mode:
+                return 'false'
+            else:
+                return 'none'
