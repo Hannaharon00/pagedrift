@@ -1798,3 +1798,60 @@ msgstr "닫기"
 msgid "Web page"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "편집 > 모니터링"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "가져오기 방식"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "알림 본문"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "알림 형식"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "알림 제목"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "알림 URL 목록"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "감지 방식 선택"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "모니터링 확인 예약의 기본 시간대"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "텍스트 추출 전 대기 시간(초)"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "1초 이상을 포함해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "알림 기본 URL 재정의"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "설정되지 않음"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "저장"
+
