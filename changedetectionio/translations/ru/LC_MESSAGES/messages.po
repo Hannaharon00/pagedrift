@@ -2124,3 +2124,57 @@ msgstr "Требуется оператор."
 msgid "Field is required."
 msgstr "Поле обязательно."
 
+#: changedetectionio/flask_app.py
+msgid "hour"
+msgstr "час"
+
+#: changedetectionio/flask_app.py
+msgid "hours"
+msgstr "часов"
+
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "минута"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "минут"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "секунда"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "секунды"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Уже вошел в систему"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Вы должны войти в систему, пожалуйста, войдите."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Неправильный пароль"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Должен быть указан хотя бы один временной интервал (недели, дни, часы, минуты или секунды)."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+"Если не используются глобальные настройки, необходимо указать хотя бы один временной интервал (недели, дни, часы, "
+"минуты или секунды)."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Неверный формат времени. Используйте ЧЧ:ММ."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "Недопустимое название часового пояса."
+
