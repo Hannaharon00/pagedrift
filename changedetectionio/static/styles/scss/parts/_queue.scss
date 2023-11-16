@@ -45,3 +45,58 @@
       align-items: center;
       justify-content: flex-start;
 
+  a.queue-cancel {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--color-white);
+      text-decoration-style: solid;
+    }
+
+    &.is-busy {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+
+  // Brief flash when a queued row first appears
+  tr.is-new td { animation: queue-row-in 0.45s ease; }
+  @keyframes queue-row-in {
+    from { background-color: rgba(28, 184, 65, 0.18); }
+    to { background-color: transparent; }
+  }
+
+  // "Waiting for new pages to check…" footer; shown only when both workers
+  // and queue have no actual jobs.
+  .queue-waiting {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+
+    &[data-show="true"] {
+      display: flex;
+    }
+
+    .spinner {
+      // The shared .spinner has `margin: 0 auto` which inside a flex container
+      // absorbs all free space and pushes the label far to the right.
+      margin: 0;
+      flex: 0 0 auto;
+      // Shared spinner's dark borders don't read on the colourful gradient bg.
+      border-top-color: rgba(255, 255, 255, 0.18);
+      border-right-color: rgba(255, 255, 255, 0.18);
+      border-bottom-color: rgba(255, 255, 255, 0.18);
+      border-left-color: var(--color-white);
+    }
+  }
+}
