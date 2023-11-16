@@ -35,3 +35,7 @@ def is_valid_uuid(val):
         return False
 
 
+# def test_setup(client, live_server, measure_memory_usage, datastore_path):
+   #  live_server_setup(live_server) # Setup on conftest per function
+
+
