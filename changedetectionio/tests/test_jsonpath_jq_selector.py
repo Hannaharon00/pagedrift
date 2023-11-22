@@ -205,3 +205,68 @@ def test_unittest_inline_extract_body():
     text = html_tools.extract_json_as_string(content, "json:$.testKey")
     assert text == '42'
 
+def set_json_response_with_html(datastore_path):
+    test_return_data = """
+    {
+      "test": [
+        {
+          "html": "<b>"
+        }
+      ]
+    }
+    """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
+def set_modified_response(datastore_path):
+    test_return_data = """
+    {
+      "employees": [
+        {
+          "id": 1,
+          "name": "Pankaj",
+          "salary": "10000"
+        },
+        {
+          "name": "David",
+          "salary": "5000",
+          "id": 2
+        }
+      ],
+      "boss": {
+        "name": "Örnsköldsvik"
+      },
+      "available": false
+    }
+        """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    return None
+
+def test_check_json_without_filter(client, live_server, measure_memory_usage, datastore_path):
+    # Request a JSON document from a application/json source containing HTML
+    # and be sure it doesn't get chewed up by instriptis
+    set_json_response_with_html(datastore_path=datastore_path)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type="application/json", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    # Should still see '"html": "<b>"'
+    assert b'&#34;html&#34;: &#34;&lt;b&gt;&#34;' in res.data
+    assert res.data.count(b'{') >= 2
+
+    delete_all_watches(client)
+
