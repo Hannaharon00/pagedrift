@@ -764,6 +764,60 @@ msgid "Drive your changedetection.io via API, More about"
 msgstr "Korzystaj z serwisu changedetection.io za pośrednictwem API. Więcej informacji na temat"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "API access and examples here"
+msgstr "Dostęp do API i przykłady znajdziesz tutaj"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Restrict API access limit by using"
+msgstr "Ogranicz limit dostępu do API za pomocą"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "header - required for the Chrome Extension to work"
+msgstr "nagłówek – niezbędny do działania rozszerzenia w przeglądarce Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "copy"
+msgstr "kopia"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Regenerate API key"
+msgstr "Odśwież klucz API"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Extension"
+msgstr "Rozszerzenie do przeglądarki Chrome"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Easily add any web-page to your changedetection.io installation from within Chrome."
+msgstr ""
+"Z poziomu przeglądarki Chrome możesz w prosty sposób dodać dowolną stronę internetową do swojej instalacji "
+"changedetection.io."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 1"
+msgstr "Krok 1"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Install the extension,"
+msgstr "Zainstaluj rozszerzenie,"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 2"
+msgstr "Krok 2"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Navigate to this page,"
+msgstr "Przejdź na tę stronę,"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 3"
+msgstr "Krok 3"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Open the extension from the toolbar and click"
+msgstr "Otwórz rozszerzenie z paska narzędzi i kliknij"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Sync API Access"
 msgstr "Dostęp do interfejsu API synchronizacji"
 
