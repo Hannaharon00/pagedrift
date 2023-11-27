@@ -3,6 +3,19 @@
 import time
 import os
 
+from flask import url_for
+
+from ..html_tools import *
+from .util import live_server_setup, wait_for_all_checks, delete_all_watches
+
+
+
+
+def set_response_with_multiple_index(datastore_path):
+    data= """<!DOCTYPE html>
+<html>
+<body>
+
 <!-- NOTE!! CHROME WILL ADD TBODY HERE IF ITS NOT THERE!! -->
 <table style="width:100%">
   <tr>
