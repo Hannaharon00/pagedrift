@@ -579,6 +579,66 @@ msgid "Password is locked."
 msgstr "密碼已鎖定。"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Clear Snapshot History"
+msgstr "清除快照歷史記錄"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr "啟用密碼時允許匿名存取監測歷史頁面"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "當請求未傳回任何內容，或 HTML 不包含任何文字時，是否將其視為變更？"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "為所有監測任務選擇預設代理伺服器"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the <strong>Basic</strong> method (default) where your watched sites don't need Javascript to render."
+msgstr "使用 <strong>基本</strong> 方法（預設），適用於您監測的網站不需要 Javascript 渲染的情況。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"The <strong>Chrome/Javascript</strong> method requires a network connection to a running WebDriver+Chrome server, set"
+" by the ENV var 'WEBDRIVER_URL'."
+msgstr "<strong>Chrome / Javascript</strong> 方法需要連線到執行中的 WebDriver + Chrome 伺服器，其位址由環境變數 'WEBDRIVER_URL' 設定。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr "如果您在等待頁面完全渲染時遇到問題（文字遺失等），請嘗試在此增加「等待」時間。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait <i>n</i> seconds before extracting the text."
+msgstr "這會等待 <i>n</i> 秒後才提取文字。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of concurrent workers to process watches. More workers = faster processing but higher memory usage."
+msgstr "處理監測任務的並行工作程序數量。更多工作程序 = 處理速度更快，但記憶體使用量更高。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Currently running:"
+msgstr "目前執行中："
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "operational"
+msgstr "運作中"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "workers"
+msgstr "工作程序"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "actively processing"
+msgstr "活躍處理中"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Example - 3 seconds random jitter could trigger up to 3 seconds earlier or up to 3 seconds later"
+msgstr "範例 - 3 秒的隨機抖動可能會提早最多 3 秒或延後最多 3 秒觸發"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "For regular plain requests (not chrome based), maximum number of seconds until timeout, 1-999."
 msgstr "對於一般常規請求（非基於 Chrome），逾時前的最大秒數，1-999。"
 
