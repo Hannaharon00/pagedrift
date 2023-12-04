@@ -52,3 +52,44 @@ def construct_tag_routes(rss_blueprint, datastore):
             if tag_uuid not in watch.get('tags', []):
                 continue
 
+            # Skip muted watches if configured
+            if datastore.data['settings']['application'].get('rss_hide_muted_watches') and watch.get('notification_muted'):
+                continue
+
+            # Check if watch has at least 2 history snapshots
+            dates = list(watch.history.keys())
+            if len(dates) < 2:
+                continue
+
+            # Only include unviewed watches
+            if not watch.viewed:
+                # Include a link to the diff page (use uuid from loop, don't modify watch dict)
+                diff_link = {'href': url_for('ui.ui_diff.diff_history_page', uuid=uuid, _external=True)}
+
+                # Get watch label
+                watch_label = get_watch_label(datastore, watch)
+
+                # Get template and build notification context
+                timestamp_to = dates[-1]
+                timestamp_from = dates[-2]
+
+                # Generate GUID for this entry
+                guid = generate_watch_guid(watch, timestamp_to)
+                n_body_template = get_rss_template(datastore, watch, rss_content_format,
+                                                   RSS_TEMPLATE_HTML_DEFAULT, RSS_TEMPLATE_PLAINTEXT_DEFAULT)
+
+                n_object = build_notification_context(watch, timestamp_from, timestamp_to,
+                                                     watch_label, n_body_template, rss_content_format)
+
+                # Render notification
+                res = render_notification(n_object, notification_service, watch, datastore)
+
+                # Create and populate feed entry
+                fe = fg.add_entry()
+                title_suffix = f"Change @ {res['original_context']['change_datetime']}"
+                populate_feed_entry(fe, watch, res['body'], guid, timestamp_to, link=diff_link, title_suffix=title_suffix)
+                add_watch_categories(fe, watch, datastore)
+
+        response = make_response(fg.rss_str())
+        response.headers.set('Content-Type', 'application/rss+xml;charset=utf-8')
+        return response
