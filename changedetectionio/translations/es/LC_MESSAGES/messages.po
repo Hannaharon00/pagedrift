@@ -2278,3 +2278,58 @@ msgstr "Ya has iniciado sesión"
 msgid "You must be logged in, please log in."
 msgstr "Debes iniciar sesión, por favor inicia sesión."
 
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Coincidencia"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Coincide con todo lo siguiente"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Coincide con cualquiera de los siguientes"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Usar página <title> en la lista"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Número de elementos del historial por monitor que se deben conservar"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "El cuerpo debe estar vacío cuando el método de solicitud está configurado en GET"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Configuración de sintaxis de plantilla no válida:%(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Sintaxis de plantilla no válida:%(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Sintaxis de plantilla no válida en \"%(header)s\"encabezado:%(error)s"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Nombre"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL de proxy"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Las URL de proxy deben comenzar con http://, https:// o socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL de conexión del navegador"
+
