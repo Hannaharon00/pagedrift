@@ -2090,3 +2090,59 @@ msgstr ""
 msgid "Extracted number after 'Filters & Triggers'"
 msgstr ""
 
+#: changedetectionio/flask_app.py
+msgid "month"
+msgstr "mes"
+
+#: changedetectionio/flask_app.py
+msgid "months"
+msgstr "meses"
+
+#: changedetectionio/flask_app.py
+msgid "week"
+msgstr "semana"
+
+#: changedetectionio/flask_app.py
+msgid "weeks"
+msgstr "semanas"
+
+#: changedetectionio/flask_app.py
+msgid "day"
+msgstr "día"
+
+#: changedetectionio/flask_app.py
+msgid "days"
+msgstr "días"
+
+#: changedetectionio/flask_app.py
+msgid "hour"
+msgstr "hora"
+
+#: changedetectionio/flask_app.py
+msgid "hours"
+msgstr "horas"
+
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "minuto"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "minutos"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "segundo"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "segundos"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Ya has iniciado sesión"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Debes iniciar sesión, por favor inicia sesión."
+
