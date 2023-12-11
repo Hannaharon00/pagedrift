@@ -1665,3 +1665,59 @@ msgstr ""
 msgid "Mute notification"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "Doplnění zásob a cena"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "Nejsou nakonfigurována žádná sledování webových stránek, do výše uvedeného pole přidejte adresu URL nebo"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "importovat seznam"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr ""
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr "Větší než"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr "Menší než"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than or Equal To"
+msgstr "Větší než nebo shodný s"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than or Equal To"
+msgstr "Menší než nebo shodný s"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Equals"
+msgstr "Shoduje se s"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Not Equals"
+msgstr "Neshoduje se"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Contains"
+msgstr "Obsahuje"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Field"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Does NOT Contain"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Starts With"
+msgstr ""
+
