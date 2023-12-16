@@ -26,3 +26,39 @@ def set_original_response(datastore_path, props_markup='', price="121.95"):
     time.sleep(1)
     return None
 
+def test_restock_itemprop_basic(client, live_server, measure_memory_usage, datastore_path):
+
+    test_url = url_for('test_endpoint', _external=True)
+
+    # By default it should enable ('in_stock_processing') == 'all_changes'
+
+    for p in instock_props:
+        set_original_response(props_markup=p, datastore_path=datastore_path)
+        client.post(
+            url_for("ui.ui_views.form_quick_watch_add"),
+            data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+            follow_redirects=True
+        )
+        wait_for_all_checks(client)
+        res = client.get(url_for("watchlist.index"))
+        assert b'more than one price detected' not in res.data
+        assert b'has-restock-info' in res.data
+        assert b' in-stock' in res.data
+        assert b' not-in-stock' not in res.data
+        delete_all_watches(client)
+
+
+    for p in out_of_stock_props:
+        set_original_response(props_markup=p, datastore_path=datastore_path)
+        client.post(
+            url_for("ui.ui_views.form_quick_watch_add"),
+            data={"url": test_url, "tags": '', 'processor': 'restock_diff'},
+            follow_redirects=True
+        )
+        wait_for_all_checks(client)
+        res = client.get(url_for("watchlist.index"))
+
+        assert b'has-restock-info not-in-stock' in res.data
+
+        delete_all_watches(client)
+
