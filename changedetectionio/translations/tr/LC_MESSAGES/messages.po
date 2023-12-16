@@ -225,6 +225,68 @@ msgstr "Not: Bu, ana uygulama ayarlarını geçersiz kılmaz, yalnızca izleyici
 msgid "Max upload size: %(upload)s MB, Max decompressed size: %(decomp)s MB"
 msgstr ""
 
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all groups found in backup?"
+msgstr "Yedekte bulunan tüm gruplar dahil edilsin mi?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing groups of the same UUID?"
+msgstr "Aynı UUID'ye sahip mevcut gruplar değiştirilsin mi?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Include all watches found in backup?"
+msgstr "Yedekte bulunan tüm izleyiciler dahil edilsin mi?"
+
+#: changedetectionio/blueprint/backups/templates/backup_restore.html
+msgid "Replace any existing watches of the same UUID?"
+msgstr "Aynı UUID'ye sahip mevcut izleyiciler değiştirilsin mi?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Importing 5,000 of the first URLs from your list, the rest can be imported again."
+msgstr "Listenizden ilk 5.000 URL içe aktarılıyor, geri kalanı daha sonra tekrar içe aktarılabilir."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from list in {duration}s, {skipped_count} Skipped."
+msgstr "{count} kayıt listeden {duration} saniyede içe aktarıldı, {skipped_count} atlandı."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read JSON file, was it broken?"
+msgstr "JSON dosyası okunamıyor, bozuk olabilir mi?"
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "JSON structure looks invalid, was it broken?"
+msgstr "JSON yapısı geçersiz görünüyor, bozuk olabilir mi?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped."
+msgstr "{count} kayıt Distill.io'dan {duration} saniyede içe aktarıldı, {skipped_count} atlandı."
+
+#: changedetectionio/blueprint/imports/importer.py
+msgid "Unable to read export XLSX file, something wrong with the file?"
+msgstr "Dışa aktarılan XLSX dosyası okunamıyor, dosyada bir sorun mu var?"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, URL value was incorrect, row was skipped."
+msgstr "Satır numarası {} işlenirken hata oluştu, URL değeri yanlıştı, satır atlandı."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "Error processing row number {}, check all cell data types are correct, row was skipped."
+msgstr "Satır numarası {} işlenirken hata oluştu, tüm hücre veri tiplerinin doğru olduğunu kontrol edin, satır atlandı."
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from Wachete .xlsx in {duration}s"
+msgstr "{count} kayıt Wachete .xlsx dosyasından {duration} saniyede içe aktarıldı"
+
+#: changedetectionio/blueprint/imports/importer.py
+#, python-brace-format
+msgid "{count} imported from custom .xlsx in {duration}s"
+msgstr "{count} kayıt özel .xlsx dosyasından {duration} saniyede içe aktarıldı"
+
 #: changedetectionio/blueprint/imports/templates/import.html
 msgid "URL List"
 msgstr "URL Listesi"
