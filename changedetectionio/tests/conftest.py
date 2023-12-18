@@ -126,3 +126,47 @@ def pytest_runtest_makereport(item, call):
     setattr(item, f"rep_{rep.when}", rep)
 
 
+def track_memory(memory_usage, ):
+    process = psutil.Process(os.getpid())
+    while not memory_usage["stop"]:
+        current_rss = process.memory_info().rss
+        memory_usage["peak"] = max(memory_usage["peak"], current_rss)
+        memory_usage["current"] = current_rss  # Keep updating current
+        time.sleep(0.01)  # Adjust the sleep time as needed
+
+@pytest.fixture(scope='function')
+def measure_memory_usage(request):
+    memory_usage = {"peak": 0, "current": 0, "stop": False}
+    tracker_thread = Thread(target=track_memory, args=(memory_usage,))
+    tracker_thread.start()
+
+    yield
+
+    memory_usage["stop"] = True
+    tracker_thread.join()
+
+    # Note: psutil returns RSS memory in bytes
+    peak_human = format_memory_human(memory_usage["peak"])
+
+    s = f"{time.time()} {request.node.fspath} - '{request.node.name}' - Peak memory: {peak_human}"
+    logger.debug(s)
+
+    with open("test-memory.log", 'a') as f:
+        f.write(f"{s}\n")
+
+    # Assert that the memory usage is less than 200MB
+#    assert peak_memory_kb < 150 * 1024, f"Memory usage exceeded 150MB: {peak_human}"
+
+
+def cleanup(datastore_path):
+    import glob
+    # Unlink test output files
+    for g in ["*.txt", "*.json", "*.pdf"]:
+        files = glob.glob(os.path.join(datastore_path, g))
+        for f in files:
+            if 'proxies.json' in f:
+                # Usually mounted by docker container during test time
+                continue
+            if os.path.isfile(f):
+                os.unlink(f)
+
