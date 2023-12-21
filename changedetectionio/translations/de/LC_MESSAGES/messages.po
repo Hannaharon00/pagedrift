@@ -1674,6 +1674,65 @@ msgstr ""
 msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
 msgstr "zeige <b>{start} - {end}</b> {record_name} von insgesamt <b>{total}</b>"
 
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr ""
+"Dadurch wird der Versionsverlauf (Snapshots) für ALLE Überwachungen gelöscht, aber Ihre Liste mit URLs bleibt "
+"erhalten!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Möglicherweise möchten Sie die verwenden"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "Backups"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr "Link zuerst."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "Bestätigungstext"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr "Geben Sie das Wort ein"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr "um zu bestätigen, dass Sie es verstanden haben."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr "Verlauf löschen!"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr "Diff als Bild teilen"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr "Als Bild teilen"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr "Ignorieren Sie alle übereinstimmenden Zeilen"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr "Ignorieren Sie alle übereinstimmenden Zeilen mit Ausnahme von Ziffern"
+
 #. 'From' labels the older snapshot version selector on the diff page
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgctxt "diff version"
