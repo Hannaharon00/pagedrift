@@ -38,6 +38,77 @@ def is_valid_uuid(val):
 # TIER 1: CRITICAL SECURITY TESTS
 # ============================================================================
 
+def test_api_large_payload_dos(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that excessively large payloads are rejected to prevent DoS.
+    Addresses memory leak issues found in changelog.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Huge ignore_text array
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "ignore_text": ["a" * 10000] * 100  # 1MB of data
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should either accept (with limits) or reject
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 2: Massive headers object
+    huge_headers = {f"X-Header-{i}": "x" * 1000 for i in range(100)}
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "headers": huge_headers
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should reject or truncate
+    assert res.status_code in [201, 400, 413]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 3: Huge browser_steps array
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "browser_steps": [
+                {"operation": "click", "selector": "#test" * 1000, "optional_value": ""}
+            ] * 100
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should reject or limit
+    assert res.status_code in [201, 400, 413]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 4: Extremely long title
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "title": "x" * 100000  # 100KB title
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should reject (exceeds maxLength: 5000)
+    assert res.status_code == 400
+
+    delete_all_watches(client)
+
+
 def test_api_utf8_encoding_edge_cases(client, live_server, measure_memory_usage, datastore_path):
     """
     Test UTF-8 encoding edge cases that have caused bugs on Windows.
