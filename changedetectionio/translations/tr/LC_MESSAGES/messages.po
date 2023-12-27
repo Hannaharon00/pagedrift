@@ -523,6 +523,63 @@ msgid "Fetching"
 msgstr "Getiriliyor"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Global Filters"
+msgstr "Genel Filtreler"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "UI Options"
+msgstr "Arayüz Seçenekleri"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Backups"
+msgstr "Yedeklemeler"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "Saat ve Tarih"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "CAPTCHA ve Proxy'ler"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI / LLM"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "Bilgi"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "Tüm izleyiciler için varsayılan yeniden kontrol süresi, mevcut sistem minimumu"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "daha fazla bilgi"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "CSS/xPath filtresi arka arkaya bu kadar çok kez eksik olduğunda bir bildirim gönder"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to <strong>0</strong> to disable"
+msgstr "Devre dışı bırakmak için <strong>0</strong>'a ayarlayın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr "Her izleyici için geçmiş anlık görüntülerin toplanmasını bu sayıda geçmiş öğesiyle sınırla."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "Devre dışı bırakmak / sınır koymamak için boş bırakın"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "changedetection.io uygulamanız için parola koruması."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Password is locked."
 msgstr "Parola kilitli."
 
