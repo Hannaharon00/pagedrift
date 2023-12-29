@@ -2132,3 +2132,60 @@ msgstr ""
 msgid "months"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Selector"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS or xPath selector"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "value"
+msgstr ""
+
+#: changedetectionio/conditions/form.py changedetectionio/forms.py
+msgid "Value"
+msgstr ""
+
