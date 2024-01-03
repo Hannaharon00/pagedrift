@@ -755,6 +755,78 @@ msgid "Restrict API access limit by using"
 msgstr "Batasi akses API menggunakan"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Prompts"
+msgstr "Prompt"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Behaviour"
+msgstr "Perilaku"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI-powered change monitoring"
+msgstr "Pemantauan perubahan bertenaga AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Connect an LLM to move from \"something changed\" to \"only the thing you care about changed\"."
+msgstr "Hubungkan LLM untuk beralih dari \"ada sesuatu yang berubah\" menjadi \"hanya hal yang Anda pedulikan yang berubah\"."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Intent filtering"
+msgstr "Pemfilteran intent"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Each watch or tag can carry a plain-text intent — %(ex1)s or %(ex2)s. On every detected change the AI evaluates the "
+"diff against it and suppresses irrelevant noise."
+msgstr ""
+"Setiap monitor atau tag dapat memiliki intent teks biasa — %(ex1)s atau %(ex2)s. Pada setiap perubahan yang "
+"terdeteksi, AI mengevaluasi perbedaannya terhadap intent tersebut dan menyaring gangguan yang tidak relevan."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Tip: intent evaluation benefits from a capable model — recommended %(local)s locally, or %(gpt)s / %(gemini)s. Very "
+"small models (≤3B) may misjudge numeric comparisons."
+msgstr ""
+"Kiat: evaluasi intent akan lebih baik dengan model yang mumpuni — direkomendasikan %(local)s untuk lokal, atau "
+"%(gpt)s / %(gemini)s. Model yang sangat kecil (≤3B) dapat salah menilai perbandingan numerik."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Instead of raw diffs, receive plain-language summaries in notifications — %(ex1)s or %(ex2)s. Set a global default "
+"prompt here, or override per watch or tag."
+msgstr ""
+"Alih-alih perbedaan mentah, terima ringkasan bahasa biasa dalam notifikasi — %(ex1)s atau %(ex2)s. Atur prompt "
+"default global di sini, atau timpa per monitor atau tag."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Minimal cost"
+msgstr "Biaya minimal"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"The AI sees only a unified diff of what changed — never full page HTML. Low-cost models like %(gpt)s or %(gemini)s "
+"handle this well, typically fractions of a cent per check."
+msgstr ""
+"AI hanya melihat unified diff dari apa yang berubah — bukan HTML halaman penuh. Model berbiaya rendah seperti %(gpt)s"
+" atau %(gemini)s mampu menanganinya dengan baik, biasanya hanya sebagian kecil sen per pemeriksaan."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI / LLM configured:"
+msgstr "AI / LLM dikonfigurasi:"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Configure AI Provider"
+msgstr "Konfigurasikan Penyedia AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI Provider"
+msgstr "Penyedia AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid ""
 "Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
