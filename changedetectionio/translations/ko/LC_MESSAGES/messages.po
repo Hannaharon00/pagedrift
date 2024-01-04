@@ -1584,6 +1584,62 @@ msgstr "오류 텍스트"
 msgid "Error Screenshot"
 msgstr "오류 스크린샷"
 
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Screenshot requires Playwright/WebDriver enabled"
+msgstr "스크린샷을 찍으려면 Playwright/WebDriver를 활성화해야 합니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Request"
+msgstr "가져오기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Browser Steps"
+msgstr "브라우저 단계"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Filter Selector"
+msgstr "시각적 필터 선택기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Conditions"
+msgstr "조건"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Stats"
+msgstr "통계"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Some sites use JavaScript to create the content, for this you should"
+msgstr "일부 사이트에서는 JavaScript를 사용하여 콘텐츠를 생성합니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "use the Chrome/WebDriver Fetcher"
+msgstr "이 경우 Chrome/WebDriver 가져오기 방식을 사용하세요."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the URL"
+msgstr "URL에서 변수가 지원됩니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "help and examples here"
+msgstr "도움말 및 예시"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Organisational tag/group name used in the main listing page"
+msgstr "목록 페이지에서 사용할 분류용 그룹/태그 이름"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Also automatically applied by URL pattern:"
+msgstr "URL 패턴으로도 자동 적용됨:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Automatically uses the page title if found, you can also use your own title/description here"
+msgstr "페이지 제목을 찾으면 자동으로 사용하며, 여기에서 직접 제목/설명을 입력할 수도 있습니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Extra Page Title and Link options"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid ""
 "Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
