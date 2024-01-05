@@ -68,3 +68,44 @@ def test_zh_Hant_TW_timeago_integration():
     assert '天前' in result_3d, f"Expected '天前' in '{result_3d}'"
 
 
+def test_invalid_locale(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that setting an invalid locale doesn't break the application.
+    The app should ignore invalid locales and continue working.
+    """
+
+    # Establish session cookie
+    client.get(url_for("watchlist.index"), follow_redirects=True)
+
+    # First set to English. Use the BCP 47 region-tagged form 'en_GB' — the
+    # bare 'en' is NOT in language_codes and is silently rejected by
+    # set_language, so passing it here would leave the session locale unset
+    # and let the (unrelated) Accept-Language fallback decide what renders.
+    res = client.post(
+        url_for("set_language", locale="en_GB"),
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Try to set an invalid locale
+    res = client.post(
+        url_for("set_language", locale="invalid_locale_xyz"),
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Should still be able to access the page (should stay in English since invalid locale was ignored)
+    res = client.get(
+        url_for("watchlist.index"),
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+    # Check via the lang attribute — the only signal that can't be tricked
+    # by substring overlap with another locale's translations.
+    assert b'<html lang="en-GB"' in res.data, \
+        "Should remain in en-GB when an invalid locale is provided"
+
+
