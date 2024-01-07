@@ -99,3 +99,112 @@ def set_modified_response(datastore_path):
         f.write(test_return_data)
 
 
+def test_element_removal_output():
+    from inscriptis import get_text
+
+    # Check text with sub-parts renders correctly
+    content = """<html>
+    <header>
+    <h2>Header</h2>
+    </header>
+    <nav>
+    <ul>
+      <li><a href="#">A</a></li>
+    </ul>
+    </nav>
+       <body>
+     Some initial text<br>
+     <p>across multiple lines</p>
+     <div id="changetext">Some text that changes</div>
+     <div>Some text should be matched by xPath // selector</div>
+     <div>Some text should be matched by xPath selector</div>
+     <div>Some text should be matched by xPath1 selector</div>
+     </body>
+    <footer>
+    <p>Footer</p>
+    </footer>
+     </html>
+    """
+    html_blob = element_removal(
+      [
+        "header",
+        "footer",
+        "nav",
+        "#changetext",
+        "//*[contains(text(), 'xPath // selector')]",
+        "xpath://*[contains(text(), 'xPath selector')]",
+        "xpath1://*[contains(text(), 'xPath1 selector')]"
+      ],
+      html_content=content
+    )
+    text = get_text(html_blob)
+    assert (
+        text
+        == """Some initial text
+
+across multiple lines
+"""
+    )
+
+
+def test_element_removal_full(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    set_original_response(datastore_path=datastore_path)
+
+
+    # Add our URL to the import page
+    test_url = url_for("test_endpoint", _external=True)
+    res = client.post(
+        url_for("imports.import_page"), data={"urls": test_url}, follow_redirects=True
+    )
+    assert b"1 Imported" in res.data
+    wait_for_all_checks(client)
+
+    # Goto the edit page, add the filter data
+    # Not sure why \r needs to be added - absent of the #changetext this is not necessary
+    subtractive_selectors_data = "header\r\nfooter\r\nnav\r\n#changetext"
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={
+            "subtractive_selectors": subtractive_selectors_data,
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            "fetch_backend": "html_requests",
+            "time_between_check_use_default": "y",
+        },
+        follow_redirects=True,
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    # Check it saved
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+    )
+    assert bytes(subtractive_selectors_data.encode("utf-8")) in res.data
+
+    # Trigger a check
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    assert b'Queued 1 watch for rechecking.' in res.data
+
+    wait_for_all_checks(client)
+
+    # so that we set the state to 'has-unread-changes' after all the edits
+    client.get(url_for("ui.ui_diff.diff_history_page", uuid="first"))
+
+    #  Make a change to header/footer/nav
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    assert b'Queued 1 watch for rechecking.' in res.data
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # There should not be an unviewed change, as changes should be removed
+    res = client.get(url_for("watchlist.index"))
+    assert b"unviewed" not in res.data
+
