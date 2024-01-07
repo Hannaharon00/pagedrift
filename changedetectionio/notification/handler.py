@@ -430,3 +430,57 @@ def process_notification(n_object: NotificationContextData, datastore):
     return sent_objs
 
 
+# Notification title + body content parameters get created here.
+# ( Where we prepare the tokens in the notification to be replaced with actual values )
+def create_notification_parameters(n_object: NotificationContextData, datastore):
+    if not isinstance(n_object, NotificationContextData):
+        raise TypeError(f"Expected NotificationContextData, got {type(n_object)}")
+
+    ext_base_url = datastore.data['settings']['application'].get('active_base_url').strip('/')+'/'
+
+    watch = datastore.data['watching'].get(n_object['uuid'])
+    if watch:
+        watch_title = datastore.data['watching'][n_object['uuid']].label
+        tag_list = []
+        tags = datastore.get_all_tags_for_watch(n_object['uuid'])
+        if tags:
+            for tag_uuid, tag in tags.items():
+                tag_list.append(tag.get('title'))
+        watch_tag = ', '.join(tag_list)
+    else:
+        watch_title = 'Change Detection'
+        watch_tag = ''
+
+    watch_url = n_object['watch_url']
+
+    # Build URLs manually instead of using url_for() to avoid requiring a request context
+    # This allows notifications to be processed in background threads
+    uuid = n_object['uuid']
+
+    if n_object.get('timestamp_from') and n_object.get('timestamp_to'):
+        # Include a link to the diff page with specific versions
+        diff_url = f"{ext_base_url}diff/{uuid}?from_version={n_object['timestamp_from']}&to_version={n_object['timestamp_to']}"
+    else:
+        diff_url = f"{ext_base_url}diff/{uuid}"
+
+    preview_url = f"{ext_base_url}preview/{uuid}"
+    edit_url = f"{ext_base_url}edit/{uuid}"
+
+    # @todo test that preview_url is correct when running in not-null mode?
+    # if not, first time app loads i think it can set a flask context
+    n_object.update(
+        {
+            'base_url': ext_base_url,
+            'diff_url': diff_url,
+            'preview_url': preview_url, #@todo include 'version='
+            'edit_url': edit_url, #@todo also pause, also mute link
+            'watch_tag': watch_tag if watch_tag is not None else '',
+            'watch_title': watch_title if watch_title is not None else '',
+            'watch_url': watch_url,
+            'watch_uuid': n_object['uuid'],
+        })
+
+    if watch:
+        n_object.update(datastore.data['watching'].get(n_object['uuid']).extra_notification_token_values())
+
+    return n_object
