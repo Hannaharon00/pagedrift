@@ -752,6 +752,58 @@ msgid "Chrome Extension"
 msgstr "Chrome 擴充功能"
 
 #: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Easily add any web-page to your changedetection.io installation from within Chrome."
+msgstr "從 Chrome 內部輕鬆將任何網頁新增至您的 changedetection.io 安裝中。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 1"
+msgstr "步驟 1"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Install the extension,"
+msgstr "安裝擴充功能，"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 2"
+msgstr "步驟 2"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Navigate to this page,"
+msgstr "導覽至此頁面，"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Step 3"
+msgstr "步驟 3"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Open the extension from the toolbar and click"
+msgstr "從工具列開啟擴充功能並點擊"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Sync API Access"
+msgstr "同步 API 存取"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Try our new Chrome Extension!"
+msgstr "試試我們全新的 Chrome 擴充功能！"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome store icon"
+msgstr "Chrome 線上應用程式商店圖示"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Chrome Webstore"
+msgstr "Chrome 線上應用程式商店"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of history snapshots to include in the watch specific RSS feed."
+msgstr "特定監測任務 RSS Feed 中包含的歷史快照最大數量。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "For watching other RSS feeds - When watching RSS/Atom feeds, convert them into clean text for better change detection."
+msgstr "用於監測其他 RSS Feed - 監測 RSS / Atom Feed 時，將它們轉換為純文字以進行更好的變更檢測。"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
 msgid "Does your reader support HTML? Set it here"
 msgstr "您的閱讀器支援 HTML 嗎？在此處設定"
 
