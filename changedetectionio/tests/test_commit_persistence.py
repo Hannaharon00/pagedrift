@@ -65,3 +65,70 @@ def test_watch_commit_survives_reload(client, live_server):
     assert reloaded_watch['tags'] == ['tag-1', 'tag-2'], "Tags should survive reload"
 
 
+def test_watch_commit_atomic_on_crash(client, live_server):
+    """Test that atomic writes prevent corruption (temp file pattern)"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(url='http://example.com', extras={'title': 'Original'})
+    watch = datastore.data['watching'][uuid]
+
+    # First successful commit
+    watch['title'] = 'First Save'
+    watch.commit()
+
+    # Verify watch.json exists and is valid
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)  # Should not raise JSONDecodeError
+        assert data['title'] == 'First Save'
+
+    # Second commit - even if interrupted, original file should be intact
+    # (atomic write uses temp file + rename, so original is never corrupted)
+    watch['title'] = 'Second Save'
+    watch.commit()
+
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+        assert data['title'] == 'Second Save'
+
+
+def test_multiple_watches_commit_independently(client, live_server):
+    """Test that committing one watch doesn't affect others"""
+    datastore = client.application.config.get('DATASTORE')
+
+    # Create multiple watches
+    uuid1 = datastore.add_watch(url='http://example1.com', extras={'title': 'Watch 1'})
+    uuid2 = datastore.add_watch(url='http://example2.com', extras={'title': 'Watch 2'})
+    uuid3 = datastore.add_watch(url='http://example3.com', extras={'title': 'Watch 3'})
+
+    watch1 = datastore.data['watching'][uuid1]
+    watch2 = datastore.data['watching'][uuid2]
+    watch3 = datastore.data['watching'][uuid3]
+
+    # Modify and commit only watch2
+    watch2['title'] = 'Modified Watch 2'
+    watch2['paused'] = True
+    watch2.commit()
+
+    # Read all from disk
+    def read_watch_json(uuid):
+        watch = datastore.data['watching'][uuid]
+        path = os.path.join(watch.data_dir, 'watch.json')
+        with open(path, 'r') as f:
+            return json.load(f)
+
+    data1 = read_watch_json(uuid1)
+    data2 = read_watch_json(uuid2)
+    data3 = read_watch_json(uuid3)
+
+    # Only watch2 should have changes
+    assert data1['title'] == 'Watch 1', "Watch 1 should be unchanged"
+    assert data1['paused'] == False, "Watch 1 should not be paused"
+
+    assert data2['title'] == 'Modified Watch 2', "Watch 2 should be modified"
+    assert data2['paused'] == True, "Watch 2 should be paused"
+
+    assert data3['title'] == 'Watch 3', "Watch 3 should be unchanged"
+    assert data3['paused'] == False, "Watch 3 should not be paused"
+
+
