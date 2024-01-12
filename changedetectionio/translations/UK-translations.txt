@@ -284,6 +284,62 @@ msgstr "Налаштування інтерфейсу"
 msgid "API"
 msgstr "API"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "RSS"
+msgstr "RSS"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Time & Date"
+msgstr "Час і Дата"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "CAPTCHA & Proxies"
+msgstr "CAPTCHA та Проксі"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Info"
+msgstr "Інфо"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default recheck time for all watches, current system minimum is"
+msgstr "Час перевірки за замовчуванням для всіх завдань (поточний системний мінімум:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "seconds"
+msgstr "секунд)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "more info"
+msgstr "детальніше"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "After this many consecutive times that the CSS/xPath filter is missing, send a notification"
+msgstr "Після стількох послідовних відсутностей CSS/xPath фільтра надсилати сповіщення"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to"
+msgstr "Встановіть"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "to disable"
+msgstr "щоб вимкнути"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit collection of history snapshots for each watch to this number of history items."
+msgstr "Обмежити історію знімків для кожного завдання цією кількістю записів."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Set to empty to disable / no limit"
+msgstr "Залиште порожнім, щоб вимкнути (без обмежень)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password protection for your changedetection.io application."
+msgstr "Захист паролем вашого застосунку changedetection.io."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Password is locked."
+msgstr "Пароль заблоковано."
+
 #: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
 msgid "seconds before extracting the text."
 msgstr "секунд перед вилученням тексту."
