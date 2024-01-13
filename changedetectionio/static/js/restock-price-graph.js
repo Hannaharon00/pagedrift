@@ -133,6 +133,91 @@
             return;
         }
 
+        // Dots, coloured by each point's own stock state (green = in stock, red = out of stock).
+        // Sized to match the legend swatch (~9px) with a thin surface-coloured ring so they stand
+        // out from the line instead of blending into it.
+        pts.forEach(p => {
+            svg.appendChild(el('circle', {
+                class: 'rg-dot', cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: 4.5, fill: stockColor(p.d.in_stock)
+            }));
+        });
+
+        // Sparse x-axis date labels: evenly spaced, always including both endpoints. The number
+        // adapts to the available width (each label ~64px) so they don't jam together on narrow
+        // / mobile widths, capped at MAX_X_LABELS on desktop. Min 2 (the two endpoints).
+        const fitLabels = Math.max(2, Math.min(MAX_X_LABELS, Math.floor(innerW / 64)));
+        const count = Math.min(fitLabels, pts.length);
+        const labelIdx = Array.from(new Set(
+            Array.from({ length: count }, (_, i) => Math.round((i * (pts.length - 1)) / (count - 1)))
+        ));
+        labelIdx.forEach(i => {
+            const anchor = i === 0 ? 'start' : (i === pts.length - 1 ? 'end' : 'middle');
+            const t = el('text', { class: 'rg-label', x: pts[i].x.toFixed(1), y: height - 10, 'text-anchor': anchor });
+            t.textContent = fmtAxisDate(pts[i].d.timestamp);
+            svg.appendChild(t);
+        });
+
+        $container.empty().append(svg);
+
+        // --- Hover tooltip: a generous transparent hit-circle per point shows price + date ---
+        const $tip = $('<div class="rg-tooltip"></div>').appendTo($container);
+        pts.forEach(p => {
+            const state = p.d.in_stock === null ? '' :
+                (p.d.in_stock ? ' &middot; ' + i18n.in_stock : ' &middot; ' + i18n.out_of_stock);
+            const hit = el('circle', { cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: 14, fill: 'transparent', style: 'cursor: pointer;' });
+            svg.appendChild(hit);
+            $(hit).on('mouseenter mousemove', function (e) {
+                const r = $container[0].getBoundingClientRect();
+                const cx = e.clientX - r.left, cy = e.clientY - r.top;
+                $tip.html('<strong>' + fmtPrice(p.d.price, currency) + '</strong>' + state + '<br>' + fmtDateTime(p.d.timestamp)).show();
+                const tipW = $tip.outerWidth(), GAP = 14;
+                // Default to the right of the cursor; flip left if it would overflow the right edge.
+                let left = cx + GAP;
+                if (left + tipW > $container.width()) left = cx - GAP - tipW;
+                if (left < 0) left = 0;
+                $tip.css({ left: left + 'px', top: cy + 'px' });
+            }).on('mouseleave', function () {
+                $tip.hide();
+            });
+        });
+
+        // Legend explaining the dot colours (the line is neutral; only dots indicate stock).
+        const $legend = $('<div class="rg-legend"></div>');
+        $legend.append($('<span class="rg-legend-item"></span>')
+            .append('<span class="rg-legend-dot in"></span>').append(document.createTextNode(' ' + (i18n.in_stock || 'In stock'))));
+        $legend.append($('<span class="rg-legend-item"></span>')
+            .append('<span class="rg-legend-dot out"></span>').append(document.createTextNode(' ' + (i18n.out_of_stock || 'Out of stock'))));
+        $container.append($legend);
+
+        // Header row above the graph: status pill (LOW / TYPICAL / HIGH, left) and the summary
+        // stats (right), on one line. The pill sub-text is phrased per status so it never reads
+        // awkwardly (e.g. "cheaper than 0%" when high).
+        const $header = $('<div class="rg-header"></div>');
+
+        let $pill = $('<span></span>');  // placeholder keeps the stats pushed to the right
+        if (showOverlays) {
+            $pill = $('<div class="rg-status rg-status-' + summary.status + '"></div>');
+            $pill.append($('<span class="rg-status-label"></span>').text(i18n['price_' + summary.status] || ''));
+            let sub;
+            if (summary.status === 'low') {
+                sub = (i18n.cheaper_than || '').replace('{pct}', summary.cheaper_than_pct + '%');
+            } else if (summary.status === 'high') {
+                sub = (i18n.pricier_than || '').replace('{pct}', summary.pricier_than_pct + '%');
+            } else {
+                sub = i18n.typical_note || '';
+            }
+            if (sub) $pill.append($('<span class="rg-status-sub"></span>').text(sub));
+        }
+
+        const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+        const $stats = $('<div class="rg-stats"></div>')
+            .text((i18n.avg_price || 'Average price') + ' ' + fmtPrice(avgPrice, currency) +
+                  ', ' + (series ? series.length : data.length) + ' ' + (i18n.changes || 'Changes'));
+
+        $header.append($pill).append($stats);
+        $container.prepend($header);
+    }
+
     function buildTable($table, series, currency, i18n) {
         const $tbody = $table.find('tbody');
         if (!$tbody.length) return;
