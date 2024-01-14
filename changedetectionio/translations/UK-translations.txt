@@ -340,6 +340,69 @@ msgstr "Захист паролем вашого застосунку changedete
 msgid "Password is locked."
 msgstr "Пароль заблоковано."
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Allow access to the watch change history page when password is enabled (Good for sharing the diff page)"
+msgstr "Дозволити доступ до сторінки історії змін при увімкненому паролі (корисно для поширення посилань на різницю)"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "When a request returns no content, or the HTML does not contain any text, is this considered a change?"
+msgstr "Чи вважати зміною, якщо запит не повертає вмісту або HTML не містить тексту?"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Choose a default proxy for all watches"
+msgstr "Виберіть проксі за замовчуванням для всіх завдань"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Base URL used for the"
+msgstr "Базовий URL, що використовується для"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "token in notification links."
+msgstr "токена в посиланнях сповіщень."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Default value is the system environment variable"
+msgstr "Значення за замовчуванням береться із системної змінної оточення"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/templates/_common_fields.html
+msgid "read more here"
+msgstr "читати більше тут"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "method (default) where your watched sites don't need Javascript to render."
+msgstr "метод (за замовчуванням), якщо сайтам не потрібен Javascript для відображення."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the"
+msgstr "Використовувати"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Basic"
+msgstr "Базовий"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "method requires a network connection to a running WebDriver+Chrome server, set by the ENV var"
+msgstr "метод потребує мережевого підключення до запущеного сервера WebDriver+Chrome, заданого змінною оточення"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "The"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Chrome/Javascript"
+msgstr "Chrome/Javascript"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"If you're having trouble waiting for the page to be fully rendered (text missing etc), try increasing the 'wait' time"
+" here."
+msgstr ""
+"Якщо сторінка не встигає повністю відобразитися (відсутній текст тощо), спробуйте збільшити час очікування."
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will wait"
+msgstr "Очікування складе"
+
 #: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/ui/templates/edit.html
 msgid "seconds before extracting the text."
 msgstr "секунд перед вилученням тексту."
