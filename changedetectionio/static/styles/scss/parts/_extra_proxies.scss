@@ -61,3 +61,25 @@ body.proxy-check-active {
 }
 
 
+#recommended-proxy {
+  display: grid;
+  gap: 2rem;
+  padding-bottom: 1em;
+  
+  @media  (min-width: 991px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  > div {
+    border: 1px #aaa solid;
+    border-radius: 4px;
+    padding: 1em;
+  }
+}
+
+#extra-proxies-setting {
+  border: 1px solid var(--color-grey-800);
+  border-radius: 4px;
+    margin: 1em;
+   padding: 1em;
+}
