@@ -920,6 +920,82 @@ msgid "Intent filtering"
 msgstr "판단 기준 필터링"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Each watch or tag can carry a plain-text intent — %(ex1)s or %(ex2)s. On every detected change the AI evaluates the "
+"diff against it and suppresses irrelevant noise."
+msgstr "각 모니터링 또는 태그에 일반 텍스트 판단 기준(%(ex1)s 또는 %(ex2)s)을 지정할 수 있습니다. 변경이 감지될 때마다 AI가 diff를 이 기준과 비교해 불필요한 알림을 줄입니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Tip: intent evaluation benefits from a capable model — recommended %(local)s locally, or %(gpt)s / %(gemini)s. Very "
+"small models (≤3B) may misjudge numeric comparisons."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"Instead of raw diffs, receive plain-language summaries in notifications — %(ex1)s or %(ex2)s. Set a global default "
+"prompt here, or override per watch or tag."
+msgstr "raw diff 대신 알림에서 자연어 요약(%(ex1)s 또는 %(ex2)s)을 받을 수 있습니다. 여기에서 전역 기본 프롬프트를 설정하거나 모니터링/태그별로 재정의하세요."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Minimal cost"
+msgstr "최소 비용"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"The AI sees only a unified diff of what changed — never full page HTML. Low-cost models like %(gpt)s or %(gemini)s "
+"handle this well, typically fractions of a cent per check."
+msgstr ""
+"AI는 전체 페이지 HTML이 아닌 변경된 내용의 unified diff만 확인합니다. %(gpt)s 또는 %(gemini)s 같은 저비용 모델도 이를 잘 처리합니다. 보통 확인당 1센트보다 훨씬 적은 비용이 "
+"듭니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI / LLM configured:"
+msgstr "AI / LLM 설정됨:"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Configure AI Provider"
+msgstr "AI 프로바이더 설정"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI Provider"
+msgstr "AI 프로바이더"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Master switch — when off, all AI lookups are skipped even if a provider is configured below."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Third-party data transfer — please read"
+msgstr "제3자 데이터 전송 - 읽어 주세요"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"When AI features are active, change data from the websites you monitor — including page diffs and extracted text — is"
+" sent to an external AI provider of your choice."
+msgstr "AI 기능이 활성화되면 모니터링하는 웹사이트의 변경 데이터(페이지 diff와 추출된 텍스트 포함)가 선택한 외부 AI 프로바이더로 전송됩니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "You are solely responsible for ensuring this complies with the terms of service of each website you monitor."
+msgstr "이 기능 사용이 모니터링하는 각 웹사이트의 서비스 약관을 준수하는지 확인할 책임은 전적으로 사용자에게 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"You are solely responsible for compliance with applicable data-protection laws (e.g. GDPR) regarding any personal "
+"data that may appear in monitored content."
+msgstr "모니터링된 콘텐츠에 포함될 수 있는 개인정보와 관련해 적용되는 데이터 보호 법률(예: GDPR)을 준수할 책임은 전적으로 사용자에게 있습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"API costs charged by your chosen provider are your own responsibility; this software has no visibility into or "
+"control over those charges."
+msgstr "선택한 프로바이더에서 청구하는 API 비용은 사용자 책임입니다. 이 소프트웨어는 해당 비용을 확인하거나 제어할 수 없습니다."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid ""
 "AI / LLM models are known to hallucinate — producing plausible-sounding but factually incorrect or entirely "
 "fabricated output with apparent confidence — and by design may omit or truncate relevant data during summarisation. "
