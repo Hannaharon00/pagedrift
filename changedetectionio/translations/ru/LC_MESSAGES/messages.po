@@ -1670,6 +1670,60 @@ msgid "seconds ago."
 msgstr "секунды назад."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Conditions"
+msgstr "Условия"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Stats"
+msgstr "Статистика"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Some sites use JavaScript to create the content, for this you should"
+msgstr "Некоторые сайты используют JavaScript для создания контента, для этого вам следует"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "use the Chrome/WebDriver Fetcher"
+msgstr "используйте Chrome/WebDriver Fetcher"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the URL"
+msgstr "В URL-адресе поддерживаются переменные."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "help and examples here"
+msgstr "помощь и примеры здесь"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Organisational tag/group name used in the main listing page"
+msgstr "Название организационного тега/группы, используемое на главной странице листинга."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Also automatically applied by URL pattern:"
+msgstr "Также автоматически применяется по шаблону URL:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Automatically uses the page title if found, you can also use your own title/description here"
+msgstr ""
+"Автоматически использует заголовок страницы, если он найден. Вы также можете использовать здесь свой собственный "
+"заголовок/описание."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Extra Page Title and Link options"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Optional - links in the list, history and notifications open this URL instead. Does not change the URL being checked."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The interval/amount of time between each check."
+msgstr "Интервал/количество времени между каждой проверкой."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set to empty to use system settings default"
+msgstr "Установите пустое значение, чтобы использовать системные настройки по умолчанию."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
 msgstr "Подключайтесь с помощью Bright Data и прокси-серверов Oxylabs. Подробную информацию можно найти здесь."
 
