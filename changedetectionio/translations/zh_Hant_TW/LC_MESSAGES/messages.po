@@ -1599,6 +1599,63 @@ msgstr "工作程序 %(num)s"
 msgid "— idle"
 msgstr " — 閒置"
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear"
+msgstr "清除"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr "清除佇列"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr "工作程序與佇列"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr "已耗時"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr "狀態"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr "未設定工作程序（FETCH_WORKERS=0）且排程佇列為空"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr "正在等待新網頁以進行檢查 ..."
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "警告，URL {} 已存在"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "監測任務已在暫停狀態下新增，儲存後將取消暫停。"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "監測任務已新增。"
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "記錄"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr ""
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 msgid "UnMute notification"
 msgstr ""
