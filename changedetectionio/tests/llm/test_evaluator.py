@@ -52,6 +52,74 @@ def _make_watch(llm_intent='', llm_change_summary='', tags=None, uuid='test-uuid
 # resolve_intent
 # ---------------------------------------------------------------------------
 
+class TestResolveIntent:
+    def test_watch_intent_takes_priority(self):
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        tag = _make_tag(title='mygroup', llm_intent='group intent')
+        ds = _make_datastore(tags={'tag-1': tag})
+        watch = _make_watch(llm_intent='watch intent', tags=['tag-1'])
+
+        intent, source = resolve_intent(watch, ds)
+        assert intent == 'watch intent'
+        assert source == 'watch'
+
+    def test_tag_intent_used_when_watch_has_none(self):
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        tag = _make_tag(title='pricing-group', llm_intent='flag price drops')
+        ds = _make_datastore(tags={'tag-1': tag})
+        watch = _make_watch(llm_intent='', tags=['tag-1'])
+
+        intent, source = resolve_intent(watch, ds)
+        assert intent == 'flag price drops'
+        assert source == 'pricing-group'
+
+    def test_no_intent_anywhere_returns_empty(self):
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        ds = _make_datastore()
+        watch = _make_watch(llm_intent='')
+
+        intent, source = resolve_intent(watch, ds)
+        assert intent == ''
+        assert source == ''
+
+    def test_tag_applied_to_all_watches_in_group(self):
+        """An opted-in tag's intent propagates to every watch in the tag."""
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        tag = _make_tag(title='job-board', llm_intent='new engineering jobs')
+        ds = _make_datastore(tags={'tag-1': tag})
+
+        # Three different watches, all in the tag, none have their own intent
+        for watch_uuid in ['uuid-A', 'uuid-B', 'uuid-C']:
+            watch = _make_watch(llm_intent='', tags=['tag-1'], uuid=watch_uuid)
+            intent, source = resolve_intent(watch, ds)
+            assert intent == 'new engineering jobs', f"Watch {watch_uuid} should inherit tag intent"
+            assert source == 'job-board'
+
+    def test_whitespace_only_intent_treated_as_empty(self):
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        ds = _make_datastore()
+        watch = _make_watch(llm_intent='   ')
+        intent, source = resolve_intent(watch, ds)
+        assert intent == ''
+
+    def test_missing_tag_in_datastore_skipped(self):
+        from changedetectionio.llm.evaluator import resolve_intent
+
+        ds = _make_datastore(tags={})  # no tags registered
+        watch = _make_watch(llm_intent='', tags=['nonexistent-tag'])
+        intent, source = resolve_intent(watch, ds)
+        assert intent == ''
+
+
+# ---------------------------------------------------------------------------
+# The group's AI setting gates the whole cascade
+# ---------------------------------------------------------------------------
+
 class TestGroupAiSettingGatesTheCascade:
     def test_only_the_on_state_hands_settings_down(self):
         from changedetectionio.llm.evaluator import tag_llm_applies_to_watches
