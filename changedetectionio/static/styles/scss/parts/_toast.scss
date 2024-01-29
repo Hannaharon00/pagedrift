@@ -181,3 +181,51 @@ html[data-darkmode=true] {
   }
 }
 
+// Mobile adjustments
+@media only screen and (max-width: 768px) {
+  .toast-container {
+    left: 50% !important;
+    right: auto !important;
+    top: 80px !important;
+    transform: translateX(-50%) !important;
+    align-items: center;
+
+    &.toast-bottom-right,
+    &.toast-bottom-center,
+    &.toast-bottom-left {
+      top: auto !important;
+      bottom: 80px !important;
+    }
+  }
+
+  .toast {
+    min-width: auto;
+    max-width: none;
+    width: 80vw;
+    transform: translateY(-100px);
+
+    &.toast-show {
+      transform: translateY(0);
+    }
+
+    &.toast-hide {
+      transform: translateY(-100px) scale(0.95);
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: opacity 0.2s ease;
+    transform: none !important;
+
+    &.toast-show {
+      opacity: 1;
+    }
+
+    &.toast-hide {
+      opacity: 0;
+    }
+  }
+}
