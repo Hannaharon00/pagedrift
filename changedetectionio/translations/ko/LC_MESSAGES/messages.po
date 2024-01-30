@@ -1545,6 +1545,68 @@ msgstr "UUID {}의 모니터링이 존재하지 않습니다."
 msgid "Deleted."
 msgstr "삭제되었습니다."
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "복제되었습니다. 새 모니터링을 편집하고 있습니다."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "모니터링이 이미 대기열에 있거나 확인 중입니다."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "모니터링 1개를 재확인 대기열에 추가했습니다."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "{count}개 모니터링을 재확인 대기열에 추가했습니다. ({skipped_count}개는 이미 대기 중이거나 실행 중)"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "{}개 모니터링을 재확인 대기열에 추가했습니다."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "백그라운드에서 모니터링을 재확인 대기열에 추가하는 중입니다..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "공유할 수 없습니다. 공유 서버와 통신하는 중 문제가 발생했습니다 - {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "브라우저 자동 감지로 언어 설정"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "지정한 링크의 기록을 찾을 수 없습니다. 링크가 올바른가요?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "이 모니터링의 비교 페이지를 표시하기에 기록이 부족합니다. (스냅샷 2개 이상 필요)"
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr "월간 AI 토큰 예산 %(budget)s개에 도달했습니다(%(used)s개 사용). 다음 달에 초기화됩니다."
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "편집할 모니터링이 없습니다."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "UUID {}에 해당하는 모니터링을 찾을 수 없습니다."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "{} 모드로 전환되었습니다."
+
 #: changedetectionio/blueprint/ui/edit.py
 #, python-brace-format
 msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
