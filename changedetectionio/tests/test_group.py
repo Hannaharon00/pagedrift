@@ -41,6 +41,8 @@ def set_modified_response(datastore_path):
         f.write(test_return_data)
     return None
 
+def test_tag_add_in_ui(client, live_server, measure_memory_usage, datastore_path):
+    
 #
     res = client.post(
         url_for("tags.form_tag_add"),
