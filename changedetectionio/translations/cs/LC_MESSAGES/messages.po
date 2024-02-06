@@ -1898,3 +1898,63 @@ msgstr ""
 msgid "Text Starts With"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Odeslat upozornění pokud filtr již na stránce nelze najít"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Zapnuto"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Oznámení"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Ztlumit"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Připojit snímek obrazovky k oznámení (pokud je to možné)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Shoda"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Spojit všechny následující položky"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Přiřaďte kteroukoli z následujících možností"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "V seznamu použijte stránku <title>"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Počet historických záznamů pro sledování"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Když je metoda požadavku nastavena na GET, tělo musí být prázdné"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Neplatná konfigurace syntaxe šablony: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Neplatná syntaxe šablony: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Neplatná syntax šablony v \"%(header)s\" hlavička: %(error)s"
+
