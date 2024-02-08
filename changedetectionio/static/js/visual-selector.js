@@ -64,6 +64,96 @@ window.initVisualSelector = function (opts) {
         }
         $includeFiltersElem.val('');
 
+        currentSelections = [];
+
+        // Means we ignore the xpaths from the scraper marked as sel.highlight_as_custom_filter (it matched a previous selector)
+        runInClearMode = true;
+
+        highlightCurrentSelected();
+    }
+
+    function splitToList(v) {
+        return v.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    }
+
+    function sortScrapedElementsBySize() {
+        // Sort the currentSelections array by area (width * height) in descending order
+        selectorData['size_pos'].sort((a, b) => {
+            const areaA = a.width * a.height;
+            const areaB = b.width * b.height;
+            return areaB - areaA;
+        });
+    }
+
+    $(document).on('keydown keyup', (event) => {
+        if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+            appendToList = event.type === 'keydown';
+        }
+
+        if (event.type === 'keydown') {
+            if ($selectorBackgroundElem.is(":visible") && event.key === "Escape") {
+                clearReset();
+            }
+        }
+    });
+
+    $clearSelectorElem.on('click', () => {
+        clearReset();
+    });
+
+    // ---- public: (re)load a screenshot + element data into the selector ----
+    // source = { screenshotSrc: <url|dataURI>, xpathData: <object|undefined> }
+    function load(source) {
+        currentSelections = [];
+        runInClearMode = false;
+
+        $selectorBackgroundElem
+            .off("load error")
+            .on("error", () => {
+                $fetchingUpdateNoticeElem.html("<strong>Ooops!</strong> The VisualSelector tool needs at least one fetched page, please unpause the watch and/or wait for the watch to complete fetching and then reload this page.")
+                    .css('color', '#bb0000');
+                $('#selector-current-xpath, #clear-selector').hide();
+            })
+            .on('load', () => {
+                console.log(`Loaded background ${$selectorBackgroundElem[0].naturalWidth}px`);
+                // For the UI width of the whole edit area
+                document.documentElement.style.setProperty('--visualselector-max-width', `${$selectorBackgroundElem[0].naturalWidth}px` );
+                c = $selectorCanvasElem[0];
+                xctx = c.getContext("2d");
+                ctx = c.getContext("2d");
+                // Drop any handlers left over from a previous load BEFORE (re)building the
+                // selector - applyElementData() runs synchronously for inline xpathData and
+                // binds the element handlers itself, so unbinding afterwards would silently
+                // kill hover/click selection on the add-watch snapshot path.
+                $selectorCanvasElem.off("mousemove mousedown mouseleave");
+                if (source.xpathData) {
+                    // Inline data (add-watch snapshot) - no extra round trip needed
+                    applyElementData(source.xpathData);
+                } else {
+                    fetchData();
+                }
+            });
+
+        // data: URIs must be used verbatim; real URLs get a cache-buster
+        let src = source.screenshotSrc;
+        if (src && src.indexOf('data:') !== 0) {
+            src = `${src}?${new Date().getTime()}`;
+        }
+        $selectorBackgroundElem.attr("src", src);
+    }
+
+    function alertIfFilterNotFound() {
+        let existingFilters = splitToList($includeFiltersElem.val());
+        let sizePosXpaths = selectorData['size_pos'].map(sel => sel.xpath);
+
+        for (let filter of existingFilters) {
+            if (!sizePosXpaths.includes(filter)) {
+                alert(`One or more of your existing filters was not found and will be removed when a new filter is selected.`);
+                break;
+            }
+        }
+    }
+
     function fetchData() {
         $fetchingUpdateNoticeElem.html(i18nT('vsFetching', "Fetching element data.."));
 
@@ -264,4 +354,67 @@ window.initVisualSelector = function (opts) {
             $selectorModeRadios.filter(`[value="${savedMode}"]`).prop('checked', true);
             console.log('Loaded saved mode:', savedMode);
         }
+
+        // Clear the canvas
+        if (ctx && xctx) {
+            ctx.clearRect(0, 0, c.width, c.height);
+            xctx.clearRect(0, 0, c.width, c.height);
+        }
+
+        // Redraw if we have an existing box
+        if (drawnBox) {
+            drawBox();
+        }
+    }
+
+    function disableDrawMode() {
+        console.log('Disabling draw mode, switching to element mode...');
+
+        // Unbind draw handlers
+        $selectorCanvasElem.unbind('mousedown mousemove mouseup mouseleave');
+
+        // Reset cursor
+        $selectorCanvasElem.css('cursor', 'default');
+
+        // Clear drawn box
+        drawnBox = null;
+        $('#bounding_box').val('');
+
+        // Clear the canvases
+        if (ctx && xctx) {
+            ctx.clearRect(0, 0, c.width, c.height);
+            xctx.clearRect(0, 0, c.width, c.height);
+        }
+
+        // Restore element selections from include_filters
+        currentSelections = [];
+        if (selectorData && selectorData['size_pos']) {
+            let existingFilters = splitToList($includeFiltersElem.val());
+
+            selectorData['size_pos'].forEach(sel => {
+                if ((!runInClearMode && sel.highlight_as_custom_filter) || existingFilters.includes(sel.xpath)) {
+                    console.log("Restoring selection: " + sel.xpath);
+                    currentSelections.push(sel);
+                }
+            });
+        }
+
+        // Re-enable element selection handlers using stored references
+        if (elementHandlers.handleMouseMove) {
+            $selectorCanvasElem.bind('mousemove', elementHandlers.handleMouseMove);
+            $selectorCanvasElem.bind('mousedown', elementHandlers.handleMouseDown);
+            $selectorCanvasElem.bind('mouseleave', elementHandlers.handleMouseLeave);
+        }
+
+        // Restore the element selection display
+        $selectorCurrentXpathElem.html(i18nT('vsHover', 'Hover over elements to select'));
+
+        // Highlight the restored selections
+        highlightCurrentSelected();
+    }
+
+    function handleDrawMouseDown(e) {
+        const rect = c.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
