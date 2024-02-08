@@ -1247,6 +1247,62 @@ msgstr ""
 msgid "Unlinking tag from watches in background"
 msgstr ""
 
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "All tags deleted, clearing from watches in background"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag not found"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Updated"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Activate for individual watches in this tag/group?"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Auto-apply to watches with URLs matching"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "e.g. *://example.com/* or github.com/myorg"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Tag colour"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Must be a hex colour, for example #4f8ef7"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "AI for watches in this group"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "On, use the settings below"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Off for every watch"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Leave it to each watch"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Tag name"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Filters & Triggers"
+msgstr ""
+
 #: changedetectionio/blueprint/tags/templates/edit-tag.html
 msgid ""
 "Automatically applies this tag to any watch whose URL matches. Supports wildcards: <code>*example.com*</code> or "
