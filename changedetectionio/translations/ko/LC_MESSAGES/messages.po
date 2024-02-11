@@ -2364,6 +2364,63 @@ msgstr "콘텐츠 분석"
 msgid "Word count (latest snapshot)"
 msgstr "단어 수(최신 스냅샷)"
 
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
+msgstr "단어 수는 텍스트를 공백 기준으로 나누어 계산하는 간단한 콘텐츠 길이 지표입니다."
+
+#: changedetectionio/content_fetchers/requests.py
+msgid "Basic fast Plaintext/HTTP Client"
+msgstr "일반 텍스트/HTTP 클라이언트"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "아직 없음"
+
+#: changedetectionio/flask_app.py
+msgid "0 seconds"
+msgstr "0초"
+
+#: changedetectionio/flask_app.py
+msgid "year"
+msgstr "년"
+
+#: changedetectionio/flask_app.py
+msgid "years"
+msgstr "년"
+
+#: changedetectionio/flask_app.py
+msgid "month"
+msgstr "개월"
+
+#: changedetectionio/flask_app.py
+msgid "months"
+msgstr "개월"
+
+#: changedetectionio/flask_app.py
+msgid "week"
+msgstr "주"
+
+#: changedetectionio/flask_app.py
+msgid "weeks"
+msgstr "주"
+
+#: changedetectionio/flask_app.py
+msgid "day"
+msgstr "일"
+
+#: changedetectionio/flask_app.py
+msgid "days"
+msgstr "일"
+
+#: changedetectionio/flask_app.py
+msgid "hour"
+msgstr "시간"
+
+#: changedetectionio/flask_app.py
+msgid "hours"
+msgstr "시간"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
 msgid "Browser"
 msgstr ""
