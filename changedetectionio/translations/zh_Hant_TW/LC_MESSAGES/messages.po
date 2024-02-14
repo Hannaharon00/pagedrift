@@ -1547,3 +1547,69 @@ msgstr "工作程序 %(num)s"
 msgid "— idle"
 msgstr " — 閒置"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Preview"
+msgstr "預覽"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changedetection.io can monitor more than just web-pages! See our plugins!"
+msgstr "Changedetection.io 不僅能監測網頁！快來看看我們的外掛程式！"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "More info"
+msgstr "更多資訊"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "You can also add 'shared' watches."
+msgstr "您也可以新增「共享的」監測任務。"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Goto full history"
+msgstr "前往完整歷史記錄"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Loading price history…"
+msgstr "正在載入價格歷史記錄 ..."
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Out of stock"
+msgstr "缺貨"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "No price data available to graph yet."
+msgstr "尚無可用的價格資料以繪製圖表。"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Could not load price history."
+msgstr "無法載入價格歷史記錄。"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Changes"
+msgstr "變更"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Average price"
+msgstr "平均價格"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Currently low"
+msgstr "目前處於低點"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Currently typical"
+msgstr "目前處於一般水準"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Currently high"
+msgstr "目前處於高點"
+
