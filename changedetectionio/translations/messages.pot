@@ -1777,6 +1777,62 @@ msgstr ""
 msgid "Use the preview page to see your filters and triggers highlighted."
 msgstr ""
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Notification alert count"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Server type reply"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "No"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (last check)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (total)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download latest HTML snapshot"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download watch data package"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr ""
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html
 #: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
 msgid "No price data available to graph yet."
