@@ -2164,3 +2164,63 @@ msgstr "Monitora"
 msgid "Processor"
 msgstr "Processore"
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Invia notifica quando il filtro non viene più trovato nella pagina"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Attivo"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Notifiche"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Disattivato"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Allega screenshot alla notifica (dove possibile)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Corrisponde"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Corrisponde a tutti i seguenti"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Corrisponde a uno qualsiasi dei seguenti"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Usa <title> pagina nell'elenco"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Il corpo deve essere vuoto quando il metodo è impostato su GET"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Configurazione sintassi template non valida: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Sintassi template non valida: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr ""
+
