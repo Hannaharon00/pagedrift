@@ -1949,6 +1949,58 @@ msgstr ""
 msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
 msgstr ""
 
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Ends With"
+msgstr "テキストが次で終わる"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length minimum"
+msgstr "文字数の最小値"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length maximum"
+msgstr "文字数の最大値"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Matches Regex"
+msgstr "テキストが正規表現にマッチ"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Does NOT Match Regex"
+msgstr "テキストが正規表現にマッチしない"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Extracted number after 'Filters & Triggers'"
+msgstr "'フィルタとトリガー' 後に抽出された数値"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Page text after 'Filters & Triggers'"
+msgstr "'フィルタとトリガー' 後のページテキスト"
+
+#: changedetectionio/conditions/form.py
+msgid "Field"
+msgstr "フィールド"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator"
+msgstr "演算子"
+
+#: changedetectionio/conditions/form.py
+msgid "A value"
+msgstr "値"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator is required."
+msgstr "演算子は必須です。"
+
+#: changedetectionio/conditions/form.py
+msgid "Field is required."
+msgstr "フィールドは必須です。"
+
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr "値は必須です。"
+
 #: changedetectionio/forms.py
 msgid "Use time scheduler"
 msgstr "タイムスケジューラを使用"
