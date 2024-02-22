@@ -2042,3 +2042,65 @@ msgstr "Inizio"
 msgid "Run duration"
 msgstr "Durata esecuzione"
 
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Minuti"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Secondi"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Corpo e titolo notifica sono richiesti quando si usa un URL di notifica"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s' non è un URL AppRise valido."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "La RegEx '%s' non è un'espressione regolare valida."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' non è un'espressione XPath valida. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' non è un'espressione JSONPath valida. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' non è un'espressione jq valida. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Valore vuoto non consentito."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Valore non valido."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Gruppo / Etichetta"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "Monitora"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "Processore"
+
