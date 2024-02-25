@@ -881,6 +881,74 @@ msgstr ""
 "Włączono aktualizacje interfejsu użytkownika w czasie rzeczywistym – (w przypadku zmiany tej opcji konieczne jest "
 "ponowne uruchomienie systemu)"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Enable or Disable Favicons next to the watch list"
+msgstr "Włącz lub wyłącz wyświetlanie ikon favicon obok listy obserwacji"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Number of items per page in the watch overview list, 0 to disable."
+msgstr "Liczba pozycji na stronie listy obserwacji; wartość 0 oznacza wyłączenie tej funkcji."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "How \"Checked\" and \"Changed\" times are shown in the watch overview list."
+msgstr "Sposób wyświetlania czasów „Sprawdzono” i „Zmieniono” na liście obserwacji."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+"Opcja „Zwiń pasek ikon” sprawia, że lewy pasek nawigacyjny jest oszczędny i wyświetla etykiety po najechaniu "
+"kursorem; opcja „Zawsze rozwinięty” sprawia, że etykiety są zawsze widoczne."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "Wskazówka"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr ""
+"W przypadku zablokowanych stron internetowych typy serwerów proxy „Residential” i „Mobile” mogą okazać się "
+"skuteczniejsze niż „Data Center”."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "„Nazwa” posłuży do wyboru serwera proxy w ustawieniach funkcji „Watch Edit”"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr ""
+"Serwery proxy SOCKS5 z uwierzytelnianiem są obsługiwane wyłącznie w przypadku modułu pobierającego „zwykłe żądania”; "
+"w przypadku innych modułów pobierających należy zamiast tego dodać adres IP do białej listy"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr "Czas sprawności:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "Wersja Pythona:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "Maksymalna liczba obserwacji stron:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "Aktywne wtyczki:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "Żadne wtyczki nie są aktywne"
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "Sposób użycia"
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "Overview"
 msgstr "Przegląd"
