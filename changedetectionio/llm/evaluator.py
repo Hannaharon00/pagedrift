@@ -383,3 +383,85 @@ def llm_configured_via_env() -> bool:
     return bool(os.getenv('LLM_MODEL', '').strip())
 
 
+def get_global_token_budget_month(datastore=None) -> int:
+    """
+    Monthly token budget ceiling. Resolution order:
+      1. LLM_TOKEN_BUDGET_MONTH env var (takes priority, makes field read-only in UI)
+      2. datastore settings (set via UI)
+    Returns 0 (no limit) if not set anywhere.
+    """
+    try:
+        env_val = int(os.getenv('LLM_TOKEN_BUDGET_MONTH', '0'))
+        if env_val > 0:
+            return env_val
+    except (ValueError, TypeError):
+        pass
+    if datastore is not None:
+        try:
+            stored = datastore.data['settings']['application'].get('llm') or {}
+            val = int(stored.get('token_budget_month') or 0)
+            return max(0, val)
+        except (ValueError, TypeError):
+            pass
+    return 0
+
+
+def _estimate_cost_usd(model: str, input_tokens: int, output_tokens: int) -> float:
+    """
+    Return estimated cost in USD using litellm's pricing database.
+    Returns 0.0 for unknown models (local/Ollama/custom endpoints).
+    Never raises — cost estimation is best-effort.
+    """
+    if not model or (not input_tokens and not output_tokens):
+        return 0.0
+    try:
+        from litellm.cost_calculator import cost_per_token
+        prompt_cost, completion_cost = cost_per_token(
+            model=model,
+            prompt_tokens=input_tokens,
+            completion_tokens=output_tokens,
+        )
+        return float(prompt_cost + completion_cost)
+    except Exception:
+        return 0.0
+
+
+def accumulate_global_tokens(datastore, tokens: int,
+                              input_tokens: int = 0, output_tokens: int = 0,
+                              model: str = '') -> None:
+    """
+    Add *tokens* to both the all-time and this-month global counters.
+    When input_tokens / output_tokens / model are supplied the estimated
+    USD cost is accumulated alongside the token counts.
+    Resets monthly counters automatically on month rollover.
+
+    These counters live at datastore.data['settings']['application']['llm']
+    and are intentionally read-only from the API/form side — they are only
+    ever written here, in a controlled way.
+    """
+    if tokens <= 0:
+        return
+
+    current_month = _get_month_key()
+    cost = _estimate_cost_usd(model, input_tokens, output_tokens)
+
+    with datastore.lock:
+        settings = get_llm_settings(datastore)
+
+        # Month rollover: reset monthly counters
+        if settings.tokens_month_key != current_month:
+            settings.tokens_this_month = 0
+            settings.cost_usd_this_month = 0.0
+            settings.tokens_month_key = current_month
+
+        settings.tokens_total_cumulative += tokens
+        settings.tokens_this_month += tokens
+        settings.cost_usd_total_cumulative += cost
+        settings.cost_usd_this_month += cost
+
+        # Round-trip through model_dump so storage stays a plain dict and the schema
+        # contract (extra='forbid', type coercion) is re-enforced on every write.
+        datastore.data['settings']['application']['llm'] = settings.model_dump()
+        datastore.commit()
+
+
