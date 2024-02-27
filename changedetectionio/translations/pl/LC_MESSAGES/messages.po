@@ -1778,6 +1778,70 @@ msgstr "Więcej wskazówek i przykładów znajdziesz tutaj"
 msgid "Variables are supported in the request body"
 msgstr "W treści żądania obsługiwane są zmienne"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "dodatek"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "rozważ włączenie tej opcji"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Uruchamiaj tylko wtedy, gdy pojawią się unikalne wiersze"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Rozwiązanie to sprawdza się w przypadku stron internetowych, na których treść jest po prostu przestawiana, a "
+"użytkownik chce wiedzieć, kiedy pojawiają się NOWE treści; porównuje ono nowe wiersze z całą historią dla danego "
+"obserwowanego elementu."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+"Pomaga ograniczyć liczbę wykrytych zmian spowodowanych przetasowywaniem wierszy przez strony internetowe; warto "
+"połączyć to z poniższą funkcją <i>sprawdź unikalne wiersze</i>."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Usuń wszelkie spacje przed i po każdym wierszu tekstu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr "Podgląd intencji AI"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Ładowanie..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "Narzędzie „Visual Selector” pozwala wybrać"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "tekst"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+"elementy, które będą wykorzystywane do wykrywania zmian. Automatycznie wypełnia filtry w polu „Filtry "
+"CSS/JSONPath/JQ/XPath” w"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "zakładka. Sposób użycia"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+kliknięcie"
+
 #: changedetectionio/blueprint/ui/templates/preview.html
 msgid "Current erroring screenshot from most recent request"
 msgstr "Aktualny zrzut ekranu przedstawiający błąd z ostatniego żądania"
