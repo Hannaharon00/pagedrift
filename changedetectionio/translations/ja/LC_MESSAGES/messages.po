@@ -1837,6 +1837,67 @@ msgid ""
 msgstr "フィルタがページで見つからなくなったときに通知を送信します。ページが変更されてフィルタが機能しなくなったことを把握するのに便利です。"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "確認ボタン（✓）を使用して、現在のスナップショットに対して条件が満たされるかテストできます。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "次のクイックチュートリアルをご覧ください："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "条件付きウェブページ変更の使用方法はこちら"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "プレビューを有効化"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "プロのヒント："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "プレビューページを使用して、フィルタとトリガーのハイライト表示を確認できます。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "トリガー/無視/ブロック/抽出を次に制限："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr "注意：各行のテキストの長さと類似度によっては、アルゴリズムが「<strong>置換</strong>」ではなく「<strong>追加</strong>」と判断することがあります。"
+
+# 訳注: "So it's always better to select [X] when you're interested in new content."
+# → 「そのため、新しいコンテンツに興味がある場合は [X] を選択することをおすすめします。」
+# 条件節と述語の訳を入れ替えた
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "そのため、新しいコンテンツに興味がある場合は"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "を選択することをおすすめします。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "リスト内でコンテンツが移動しただけでも"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "追加"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "有効化を検討してください："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "ユニークな行が出現したときのみトリガー"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
 msgstr "申し訳ありませんが、この機能はJavascriptとスクリーンショットをサポートするフェッチャー（playwrightなど）でのみ動作します。"
 

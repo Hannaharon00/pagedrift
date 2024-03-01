@@ -2067,6 +2067,62 @@ msgid "Value is required."
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Metoda žádosti"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignorovat stavové kódy (zpracovat stavové kódy jiné než 2xx jako normálně)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Zpracovat pouze tehdy, když se objeví jedinečné řádky"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Odstranit duplicitní řádky textu"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Seřadit text podle abecedy"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Odstranit ignorované řádky"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Odstranit všechny mezery před a za každým řádkem textu"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Přidané řádky"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Nahrazené/upravené řádky"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Odstraněné řádky"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Spouštěče klíčových slov – Spouštění/čekání na text"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Blokovat detekci změn, když se text shoduje"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Spusťte JavaScript před detekcí změn"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "Odeslat upozornění pokud filtr již na stránce nelze najít"
 
