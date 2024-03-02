@@ -997,3 +997,67 @@ msgstr "Увага! Знайдено файл додаткових заголо�
 msgid "Headers can be also read from a file in your data-directory"
 msgstr "Заголовки також можуть бути прочитані з файлу у вашій директорії даних"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Корисно для сайтів, які просто переміщують контент, коли ви хочете знати лише про НОВИЙ контент. Порівнює "
+"нові рядки з усією історією цього завдання."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with"
+msgstr "Допомагає зменшити хибні спрацювання, спричинені перемішуванням рядків на сайті, використовуйте разом із"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "check unique lines"
+msgstr "перевірка унікальних рядків"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "below."
+msgstr "нижче."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Видаляти пробіли на початку та в кінці кожного рядка тексту"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Завантаження..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "Інструмент візуального вибору дозволяє вибрати"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "текстові"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+"елементи, які будуть використовуватися для виявлення змін. Він автоматично заповнює фільтри в полі "
+"\"CSS/JSONPath/JQ/XPath Фільтри\" у вкладці"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr ". Використовуйте"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+Клік"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "для вибору кількох елементів."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "Режим вибору:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Select by element"
+msgstr "Вибір за елементом"
+
