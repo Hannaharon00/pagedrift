@@ -1486,6 +1486,68 @@ msgstr "已清除 {} 个监控项的错误"
 msgid "{} watches cleared/reset."
 msgstr "已清除/重置 {} 个监控项的历史记录。"
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Cloned, you are editing the new watch."
+msgstr "已克隆，正在编辑新的监控项。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "监视器已在队列中或正在检查。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "已将 1 个监控项加入重新检查队列。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr "{count}个监视器已加入队列({skipped_count}个已在队列中)。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "已将 {} 个监控项加入重新检查队列。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "后台将监视器加入重新检查队列..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "无法分享，与分享服务器通信时出错 - {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "已设置为从浏览器自动检测语言"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "未找到该链接的历史记录，链接是否有误？"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "历史记录不足（需要 2 个快照），无法显示该监控项的差异页。"
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "没有可编辑的监控项"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "未找到 UUID 为 {} 的监控项。"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "已切换到模式 - {}。"
+
 #: changedetectionio/blueprint/ui/templates/clear_all_history.html
 msgid "link first."
 msgstr "链接。"
