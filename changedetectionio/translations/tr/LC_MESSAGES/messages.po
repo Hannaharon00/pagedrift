@@ -1674,6 +1674,64 @@ msgstr ""
 msgid "Goto single snapshot"
 msgstr "Tek bir anlık görüntüye git"
 
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Highlight text to share or add to ignore lists."
+msgstr "Paylaşmak veya yoksayma listelerine eklemek için metni vurgulayın."
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Download difference patch"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "For now, Differences are performed on text, not graphically, only the latest screenshot is available."
+msgstr "Şimdilik, Farklar grafiksel olarak değil metin üzerinde gerçekleştirilir, yalnızca en son ekran görüntüsü mevcuttur."
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Current screenshot from most recent request"
+msgstr "En son istekten gelen mevcut ekran görüntüsü"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "No screenshot available just yet! Try rechecking the page."
+msgstr "Henüz bir ekran görüntüsü mevcut değil! Sayfayı yeniden kontrol etmeyi deneyin."
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Screenshot requires Playwright/WebDriver enabled"
+msgstr "Ekran görüntüsü için Playwright/WebDriver'ın etkinleştirilmesi gerekir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Request"
+msgstr "İstek"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Browser Steps"
+msgstr "Tarayıcı Adımları"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Filter Selector"
+msgstr "Görsel Filtre Seçici"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Conditions"
+msgstr "Koşullar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Stats"
+msgstr "İstatistikler"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Some sites use JavaScript to create the content, for this you should"
+msgstr "Bazı siteler içeriği oluşturmak için JavaScript kullanır, bunun için şunları yapmalısınız"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "use the Chrome/WebDriver Fetcher"
+msgstr "Chrome/WebDriver Getiricisini kullanın"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the URL"
+msgstr "Değişkenler URL'de desteklenir"
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "tab. Use"
 msgstr "sekme. Şunu kullanın"
