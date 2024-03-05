@@ -2075,3 +2075,60 @@ msgstr ""
 msgid "Text Starts With"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "编辑 > 监控项"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "抓取方式"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "通知正文"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "通知格式"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "通知标题"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "通知 URL 列表"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "处理器 - 您想实现什么？"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "监控检查调度器的默认时区"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "提取文本前等待秒数"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "应为 1 秒或以上"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "通知基础 URL 覆盖"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "保存"
+
