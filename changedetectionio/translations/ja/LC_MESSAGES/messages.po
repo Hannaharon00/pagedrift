@@ -1953,6 +1953,59 @@ msgstr "最新のHTMLスナップショットをダウンロード"
 msgid "Download watch data package"
 msgstr "ウォッチデータパッケージをダウンロード"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr "ウォッチを削除しますか?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "次のウォッチを削除してもよいですか:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "この操作は元に戻せません。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "履歴をクリアしますか?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "次のすべての履歴をクリアしてもよいですか:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "すべてのスナップショットと以前のバージョンが削除されます。この操作は元に戻せません。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "履歴をクリア"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "複製して編集"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "タイムスタンプを選択"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "最新のリクエストからの現在のエラースクリーンショット"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr "スクリーンショットには、スクリーンショットをサポートするコンテンツフェッチャー（Sockpuppetbrowser、seleniumなど）が必要です。"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "running"
 msgstr ""
