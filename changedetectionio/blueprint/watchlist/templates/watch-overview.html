@@ -175,3 +175,31 @@ window.watchOverviewI18n = {
     </form>
 </div>
 
+<div class="box">
+    <form class="pure-form" action="{{ url_for('ui.form_watch_list_checkbox_operations') }}" method="POST" id="watch-list-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" >
+    <input type="hidden" id="op_extradata" name="op_extradata" value="" >
+    {# Option lists for the bulk Browser / Proxy modals (rendered by watch-overview.js into a ModalDialog).
+       Mirrors the choices on the watch edit page. Kept inert inside <template> until the modal is opened. #}
+    <template id="bulk-browser-options">
+        <label class="bulk-choice-row"><input type="radio" name="bulk-fetch-backend" value="system" checked> {{ _('System settings default') }}</label>
+        {% for key, label in available_fetchers %}
+        <label class="bulk-choice-row"><input type="radio" name="bulk-fetch-backend" value="{{ key }}"> {{ label }}</label>
+        {% endfor %}
+    </template>
+    {% if has_proxies %}
+    <template id="bulk-proxy-options">
+        <label class="bulk-choice-row"><input type="radio" name="bulk-proxy" value="" checked> {{ _('Default') }}</label>
+        {% for key, meta in has_proxies.items() %}
+        <label class="bulk-choice-row"><input type="radio" name="bulk-proxy" value="{{ key }}"> {{ meta.label }}</label>
+        {% endfor %}
+    </template>
+    {% endif %}
+    {# "Select all matching" banner — shown by watch-overview.js when the whole
+       visible page is selected but more matching rows exist on other pages. #}
+    <div id="select-all-banner" class="select-all-banner" style="display: none;"
+         data-select-all-tmpl="{{ _('All %(page)s on this page are selected.') }}"
+         data-select-all-action="{{ _('Select all %(total)s matching') }}"
+         data-all-selected-tmpl="{{ _('All %(total)s matching are selected.') }}"
+         data-clear-action="{{ _('Clear selection') }}"></div>
+
