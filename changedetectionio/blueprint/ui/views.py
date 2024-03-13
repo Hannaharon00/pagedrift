@@ -68,3 +68,70 @@ def run_preloaded_first_check(datastore, uuid):
         return False
 
 
+def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMetaData, watch_check_update):
+    views_blueprint = Blueprint('ui_views', __name__, template_folder="../ui/templates")
+
+    @views_blueprint.route("/form/add/quickwatch", methods=['POST'])
+    @login_optionally_required
+    def form_quick_watch_add():
+        from changedetectionio import forms
+        form = forms.quickWatchForm(request.form)
+
+        if not form.validate():
+            for widget, l in form.errors.items():
+                flash(','.join(l), 'error')
+            return redirect(url_for('watchlist.index'))
+
+        url = request.form.get('url').strip()
+        if datastore.url_exists(url):
+            flash(gettext('Warning, URL {} already exists').format(url), "notice")
+
+        add_paused = request.form.get('edit_and_watch_submit_button') != None
+        from changedetectionio import processors
+        processor = request.form.get('processor', processors.get_default_processor())
+        llm_intent = request.form.get('llm_intent', '').strip()
+        extras = {'paused': add_paused, 'processor': processor}
+
+        # Browser picked on the Add Watch page (validated against the live-preview capable
+        # list by the form). Absent from the watch-list quick-add, which leaves the new
+        # watch on the system default as before. A snapshot that recorded its own browser
+        # overrides this inside make_temporary_watch_active_watch().
+        if form.fetch_backend.data:
+            extras['fetch_backend'] = form.fetch_backend.data
+        if llm_intent:
+            extras['llm_intent'] = llm_intent
+
+        # Filters picked with the Add Watch visual selector ("by element" mode)
+        include_filters = [l.strip() for l in request.form.get('include_filters', '').split('\n') if l.strip()]
+        if include_filters:
+            extras['include_filters'] = include_filters
+
+        # If a live preview was fetched on the Add Watch page, promote that snapshot
+        # (screenshot + xpath) into the new watch instead of re-fetching. Works for both
+        # "Watch" and "Edit & Watch"; falls back to a normal add if the snapshot expired.
+        temporary_uuid = request.form.get('temporary_uuid', '').strip()
+        new_uuid = datastore.make_temporary_watch_active_watch(
+            temp_uuid=temporary_uuid,
+            url=url,
+            tag=request.form.get('tags', '').strip(),
+            extras=extras,
+        )
+
+        if new_uuid:
+            # If the Add Watch page already fetched a snapshot, run the processor now (no network)
+            # to create the first history snapshot. Returns False if there was no preload or it failed.
+            created_first_snapshot = run_preloaded_first_check(datastore, new_uuid)
+
+            if add_paused:
+                flash(gettext('Watch added in Paused state, saving will unpause.'))
+                return redirect(url_for('ui.ui_edit.edit_page', uuid=new_uuid, unpause_on_save=1, tag=request.args.get('tag')))
+            else:
+                # Only queue a network check if we couldn't build the first snapshot from the
+                # preloaded fetch - otherwise the watch is already populated.
+                if not created_first_snapshot:
+                    worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': new_uuid}))
+                flash(gettext("Watch added."))
+
+        return redirect(url_for('watchlist.index', tag=request.args.get('tag','')))
+
+    return views_blueprint
