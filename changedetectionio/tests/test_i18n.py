@@ -109,3 +109,52 @@ def test_invalid_locale(client, live_server, measure_memory_usage, datastore_pat
         "Should remain in en-GB when an invalid locale is provided"
 
 
+def test_accept_language_header_zh_tw(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that browsers sending zh-TW in Accept-Language header get Traditional Chinese.
+    This tests the locale alias mapping for issue #3779.
+    """
+    from flask import url_for
+
+    # Clear any session data to simulate a fresh visitor
+    with client.session_transaction() as sess:
+        sess.clear()
+
+    # Request the index page with zh-TW in Accept-Language header (what browsers send)
+    res = client.get(
+        url_for("watchlist.index"),
+        headers={'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.8'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Should get Traditional Chinese content, not Simplified Chinese
+    # Traditional: 選擇語言, Simplified: 选择语言
+    assert '選擇語言'.encode() in res.data, "Expected Traditional Chinese '選擇語言' (Select Language)"
+    assert '选择语言'.encode() not in res.data, "Should not get Simplified Chinese '选择语言'"
+
+    # Check HTML lang attribute uses BCP 47 format
+    assert b'<html lang="zh-Hant-TW"' in res.data, "Expected BCP 47 language tag zh-Hant-TW in HTML"
+
+    # Check that the correct flag icon is shown (Taiwan flag for Traditional Chinese)
+    assert b'<span class="fi fi-tw fis" id="language-selector-flag">' in res.data, \
+        "Expected Taiwan flag 'fi fi-tw' for Traditional Chinese"
+    assert b'<span class="fi fi-cn fis" id="language-selector-flag">' not in res.data, \
+        "Should not show China flag 'fi fi-cn' for Traditional Chinese"
+
+    # Verify we're getting Traditional Chinese text throughout the page
+    res = client.get(
+        url_for("settings.settings_page"),
+        headers={'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.8'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Check Traditional Chinese translations (not English)
+    assert "小時".encode() in res.data, "Expected Traditional Chinese '小時' for Hours"
+    assert "分鐘".encode() in res.data, "Expected Traditional Chinese '分鐘' for Minutes"
+    assert b"Hours" not in res.data or "小時".encode() in res.data, "Should have Traditional Chinese, not English"
+
+
