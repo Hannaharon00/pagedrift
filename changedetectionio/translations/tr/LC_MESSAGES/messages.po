@@ -1733,6 +1733,70 @@ msgid "Variables are supported in the URL"
 msgstr "Değişkenler URL'de desteklenir"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Üzgünüz, bu işlevsellik yalnızca etkileşimli Javascript'i destekleyen getiricilerle (şimdiye kadar yalnızca "
+"Playwright tabanlı getiriciler) çalışır"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "etkileşimli Javascript'i destekleyen bir tanesine."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Yapmanız gerekenler"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Getirme yöntemini ayarla"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Filtre artık sayfada görülemediğinde bir bildirim gönderir, sayfanın ne zaman değiştiğini ve filtrenizin artık "
+"çalışmayacağını bilmek için iyidir."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "Bir koşulun mevcut anlık görüntüye göre geçip geçmediğini test etmek için doğrula (✓) düğmesini kullanın."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Şunun hakkında hızlı bir eğitim okuyun"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "koşullu web sayfası değişikliklerini burada kullanma"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Önizlemeyi etkinleştir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Uzman ipuçları:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Filtrelerinizin ve tetikleyicilerinizin vurgulandığını görmek için önizleme sayfasını kullanın."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Tetiklemeyi/yoksaymayı/engellemeyi/çıkarmayı şununla sınırla;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Not: Her satırdaki metnin uzunluğuna ve benzerliğine bağlı olarak, algoritma örneğin bir <strong>değiştirme</strong> "
+"yerine bir <strong>ekleme</strong> dikkate alabilir."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "tab. Use"
 msgstr "sekme. Şunu kullanın"
 
