@@ -1302,6 +1302,67 @@ msgid "(set via <code>LLM_MAX_INPUT_CHARS</code>)"
 msgstr "(устанавливается через <code>LLM_MAX_INPUT_CHARS</code>)"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid "characters — currently enforcing: %(limit)s"
+msgstr "символы — в настоящее время применяется: %(limit)s"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"tokens — skips AI evaluation on a watch once its usage within the current period (monthly) hits this cap (0 = "
+"unlimited)"
+msgstr ""
+"токены — пропускает оценку ИИ на часах, как только их использование в течение текущего периода (ежемесячно) достигает"
+" этого ограничения (0 = неограниченно)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "No AI usage recorded yet."
+msgstr "Использование ИИ пока не зафиксировано."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Token budget"
+msgstr "Бюджет токена"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "tokens per month (0 = unlimited)"
+msgstr "токенов в месяц (0 = неограниченно)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "platform.openai.com → API keys"
+msgstr "Platform.openai.com → Ключи API"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "console.anthropic.com → API keys"
+msgstr "console.anthropic.com → Ключи API"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "aistudio.google.com → Get API key"
+msgstr "aistudio.google.com → Получить ключ API"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "No API key needed for local Ollama"
+msgstr "Для локальной Олламы ключ API не требуется."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Bearer token for your self-hosted server (vLLM, LM Studio, etc.)"
+msgstr "Токен носителя для вашего собственного сервера (vLLM, LM Studio и т. д.)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "openrouter.ai → Keys"
+msgstr "openrouter.ai → Ключи"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Select a provider first."
+msgstr "Сначала выберите провайдера."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Loading…"
+msgstr "Загрузка…"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "No models returned by the provider."
+msgstr "Поставщик не вернул ни одной модели."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "— choose a model —"
 msgstr "— выбрать модель —"
 
