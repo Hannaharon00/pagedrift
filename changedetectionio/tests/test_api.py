@@ -105,3 +105,236 @@ def test_api_simple(client, live_server, measure_memory_usage, datastore_path):
     assert isinstance(before_recheck_info['link'], str), "link must be a plain string, not a tuple or list"
     assert before_recheck_info['link'] == test_url
 
+    # Check the limit by tag doesnt return anything when nothing found
+    res = client.get(
+        url_for("createwatch", tag="Something else entirely"),
+        headers={'x-api-key': api_key}
+    )
+    assert len(res.json) == 0
+    time.sleep(2)
+    wait_for_all_checks(client)
+    set_modified_response(datastore_path=datastore_path)
+    # Trigger recheck of all ?recheck_all=1
+    res = client.get(
+        url_for("createwatch", recheck_all='1'),
+        headers={'x-api-key': api_key},
+    )
+    wait_for_all_checks(client)
+
+    time.sleep(2)
+    # Did the recheck fire?
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key},
+    )
+    after_recheck_info = res.json[watch_uuid]
+    assert after_recheck_info['last_checked'] != before_recheck_info['last_checked']
+    assert after_recheck_info['last_changed'] != 0
+
+    # #2877 When run in a slow fetcher like playwright etc
+    assert after_recheck_info['last_changed'] ==  after_recheck_info['last_checked']
+
+    # Check history index list
+    res = client.get(
+        url_for("watchhistory", uuid=watch_uuid),
+        headers={'x-api-key': api_key},
+    )
+    watch_history = res.json
+    assert len(res.json) == 2, "Should have two history entries (the original and the changed)"
+
+    # Fetch a snapshot by timestamp, check the right one was found
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp=list(res.json.keys())[-1]),
+        headers={'x-api-key': api_key},
+    )
+    assert b'which has this one new line' in res.data
+
+    # Fetch a snapshot by 'latest'', check the right one was found
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp='latest'),
+        headers={'x-api-key': api_key},
+    )
+    assert b'which has this one new line' in res.data
+    assert b'<div id' not in res.data
+
+    # Fetch the HTML of the latest one
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp='latest')+"?html=1",
+        headers={'x-api-key': api_key},
+    )
+    assert b'which has this one new line' in res.data
+    assert b'<div id' in res.data
+
+
+    # Fetch the difference between two versions (default text format)
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest'),
+        headers={'x-api-key': api_key},
+    )
+    assert b'(changed) Which is across' in res.data
+    assert b'Some text thats the same' in res.data
+
+    # Fetch the difference between two versions (default text format)
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+"?changesOnly=true",
+        headers={'x-api-key': api_key},
+    )
+    assert b'Some text thats the same' not in res.data
+
+    # Test htmlcolor format
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?format=htmlcolor',
+        headers={'x-api-key': api_key},
+    )
+    assert b'aria-label="Changed text" title="Changed text">Which is across multiple lines' in res.data
+
+    # Test html format
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?format=html',
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 200
+    assert b'<br>' in res.data
+
+    # Test markdown format
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?format=markdown',
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 200
+
+    # Test new diff preference parameters
+    # Test removed=false (should hide removed content)
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?removed=false',
+        headers={'x-api-key': api_key},
+    )
+    # Should not contain removed content indicator
+    assert b'(removed)' not in res.data
+    # Should still contain added content
+    assert b'(added)' in res.data or b'which has this one new line' in res.data
+
+    # Test added=false (should hide added content)
+    # Note: The test data has replacements, not pure additions, so we test differently
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?added=false&replaced=false',
+        headers={'x-api-key': api_key},
+    )
+    # With both added and replaced disabled, should have minimal content
+    # Should not contain added indicators
+    assert b'(added)' not in res.data
+
+    # Test replaced=false (should hide replaced/changed content)
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?replaced=false',
+        headers={'x-api-key': api_key},
+    )
+    # Should not contain changed content indicator
+    assert b'(changed)' not in res.data
+
+    # Test type=diffWords for word-level diff
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?type=diffWords&format=htmlcolor',
+        headers={'x-api-key': api_key},
+    )
+    # Should contain HTML formatted diff
+    assert res.status_code == 200
+    assert len(res.data) > 0
+
+    # Test combined parameters: show only additions with word diff
+    res = client.get(
+        url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp='previous', to_timestamp='latest')+'?removed=false&replaced=false&type=diffWords',
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 200
+    # Should not contain removed or changed markers
+    assert b'(removed)' not in res.data
+    assert b'(changed)' not in res.data
+
+
+    # Fetch the whole watch
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    watch = res.json
+    # @todo how to handle None/default global values?
+    assert watch['history_n'] == 2, "Found replacement history section, which is in its own API"
+
+    assert watch.get('viewed') == False
+    # Loading the most recent snapshot should force viewed to become true
+    client.get(url_for("ui.ui_diff.diff_history_page", uuid="first"), follow_redirects=True)
+
+    time.sleep(3)
+    # Fetch the whole watch again, viewed should be true
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    watch = res.json
+    assert watch.get('viewed') == True
+
+    # basic systeminfo check
+    res = client.get(
+        url_for("systeminfo"),
+        headers={'x-api-key': api_key},
+    )
+    assert res.json.get('watch_count') == 1
+    assert res.json.get('uptime') > 0.5
+
+    ######################################################
+    # Mute and Pause, check it worked
+    res = client.get(
+        url_for("watch", uuid=watch_uuid, paused='paused'),
+        headers={'x-api-key': api_key}
+    )
+    assert b'OK' in res.data
+    res = client.get(
+        url_for("watch", uuid=watch_uuid,  muted='muted'),
+        headers={'x-api-key': api_key}
+    )
+    assert b'OK' in res.data
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.json.get('paused') == True
+    assert res.json.get('notification_muted') == True
+
+    # Now unpause, unmute
+    res = client.get(
+        url_for("watch", uuid=watch_uuid,  muted='unmuted'),
+        headers={'x-api-key': api_key}
+    )
+    assert b'OK' in res.data
+    res = client.get(
+        url_for("watch", uuid=watch_uuid, paused='unpaused'),
+        headers={'x-api-key': api_key}
+    )
+    assert b'OK' in res.data
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.json.get('paused') == 0
+    assert res.json.get('notification_muted') == 0
+    ######################################################
+
+
+
+
+
+    # Finally delete the watch
+    res = client.delete(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 204
+
+    # Check via a relist
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key}
+    )
+    assert len(res.json) == 0, "Watch list should be empty"
+
