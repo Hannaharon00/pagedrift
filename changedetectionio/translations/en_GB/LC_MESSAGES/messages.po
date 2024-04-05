@@ -2598,6 +2598,62 @@ msgstr ""
 msgid "hours"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr ""
