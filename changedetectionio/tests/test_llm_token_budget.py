@@ -14,6 +14,28 @@ import os
 import pytest
 from flask import url_for
 
+from changedetectionio.tests.util import live_server_setup, delete_all_watches
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _seed_token_counters(datastore, this_month=5000, total=12000):
+    """Pre-load token counters into the datastore's llm settings dict."""
+    from changedetectionio.llm.evaluator import _get_month_key
+    app_settings = datastore.data['settings']['application']
+    if 'llm' not in app_settings:
+        app_settings['llm'] = {}
+    app_settings['llm'].update({
+        'model': 'gpt-4o-mini',
+        'api_key': 'sk-test',
+        'tokens_this_month': this_month,
+        'tokens_total_cumulative': total,
+        'tokens_month_key': _get_month_key(),
+    })
+
+
 def test_api_cannot_reset_token_counters_via_watch_put(
         client, live_server, measure_memory_usage, datastore_path):
     """
