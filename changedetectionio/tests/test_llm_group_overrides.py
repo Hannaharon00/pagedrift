@@ -10,6 +10,20 @@ A group has exactly ONE AI control on its edit page — the ternary llm_backend_
   Off                  AI off for every watch in the group; its prompts are never used
   Leave it to each     the group has no say; each watch's own AI settings apply
 
+Only "On" makes anything cascade, so it decides both:
+
+  * whether the evaluator inherits the group's prompts (resolve_llm_field /
+    get_effective_summary_prompt), and
+  * whether the watch edit page shows the inherited value as a
+    "From group '<name>': <value>" placeholder.
+
+So every UI assertion here is paired: group On → "From group ..." visible, group Off or
+undecided → not a trace of it. On a watch the same field is a plain on/off checkbox (#4204).
+"""
+
+import html
+import json
+
 from flask import url_for
 
 from changedetectionio.tests.util import live_server_setup, delete_all_watches
