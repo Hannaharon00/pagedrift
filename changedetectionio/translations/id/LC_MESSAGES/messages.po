@@ -754,6 +754,70 @@ msgstr "akses API dan contohnya di sini"
 msgid "Restrict API access limit by using"
 msgstr "Batasi akses API menggunakan"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"\"Collapsed icon rail\" keeps the left navigation slim and reveals labels on mouse-over; \"Always expanded\" keeps "
+"labels visible."
+msgstr ""
+"\"Rel ikon ringkas\" menjaga navigasi kiri tetap ramping dan menampilkan label saat mouse diarahkan; \"Selalu "
+"diperluas\" membuat label tetap terlihat."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Tip"
+msgstr "Kiat"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Residential\" and \"Mobile\" proxy type can be more successful than \"Data Center\" for blocked websites."
+msgstr ""
+"Tipe proksi \"Residential\" dan \"Mobile\" dapat lebih berhasil daripada \"Data Center\" untuk situs web yang "
+"diblokir."
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
+msgstr "\"Nama\" akan digunakan untuk memilih proksi dalam pengaturan Edit Monitor"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr ""
+"Proksi SOCKS5 dengan autentikasi hanya didukung dengan pengambil 'plain requests'; untuk pengambil lain, sebaiknya "
+"masukkan akses IP ke daftar putih"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr "Uptime:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "Versi Python:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "Jumlah maksimum monitor halaman:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "Plugin aktif:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "Tidak ada plugin aktif"
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "Penggunaan"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Overview"
+msgstr "Ringkasan"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Provider"
+msgstr "Penyedia"
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "Prompts"
 msgstr "Prompt"

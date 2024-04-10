@@ -2032,3 +2032,61 @@ msgstr ""
 msgid "Out of stock"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Perşembe"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "Cuma"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Cumartesi"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Pazar"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Hafta"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Sıfır veya daha fazla saniye içermelidir"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Gün"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Saat"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Dakika"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Saniye"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Bir Bildirim URL'si kullanıldığında Bildirim Gövdesi ve Başlığı gereklidir"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s' geçerli bir AppRise URL'si değil."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "'%s' RegEx'i geçerli bir düzenli ifade değil."
+
