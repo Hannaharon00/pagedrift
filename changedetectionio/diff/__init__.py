@@ -39,6 +39,12 @@ ADDED_PLACEMARKER_CLOSED = '@added_PLACEMARKER_CLOSED'
 CHANGED_PLACEMARKER_OPEN = '@changed_PLACEMARKER_OPEN'
 CHANGED_PLACEMARKER_CLOSED = '@changed_PLACEMARKER_CLOSED'
 
+CHANGED_INTO_PLACEMARKER_OPEN = '@changed_into_PLACEMARKER_OPEN'
+CHANGED_INTO_PLACEMARKER_CLOSED = '@changed_into_PLACEMARKER_CLOSED'
+
+# Compiled regex patterns for performance
+WHITESPACE_NORMALIZE_RE = re.compile(r'\s+')
+
 # Regexes built from the constants above — no brittle hardcoded strings
 _EXTRACT_REMOVED_RE = re.compile(
     re.escape(REMOVED_PLACEMARKER_OPEN) + r'(.*?)' + re.escape(REMOVED_PLACEMARKER_CLOSED)
