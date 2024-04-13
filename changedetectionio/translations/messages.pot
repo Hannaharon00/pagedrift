@@ -2445,6 +2445,65 @@ msgid "Value"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Number of fetch workers"
 msgstr ""
 
