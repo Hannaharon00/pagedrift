@@ -1949,3 +1949,55 @@ msgstr ""
 msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "タイムスケジューラを使用"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "実行するタイムゾーン（任意）"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "月曜日"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "火曜日"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "水曜日"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "木曜日"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "金曜日"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "土曜日"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "日曜日"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "週"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "0秒以上の値を入力してください"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "日"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "時間"
+
