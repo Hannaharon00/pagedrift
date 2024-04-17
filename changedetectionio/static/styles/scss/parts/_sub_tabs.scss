@@ -210,3 +210,57 @@
   }
 }
 
+.stab-overview-cta {
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.stab-configured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(39, 174, 96, 0.09);
+  border: 1px solid rgba(39, 174, 96, 0.28);
+  border-radius: 4px;
+  color: #2a7a4e;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+// ── Section header inside a pane ──────────────────────────────────────────────
+.stab-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin: 1.4rem 0 0.6rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// ── Mobile: stack nav above content, buttons stay vertical ───────────────────
+@media (max-width: 600px) {
+  .stab-shell {
+    flex-direction: column;
+    min-height: unset;
+  }
+
+  .stab-nav {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    padding: 0.4rem 0;
+  }
+
+  .stab-body {
+    padding-left: 1rem;
+  }
+}
+
