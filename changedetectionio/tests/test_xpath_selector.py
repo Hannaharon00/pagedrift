@@ -41,3 +41,60 @@ def set_rss_atom_feed_response(datastore_path, header='', ):
 
 
 
+def test_check_markup_xpath_filter_restriction(client, live_server, measure_memory_usage, datastore_path):
+    xpath_filter = "//*[contains(@class, 'sametext')]"
+
+    set_original_response(datastore_path=datastore_path)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # Goto the edit page, add our ignore text
+    # Add our URL to the import page
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": xpath_filter, "url": test_url, "tags": "", "headers": "", 'fetch_backend': "html_requests", "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # view it/reset state back to viewed
+    client.get(url_for("ui.ui_diff.diff_history_page", uuid="first"), follow_redirects=True)
+
+    #  Make a change
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' not in res.data
+    delete_all_watches(client)
+
+
+def test_xpath_validation(client, live_server, measure_memory_usage, datastore_path):
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": "/something horrible", "url": test_url, "tags": "", "headers": "", 'fetch_backend': "html_requests", "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"is not a valid XPath expression" in res.data
+    delete_all_watches(client)
+
+
