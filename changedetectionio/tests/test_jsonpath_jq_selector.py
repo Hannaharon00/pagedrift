@@ -205,6 +205,68 @@ def test_unittest_inline_extract_body():
     text = html_tools.extract_json_as_string(content, "json:$.testKey")
     assert text == '42'
 
+def set_original_ext_response(datastore_path):
+    data = """
+        [
+        {
+            "isPriceLowered": false,
+            "status": "ForSale",
+            "statusOrig": "for sale"
+        },
+        {
+            "_id": "5e7b3e1fb3262d306323ff1e",
+            "listingsType": "consumer",
+            "status": "ForSale",
+            "statusOrig": "for sale"
+        }
+    ]
+        """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(data)
+    return None
+
+def set_modified_ext_response(datastore_path):
+    # This should get reformatted
+    data = """ [ { "isPriceLowered": false,  "status": "Sold",  "statusOrig": "sold" }, {
+        "_id": "5e7b3e1fb3262d306323ff1e",
+        "listingsType": "consumer",
+        "isPriceLowered": false,
+        "status": "Sold"
+    }
+]
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(data)
+    return None
+
+def set_original_response(datastore_path):
+    test_return_data = """
+    {
+      "employees": [
+        {
+          "id": 1,
+          "name": "Pankaj",
+          "salary": "10000"
+        },
+        {
+          "name": "David",
+          "salary": "5000",
+          "id": 2
+        }
+      ],
+      "boss": {
+        "name": "Fat guy"
+      },
+      "available": true
+    }
+    """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
+
 def set_json_response_with_html(datastore_path):
     test_return_data = """
     {
