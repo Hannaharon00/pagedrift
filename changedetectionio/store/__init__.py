@@ -35,6 +35,11 @@ except ImportError:
 
 from ..processors import get_custom_watch_obj_for_processor, find_processors
 
+# Import the base class and helpers
+from .file_saving_datastore import (FileSavingDataStore, load_all_watches, load_all_tags, load_watch_from_file,
+                                    save_json_atomic)
+from .updates import DatastoreUpdatesMixin
+
 # Because the server will run as a daemon and wont know the URL for notification links when firing off a notification
 BASE_URL_NOT_SET_TEXT = '("Base URL" not set - see settings - notifications)'
 
