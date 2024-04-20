@@ -1547,6 +1547,62 @@ msgid "Headers can be also read from a file in your data-directory"
 msgstr "標頭也可以從您的資料目錄中的檔案讀取"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "在此閱讀更多內容"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Selenium 瀏覽器不支援"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "開啟文字尋找器"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "請稍候，第一個瀏覽器步驟可能需要一點時間載入 ..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "點擊此處開始"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "請等待 10-15 秒讓瀏覽器連線。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "按 \"Play\" 開始。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "視覺選擇器資料尚未準備好，監測任務至少需要檢查一次。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr "抱歉，此功能僅適用於支援互動式 Javascript 的抓取器（目前僅限基於 Playwright 的抓取器）"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "為支援互動式 Javascript 的方式。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "您需要"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "設定抓取方式"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr "當頁面上找不到過濾器時發送通知，這有助於了解頁面何時變更導致您的過濾器失效。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Delete Watch?"
 msgstr "刪除監測任務？"
 
