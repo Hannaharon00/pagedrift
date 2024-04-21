@@ -891,6 +891,96 @@ msgid "AI Provider"
 msgstr "Penyedia AI"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Master switch — when off, all AI lookups are skipped even if a provider is configured below."
+msgstr "Sakelar utama — saat nonaktif, semua pencarian AI dilewati meskipun penyedia dikonfigurasi di bawah."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Third-party data transfer — please read"
+msgstr "Transfer data pihak ketiga — harap dibaca"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"When AI features are active, change data from the websites you monitor — including page diffs and extracted text — is"
+" sent to an external AI provider of your choice."
+msgstr ""
+"Saat fitur AI aktif, data perubahan dari situs web yang Anda pantau — termasuk diff halaman dan teks yang diekstrak —"
+" dikirim ke penyedia AI eksternal pilihan Anda."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "You are solely responsible for ensuring this complies with the terms of service of each website you monitor."
+msgstr ""
+"Anda sepenuhnya bertanggung jawab untuk memastikan hal ini mematuhi ketentuan layanan setiap situs web yang Anda "
+"pantau."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"You are solely responsible for compliance with applicable data-protection laws (e.g. GDPR) regarding any personal "
+"data that may appear in monitored content."
+msgstr ""
+"Anda sepenuhnya bertanggung jawab atas kepatuhan terhadap hukum perlindungan data yang berlaku (mis. GDPR) terkait "
+"data pribadi apa pun yang mungkin muncul dalam konten yang dipantau."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"API costs charged by your chosen provider are your own responsibility; this software has no visibility into or "
+"control over those charges."
+msgstr ""
+"Biaya API yang dikenakan oleh penyedia pilihan Anda menjadi tanggung jawab Anda sendiri; perangkat lunak ini tidak "
+"dapat melihat atau mengendalikan biaya tersebut."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"AI / LLM models are known to hallucinate — producing plausible-sounding but factually incorrect or entirely "
+"fabricated output with apparent confidence — and by design may omit or truncate relevant data during summarisation. "
+"AI output must never be relied upon as complete or accurate. This software is provided as-is with no warranty of any "
+"kind."
+msgstr ""
+"Model AI / LLM diketahui dapat berhalusinasi — menghasilkan keluaran yang terdengar masuk akal tetapi secara faktual "
+"salah atau sepenuhnya dibuat-buat dengan keyakinan seolah benar — dan secara desain dapat menghilangkan atau memotong"
+" data relevan saat membuat ringkasan. Keluaran AI tidak boleh dianggap lengkap atau akurat. Perangkat lunak ini "
+"disediakan apa adanya tanpa jaminan apa pun."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"By enabling AI features you personally indemnify and hold harmless the creator(s) and contributor(s) of this software"
+" from any claims, damages, or liability arising from this data transfer or your use of AI features."
+msgstr ""
+"Dengan mengaktifkan fitur AI, Anda secara pribadi membebaskan dan melindungi pembuat serta kontributor perangkat "
+"lunak ini dari klaim, kerusakan, atau tanggung jawab apa pun yang timbul dari transfer data ini atau penggunaan fitur"
+" AI oleh Anda."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "I have read and understood the above. I accept full responsibility and indemnify the creator(s) of this software."
+msgstr ""
+"Saya telah membaca dan memahami hal di atas. Saya menerima tanggung jawab penuh dan membebaskan pembuat perangkat "
+"lunak ini dari tuntutan."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/templates/_common_fields.html
+msgid "Note"
+msgstr "Catatan"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid ""
+"AI / LLM is configured via environment variables (<code>LLM_MODEL=%(model)s</code>%(api_base)s). Remove the "
+"<code>LLM_MODEL</code> environment variable to configure via this form instead."
+msgstr ""
+"AI / LLM dikonfigurasi melalui variabel lingkungan (<code>LLM_MODEL=%(model)s</code>%(api_base)s). Hapus variabel "
+"lingkungan <code>LLM_MODEL</code> untuk mengonfigurasi melalui formulir ini."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "select a provider"
+msgstr "pilih penyedia"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "OpenAI-compatible (vLLM, LM Studio, llama.cpp)"
+msgstr "Kompatibel dengan OpenAI (vLLM, LM Studio, llama.cpp)"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Only needed for Ollama or custom/self-hosted endpoints. Leave blank for cloud providers."
+msgstr "Hanya diperlukan untuk Ollama atau endpoint kustom/self-hosted. Biarkan kosong untuk penyedia cloud."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid ""
 "Reasoning models (Qwen3, DeepSeek-R1, Gemma 3, etc.) emit chain-of-thought before the final answer. This multiplier "
