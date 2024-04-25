@@ -1671,6 +1671,64 @@ msgstr "Capture d'écran actuelle de la demande la plus récente"
 msgid "No screenshot available just yet! Try rechecking the page."
 msgstr "Aucune capture d'écran disponible pour l'instant ! Essayez de revérifier la page."
 
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Screenshot requires Playwright/WebDriver enabled"
+msgstr "La capture d'écran nécessite l'activation de Playwright/WebDriver"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Request"
+msgstr "Demande"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Browser Steps"
+msgstr "Étapes du navigateur"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Filter Selector"
+msgstr "Sélecteur de filtre visuel"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Conditions"
+msgstr "Conditions"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Stats"
+msgstr "Statistiques"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Some sites use JavaScript to create the content, for this you should"
+msgstr "Certains sites utilisent JavaScript pour créer le contenu, pour cela vous devez"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "use the Chrome/WebDriver Fetcher"
+msgstr "utilisez le récupérateur Chrome/WebDriver"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the URL"
+msgstr "Les variables sont prises en charge dans l'URL"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "help and examples here"
+msgstr "aide et exemples ici"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Organisational tag/group name used in the main listing page"
+msgstr ""
+"Nom du groupe/étiquetteNom du groupe/étiquetteBalise organisationnelle/nom de groupe utilisé dans la page de liste "
+"principale"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Also automatically applied by URL pattern:"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Automatically uses the page title if found, you can also use your own title/description here"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Extra Page Title and Link options"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Read more here"
 msgstr "Lire la suite ici"
