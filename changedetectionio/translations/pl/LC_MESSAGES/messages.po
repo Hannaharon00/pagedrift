@@ -1493,6 +1493,74 @@ msgstr ""
 msgid "Use system defaults"
 msgstr "Użyj ustawień domyślnych systemu"
 
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Add a new organisational tag"
+msgstr "Dodaj nowy tag organizacyjny"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Groups allows you to manage filters and notifications for multiple watches under a single organisational tag."
+msgstr ""
+"Funkcja „Grupy” pozwala zarządzać filtrami i powiadomieniami dla wielu obserwacji w ramach jednego tagu "
+"organizacyjnego."
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "# Watches"
+msgstr "# Obserwacje"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Tag / Label name"
+msgstr "Nazwa tagu / etykiety"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "No website organisational tags/groups configured"
+msgstr "Nie skonfigurowano żadnych tagów/grup organizacyjnych dla tej witryny"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/menu.html
+msgid "Mute notifications"
+msgstr "Wyłącz powiadomienia"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck"
+msgstr "Sprawdź ponownie"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/edit.py
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Edit"
+msgstr "Edytuj"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Delete Group?"
+msgstr "Usunąć grupę?"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid "<p>Are you sure you want to delete group <strong>%(title)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Czy na pewno chcesz usunąć grupę <strong>%(title)s</strong>?</p><p>Tej czynności nie można cofnąć.</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Delete"
+msgstr "Usuń"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Deletes and removes tag"
+msgstr "Usuwa i usuwa tag"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Unlink Group?"
+msgstr "Usunąć powiązanie z grupą?"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from group <strong>%(title)s</strong>?</p><p>The tag will be kept but "
+"watches will be removed from it.</p>"
+msgstr ""
+"<p>Czy na pewno chcesz usunąć wszystkie obserwacje z grupy <strong>%(title)s</strong>?</p><p>Tagi zostaną zachowane, "
+"ale obserwacje zostaną z nich usunięte.</p>"
+
 #: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
 msgid "Unlink"
 msgstr "Usuń powiązanie"
