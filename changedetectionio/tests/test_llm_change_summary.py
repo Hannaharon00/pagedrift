@@ -12,6 +12,14 @@ import json
 import time
 from unittest.mock import patch
 
+from flask import url_for
+
+from changedetectionio.tests.util import wait_for_all_checks, delete_all_watches
+
+HTML_V1 = "<html><body><ul><li>Item A</li><li>Item B</li></ul></body></html>"
+HTML_V2 = "<html><body><ul><li>Item A</li><li>Item B</li><li>Item C — NEW</li></ul></body></html>"
+
+
 def test_llm_change_summary_saved_via_edit_form(
         client, live_server, measure_memory_usage, datastore_path):
     """llm_change_summary submitted via watch edit form is persisted."""
