@@ -1535,6 +1535,66 @@ msgstr ""
 msgid "Switched to mode - {}."
 msgstr ""
 
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "Testo di conferma"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr ""
+
+#. 'From' labels the older snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "From"
+msgstr ""
+
+#. 'To' labels the newer snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "To"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Words"
+msgstr "Parole"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Lines"
+msgstr "Righe"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Ignore Whitespace"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Same/non-changed"
 msgstr "Uguale/non modificato"
