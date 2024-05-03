@@ -1486,6 +1486,60 @@ msgid "Ignore Whitespace"
 msgstr "忽略空白"
 
 #: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Same/non-changed"
+msgstr "未变化"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Removed"
+msgstr "已删除"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Added"
+msgstr "新增"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Replaced"
+msgstr "替换"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Include all intermediate snapshots between the selected versions in the AI summary"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "AI: every change between versions"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Keyboard:"
+msgstr "快捷键："
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Previous"
+msgstr "上一项"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Next"
+msgstr "下一项"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump to next difference"
+msgstr "跳转到下一个差异"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump"
+msgstr "跳转"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Error Text"
+msgstr "错误文本"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Error Screenshot"
+msgstr "错误截图"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Screenshot requires Playwright/WebDriver enabled"
 msgstr "截图需要启用 Playwright/WebDriver"
 
