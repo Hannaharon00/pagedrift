@@ -71,3 +71,186 @@ def manage_user_agent(headers, current_ua=''):
 
     return None
 
+class Fetcher():
+    # The fully-resolved concrete backend name this fetcher was chosen as
+    # (e.g. 'html_requests', 'html_webdriver'). Set by resolve_content_fetcher()
+    # so downstream consumers don't have to re-derive it from the class name.
+    backend_name = None
+    browser_connection_is_custom = None
+    browser_connection_url = None
+    browser_steps = None
+    browser_steps_screenshot_path = None
+    content = None
+    error = None
+    fetcher_description = "No description"
+    headers = {}
+    favicon_blob = None
+    instock_data = None
+    instock_data_js = ""
+    screenshot_format = None
+    status_code = None
+    webdriver_js_execute_code = None
+    xpath_data = None
+    xpath_element_js = ""
+
+    # Will be needed in the future by the VisualSelector, always get this where possible.
+    screenshot = False
+    system_http_proxy = os.getenv('HTTP_PROXY')
+    system_https_proxy = os.getenv('HTTPS_PROXY')
+
+    # Time ONTOP of the system defined env minimum time
+    render_extract_delay = 0
+
+    # Fetcher capability flags - subclasses should override these
+    # These indicate what features the fetcher supports
+    supports_browser_steps = False      # Can execute browser automation steps
+    supports_screenshots = False        # Can capture page screenshots
+    supports_xpath_element_data = False # Can extract xpath element positions/data for visual selector
+
+    # Screenshot element locking - prevents layout shifts during screenshot capture
+    # Only needed for visual comparison (image_ssim_diff processor)
+    # Locks element dimensions in the first viewport to prevent headers/ads from resizing
+    lock_viewport_elements = False      # Default: disabled for performance
+
+    def __init__(self, **kwargs):
+        if kwargs and 'screenshot_format' in kwargs:
+            self.screenshot_format = kwargs.get('screenshot_format')
+
+        # Allow lock_viewport_elements to be set via kwargs
+        if kwargs and 'lock_viewport_elements' in kwargs:
+            self.lock_viewport_elements = kwargs.get('lock_viewport_elements')
+
+
+    @classmethod
+    def get_status_icon_data(cls):
+        """Return data for status icon to display in the watch overview.
+
+        This method can be overridden by subclasses to provide custom status icons.
+
+        Returns:
+            dict or None: Dictionary with icon data:
+                {
+                    'filename': 'icon-name.svg',  # Icon filename
+                    'alt': 'Alt text',            # Alt attribute
+                    'title': 'Tooltip text',      # Title attribute
+                    'style': 'height: 1em;'       # Optional inline CSS
+                }
+                Or None if no icon
+        """
+        return None
+
+    def clear_content(self):
+        """
+        Explicitly clear all content from memory to free up heap space.
+        Call this after content has been saved to disk.
+        """
+        self.content = None
+        if hasattr(self, 'raw_content'):
+            self.raw_content = None
+        self.screenshot = None
+        self.xpath_data = None
+        # Keep headers and status_code as they're small
+
+    @abstractmethod
+    def get_error(self):
+        return self.error
+
+    @abstractmethod
+    async def run(self,
+                  fetch_favicon=True,
+                  current_include_filters=None,
+                  empty_pages_are_a_change=False,
+                  ignore_status_codes=False,
+                  is_binary=False,
+                  request_body=None,
+                  request_headers=None,
+                  request_method=None,
+                  timeout=None,
+                  url=None,
+                  watch_uuid=None,
+                  ):
+        # Should set self.error, self.status_code and self.content
+        pass
+
+    @abstractmethod
+    async def quit(self, watch=None):
+        return
+
+    @abstractmethod
+    def get_last_status_code(self):
+        return self.status_code
+
+    @abstractmethod
+    def screenshot_step(self, step_n):
+        if self.browser_steps_screenshot_path and not os.path.isdir(self.browser_steps_screenshot_path):
+            logger.debug(f"> Creating data dir {self.browser_steps_screenshot_path}")
+            os.mkdir(self.browser_steps_screenshot_path)
+        return None
+
+    @abstractmethod
+    # Return true/false if this checker is ready to run, in the case it needs todo some special config check etc
+    def is_ready(self):
+        return True
+
+    def get_all_headers(self):
+        """
+        Get all headers but ensure all keys are lowercase
+        :return:
+        """
+        return {k.lower(): v for k, v in self.headers.items()}
+
+    async def iterate_browser_steps(self, start_url=None):
+        from changedetectionio.browser_steps.browser_steps import steppable_browser_interface, browser_steps_get_valid_steps
+        from playwright._impl._errors import TimeoutError, Error
+        from changedetectionio.jinja2_custom import render as jinja_render
+        step_n = 0
+
+        if self.browser_steps:
+            interface = steppable_browser_interface(start_url=start_url)
+            interface.page = self.page
+            valid_steps = browser_steps_get_valid_steps(self.browser_steps)
+
+            for step in valid_steps:
+                step_n += 1
+                logger.debug(f">> Iterating check - browser Step n {step_n} - {step['operation']}...")
+                await self.screenshot_step("before-" + str(step_n))
+                await self.save_step_html("before-" + str(step_n))
+
+                try:
+                    optional_value = step['optional_value']
+                    selector = step['selector']
+                    # Support for jinja2 template in step values, with date module added
+                    if '{%' in step['optional_value'] or '{{' in step['optional_value']:
+                        optional_value = jinja_render(template_str=step['optional_value'])
+                    if '{%' in step['selector'] or '{{' in step['selector']:
+                        selector = jinja_render(template_str=step['selector'])
+
+                    await getattr(interface, "call_action")(action_name=step['operation'],
+                                                      selector=selector,
+                                                      optional_value=optional_value)
+                    await self.screenshot_step(step_n)
+                    await self.save_step_html(step_n)
+                except (Error, TimeoutError, ValueError) as e:
+                    # ValueError is what validate_fetch_url_async() raises when a step's URL is
+                    # refused (file://, private IP, bad scheme) - report it against the offending
+                    # step number like any other step failure, rather than failing the whole watch
+                    # with an opaque error.
+                    logger.debug(str(e))
+                    # Stop processing here
+                    raise BrowserStepsStepException(step_n=step_n, original_e=e)
+
+    # It's always good to reset these
+    def delete_browser_steps_screenshots(self):
+        import glob
+        if self.browser_steps_screenshot_path is not None:
+            dest = os.path.join(self.browser_steps_screenshot_path, 'step_*.jpeg')
+            files = glob.glob(dest)
+            for f in files:
+                if os.path.isfile(f):
+                    os.unlink(f)
+
+    def save_step_html(self, step_n):
+        if self.browser_steps_screenshot_path and not os.path.isdir(self.browser_steps_screenshot_path):
+            logger.debug(f"> Creating data dir {self.browser_steps_screenshot_path}")
+            os.mkdir(self.browser_steps_screenshot_path)
+        pass
