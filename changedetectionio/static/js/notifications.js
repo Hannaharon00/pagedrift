@@ -95,3 +95,94 @@ function appendNotificationUrl(url) {
     $ta.trigger('input');
 }
 
+function removeNotificationLine(line) {
+    var $ta = $('textarea.notification-urls');
+    var kept = ($ta.val() || '').split('\n').filter(function (s) { return s.trim() !== line.trim(); });
+    $ta.val(kept.join('\n'));
+    $ta.trigger('input');
+}
+
+$(document).ready(function () {
+
+    $('textarea.notification-urls, select.notification-format').on('change input', checkDiscordHtmlWarning);
+    checkDiscordHtmlWarning();
+
+    // Nothing to test against when there are no notification URLs - hide the button.
+    function updateSendTestVisibility() {
+        $('#send-test-notification').toggle(notificationLines().length > 0);
+    }
+
+    // Keep the friendly chips in sync whenever the raw URLs change (typed or programmatic).
+    $('textarea.notification-urls').on('change input', function () {
+        renderNotificationRecipients();
+        updateSendTestVisibility();
+    });
+    renderNotificationRecipients();
+    updateSendTestVisibility();
+
+    // Email quick-add: the inline field is always visible when a preset is configured.
+    function commitEmail() {
+        var input = $('#add-email-input')[0];
+        var email = $.trim($('#add-email-input').val());
+        if (!email) return;
+        // Use native email validation if available.
+        if (input && input.checkValidity && !input.checkValidity()) {
+            input.reportValidity();
+            return;
+        }
+        appendNotificationUrl(buildEmailUrl(email));
+        $('#add-email-input').val('').focus();
+    }
+
+    $('#add-email-go').click(function (e) {
+        e.preventDefault();
+        commitEmail();
+    });
+
+    $('#add-email-input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            commitEmail();
+        }
+    });
+
+    $('#send-test-notification').click(function (e) {
+        e.preventDefault();
+
+        data = {
+            notification_urls: $('textarea.notification-urls').val(),
+            notification_title: $('input.notification-title').val(),
+            notification_body: $('textarea.notification-body').val(),
+            notification_format: $('select.notification-format').val(),
+            tags: $('#tags').val(),
+            window_url: window.location.href,
+        }
+
+        $('.notifications-wrapper .spinner').fadeIn();
+        $('#notification-test-log').show();
+        $.ajax({
+            type: "POST",
+            url: notification_base_url,
+            data: data,
+            statusCode: {
+                400: function (data) {
+                    $("#notification-test-log>span").text(data.responseText);
+                },
+            }
+        }).done(function (data) {
+            $("#notification-test-log>span").text(data);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            // Handle connection refused or other errors
+            if (textStatus === "error" && errorThrown === "") {
+                console.error("Connection refused or server unreachable");
+                $("#notification-test-log>span").text("Error: Connection refused or server is unreachable.");
+            } else {
+                console.error("Error:", textStatus, errorThrown);
+                $("#notification-test-log>span").text("An error occurred: " + textStatus);
+            }
+        }).always(function () {
+            $('.notifications-wrapper .spinner').hide();
+        })
+    });
+});
+
