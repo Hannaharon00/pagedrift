@@ -208,3 +208,84 @@ def test_element_removal_full(client, live_server, measure_memory_usage, datasto
     res = client.get(url_for("watchlist.index"))
     assert b"unviewed" not in res.data
 
+# Re #2752
+def test_element_removal_nth_offset_no_shift(client, live_server, measure_memory_usage, datastore_path):
+
+    set_response_with_multiple_index(datastore_path=datastore_path)
+    subtractive_selectors_data = [
+### css style ###
+"""body > table > tr:nth-child(1) > th:nth-child(2)
+body > table >  tr:nth-child(2) > td:nth-child(2)
+body > table > tr:nth-child(3) > td:nth-child(2)
+body > table > tr:nth-child(1) > th:nth-child(3)
+body > table >  tr:nth-child(2) > td:nth-child(3)
+body > table > tr:nth-child(3) > td:nth-child(3)""",
+### second type, xpath ###
+"""//body/table/tr[1]/th[2]
+//body/table/tr[2]/td[2]
+//body/table/tr[3]/td[2]
+//body/table/tr[1]/th[3]
+//body/table/tr[2]/td[3]
+//body/table/tr[3]/td[3]"""]
+    
+    test_url = url_for("test_endpoint", _external=True)
+
+    for selector_list in subtractive_selectors_data:
+
+        delete_all_watches(client)
+
+        uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={"subtractive_selectors": selector_list.splitlines()})
+        client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+        wait_for_all_checks(client)
+
+        res = client.get(
+            url_for("ui.ui_preview.preview_page", uuid="first"),
+            follow_redirects=True
+        )
+
+        # the filters above should have removed this but they never say to remove the "emil" column
+        assert b"Tobias" not in res.data
+        assert b"Linus" not in res.data
+        assert b"Person 2" not in res.data
+        assert b"Person 3" not in res.data
+        # First column should exist
+        assert b"Emil" in res.data
+
+
+# Re PR #978: subtractive_selectors must run BEFORE include_filters so that selectors
+# relying on ancestor context (e.g. ".main .ad") can still match. If include runs first,
+# the ancestor wrapper is stripped and the subtractive selector matches nothing.
+def test_subtractive_selectors_applied_before_include_filters(client, live_server, measure_memory_usage, datastore_path):
+    page_html = """<html><body>
+<div class="main">
+  <p class="keep">first kept paragraph</p>
+  <p class="advertisement">noisy advertisement text</p>
+  <p class="keep">second kept paragraph</p>
+</div>
+</body></html>
+"""
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(page_html)
+
+    test_url = url_for("test_endpoint", _external=True)
+    client.application.config.get('DATASTORE').add_watch(
+        url=test_url,
+        extras={
+            # Include filter strips the .main wrapper from the output
+            "include_filters": [".main p"],
+            # Subtractive selector depends on the .main ancestor — only effective if it runs first
+            "subtractive_selectors": [".main .advertisement"],
+        },
+    )
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True,
+    )
+
+    assert b"first kept paragraph" in res.data
+    assert b"second kept paragraph" in res.data
+    # The bug: ad survives if include filter runs first
+    assert b"noisy advertisement text" not in res.data
