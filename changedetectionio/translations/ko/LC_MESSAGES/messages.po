@@ -2665,6 +2665,68 @@ msgstr "시간"
 msgid "hours"
 msgstr "시간"
 
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "분"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "초"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "알림 URL을 사용하는 경우 알림 본문 및 제목이 필요합니다."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s'은(는) 유효한 AppRise URL이 아닙니다."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "정규식 '%s'은(는) 유효하지 않습니다."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s'은(는) 유효한 XPath 표현식이 아닙니다. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s'은(는) 유효한 JSONPath 표현식이 아닙니다. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s'은(는) 유효한 jq 표현식이 아닙니다. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "빈 값은 허용되지 않습니다."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "값이 잘못되었습니다."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "그룹 / 태그"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "모니터링"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "프로세서"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
 msgid "Browser"
 msgstr ""
