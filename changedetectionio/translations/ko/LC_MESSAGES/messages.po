@@ -2722,3 +2722,59 @@ msgstr "설정되지 않음"
 msgid "Save"
 msgstr "저장"
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "이름과 프록시 URL이 모두 필요합니다."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "새 탭에서 '기록' 페이지 열기"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "실시간 UI 업데이트 활성화"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "파비콘 활성화"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "모니터링 목록에 페이지 <title> 사용"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "API 액세스 토큰 보안 확인 활성화"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "빈 페이지를 변경 사항으로 처리할까요?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "텍스트 무시"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "공백 무시"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "스크린샷: 최소 변경 비율"
+

@@ -2528,6 +2528,63 @@ msgid "Should contain zero or more seconds"
 msgstr "Должно содержать ноль или более секунд."
 
 #: changedetectionio/forms.py
+msgid "Days"
+msgstr "Дни"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Часы"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Минуты"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Секунды"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Текст и заголовок уведомления требуются при использовании URL-адреса уведомления."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "«%s» не является допустимым URL-адресом AppRise."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "RegEx «%s» не является допустимым регулярным выражением."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "«%(expression)s» не является допустимым выражением XPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "«%(expression)s» не является допустимым выражением JSONPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "«%(expression)s» не является допустимым выражением jq. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Пустое значение не допускается."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Недопустимое значение."
+
+#: changedetectionio/forms.py
 msgid "Open Link Override"
 msgstr ""
 
