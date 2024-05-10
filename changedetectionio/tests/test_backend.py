@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
 import os
 
+import time
+from flask import url_for
+from .util import set_original_response, set_modified_response, live_server_setup, wait_for_all_checks, extract_rss_token_from_UI, \
+    extract_UUID_from_client, delete_all_watches
+
+
+# Basic test to check inscriptus is not adding return line chars, basically works etc
+def test_inscriptus():
+    from inscriptis import get_text
+    html_content = "<html><body>test!<br>ok man</body></html>"
+    stripped_text_from_html = get_text(html_content)
+    assert stripped_text_from_html == 'test!\nok man'
+
+
+
 def test_check_basic_change_detection_functionality(client, live_server, measure_memory_usage, datastore_path):
     set_original_response(datastore_path=datastore_path)
 
