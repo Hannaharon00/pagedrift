@@ -143,3 +143,31 @@ def test_bad_access(client, live_server, measure_memory_usage, datastore_path):
 
     assert b'Watch protocol is not permitted or invalid URL format' in res.data
 
+def _runner_test_various_file_slash(client, file_uri):
+
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": file_uri, "tags": ''},
+        follow_redirects=True
+    )
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+
+    substrings = [b"URLs with hostname components are not permitted", b"No connection adapters were found for"]
+
+
+    # If it is enabled at test time
+    if strtobool(os.getenv('ALLOW_FILE_URI', 'false')):
+        if file_uri.startswith('file:///'):
+            # This one should be the full qualified path to the file and should get the contents of this file
+            res = client.get(
+                url_for("ui.ui_preview.preview_page", uuid="first"),
+                follow_redirects=True
+            )
+            assert b'_runner_test_various_file_slash' in res.data
+        else:
+            # This will give some error from requests or if it went to chrome, will give some other error :-)
+            assert any(s in res.data for s in substrings)
+
+    delete_all_watches(client)
+
