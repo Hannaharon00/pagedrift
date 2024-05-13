@@ -1781,6 +1781,66 @@ msgstr "Ketik kata"
 msgid "to confirm that you understand."
 msgstr "untuk mengonfirmasi bahwa Anda mengerti."
 
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Clear History!"
+msgstr "Hapus Riwayat!"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share diff as image"
+msgstr "Bagikan perbedaan sebagai gambar"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Share as Image"
+msgstr "Bagikan sebagai Gambar"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching"
+msgstr "Abaikan baris apa pun yang cocok dengan"
+
+#: changedetectionio/blueprint/ui/templates/diff-offscreen-options.html
+msgid "Ignore any lines matching excluding digits"
+msgstr "Abaikan baris apa pun yang cocok, kecuali digit"
+
+#. 'From' labels the older snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "From"
+msgstr "Dari"
+
+#. 'To' labels the newer snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "To"
+msgstr "Ke"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Words"
+msgstr "Kata"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Lines"
+msgstr "Baris"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Ignore Whitespace"
+msgstr "Abaikan Spasi"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Same/non-changed"
+msgstr "Sama/tidak berubah"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Removed"
+msgstr "Dihapus"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Added"
+msgstr "Ditambahkan"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Replaced"
+msgstr "Diganti"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Include all intermediate snapshots between the selected versions in the AI summary"
 msgstr "Sertakan semua snapshot perantara di antara versi yang dipilih dalam ringkasan AI"
