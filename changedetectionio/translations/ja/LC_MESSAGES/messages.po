@@ -2027,6 +2027,72 @@ msgid "Only trigger when unique lines appear"
 msgstr "ユニークな行が出現したときのみトリガー"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr "コンテンツを移動させるだけのウェブサイトに適しています。新しいコンテンツが追加されたときに知りたい場合に便利で、このウォッチのすべての履歴と新しい行を比較します。"
+
+# 訳注: 日本語を斜体にすると字形が崩れるため、参照は「」で囲む。
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr "サイトが行を並べ替えることで発生する不要な変更検知を減らすのに役立ちます。下の「ユニーク行をチェック」と組み合わせてください。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "各テキスト行の前後の空白を削除"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "読み込み中..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "ビジュアルセレクターツールを使用すると、変更検知に使用する"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "テキスト"
+
+# 訳注: "elements that will be used for the change detection. It automatically fills-in the filters in the
+# \"CSS/JSONPath/JQ/XPath Filters\" box of the [Filters & Triggers] tab. Use [Shift+Click] to select multiple items."
+# → 「要素を選択できます。フィルタが自動的に入力される「CSS/JSONPath/JQ/XPath フィルタ」ボックスは [フィルタとトリガー] タブにあります。複数の項目を選択するには [Shift+クリック] を使用します。」
+# "tab. Use" 以降の述語部分と副詞を入れ替えた
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr "要素を選択できます。フィルタが自動的に入力される「CSS/JSONPath/JQ/XPath フィルタ」ボックスは"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "タブにあります。複数の項目を選択するには"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+クリック"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "を使用します。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "選択モード:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "エリアを描画"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "少々お待ちください。スクリーンショットと要素情報を取得しています..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
 msgstr "申し訳ありませんが、この機能はJavascriptとスクリーンショットをサポートするフェッチャー（playwrightなど）でのみ動作します。"
 

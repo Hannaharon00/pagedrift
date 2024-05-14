@@ -2195,6 +2195,62 @@ msgstr "Saat ini normal"
 msgid "Currently high"
 msgstr "Saat ini tinggi"
 
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr "Nilai wajib diisi."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text similarity ratio"
+msgstr "Levenshtein - Rasio kemiripan teks"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text change distance"
+msgstr "Levenshtein - Jarak perubahan teks"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Not enough history to calculate Levenshtein metrics"
+msgstr "Riwayat tidak cukup untuk menghitung metrik Levenshtein"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Snapshot too large for edit statistics, skipping."
+msgstr "Snapshot terlalu besar untuk statistik edit, dilewati."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Unable to calculate Levenshtein metrics"
+msgstr "Tidak dapat menghitung metrik Levenshtein"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein Text Similarity Details"
+msgstr "Detail Kemiripan Teks Levenshtein"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Raw distance (edits needed)"
+msgstr "Jarak mentah (jumlah edit yang diperlukan)"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Similarity ratio"
+msgstr "Rasio kemiripan"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Percent similar"
+msgstr "Persen kemiripan"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid ""
+"Levenshtein metrics compare the last two snapshots, measuring how many character edits are needed to transform one "
+"into the other."
+msgstr ""
+"Metrik Levenshtein membandingkan dua snapshot terakhir, mengukur berapa banyak edit karakter yang diperlukan untuk "
+"mengubah satu menjadi yang lain."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Error calculating Levenshtein metrics"
+msgstr "Kesalahan saat menghitung metrik Levenshtein"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count of content"
+msgstr "Jumlah kata konten"
+
 #: changedetectionio/forms.py
 msgid "not set"
 msgstr "belum diatur"
