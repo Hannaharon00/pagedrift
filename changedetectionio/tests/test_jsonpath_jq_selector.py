@@ -332,3 +332,34 @@ def test_check_json_without_filter(client, live_server, measure_memory_usage, da
 
     delete_all_watches(client)
 
+def test_check_jq_filter(client, live_server, measure_memory_usage, datastore_path):
+    if jq_support:
+        check_json_filter('jq:.boss.name', client, live_server, datastore_path=datastore_path)
+
+def test_check_jqraw_filter(client, live_server, measure_memory_usage, datastore_path):
+    if jq_support:
+        check_json_filter('jqraw:.boss.name', client, live_server, datastore_path=datastore_path)
+
+def check_json_filter_bool_val(json_filter, client, live_server, datastore_path):
+    set_original_response(datastore_path=datastore_path)
+
+    test_url = url_for('test_endpoint', content_type="application/json", _external=True)
+
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={"include_filters": [json_filter]})
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    #  Make a change
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("ui.ui_diff.diff_history_page", uuid="first"))
+    # But the change should be there, tho its hard to test the change was detected because it will show old and new versions
+    assert b'false' in res.data
+
+    delete_all_watches(client)
+
