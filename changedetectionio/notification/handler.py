@@ -122,6 +122,88 @@ def apply_discord_markdown_to_body(n_body):
         n_body = pattern.sub(lambda m: f"{m.group(1)}{open_md}{m.group(2)}{close_md}{m.group(3)}", n_body)
     return n_body
 
+def apply_standard_markdown_to_body(n_body):
+    """
+    Apprise does not support ~~strikethrough~~ but it will convert <del> to HTML strikethrough.
+    :param n_body:
+    :return:
+    """
+    import re
+    # Define the mapping between your placeholders and markdown markers
+    replacements = [
+        (REMOVED_PLACEMARKER_OPEN, '<del>', REMOVED_PLACEMARKER_CLOSED, '</del>'),
+        (ADDED_PLACEMARKER_OPEN, '**', ADDED_PLACEMARKER_CLOSED, '**'),
+        (CHANGED_PLACEMARKER_OPEN, '<del>', CHANGED_PLACEMARKER_CLOSED, '</del>'),
+        (CHANGED_INTO_PLACEMARKER_OPEN, '**', CHANGED_INTO_PLACEMARKER_CLOSED, '**'),
+    ]
+
+    # So that the markdown gets added without any whitespace following it which would break it
+    for open_tag, open_md, close_tag, close_md in replacements:
+        # Regex: match opening tag, optional whitespace, capture the content, optional whitespace, then closing tag
+        pattern = re.compile(
+            re.escape(open_tag) + r'(\s*)(.*?)?(\s*)' + re.escape(close_tag),
+            flags=re.DOTALL
+        )
+        n_body = pattern.sub(lambda m: f"{m.group(1)}{open_md}{m.group(2)}{close_md}{m.group(3)}", n_body)
+    return n_body
+
+
+def replace_placemarkers_in_text(text, url, requested_output_format):
+    """
+    Replace diff placemarkers in text based on the URL service type and requested output format.
+    Used for both notification title and body to ensure consistent placeholder replacement.
+
+    :param text: The text to process
+    :param url: The notification URL (to detect service type)
+    :param requested_output_format: The output format (html, htmlcolor, markdown, text, etc.)
+    :return: Processed text with placemarkers replaced
+    """
+    if not text:
+        return text
+
+    if url.startswith('tgram://'):
+        # Telegram only supports a limited subset of HTML
+        # Use strikethrough for removed content, bold for added content
+        text = text.replace(REMOVED_PLACEMARKER_OPEN, '<s>')
+        text = text.replace(REMOVED_PLACEMARKER_CLOSED, '</s>')
+        text = text.replace(ADDED_PLACEMARKER_OPEN, '<b>')
+        text = text.replace(ADDED_PLACEMARKER_CLOSED, '</b>')
+        # Handle changed/replaced lines (old → new)
+        text = text.replace(CHANGED_PLACEMARKER_OPEN, '<s>')
+        text = text.replace(CHANGED_PLACEMARKER_CLOSED, '</s>')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_OPEN, '<b>')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_CLOSED, '</b>')
+    elif (url.startswith('discord://') or url.startswith('https://discordapp.com/api/webhooks')
+          or url.startswith('https://discord.com/api')) and requested_output_format == 'html':
+        # Discord doesn't support HTML, use Discord markdown
+        text = apply_discord_markdown_to_body(n_body=text)
+    elif requested_output_format == 'htmlcolor':
+        # https://github.com/dgtlmoon/changedetection.io/issues/821#issuecomment-1241837050
+        text = text.replace(REMOVED_PLACEMARKER_OPEN, f'<span style="{HTML_REMOVED_STYLE}" role="deletion" aria-label="Removed text" title="Removed text">')
+        text = text.replace(REMOVED_PLACEMARKER_CLOSED, f'</span>')
+        text = text.replace(ADDED_PLACEMARKER_OPEN, f'<span style="{HTML_ADDED_STYLE}" role="insertion" aria-label="Added text" title="Added text">')
+        text = text.replace(ADDED_PLACEMARKER_CLOSED, f'</span>')
+        # Handle changed/replaced lines (old → new)
+        text = text.replace(CHANGED_PLACEMARKER_OPEN, f'<span style="{HTML_CHANGED_STYLE}" role="note" aria-label="Changed text" title="Changed text">')
+        text = text.replace(CHANGED_PLACEMARKER_CLOSED, f'</span>')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_OPEN, f'<span style="{HTML_CHANGED_INTO_STYLE}" role="note" aria-label="Changed into" title="Changed into">')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_CLOSED, f'</span>')
+    elif requested_output_format == 'markdown':
+        # Markdown to HTML - Apprise will convert this to HTML
+        text = apply_standard_markdown_to_body(n_body=text)
+    else:
+        # plaintext, html, and default - use simple text markers
+        text = text.replace(REMOVED_PLACEMARKER_OPEN, '(removed) ')
+        text = text.replace(REMOVED_PLACEMARKER_CLOSED, '')
+        text = text.replace(ADDED_PLACEMARKER_OPEN, '(added) ')
+        text = text.replace(ADDED_PLACEMARKER_CLOSED, '')
+        text = text.replace(CHANGED_PLACEMARKER_OPEN, f'(changed) ')
+        text = text.replace(CHANGED_PLACEMARKER_CLOSED, f'')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_OPEN, f'(into) ')
+        text = text.replace(CHANGED_INTO_PLACEMARKER_CLOSED, f'')
+
+    return text
+
 def apply_service_tweaks(url, n_body, n_title, requested_output_format):
 
     from .apprise_plugin.assets import APPRISE_AVATAR_URL
