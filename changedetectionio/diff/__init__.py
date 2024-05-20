@@ -76,3 +76,101 @@ def extract_changed_to(raw_diff: str) -> str:
     return '\n'.join(next((g for g in m.groups() if g is not None), '') for m in _EXTRACT_ADDED_RE.finditer(raw_diff))
 
 
+def render_diff(
+    previous_version_file_contents: str,
+    newest_version_file_contents: str,
+    include_equal: bool = False,
+    include_removed: bool = True,
+    include_added: bool = True,
+    include_replaced: bool = True,
+    include_change_type_prefix: bool = True,
+    patch_format: bool = False,
+    word_diff: bool = True,
+    context_lines: int = 0,
+    case_insensitive: bool = False,
+    ignore_junk: bool = False,
+    tokenizer: str = 'words_and_html'
+) -> str:
+    """
+    Render the difference between two file contents.
+
+    Args:
+        previous_version_file_contents (str): Original file contents
+        newest_version_file_contents (str): Modified file contents
+        include_equal (bool): Include unchanged parts
+        include_removed (bool): Include removed parts
+        include_added (bool): Include added parts
+        include_replaced (bool): Include replaced parts
+        include_change_type_prefix (bool): Add prefixes to indicate change types
+        patch_format (bool): Use patch format for output
+        word_diff (bool): Use word-level diffing for replaced lines (controls inline rendering)
+        context_lines (int): Number of unchanged lines to show around changes (like grep -C)
+        case_insensitive (bool): Perform case-insensitive comparison, By default the test_json_diff/process.py is case sensitive, so this follows same logic
+        ignore_junk (bool): Ignore whitespace-only changes
+        tokenizer (str): Name of tokenizer to use from TOKENIZERS registry (default: 'words_and_html')
+
+    Returns:
+        str: Rendered difference
+    """
+    newest_lines = [line.rstrip() for line in (newest_version_file_contents or '').splitlines()]
+    previous_lines = [line.rstrip() for line in (previous_version_file_contents or '').splitlines()]
+    now = time.time()
+    logger.debug(
+        f"diff options: "
+        f"include_equal={include_equal}, "
+        f"include_removed={include_removed}, "
+        f"include_added={include_added}, "
+        f"include_replaced={include_replaced}, "
+        f"include_change_type_prefix={include_change_type_prefix}, "
+        f"patch_format={patch_format}, "
+        f"word_diff={word_diff}, "
+        f"context_lines={context_lines}, "
+        f"case_insensitive={case_insensitive}, "
+        f"ignore_junk={ignore_junk}, "
+        f"tokenizer={tokenizer}"
+    )
+    if patch_format:
+        patch = difflib.unified_diff(previous_lines, newest_lines)
+        return "\n".join(patch)
+
+    rendered_diff = customSequenceMatcher(
+        before=previous_lines,
+        after=newest_lines,
+        include_equal=include_equal,
+        include_removed=include_removed,
+        include_added=include_added,
+        include_replaced=include_replaced,
+        include_change_type_prefix=include_change_type_prefix,
+        word_diff=word_diff,
+        context_lines=context_lines,
+        case_insensitive=case_insensitive,
+        ignore_junk=ignore_junk,
+        tokenizer=tokenizer
+    )
+
+    def flatten(lst: List[Union[str, List[str]]]) -> str:
+        result = []
+        for x in lst:
+            if isinstance(x, list):
+                result.extend(x)
+            else:
+                result.append(x)
+        return "\n".join(result)
+
+    logger.debug(f"Diff generated in {time.time() - now:.2f}s")
+
+    return flatten(rendered_diff)
+
+
+# Export main public API
+__all__ = [
+    'render_diff',
+    'customSequenceMatcher',
+    'render_inline_word_diff',
+    'render_nested_line_diff',
+    'TOKENIZERS',
+    'REMOVED_STYLE',
+    'ADDED_STYLE',
+    'REMOVED_INNER_STYLE',
+    'ADDED_INNER_STYLE',
+]
