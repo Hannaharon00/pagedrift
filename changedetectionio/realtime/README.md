@@ -88,3 +88,37 @@ export SOCKETIO_MODE=gevent
 
 ## Production Deployment
 
+### Recommended WSGI Servers
+For production with Socket.IO threading mode:
+- **Gunicorn**: `gunicorn --worker-class eventlet changedetection:app` (if using gevent mode)
+- **uWSGI**: With threading support
+- **Docker**: Built-in Flask server works well for containerized deployments
+
+### Performance Considerations
+- Threading mode: Better memory usage, standard Python threading
+- Gevent mode: Higher concurrency but platform limitations
+- Async workers: Separate from Socket.IO, provides scalability
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SOCKETIO_MODE` | `threading` | Socket.IO async mode (`threading` or `gevent`) |
+| `FETCH_WORKERS` | `10` | Number of async workers for watch processing |
+| `CHANGEDETECTION_HOST` | `0.0.0.0` | Server bind address |
+| `CHANGEDETECTION_PORT` | `5000` | Server port |
+
+## Debugging Tips
+
+1. **Socket.IO Issues**: Check browser dev tools for WebSocket connection errors
+2. **Threading Issues**: Monitor with `ps -T` to check thread count  
+3. **Worker Issues**: Use `/worker-health` endpoint to check async worker status
+4. **Queue Issues**: Use `/queue-status` endpoint to monitor job queue
+5. **Performance**: Use `/gc-cleanup` endpoint to trigger memory cleanup
+
+## Migration Notes
+
+If upgrading from eventlet-based versions:
+- Remove any `EVENTLET_*` environment variables
+- No code changes needed - Socket.IO mode is automatically configured
+- Optional: Set `SOCKETIO_MODE=gevent` if high concurrency is required and platform supports it
