@@ -465,3 +465,112 @@ def accumulate_global_tokens(datastore, tokens: int,
         datastore.commit()
 
 
+def is_global_token_budget_exceeded(datastore) -> bool:
+    """
+    Returns True when a monthly token budget is configured (via
+    LLM_TOKEN_BUDGET_MONTH) and the current month's usage has reached
+    or exceeded that budget.
+    """
+    budget = get_global_token_budget_month(datastore)
+    if not budget:
+        return False
+
+    llm_cfg = datastore.data['settings']['application'].get('llm') or {}
+    if llm_cfg.get('tokens_month_key') != _get_month_key():
+        # Counter hasn't been updated yet this month → zero usage
+        return False
+
+    return (llm_cfg.get('tokens_this_month') or 0) >= budget
+
+
+# ---------------------------------------------------------------------------
+# One-time setup: derive pre-filter
+# ---------------------------------------------------------------------------
+
+def _check_token_budget(watch, cfg, tokens_this_call: int = 0) -> bool:
+    """
+    Per-watch per-period token cap.
+
+    Period is currently month (matches the global counter rollover); the field
+    name `max_tokens_per_count_period` is period-agnostic so a configurable
+    day/week/month can land later without renaming storage.
+
+    On non-zero tokens_this_call:
+      - rolls over watch['llm_tokens_this_period'] if a new period started
+      - increments the per-period counter
+      - also increments the existing lifetime counter (UI stat, unchanged)
+    Returns False once the per-period counter exceeds max_tokens_per_count_period
+    so subsequent evaluate_change calls bail out for this watch until rollover.
+
+    Note: only evaluate_change actually gates on the return value (the other
+    callers invoke this for the side-effect of accumulating tokens).
+    """
+    if tokens_this_call > 0:
+        current_period = _get_month_key()
+        # Rollover: new period zeroes the per-period counter
+        if watch.get('llm_tokens_period_key') != current_period:
+            watch['llm_tokens_this_period'] = 0
+            watch['llm_tokens_period_key'] = current_period
+        watch['llm_tokens_this_period'] = (watch.get('llm_tokens_this_period') or 0) + tokens_this_call
+        # Informational lifetime counter (UI shows this; not used for the cap)
+        watch['llm_tokens_used_cumulative'] = (watch.get('llm_tokens_used_cumulative') or 0) + tokens_this_call
+
+    max_per_period = int(cfg.get('max_tokens_per_count_period') or 0)
+    if max_per_period:
+        # Pre-flight (tokens_this_call=0) and post-call paths both read the
+        # same counter — but a stale period key means "no usage yet this period".
+        if watch.get('llm_tokens_period_key') == _get_month_key():
+            total = watch.get('llm_tokens_this_period') or 0
+            if total > max_per_period:
+                logger.warning(
+                    f"LLM per-period token budget exceeded for {watch.get('uuid')}: "
+                    f"{total} tokens > limit {max_per_period}"
+                )
+                return False
+
+    return True
+
+
+def run_setup(watch, datastore, snapshot_text: str) -> None:
+    """
+    Ask the LLM whether a CSS pre-filter would improve precision for this intent.
+    Stores result in watch['llm_prefilter'] (str selector or None).
+    Called once when intent is first set, and again if pre-filter returns zero matches.
+    """
+    cfg = _runtime_llm_config(datastore)
+    if not cfg:
+        return
+
+    intent, _ = resolve_intent(watch, datastore)
+    if not intent:
+        return
+
+    url = watch.get('url', '')
+    system_prompt = build_setup_system_prompt()
+    user_prompt = build_setup_prompt(intent, snapshot_text, url=url)
+    settings = get_llm_settings(datastore)
+
+    try:
+        raw, tokens, *_ = llm_client.completion(
+            model=cfg['model'],
+            messages=[
+                _cached_system(system_prompt, model=cfg['model']),
+                {'role': 'user', 'content': user_prompt},
+            ],
+            api_key=cfg.get('api_key'),
+            api_base=cfg.get('api_base'),
+            timeout=resolve_llm_timeout(cfg),
+            max_tokens=apply_local_token_multiplier(JSON_RESPONSE_MAX_TOKENS, cfg),
+            extra_body=_thinking_extra_body(cfg['model'], settings.thinking_budget),
+            debug=settings.debug,
+        )
+        _check_token_budget(watch, cfg, tokens)
+        accumulate_global_tokens(datastore, tokens, model=cfg['model'])
+        result = parse_setup_response(raw)
+        watch['llm_prefilter'] = result['selector']
+        logger.debug(f"LLM setup for {watch.get('uuid')}: prefilter={result['selector']} reason={result['reason']}")
+    except Exception as e:
+        logger.warning(f"LLM setup call failed for {watch.get('uuid')}: {e}")
+        watch['llm_prefilter'] = None
+
+
