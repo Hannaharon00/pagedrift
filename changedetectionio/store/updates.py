@@ -84,6 +84,39 @@ def create_backup_tarball(datastore_path, update_number):
                 if not os.path.isdir(entry_path):
                     continue
 
+                # Skip hidden directories and backup directories
+                if entry.startswith('.') or entry.startswith('before-update-'):
+                    continue
+
+                # Backup watch.json if exists
+                watch_json = os.path.join(entry_path, "watch.json")
+                if os.path.isfile(watch_json):
+                    tar.add(watch_json, arcname=f"{entry}/watch.json")
+                    watch_count += 1
+
+                    if watch_count % 100 == 0:
+                        logger.debug(f"Backed up {watch_count} watch.json files...")
+
+                # Backup tag.json if exists
+                tag_json = os.path.join(entry_path, "tag.json")
+                if os.path.isfile(tag_json):
+                    tar.add(tag_json, arcname=f"{entry}/tag.json")
+                    tag_count += 1
+
+            logger.success(f"Backup created: {backup_filename} ({watch_count} watches from disk, {tag_count} tags from disk)")
+            return backup_path
+
+    except Exception as e:
+        logger.error(f"Failed to create backup tarball: {e}")
+        # Try to clean up partial backup
+        if os.path.exists(backup_path):
+            try:
+                os.unlink(backup_path)
+            except:
+                pass
+        return None
+
+
 class DatastoreUpdatesMixin:
     """
     Mixin class containing all schema update methods.
