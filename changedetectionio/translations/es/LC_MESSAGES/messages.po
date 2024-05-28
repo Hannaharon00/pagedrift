@@ -1682,6 +1682,69 @@ msgstr "Teclado:"
 msgid "Previous"
 msgstr "Anterior"
 
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Next"
+msgstr "Próximo"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump to next difference"
+msgstr "Saltar a la siguiente diferencia"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Jump"
+msgstr "Saltar"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Error Text"
+msgstr "Texto de error"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Error Screenshot"
+msgstr "Captura de pantalla de error"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Text"
+msgstr "Texto"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Current screenshot"
+msgstr "Captura de pantalla actual"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/processors/extract.py
+#: changedetectionio/processors/templates/extract.html
+msgid "Extract Data"
+msgstr "Extraer datos"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "seconds ago."
+msgstr "hace unos segundos."
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "seconds ago"
+msgstr "hace unos segundos"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Current error-ing screenshot from most recent request"
+msgstr "Captura de pantalla con error actual de la solicitud más reciente"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Pro-tip: You can enable <strong>\"share access when password is enabled\"</strong> from settings."
+msgstr ""
+"Consejo profesional: puedes habilitar <strong>«compartir acceso cuando la contraseña está habilitada»</strong> desde "
+"la configuración."
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Generating change summary…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Goto single snapshot"
+msgstr "Ir a instantánea única"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Highlight text to share or add to ignore lists."
 msgstr "Resalte el texto para compartir o agregar a las listas de ignorados."
