@@ -870,6 +870,68 @@ msgstr ""
 msgid "\"Name\" will be used for selecting the proxy in the Watch Edit settings"
 msgstr "«Ім'я» буде використовуватися для вибору проксі в налаштуваннях завдання"
 
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid ""
+"SOCKS5 proxies with authentication are only supported with 'plain requests' fetcher, for other fetchers you should "
+"whitelist the IP access instead"
+msgstr ""
+"SOCKS5 проксі з аутентифікацією підтримуються лише завантажувачем 'звичайні запити', для інших завантажувачів "
+"необхідно додати IP до білого списку"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Uptime:"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Python version:"
+msgstr "Версія Python:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Maximum number of page watches:"
+msgstr "Максимальна кількість завдань моніторингу:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "Plugins active:"
+msgstr "Активні плагіни:"
+
+#: changedetectionio/blueprint/settings/templates/settings.html
+msgid "No plugins active"
+msgstr "Немає активних плагінів"
+
+#. 'Usage' here means token consumption/cost stats for the AI provider, not a how-to guide
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgctxt "AI usage stats"
+msgid "Usage"
+msgstr "Використання"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Overview"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Provider"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Prompts"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Behaviour"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "AI-powered change monitoring"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Connect an LLM to move from \"something changed\" to \"only the thing you care about changed\"."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Intent filtering"
+msgstr ""
+
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 #, python-format
 msgid ""
