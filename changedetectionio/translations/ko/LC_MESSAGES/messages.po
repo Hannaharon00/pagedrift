@@ -2550,6 +2550,62 @@ msgstr "닫기"
 msgid "Web page"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "재입고 및 가격"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "설정된 웹페이지 변경 감지 모니터링이 없습니다. 위 입력란에 URL을 추가하거나"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "목록 가져오기"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr "연산자 선택"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr "큼"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr "작음"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than or Equal To"
+msgstr "크거나 같음"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than or Equal To"
+msgstr "작거나 같음"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Equals"
+msgstr "같음"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Not Equals"
+msgstr "같지 않음"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Contains"
+msgstr "포함"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Field"
+msgstr "필드 선택"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Does NOT Contain"
+msgstr "포함하지 않음"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Starts With"
+msgstr "텍스트 시작값"
+
 #: changedetectionio/conditions/plugins/levenshtein_plugin.py
 msgid "Levenshtein - Text similarity ratio"
 msgstr "Levenshtein - 텍스트 유사도 비율"
