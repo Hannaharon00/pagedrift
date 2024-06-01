@@ -2271,3 +2271,55 @@ msgstr "'%s' geçerli bir AppRise URL'si değil."
 msgid "RegEx '%s' is not a valid regular expression."
 msgstr "'%s' RegEx'i geçerli bir düzenli ifade değil."
 
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "CSS/JSONPath/JQ/XPath Filtreleri"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Öğeleri kaldır"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Metni çıkar"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Başlık"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Şunu içeren satırları yoksay"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "İstek gövdesi"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "İstek yöntemi"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Durum kodlarını yoksay (2xx olmayan durum kodlarını normal olarak işle)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Yalnızca tüm geçmişte benzersiz satırlar göründüğünde tetikle"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Yinelenen metin satırlarını kaldır"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Metni alfabetik olarak sırala"
+
