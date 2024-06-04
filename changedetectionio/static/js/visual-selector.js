@@ -418,3 +418,91 @@ window.initVisualSelector = function (opts) {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
+        // Check if clicking on a resize handle
+        if (drawnBox) {
+            resizeHandle = getResizeHandle(x, y);
+            if (resizeHandle) {
+                isDrawing = true;
+                drawStartX = x;
+                drawStartY = y;
+                return;
+            }
+
+            // Check if clicking inside the box (for dragging)
+            if (isInsideBox(x, y)) {
+                isDragging = true;
+                dragOffsetX = x - drawnBox.x;
+                dragOffsetY = y - drawnBox.y;
+                $selectorCanvasElem.css('cursor', 'move');
+                return;
+            }
+        }
+
+        // Start new box
+        isDrawing = true;
+        drawStartX = x;
+        drawStartY = y;
+        drawnBox = { x: x, y: y, width: 0, height: 0 };
+    }
+
+    function handleDrawMouseMove(e) {
+        const rect = c.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Update cursor based on position
+        if (!isDrawing && !isDragging && drawnBox) {
+            const handle = getResizeHandle(x, y);
+            if (handle) {
+                $selectorCanvasElem.css('cursor', getHandleCursor(handle));
+            } else if (isInsideBox(x, y)) {
+                $selectorCanvasElem.css('cursor', 'move');
+            } else {
+                $selectorCanvasElem.css('cursor', 'crosshair');
+            }
+        }
+
+        // Handle dragging the box
+        if (isDragging) {
+            drawnBox.x = x - dragOffsetX;
+            drawnBox.y = y - dragOffsetY;
+            drawBox();
+            return;
+        }
+
+        if (!isDrawing) return;
+
+        if (resizeHandle) {
+            // Resize existing box
+            resizeBox(x, y);
+        } else {
+            // Draw new box
+            drawnBox.width = x - drawStartX;
+            drawnBox.height = y - drawStartY;
+        }
+
+        drawBox();
+    }
+
+    function handleDrawMouseUp(e) {
+        if (!isDrawing && !isDragging) return;
+
+        isDrawing = false;
+        isDragging = false;
+        resizeHandle = null;
+
+        if (drawnBox) {
+            // Normalize box (handle negative dimensions)
+            if (drawnBox.width < 0) {
+                drawnBox.x += drawnBox.width;
+                drawnBox.width = Math.abs(drawnBox.width);
+            }
+            if (drawnBox.height < 0) {
+                drawnBox.y += drawnBox.height;
+                drawnBox.height = Math.abs(drawnBox.height);
+            }
+
+            // Constrain to canvas bounds
+            drawnBox.x = Math.max(0, Math.min(drawnBox.x, c.width - drawnBox.width));
+            drawnBox.y = Math.max(0, Math.min(drawnBox.y, c.height - drawnBox.height));
+
