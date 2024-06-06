@@ -2163,6 +2163,58 @@ msgid "Run duration"
 msgstr "Durata esecuzione"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Usa pianificazione oraria"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Fuso orario opzionale per l'esecuzione"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "Lunedì"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "Martedì"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Mercoledì"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Giovedì"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "Venerdì"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Sabato"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Domenica"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Settimane"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Deve contenere zero o più secondi"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Giorni"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Ore"
+
+#: changedetectionio/forms.py
 msgid "Minutes"
 msgstr "Minuti"
 
