@@ -2363,6 +2363,68 @@ msgid "Hours"
 msgstr "時間"
 
 #: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "分"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "秒"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "通知URLを使用する場合は通知本文とタイトルが必要です"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s' は有効なAppRise URLではありません。"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "正規表現 '%s' は有効な正規表現ではありません。"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' は有効なXPath式ではありません。(%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' は有効なJSONPath式ではありません。(%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' は有効なjq式ではありません。(%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "空の値は許可されていません。"
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "無効な値です。"
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "グループタグ"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "ウォッチ"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "プロセッサー"
+
+#: changedetectionio/forms.py
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
 
