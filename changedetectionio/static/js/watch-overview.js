@@ -164,3 +164,60 @@ $(function () {
         };
     })();
 
+    // Individual row checkbox toggled (direct click, or via the row-click handler).
+    $(document).on('change', 'input[name="uuids"][type=checkbox]', function () {
+        if (this.checked) { sel.add(cbUuid(this)); } else { sel.remove(cbUuid(this)); }
+        const visible = $rowCbs().get();
+        $('#check-all').prop('checked', visible.length > 0 && visible.every((el) => el.checked));
+        refreshSelectionUI();
+    });
+
+    // Check-all (this page only).
+    $("#check-all").click(function () {
+        const on = this.checked;
+        $rowCbs().each(function () {
+            this.checked = on;
+            if (on) { sel.add(cbUuid(this)); } else { sel.remove(cbUuid(this)); }
+        });
+        refreshSelectionUI();
+    });
+
+    // Invert this page's selection.
+    $("#check-invert").click(function () {
+        $rowCbs().each(function () { sel.toggle(cbUuid(this)); });
+        applySelectionToDom();
+        refreshSelectionUI();
+    });
+
+    // Cancel: clear the whole cross-page selection (incl. the stored browser data)
+    // and dismiss the operations bar.
+    $("#check-cancel").click(function () {
+        sel.clear();
+        applySelectionToDom();
+        refreshSelectionUI();
+    });
+
+    // "Select all N matching" — pull the full matching id list from the server.
+    $(document).on('click', '#select-all-matching', function () {
+        if (!selCfg.uuidsUrl) return;
+        const $btn = $(this).prop('disabled', true);
+        $.getJSON(selCfg.uuidsUrl + location.search)
+            .done(function (data) {
+                if (data && Array.isArray(data.uuids)) {
+                    sel.addMany(data.uuids.map((u) => ('' + u).trim()));
+                    applySelectionToDom();
+                    refreshSelectionUI();
+                }
+            })
+            .always(function () { $btn.prop('disabled', false); });
+    });
+
+    // "Clear selection" link inside the banner.
+    $(document).on('click', '#select-all-clear', function () {
+        sel.clear();
+        applySelectionToDom();
+        refreshSelectionUI();
+    });
+
+    const time_check_step_size_seconds=1;
+
