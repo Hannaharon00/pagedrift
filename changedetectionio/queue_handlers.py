@@ -308,6 +308,94 @@ class RecheckPriorityQueue:
             logger.critical(f"CRITICAL: Failed to get UUID position for {target_uuid}: {str(e)}")
             return {'position': None, 'total_items': 0, 'priority': None, 'found': False}
     
+    def get_all_queued_uuids(self, limit: Optional[int] = None, offset: int = 0) -> Dict[str, Any]:
+        """Get all queued UUIDs with pagination"""
+        try:
+            with self._lock:
+                queue_list = sorted(self._priority_items)  # Sort by priority
+                total_items = len(queue_list)
+                
+                if total_items == 0:
+                    return {'items': [], 'total_items': 0, 'returned_items': 0, 'has_more': False}
+                
+                # Apply pagination
+                end_idx = min(offset + limit, total_items) if limit else total_items
+                items_to_process = queue_list[offset:end_idx]
+                
+                result = []
+                for position, item in enumerate(items_to_process, start=offset):
+                    if (hasattr(item, 'item') and isinstance(item.item, dict) and
+                        'uuid' in item.item):
+                        result.append({
+                            'uuid': item.item['uuid'],
+                            'position': position,
+                            'priority': item.priority,
+                            'enqueued_at': item.item.get('enqueued_at'),
+                        })
+                
+                return {
+                    'items': result,
+                    'total_items': total_items,
+                    'returned_items': len(result),
+                    'has_more': (offset + len(result)) < total_items
+                }
+                
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get all queued UUIDs: {str(e)}")
+            return {'items': [], 'total_items': 0, 'returned_items': 0, 'has_more': False}
+    
+    def get_queue_summary(self) -> Dict[str, Any]:
+        """Get queue summary statistics"""
+        try:
+            with self._lock:
+                queue_list = list(self._priority_items)
+                total_items = len(queue_list)
+                
+                if total_items == 0:
+                    return {
+                        'total_items': 0, 'priority_breakdown': {},
+                        'immediate_items': 0, 'clone_items': 0, 'scheduled_items': 0
+                    }
+                
+                immediate_items = clone_items = scheduled_items = 0
+                priority_counts = {}
+                
+                for item in queue_list:
+                    priority = item.priority
+                    priority_counts[priority] = priority_counts.get(priority, 0) + 1
+                    
+                    if priority == 1:
+                        immediate_items += 1
+                    elif priority == 5:
+                        clone_items += 1
+                    elif priority > 100:
+                        scheduled_items += 1
+                
+                return {
+                    'total_items': total_items,
+                    'priority_breakdown': priority_counts,
+                    'immediate_items': immediate_items,
+                    'clone_items': clone_items,
+                    'scheduled_items': scheduled_items,
+                    'min_priority': min(priority_counts.keys()) if priority_counts else None,
+                    'max_priority': max(priority_counts.keys()) if priority_counts else None
+                }
+                
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get queue summary: {str(e)}")
+            return {'total_items': 0, 'priority_breakdown': {}, 'immediate_items': 0, 
+                   'clone_items': 0, 'scheduled_items': 0}
+    
+    # PRIVATE METHODS
+    def _get_item_uuid(self, item) -> str:
+        """Safely extract UUID from item for logging"""
+        try:
+            if hasattr(item, 'item') and isinstance(item.item, dict):
+                return item.item.get('uuid', 'unknown')
+        except Exception:
+            pass
+        return 'unknown'
+
     def _emit_put_signals(self, item):
         """Emit signals when item is added"""
         try:
