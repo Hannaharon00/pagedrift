@@ -649,6 +649,145 @@ class ValidateSinglePythonRegexString(object):
             raise ValidationError(message % (field.data))
 
 
+class ValidateListRegex(object):
+    """
+    Validates that anything that looks like a regex passes as a regex
+    """
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+
+        for line in field.data:
+            if re.search(html_tools.PERL_STYLE_REGEX, line, re.IGNORECASE):
+                try:
+                    regex = html_tools.perl_style_slash_enclosed_regex_to_options(line)
+                    re.compile(regex)
+                except re.error:
+                    message = field.gettext('RegEx \'%s\' is not a valid regular expression.')
+                    raise ValidationError(message % (line))
+
+
+class ValidateCSSJSONXPATHInput(object):
+    """
+    Filter validation
+    @todo CSS validator ;)
+    """
+
+    def __init__(self, message=None, allow_xpath=True, allow_json=True):
+        self.message = message
+        self.allow_xpath = allow_xpath
+        self.allow_json = allow_json
+
+    def __call__(self, form, field):
+
+        if isinstance(field.data, str):
+            data = [field.data]
+        else:
+            data = field.data
+
+        for line in data:
+        # Nothing to see here
+            if not len(line.strip()):
+                return
+
+            # Does it look like XPath?
+            if line.strip()[0] == '/' or line.strip().startswith('xpath:'):
+                if not self.allow_xpath:
+                    raise ValidationError("XPath not permitted in this field!")
+                from lxml import etree, html
+                import elementpath
+                from changedetectionio.html_tools import get_safe_xpath3_parser, lxml_guard, lxml_html_parser
+                line = line.replace('xpath:', '')
+
+                try:
+                    # Runs on a Flask request thread - must share the worker's lxml lock.
+                    with lxml_guard():
+                        tree = html.fromstring("<html></html>", parser=lxml_html_parser())
+                        elementpath.select(tree, line.strip(), parser=get_safe_xpath3_parser())
+                except elementpath.ElementPathError as e:
+                    message = field.gettext('\'%(expression)s\' is not a valid XPath expression. (%(error)s)')
+                    raise ValidationError(message % {'expression': line, 'error': str(e)})
+                except:
+                    raise ValidationError("A system-error occurred when validating your XPath expression")
+
+            if line.strip().startswith('xpath1:'):
+                if not self.allow_xpath:
+                    raise ValidationError("XPath not permitted in this field!")
+                from lxml import etree, html
+                from changedetectionio.html_tools import lxml_guard, lxml_html_parser
+                line = re.sub(r'^xpath1:', '', line)
+
+                try:
+                    # Runs on a Flask request thread - must share the worker's lxml lock.
+                    with lxml_guard():
+                        tree = html.fromstring("<html></html>", parser=lxml_html_parser())
+                        tree.xpath(line.strip())
+                except etree.XPathEvalError as e:
+                    message = field.gettext('\'%(expression)s\' is not a valid XPath expression. (%(error)s)')
+                    raise ValidationError(message % {'expression': line, 'error': str(e)})
+                except:
+                    raise ValidationError("A system-error occurred when validating your XPath expression")
+
+            if 'json:' in line:
+                if not self.allow_json:
+                    raise ValidationError("JSONPath not permitted in this field!")
+
+                from jsonpath_ng.exceptions import (
+                    JsonPathLexerError,
+                    JsonPathParserError,
+                )
+                from jsonpath_ng.ext import parse
+
+                input = line.replace('json:', '')
+
+                try:
+                    parse(input)
+                except (JsonPathParserError, JsonPathLexerError) as e:
+                    message = field.gettext('\'%(expression)s\' is not a valid JSONPath expression. (%(error)s)')
+                    raise ValidationError(message % {'expression': input, 'error': str(e)})
+                except:
+                    raise ValidationError("A system-error occurred when validating your JSONPath expression")
+
+                # Re #265 - maybe in the future fetch the page and offer a
+                # warning/notice that its possible the rule doesnt yet match anything?
+                if not self.allow_json:
+                    raise ValidationError("jq not permitted in this field!")
+
+            if 'jq:' in line:
+                try:
+                    import jq
+                except ModuleNotFoundError:
+                    # `jq` requires full compilation in windows and so isn't generally available
+                    raise ValidationError("jq not support not found")
+
+                from changedetectionio.html_tools import validate_jq_expression
+                input = line.replace('jq:', '')
+
+                try:
+                    validate_jq_expression(input)
+                    jq.compile(input)
+                except (ValueError) as e:
+                    message = field.gettext('\'%(expression)s\' is not a valid jq expression. (%(error)s)')
+                    raise ValidationError(message % {'expression': input, 'error': str(e)})
+                except:
+                    raise ValidationError("A system-error occurred when validating your jq expression")
+
+class ValidateSimpleURL:
+    """Validate that the value can be parsed by urllib.parse.urlparse() and has a scheme/netloc."""
+    def __init__(self, message=None):
+        self.message = message or "Invalid URL."
+
+    def __call__(self, form, field):
+        data = (field.data or "").strip()
+        if not data:
+            return  # empty is OK — pair with validators.Optional()
+        from urllib.parse import urlparse
+
+        parsed = urlparse(data)
+        if not parsed.scheme or not parsed.netloc:
+            raise ValidationError(self.message)
+
 class ValidateStartsWithRegex(object):
     def __init__(self, regex, *, flags=0, message=None, allow_empty=True, split_lines=True):
         # compile with given flags (we’ll pass re.IGNORECASE below)
