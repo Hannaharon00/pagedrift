@@ -2160,3 +2160,60 @@ msgstr ""
 msgid "Word count (latest snapshot)"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Редагувати > Завдання"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Метод завантаження"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Тіло сповіщення"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Формат сповіщення"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Заголовок сповіщення"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Список URL сповіщень"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Процесор — Чого ви хочете досягти?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Часовий пояс за замовчуванням для планувальника перевірок"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Чекати секунд перед вилученням тексту"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Має містити одну або більше секунд"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Перевизначення базового URL сповіщень"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Зберегти"
+
