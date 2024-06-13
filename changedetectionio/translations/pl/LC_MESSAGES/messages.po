@@ -2433,6 +2433,64 @@ msgstr "minuty"
 msgid "second"
 msgstr "sekunda"
 
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "sekund"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Jesteś już zalogowany"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Musisz być zalogowany – zaloguj się."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Nieprawidłowe hasło"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Należy określić co najmniej jedną jednostkę czasu (tygodnie, dni, godziny, minuty lub sekundy)."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+"W przypadku niekorzystania z ustawień globalnych należy określić co najmniej jedną jednostkę czasu (tygodnie, dni, "
+"godziny, minuty lub sekundy)."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Nieprawidłowy format czasu. Należy użyć formatu HH:MM."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "Nieprawidłowa nazwa strefy czasowej"
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "nieustalone"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "Zacznij od"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "Czas trwania uruchomienia"
+
+#: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Skorzystaj z harmonogramu"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Opcjonalna strefa czasowa, w której ma działać program"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "poniedziałek"
+
 #: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "Wyślij powiadomienie, gdy filtr nie będzie już widoczny na stronie"
