@@ -2430,3 +2430,55 @@ msgstr "Proksi default"
 msgid "Random jitter seconds ± check"
 msgstr "Detik jitter acak ± pemeriksaan"
 
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Render konten tag anchor"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Izinkan akses anonim ke halaman riwayat monitor saat kata sandi diaktifkan"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Sembunyikan monitor yang dibisukan dari feed RSS"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Aktifkan mode pembaca RSS "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Jumlah perubahan yang ditampilkan dalam feed RSS monitor"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "Harus berisi nol percobaan atau lebih"
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "Jumlah kegagalan menemukan filter sebelum mengirim notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr "Model"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "Kunci API"
+
+#: changedetectionio/forms.py
+msgid "API Base URL"
+msgstr "URL Dasar API"
+
+#: changedetectionio/forms.py
+msgid "Token multiplier for local reasoning models"
+msgstr "Pengali token untuk model reasoning lokal"
+
+#: changedetectionio/forms.py
+msgid "Default AI Change Summary prompt"
+msgstr "Prompt Ringkasan Perubahan AI default"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max tokens per watch per period"
+msgstr "Token maks. per monitor per periode"
+
