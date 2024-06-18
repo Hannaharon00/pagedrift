@@ -2809,6 +2809,58 @@ msgid "RegEx '%s' is not a valid regular expression."
 msgstr "Expresión regular '%s' no es una expresión regular válida."
 
 #: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "Filtros CSS/JSONPath/JQ/XPath"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Eliminar elementos"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Extraer texto"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Título"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Ignora las líneas que contienen"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "Cuerpo de la solicitud"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Método de solicitud"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignorar códigos de estado (procesar códigos de estado que no sean 2xx como de costumbre)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Solo se activa cuando aparecen líneas únicas en todo el historial"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Eliminar líneas de texto duplicadas"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Ordenar texto alfabéticamente"
+
+#: changedetectionio/forms.py
 msgid "Strip ignored lines"
 msgstr "Eliminar líneas ignoradas"
 
