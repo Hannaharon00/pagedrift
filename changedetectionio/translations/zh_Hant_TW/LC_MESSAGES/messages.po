@@ -2022,3 +2022,55 @@ msgstr "目前處於一般水準"
 msgid "Currently high"
 msgstr "目前處於高點"
 
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Ends With"
+msgstr "文字結尾為"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length minimum"
+msgstr "最小長度"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length maximum"
+msgstr "最大長度"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Matches Regex"
+msgstr "文字符合正規表示式"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Does NOT Match Regex"
+msgstr "文字不符合正規表示式"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Extracted number after 'Filters & Triggers'"
+msgstr "「過濾器與觸發器」之後提取的數字"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Page text after 'Filters & Triggers'"
+msgstr "「過濾器與觸發器」之後的網頁文字"
+
+#: changedetectionio/conditions/form.py
+msgid "Field"
+msgstr "欄位"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator"
+msgstr "運算子"
+
+#: changedetectionio/conditions/form.py
+msgid "A value"
+msgstr "數值"
+
+#: changedetectionio/conditions/form.py
+msgid "Operator is required."
+msgstr "必須填寫運算子。"
+
+#: changedetectionio/conditions/form.py
+msgid "Field is required."
+msgstr "必須填寫欄位。"
+
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr "必須填寫數值。"
+
