@@ -2133,6 +2133,68 @@ msgstr ""
 msgid "Text Starts With"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "分钟"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "秒"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "使用通知 URL 时，必须填写通知正文和标题"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "“%s”不是有效的 AppRise URL。"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "正则表达式“%s”无效。"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "“%(expression)s”不是有效的 XPath 表达式。（%(error)s）"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "“%(expression)s”不是有效的 JSONPath 表达式。（%(error)s）"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "“%(expression)s”不是有效的 jq 表达式。（%(error)s）"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "不允许为空。"
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "值无效。"
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "分组 / 标签"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "监控项"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "处理器"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
 msgid "Browser"
 msgstr ""
