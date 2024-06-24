@@ -163,3 +163,67 @@ def test_default_timezone_subtraction(environment):
 
     assert finalRender == "Wed, 09 Dec 2015 23:22:01"
 
+def test_regex_replace_no_match():
+    """Test regex_replace when pattern doesn't match."""
+
+    finalRender = render("{{ 'hello world' | regex_replace('xyz', 'abc') }}")
+    assert finalRender == "hello world"
+
+def test_regex_replace_invalid_regex():
+    """Test regex_replace with invalid regex pattern returns original value."""
+
+    # Invalid regex (unmatched parenthesis)
+    finalRender = render("{{ 'hello world' | regex_replace('(invalid', 'replacement') }}")
+    assert finalRender == "hello world"
+
+def test_regex_replace_special_characters():
+    """Test regex_replace with special regex characters."""
+
+    finalRender = render("{{ 'Price: $50.00' | regex_replace('\\\\$([0-9.]+)', 'USD \\\\1') }}")
+    assert finalRender == "Price: USD 50.00"
+
+def test_regex_replace_multiline():
+    """Test regex_replace on multiline text."""
+
+    template = "{{ 'line1\\nline2\\nline3' | regex_replace('^line', 'row') }}"
+    finalRender = render(template)
+    # By default re.sub doesn't use MULTILINE flag, so only first line matches with ^
+    assert finalRender == "row1\nline2\nline3"
+
+def test_regex_replace_with_notification_context():
+    """Test regex_replace with notification diff variable."""
+
+    # Simulate how it would be used in notifications with diff variable
+    from changedetectionio.notification_service import NotificationContextData
+
+    context = NotificationContextData()
+    context['diff'] = '<td>value1</td><td>value2</td>'
+
+    template = "{{ diff | regex_replace('<td>([^<]+)</td>', '\\\\1 ') }}"
+
+    from changedetectionio.jinja2_custom import create_jinja_env
+    from jinja2 import BaseLoader
+
+    jinja2_env = create_jinja_env(loader=BaseLoader)
+    jinja2_env.globals.update(context)
+    finalRender = jinja2_env.from_string(template).render()
+
+    assert "value1 value2 " in finalRender
+
+def test_regex_replace_security_large_input():
+    """Test regex_replace handles large input safely."""
+
+    # Create a large input string (over 10MB)
+    large_input = "x" * (1024 * 1024 * 10 + 1000)
+    template = "{{ large_input | regex_replace('x', 'y') }}"
+
+    from changedetectionio.jinja2_custom import create_jinja_env
+    from jinja2 import BaseLoader
+
+    jinja2_env = create_jinja_env(loader=BaseLoader)
+    jinja2_env.globals['large_input'] = large_input
+    finalRender = jinja2_env.from_string(template).render()
+
+    # Should be truncated to 10MB
+    assert len(finalRender) == 1024 * 1024 * 10
+
