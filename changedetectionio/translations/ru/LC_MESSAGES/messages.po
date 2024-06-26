@@ -2580,3 +2580,59 @@ msgstr "Удалить элементы"
 msgid "Extract lines containing"
 msgstr "Извлечь строки, содержащие"
 
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Проверка безопасности токена доступа к API включена"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Считать пустые страницы изменением?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Игнорировать текст"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Игнорировать пробелы"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "Снимок экрана: Минимальный процент изменений"
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Должно быть от 0 до 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Пароль"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Размер пейджера"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Должно быть по крайней мере ноль (отключено)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Формат RSS-контента"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "Корпус RSS <description> построен из"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "Переопределение шаблона RSS «Системное значение по умолчанию»"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Удалить пароль"
+
