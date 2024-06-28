@@ -1661,3 +1661,64 @@ msgstr "Редагувати > Завдання"
 msgid "Fetch Method"
 msgstr "Метод завантаження"
 
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Прибирати проігноровані рядки"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Обрізати пробіли до та після тексту"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Додані рядки"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Замінені/змінені рядки"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Видалені рядки"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Ключові слова-тригери - Спрацювати/чекати текст"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Блокувати виявлення змін, поки текст збігається"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Виконати JavaScript перед виявленням змін"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/forms.py
+msgid "Save"
+msgstr "Зберегти"
+
+#: changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Проксі"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Надіслати сповіщення, коли фільтр більше не може бути знайдений на сторінці"
+
+#: changedetectionio/forms.py
+msgid "Muted"
+msgstr "Заглушено"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Увімк"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/blueprint/tags/templates/edit-tag.html
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Прикріпити скріншот до сповіщення (де можливо)"
+
