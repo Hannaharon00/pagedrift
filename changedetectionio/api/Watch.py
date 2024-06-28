@@ -118,6 +118,64 @@ class WatchHistory(Resource):
         return 'OK', 204
 
 
+class WatchSingleHistory(Resource):
+    def __init__(self, **kwargs):
+        # datastore is a black box dependency
+        self.datastore = kwargs['datastore']
+
+    @auth.check_token
+    @validate_openapi_request('getWatchSnapshot')
+    def get(self, uuid, timestamp):
+        """Get single snapshot from watch."""
+        watch = self.datastore.data['watching'].get(uuid)
+        if not watch:
+            abort(404, message=f"No watch exists with the UUID of {uuid}")
+
+        if not len(watch.history):
+            abort(404, message=f"Watch found but no history exists for the UUID {uuid}")
+
+        if timestamp == 'latest':
+            timestamp = list(watch.history.keys())[-1]
+
+        # Validate that the timestamp exists in history
+        if timestamp not in watch.history:
+            abort(404, message=f"No history snapshot found for timestamp '{timestamp}'")
+
+        if request.args.get('html'):
+            content = watch.get_fetched_html(timestamp)
+            if content:
+                # XSS mitigation (GHSA-cgj8-g98g-4p9x): this is an API endpoint, not a
+                # browser-rendered view. The bytes ARE HTML (that's what the caller asked
+                # for) but a programmatic client doesn't need text/html — and serving
+                # text/html lets attacker-planted <script> in a monitored site execute
+                # in our origin if someone opens the URL in a browser.
+                #
+                # text/plain + explicit utf-8 + nosniff = browser shows inert text,
+                # sniffing can't re-classify it as HTML, an absent charset can't be
+                # auto-detected as UTF-7 (an alternative XSS vector). API clients
+                # still get the raw bytes — they don't care about Content-Type.
+                response = make_response(content, 200)
+                response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+                response.headers['X-Content-Type-Options'] = 'nosniff'
+                # Include the timestamp in the download name so downloading multiple
+                # snapshots doesn't collide. No extension — the stored bytes are
+                # "whatever the fetcher captured" (HTML, JSON, XML, text…), so
+                # claiming .html on the download would be a false content-type label
+                # for non-HTML watches. The user/curl can rename if needed.
+                # Strip to safe filename chars (timestamp is already validated as a
+                # watch.history key — this is defense in depth against header injection).
+                safe_ts = re.sub(r'[^0-9A-Za-z_-]', '', str(timestamp))[:32] or 'snapshot'
+                response.headers['Content-Disposition'] = f'attachment; filename="snapshot-{safe_ts}"'
+            else:
+                response = make_response("No content found", 404)
+                response.mimetype = "text/plain"
+        else:
+            content = watch.get_history_snapshot(timestamp=timestamp)
+            response = make_response(content, 200)
+            response.mimetype = "text/plain"
+
+        return response
+
 class WatchHistoryDiff(Resource):
     """
     Generate diff between two historical snapshots.
