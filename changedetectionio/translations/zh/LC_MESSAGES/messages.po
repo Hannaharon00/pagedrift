@@ -2252,3 +2252,61 @@ msgstr ""
 msgid "Save"
 msgstr "保存"
 
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "1周后"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%s周前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "%s周后"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1月前"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "1月后"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%s月前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "%s月后"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1年前"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "1年后"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%s年前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "%s年后"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr "扫描全部监控历史未找到匹配该正则的内容。"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "历史记录不足以比较，至少需要 2 个快照。"
+
