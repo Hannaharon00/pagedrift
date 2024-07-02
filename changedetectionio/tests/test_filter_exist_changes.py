@@ -8,3 +8,36 @@ from .util import set_original_response, live_server_setup, wait_for_notificatio
 from changedetectionio.model import App
 
 
+def set_response_without_filter(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <div id="nope-doesnt-exist">Some text thats the same</div>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
+
+def set_response_with_filter(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <div class="ticket-available">Ticket now on sale!</div>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
