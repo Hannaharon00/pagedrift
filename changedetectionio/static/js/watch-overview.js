@@ -79,6 +79,52 @@ $(function () {
         e.preventDefault();
         e.stopImmediatePropagation();
 
+        var i18n       = window.watchOverviewI18n || {};
+        var $btn       = $(this);
+        var uuid       = $btn.data('uuid');
+        var dataUrl    = $btn.data('processor-data-url');
+        var historyUrl = $btn.attr('href');
+        var $row       = $btn.closest('tr');
+        var rowId      = 'restock-graph-row-' + uuid;
+        var cols       = $row.find('td').length;
+        var $tbody     = $row.closest('tbody');
+
+        $row.removeClass('unviewed');
+
+        // Toggle off if already open
+        if ($('#' + rowId).length) {
+            $('#' + rowId).remove();
+            $tbody.find('tr:not(.restock-inline-row) td').css('background-color', '');
+            return;
+        }
+
+        // Freeze row backgrounds so inserting a <tr> doesn't shift nth-child striping
+        var $dataRows = $tbody.find('tr:not(.restock-inline-row)');
+        var bgMap = [];
+        $dataRows.each(function () { bgMap.push($(this).find('td:first').css('background-color')); });
+
+        var $r = $(
+            '<tr class="restock-inline-row" id="' + rowId + '">' +
+            '<td colspan="' + cols + '">' +
+            '<div class="restock-inline-graph"></div>' +
+            '<a class="restock-inline-history-link"></a>' +
+            '</td></tr>'
+        );
+        $r.find('.restock-inline-graph').text(i18n.loadingPriceHistory || 'Loading price history…');
+        $r.find('.restock-inline-history-link').attr('href', historyUrl).text(i18n.gotoHistory || 'Goto full history');
+        $row.after($r);
+
+        // Re-apply frozen backgrounds so the nth-child parity shift is invisible
+        $dataRows.each(function (i) { $(this).find('td').css('background-color', bgMap[i]); });
+
+        function showError() {
+            $r.find('.restock-inline-graph').html(
+                '<span class="restock-inline-error">' +
+                $('<span>').text(i18n.priceHistoryError || 'Could not load price history.').html() +
+                '</span>'
+            );
+        }
+
         if (!dataUrl) { showError(); return; }
 
         $.getJSON(dataUrl).done(function (data) {
