@@ -2721,6 +2721,62 @@ msgstr "시간"
 msgid "hours"
 msgstr "시간"
 
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "분"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "분"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "초"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "초"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "이미 로그인되어 있습니다."
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "로그인해야 합니다. 로그인해 주세요."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "비밀번호가 올바르지 않습니다."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "최소 하나 이상의 시간 간격(주, 일, 시, 분 또는 초)을 지정해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr "전역 설정을 사용하지 않을 때는 최소 하나 이상의 시간 간격(주, 일, 시, 분 또는 초)을 지정해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "시간 형식이 올바르지 않습니다. HH:MM 형식을 사용하세요."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "유효한 시간대 이름이 아닙니다."
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "설정 안 됨"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "시작 시간"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "실행 시간"
+
 #: changedetectionio/forms.py
 msgid "Minutes"
 msgstr "분"
