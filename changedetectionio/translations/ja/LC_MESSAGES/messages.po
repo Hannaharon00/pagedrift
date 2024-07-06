@@ -2220,3 +2220,59 @@ msgstr "次を含む行を無視"
 msgid "Request body"
 msgstr "リクエストボディ"
 
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "リクエストメソッド"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "ステータスコードを無視（2xx以外のステータスコードを通常通り処理）"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "すべての履歴で新たなユニークな行が出現したときのみトリガー"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "重複するテキスト行を削除"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "テキストをアルファベット順にソート"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "無視する行を除外"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "テキストの前後の空白を除去"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "追加行"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "置換/変更行"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "削除行"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "キーワードトリガー - テキストのトリガー/待機"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "テキストが一致している間は変更検知をブロック"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "変更検知前にJavaScriptを実行"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "プロキシ"
+
