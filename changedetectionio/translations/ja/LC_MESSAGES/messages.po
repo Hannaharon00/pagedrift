@@ -1485,6 +1485,74 @@ msgstr "削除"
 msgid "Deletes and removes tag"
 msgstr "タグを完全に削除する"
 
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Unlink Group?"
+msgstr "グループのリンクを解除しますか？"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from group <strong>%(title)s</strong>?</p><p>The tag will be kept but "
+"watches will be removed from it.</p>"
+msgstr "<p>グループ <strong>%(title)s</strong> からすべてのウォッチのリンクを解除してもよいですか？</p><p>タグは保持されますが、ウォッチはそこから削除されます。</p>"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/templates/base.html
+msgid "Unlink"
+msgstr "リンクを解除"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html
+msgid "Keep the tag but unlink any watches"
+msgstr "タグは保持しつつウォッチのリンクを解除する"
+
+#: changedetectionio/blueprint/tags/templates/groups-overview.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "RSS Feed for this watch"
+msgstr "このウォッチのRSSフィード"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches deleted"
+msgstr "{} 件のウォッチを削除しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches paused"
+msgstr "{} 件のウォッチを一時停止しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches unpaused"
+msgstr "{} 件のウォッチの一時停止を解除しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches updated"
+msgstr "{} 件のウォッチを更新しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches muted"
+msgstr "{} 件のウォッチをミュートしました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches un-muted"
+msgstr "{} 件のウォッチのミュートを解除しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches queued for rechecking"
+msgstr "{} 件のウォッチを再チェックのためキューに追加しました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches errors cleared"
+msgstr "{} 件のウォッチのエラーをクリアしました"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches cleared/reset."
+msgstr "{} 件のウォッチをクリア/リセットしました。"
+
 #: changedetectionio/blueprint/ui/__init__.py
 msgid "Cloned, you are editing the new watch."
 msgstr "複製しました。新しいウォッチを編集しています。"
