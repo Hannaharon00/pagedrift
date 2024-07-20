@@ -1962,6 +1962,62 @@ msgid "Headers can be also read from a file in your data-directory"
 msgstr "데이터 디렉터리의 파일에서도 헤더를 읽을 수 있습니다."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "자세히 보기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Selenium 브라우저에서는 지원되지 않습니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "텍스트 찾기 켜기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "잠시 기다려 주십시오. 첫 번째 브라우저 단계를 로드하는 데 약간의 시간이 걸릴 수 있습니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "시작하려면 클릭"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "브라우저가 연결될 때까지 10~15초 정도 기다려 주세요."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "시작하려면 \"재생\"버튼을 눌러 주세요."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "시각적 선택기 데이터가 준비되지 않았습니다. 모니터링을 한 번 이상 확인해야 합니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr "이 기능은 대화형 JavaScript를 지원하는 가져오기 방식에서만 작동합니다. (현재는 Playwright 기반 방식만 지원)"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "대화형 JavaScript를 지원하는 방식으로 변경해야 합니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "먼저"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "가져오기 방식을"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr "필터가 페이지에 더 이상 보이지 않을 때 알림을 보냅니다. 페이지가 바뀌어 필터가 더 이상 동작하지 않는 상황을 파악하는 데 유용합니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
 msgstr "체크(✓) 버튼을 눌러 현재 스냅샷에서 조건이 통과하는지 테스트해 보세요."
 
