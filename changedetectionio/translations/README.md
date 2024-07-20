@@ -174,3 +174,80 @@ domain = messages
 
 When you find a translation error in **any** language, you must check all others for the same `msgid`:
 
+```bash
+for lang in cs de en_GB en_US es fr it ja ko pt_BR ru tr uk zh zh_Hant_TW; do
+  echo "=== $lang ===" && grep -A1 'msgid "YourString"' changedetectionio/translations/$lang/LC_MESSAGES/messages.po
+done
+```
+
+1. Identify every language with the same problem
+2. Fix all affected `.po` files in the same session
+3. Recompile: `python setup.py compile_catalog`
+
+Never fix one language and move on.
+
+---
+
+## Supported languages
+
+| Code | Language |
+|---|---|
+| `cs` | Czech (Čeština) |
+| `de` | German (Deutsch) |
+| `en_GB` | English (UK) |
+| `en_US` | English (US) |
+| `es` | Spanish (Español) |
+| `fr` | French (Français) |
+| `id` | Indonesian (Bahasa Indonesia) |
+| `it` | Italian (Italiano) |
+| `ja` | Japanese (日本語) |
+| `ko` | Korean (한국어) |
+| `pt_BR` | Portuguese (Brasil) |
+| `ru` | Russian (Русский) |
+| `tr` | Turkish (Türkçe) |
+| `uk` | Ukrainian (Українська) |
+| `zh` | Chinese Simplified (中文简体) |
+| `zh_Hant_TW` | Chinese Traditional (繁體中文) |
+
+## Adding a new language
+
+```bash
+pybabel init -i changedetectionio/translations/messages.pot \
+             -d changedetectionio/translations \
+             -l NEW_LANG_CODE
+# Reset POT-Creation-Date to the sentinel so it matches the other catalogs
+sed -i 's|^"POT-Creation-Date: .*\\n"$|"POT-Creation-Date: 1970-01-01 00:00+0000\\n"|' \
+  changedetectionio/translations/NEW_LANG_CODE/LC_MESSAGES/messages.po
+python setup.py compile_catalog
+```
+
+Babel auto-discovers the new language on subsequent runs.
+
+---
+
+## Dennis linter
+
+We use [mozilla/dennis](https://github.com/mozilla/dennis) to enforce technical correctness in `.po` and `.pot` files.
+See the [Table of Warnings and Errors](https://dennis.readthedocs.io/en/latest/linting.html#table-of-warnings-and-errors)
+for the full list of rules.
+
+### Running the linter locally
+
+To match the CI checks, run the following commands:
+
+```bash
+# Check for errors only (always enforced)
+dennis-cmd lint --errorsonly changedetectionio/translations/
+
+# Check for warnings (excluding W302 unchanged translations)
+dennis-cmd lint --excluderules=W302 changedetectionio/translations/
+```
+
+### Common problems and resolutions
+
+#### HTML tag mismatch (`W303`)
+
+The `W303` rule ensures that HTML tags in the `msgstr` match the `msgid`. This is crucial for catching broken markup (e.g., missing closing tags).
+
+##### Handling intentional deviations
+
