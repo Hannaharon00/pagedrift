@@ -30,6 +30,30 @@ def set_original_response(datastore_path):
     return None
 
 
+def test_favicon(client, live_server, measure_memory_usage, datastore_path):
+    # Attempt to fetch it, make sure that works
+    SVG_BASE64 = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiLz4='
+    uuid = client.application.config.get('DATASTORE').add_watch(url='https://localhost')
+    live_server.app.config['DATASTORE'].data['watching'][uuid].bump_favicon(url="favicon-set-type.svg",
+                                                                            favicon_base_64=SVG_BASE64
+                                                                            )
+
+
+    res = client.get(url_for('static_content', group='favicon', filename=uuid))
+    assert res.status_code == 200
+    assert len(res.data) > 10
+
+    res = client.get(url_for('static_content', group='..', filename='__init__.py'))
+    assert res.status_code != 200
+
+
+    res = client.get(url_for('static_content', group='.', filename='../__init__.py'))
+    assert res.status_code != 200
+
+    # Traverse by filename protection
+    res = client.get(url_for('static_content', group='js', filename='../styles/styles.css'))
+    assert res.status_code != 200
+
 def test_favicon_inline_data_uri(client, live_server, measure_memory_usage, datastore_path):
     """
     bump_favicon() must handle a data URI as the url parameter.
