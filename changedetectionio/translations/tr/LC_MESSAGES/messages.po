@@ -2442,3 +2442,58 @@ msgstr "Yinelenen metin satırlarını kaldır"
 msgid "Sort text alphabetically"
 msgstr "Metni alfabetik olarak sırala"
 
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Eşleştir"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Aşağıdakilerin tümünü eşleştir"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Aşağıdakilerden herhangi birini eşleştir"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Listede sayfa <title>'ını kullan"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "İzleyici başına tutulacak geçmiş öğesi sayısı"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "İstek Yöntemi GET olarak ayarlandığında gövde boş olmalıdır"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Geçersiz şablon sözdizimi yapılandırması: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Geçersiz şablon sözdizimi: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "\"%(header)s\" başlığında geçersiz şablon sözdizimi: %(error)s"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "İsim"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "Proxy URL'si"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Proxy URL'leri http://, https:// veya socks5:// ile başlamalıdır"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "Tarayıcı bağlantı URL'si"
+
