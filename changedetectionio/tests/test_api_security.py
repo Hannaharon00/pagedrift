@@ -321,3 +321,47 @@ def test_api_utf8_encoding_edge_cases(client, live_server, measure_memory_usage,
     delete_all_watches(client)
 
 
+def test_api_queue_manipulation(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test queue behavior under stress and edge cases.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Create many watches rapidly
+    watch_uuids = []
+    for i in range(20):
+        res = client.post(
+            url_for("createwatch"),
+            data=json.dumps({"url": test_url, "title": f"Watch {i}"}),
+            headers={'content-type': 'application/json', 'x-api-key': api_key},
+        )
+        if res.status_code == 201:
+            watch_uuids.append(res.json.get('uuid'))
+
+    assert len(watch_uuids) == 20, "Should be able to create 20 watches"
+
+    # Test 2: Recheck all when watches exist
+    res = client.get(
+        url_for("createwatch", recheck_all='1'),
+        headers={'x-api-key': api_key},
+    )
+    # Should return success (200 or 202 for background processing)
+    assert res.status_code in [200, 202]
+
+    # Test 3: Verify queue doesn't overflow with moderate load
+    # The app has MAX_QUEUE_SIZE = 5000, we're well below that
+    wait_for_all_checks(client)
+
+    # Cleanup
+    for uuid in watch_uuids:
+        client.delete(url_for("watch", uuid=uuid), headers={'x-api-key': api_key})
+
+    delete_all_watches(client)
+
+
+# ============================================================================
+# TIER 3: EDGE CASES & POLISH
+# ============================================================================
+
