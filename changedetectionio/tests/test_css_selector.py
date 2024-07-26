@@ -69,3 +69,97 @@ def test_include_filters_output():
     assert text == "    Block A\n    Block B"
 
 
+# Tests the whole stack works with the CSS Filter
+def test_check_markup_include_filters_restriction(client, live_server, measure_memory_usage, datastore_path):
+
+    include_filters = "#sametext"
+
+    set_original_response(datastore_path=datastore_path)
+
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+
+    # Goto the edit page, add our ignore text
+    # Add our URL to the import page
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": include_filters, "url": test_url, "tags": "", "headers": "", 'fetch_backend': "html_requests", "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    time.sleep(1)
+    # Check it saved
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+    )
+    assert bytes(include_filters.encode('utf-8')) in res.data
+
+    wait_for_all_checks(client)
+
+    #  Make a change
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+
+    # It should have 'has-unread-changes' still
+    # Because it should be looking at only that 'sametext' id
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' in res.data
+
+
+# Tests the whole stack works with the CSS Filter
+def test_check_multiple_filters(client, live_server, measure_memory_usage, datastore_path):
+    
+    include_filters = "#blob-a\r\nxpath://*[contains(@id,'blob-b')]"
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("""<html><body>
+     <div id="blob-a">Blob A</div>
+     <div id="blob-b">Blob B</div>
+     <div id="blob-c">Blob C</div>
+     </body>
+     </html>
+    """)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Goto the edit page, add our ignore text
+    # Add our URL to the import page
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": include_filters,
+              "url": test_url,
+              "tags": "",
+              "headers": "",
+              'fetch_backend': "html_requests",
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    # Only the two blobs should be here
+    assert b"Blob A" in res.data # CSS was ok
+    assert b"Blob B" in res.data # xPath was ok
+    assert b"Blob C" not in res.data # Should not be included
+
