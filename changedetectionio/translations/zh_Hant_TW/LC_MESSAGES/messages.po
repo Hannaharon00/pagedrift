@@ -2022,6 +2022,69 @@ msgid "Only trigger when unique lines appear"
 msgstr "僅當出現獨特行時觸發"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr "適用於內容僅會移動的網站，且您想知道何時新增了「新」內容，此功能會將新行與此監測任務的所有歷史記錄進行比較。"
+
+# TN: CJK scripts degrade when italicized; UI label reference is wrapped in 「」
+# instead.
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr "有助於減少因網站重新排列行而檢測到的變更，結合下方的「檢查獨特行」使用。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "移除每行文字前後的所有空白"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr "AI 意圖預覽"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "載入中 ..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "視覺選擇器工具讓您可以選擇"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "文字"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr "將用於變更檢測的元素。它會自動填入"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "分頁的「CSS / JSONPath / JQ / XPath 過濾器」欄位。使用"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift + 點擊"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "選擇多個項目。"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "選擇模式："
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "繪製區域"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "請稍候，正在抓取截圖和元素資訊 ..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Delete Watch?"
 msgstr "刪除監測任務？"
 
