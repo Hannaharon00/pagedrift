@@ -144,3 +144,44 @@ def test_multiple_watches_commit_independently(client, live_server):
     assert data3['paused'] == False, "Watch 3 should not be paused"
 
 
+# ==============================================================================
+# 3. Concurrency/Race Condition Tests
+# ==============================================================================
+
+def test_concurrent_watch_commits_dont_corrupt(client, live_server):
+    """Test that simultaneous commits to same watch don't corrupt JSON"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(url='http://example.com', extras={'title': 'Test'})
+    watch = datastore.data['watching'][uuid]
+
+    errors = []
+
+    def modify_and_commit(field, value):
+        try:
+            watch[field] = value
+            watch.commit()
+        except Exception as e:
+            errors.append(e)
+
+    # Run 10 concurrent commits
+    threads = []
+    for i in range(10):
+        t = threading.Thread(target=modify_and_commit, args=('title', f'Title {i}'))
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    # Should not have any errors
+    assert len(errors) == 0, f"Expected no errors, got: {errors}"
+
+    # JSON file should still be valid (not corrupted)
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)  # Should not raise JSONDecodeError
+        assert data['uuid'] == uuid, "UUID should still be correct"
+        assert 'Title' in data['title'], "Title should contain 'Title'"
+
+
