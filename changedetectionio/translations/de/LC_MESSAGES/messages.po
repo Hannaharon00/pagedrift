@@ -2837,3 +2837,67 @@ msgstr ""
 msgid "When monthly token budget is reached"
 msgstr ""
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "vor %sMin"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "in %sMin"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "vor 1Std"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "in 1Std"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "vor %sStd"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "in %sStd"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "vor 1T"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "in 1T"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "vor %sT"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "in %sT"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "vor 1Wo"
+
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "in 1Wo"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "vor %sWo"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "in %sWo"
+
