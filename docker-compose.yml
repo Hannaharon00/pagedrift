@@ -162,3 +162,5 @@ services:
 #            - /dev/shm:/dev/shm
 #        restart: unless-stopped
 
+volumes:
+  changedetection-data:
