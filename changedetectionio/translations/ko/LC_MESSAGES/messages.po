@@ -2253,6 +2253,59 @@ msgstr "최신 HTML 스냅샷 다운로드"
 msgid "Download watch data package"
 msgstr "모니터링 데이터 패키지 다운로드"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr "모니터링을 삭제하시겠습니까?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "다음 모니터링을 삭제하시겠습니까?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "이 작업은 취소할 수 없습니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "기록 지우기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "정말로 다음의 기록을 모두 지우시겠습니까?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "이 작업은 모든 스냅샷과 이전 버전을 삭제합니다. 되돌릴 수 없습니다."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "기록 지우기"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "복제 및 편집"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "타임스탬프 선택"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "가장 최근 요청의 현재 오류 스크린샷"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr "스크린샷을 사용하려면 스크린샷을 지원하는 방식(Sockpuppetbrowser, Selenium 등)이 필요합니다."
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr ""
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "running"
 msgstr ""
