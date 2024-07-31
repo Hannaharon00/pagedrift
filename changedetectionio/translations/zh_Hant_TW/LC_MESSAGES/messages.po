@@ -2492,3 +2492,55 @@ msgstr "內容分析"
 msgid "Word count (latest snapshot)"
 msgstr "字數（最新快照）"
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "必須介於 0 到 100 之間"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "密碼"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "分頁大小"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "應至少為 0（停用）"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSS 內容格式"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> 內容建立自"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS「系統預設」範本覆寫"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "移除密碼"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "渲染錨點標籤內容"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "啟用密碼時允許匿名存取監測歷史頁面"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "從 RSS Feed 中隱藏已靜音的監測任務"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "啟用 RSS 閱讀器模式 "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "在 RSS Feed 中顯示的變更數量"
+
