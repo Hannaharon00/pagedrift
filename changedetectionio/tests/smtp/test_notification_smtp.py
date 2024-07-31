@@ -18,6 +18,15 @@ smtp_test_server = os.getenv('SMTP_TEST_MAILSERVER', 'mailserver')
 
 ALL_MARKUP_TOKENS = ''.join(f"TOKEN: '{t}'\n{{{{{t}}}}}\n" for t in NotificationContextData().keys())
 
+from changedetectionio.notification import (
+    default_notification_body,
+    default_notification_format,
+    default_notification_title,
+    valid_notification_formats,
+)
+
+
+
 def get_last_message_from_smtp_server():
     import requests
     time.sleep(1) # wait for any smtp connects to die off
