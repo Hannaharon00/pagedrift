@@ -88,3 +88,122 @@ class OpenGraphExtractor(HTMLParser):
                     self.og_data[prop] = content
 
 
+class MicrodataExtractor(HTMLParser):
+    """
+    Extract basic microdata attributes from HTML.
+
+    Finds elements with itemprop attributes. This is a simplified extractor
+    that doesn't handle nested itemscope/itemtype hierarchies - for complex
+    cases, use extruct as fallback.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.microdata = {}
+        self.current_itemprop = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs_dict = dict(attrs)
+
+        if 'itemprop' in attrs_dict:
+            itemprop = attrs_dict['itemprop']
+
+            # Price/currency/availability can be in content/href attributes
+            if itemprop == 'price':
+                if 'content' in attrs_dict:
+                    self.microdata['price'] = attrs_dict['content']
+                else:
+                    self.current_itemprop = 'price'
+
+            elif itemprop == 'priceCurrency':
+                if 'content' in attrs_dict:
+                    self.microdata['currency'] = attrs_dict['content']
+                else:
+                    self.current_itemprop = 'priceCurrency'
+
+            elif itemprop == 'availability':
+                # Can be in href (link) or content (meta)
+                if 'href' in attrs_dict:
+                    self.microdata['availability'] = attrs_dict['href']
+                elif 'content' in attrs_dict:
+                    self.microdata['availability'] = attrs_dict['content']
+                else:
+                    self.current_itemprop = 'availability'
+
+    def handle_data(self, data):
+        # Capture text content for itemprop elements
+        if self.current_itemprop == 'price':
+            # Try to extract numeric price from text
+            try:
+                price_text = re.sub(r'[^\d.]', '', data.strip())
+                if price_text:
+                    self.microdata['price'] = float(price_text)
+            except ValueError:
+                pass
+        elif self.current_itemprop == 'priceCurrency':
+            currency = data.strip()
+            if currency:
+                self.microdata['currency'] = currency
+        elif self.current_itemprop == 'availability':
+            availability = data.strip()
+            if availability:
+                self.microdata['availability'] = availability
+
+    def handle_endtag(self, tag):
+        # Reset current itemprop after closing tag
+        self.current_itemprop = None
+
+
+def extract_metadata_pure_python(html_content):
+    """
+    Extract structured metadata from HTML using pure Python parsers.
+
+    Returns a dict with three keys:
+    - 'json-ld': List of parsed JSON-LD objects
+    - 'opengraph': Dict of OpenGraph properties
+    - 'microdata': Dict of microdata properties
+
+    Args:
+        html_content: HTML string to parse
+
+    Returns:
+        dict: Extracted metadata in three formats
+    """
+    result = {
+        'json-ld': [],
+        'opengraph': {},
+        'microdata': {}
+    }
+
+    # Extract JSON-LD
+    try:
+        jsonld_extractor = JSONLDExtractor()
+        jsonld_extractor.feed(html_content)
+        result['json-ld'] = jsonld_extractor.data
+        logger.trace(f"Pure Python: Found {len(jsonld_extractor.data)} JSON-LD blocks")
+    except Exception as e:
+        logger.debug(f"JSON-LD extraction failed: {e}")
+
+    # Extract OpenGraph
+    try:
+        og_extractor = OpenGraphExtractor()
+        og_extractor.feed(html_content)
+        result['opengraph'] = og_extractor.og_data
+        if result['opengraph']:
+            logger.trace(f"Pure Python: Found {len(og_extractor.og_data)} OpenGraph tags")
+    except Exception as e:
+        logger.debug(f"OpenGraph extraction failed: {e}")
+
+    # Extract Microdata
+    try:
+        microdata_extractor = MicrodataExtractor()
+        microdata_extractor.feed(html_content)
+        result['microdata'] = microdata_extractor.microdata
+        if result['microdata']:
+            logger.trace(f"Pure Python: Found microdata: {result['microdata']}")
+    except Exception as e:
+        logger.debug(f"Microdata extraction failed: {e}")
+
+    return result
+
+
