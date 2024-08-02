@@ -2492,6 +2492,66 @@ msgstr "內容分析"
 msgid "Word count (latest snapshot)"
 msgstr "字數（最新快照）"
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "當頁面上找不到過濾器時發送通知"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "開啟"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "通知"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "已靜音"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "將截圖附加到通知中（如果支援）"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "符合"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "符合以下所有條件"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "符合以下任一條件"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "在列表中使用頁面 <title>"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "每個監測任務要保留的歷史項目數量"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "當請求方法設為 GET 時，內容必須為空"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "範本語法設定無效：%(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "無效的範本語法：%(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "「%(header)s」標頭中的範本語法無效：%(error)s"
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "必須介於 0 到 100 之間"
