@@ -1247,6 +1247,63 @@ msgstr "已連線"
 msgid "Failed"
 msgstr "失敗"
 
+#: changedetectionio/blueprint/tags/__init__.py
+#, python-brace-format
+msgid "The tag \"{}\" already exists"
+msgstr "標籤「{}」已存在"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag added"
+msgstr "標籤已新增"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag deleted, removing from watches in background"
+msgstr "標籤已刪除，正在背景從監測任務中移除"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Unlinking tag from watches in background"
+msgstr "正在背景解除標籤與監測任務的連結"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "All tags deleted, clearing from watches in background"
+msgstr "所有標籤已刪除，正在背景從監測任務中清除"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Tag not found"
+msgstr "找不到標籤"
+
+#: changedetectionio/blueprint/tags/__init__.py
+msgid "Updated"
+msgstr "已更新"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Activate for individual watches in this tag/group?"
+msgstr "是否為此標籤 / 群組中的個別監測任務啟用？"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Auto-apply to watches with URLs matching"
+msgstr "自動套用至 URL 符合以下條件的監測任務"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "e.g. *://example.com/* or github.com/myorg"
+msgstr "例如 *://example.com/* 或 github.com/myorg"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/edit-tag.html
+msgid "Tag colour"
+msgstr "標籤顏色"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "Must be a hex colour, for example #4f8ef7"
+msgstr "必須是十六進位色碼，例如 #4f8ef7"
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "AI for watches in this group"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py
+msgid "On, use the settings below"
+msgstr ""
+
 #: changedetectionio/blueprint/tags/form.py
 msgid "Off for every watch"
 msgstr ""
