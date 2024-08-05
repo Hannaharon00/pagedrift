@@ -106,3 +106,30 @@
       });
     }
 
+    // Handle form submission
+    if (searchForm) {
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(searchForm);
+        const searchQuery = formData.get('q');
+        const tags = formData.get('tags');
+
+        // Build URL
+        const params = new URLSearchParams();
+        if (searchQuery) {
+          params.append('q', searchQuery);
+        }
+        if (tags) {
+          params.append('tags', tags);
+        }
+
+        // Navigate to search results (always redirect to watchlist home)
+        // Use base_path if available (for sub-path deployments like /enlighten-richerx)
+        const basePath = typeof base_path !== 'undefined' ? base_path : '';
+        window.location.href = basePath + '/?' + params.toString();
+      });
+    }
+  });
+})();
