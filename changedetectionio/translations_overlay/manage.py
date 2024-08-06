@@ -144,3 +144,55 @@ def cmd_compile(_args):
     return 0
 
 
+def cmd_add(args):
+    """Bootstrap an empty overlay catalog for a locale, inheriting the base catalog's headers."""
+    locale = args.locale
+    base_po = _po_path(BASE_DIR, locale)
+    if not os.path.isfile(base_po):
+        print(f"error: no base catalog for {locale!r} at {base_po}", file=sys.stderr)
+        return 1
+
+    target = _po_path(OVERLAY_DIR, locale)
+    if os.path.exists(target):
+        print(f"error: {target} already exists", file=sys.stderr)
+        return 1
+
+    base = _load(base_po)
+    # Take the language metadata (crucially Plural-Forms) from base, but none of the messages.
+    catalog = type(base)(
+        locale=base.locale,
+        domain='messages',
+        project=base.project,
+        msgid_bugs_address=base.msgid_bugs_address,
+        header_comment=(
+            f'# Deployment wording overlay for changedetection.io - {locale}\n'
+            '# Merged on top of the base catalog for this language; only list the msgids\n'
+            '# whose wording this deployment changes. See ../../README.md.\n'
+        ),
+    )
+    os.makedirs(os.path.dirname(target), exist_ok=True)
+    with open(target, 'wb') as fp:
+        write_po(fp, catalog, width=120)
+    print(f"created {os.path.relpath(target, os.getcwd())}")
+    print("add your msgid/msgstr pairs, then run `manage.py compile`")
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    sub = parser.add_subparsers(dest='command', required=True)
+    sub.add_parser(
+        'check', help='validate overlay catalogs against the base catalogs'
+    ).set_defaults(fn=cmd_check)
+    sub.add_parser('compile', help='compile overlay .po files to .mo').set_defaults(fn=cmd_compile)
+    add = sub.add_parser('add', help='create an overlay catalog for a locale')
+    add.add_argument('locale')
+    add.set_defaults(fn=cmd_add)
+    args = parser.parse_args()
+    sys.exit(args.fn(args))
+
+
+if __name__ == '__main__':
+    main()
