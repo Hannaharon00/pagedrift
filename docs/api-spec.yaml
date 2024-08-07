@@ -8,3 +8,20 @@ info:
     
     changedetection.io can be driven by its built in simple API, in the examples below you will also find `curl` command line and `python` examples to help you get started faster.
     
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Development server
+  - url: https://yourdomain.com/api/v1
+    description: Production server
+  - url: '{protocol}://{host}/api/v1'
+    description: Custom server
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+      host:
+        default: yourdomain.com
+        description: Your changedetection.io host
+
