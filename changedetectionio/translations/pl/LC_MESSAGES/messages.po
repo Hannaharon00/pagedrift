@@ -2024,6 +2024,62 @@ msgid "Variables are supported in the request body"
 msgstr "W treści żądania obsługiwane są zmienne"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "W wartościach nagłówków żądania obsługiwane są zmienne"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "Uwaga! Znaleziono dodatkowy plik nagłówków, który zostanie dodany do tej obserwacji!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Nagłówki można również odczytać z pliku znajdującego się w katalogu danych"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Więcej informacji znajdziesz tutaj"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Nie jest obsługiwane przez przeglądarkę Selenium"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Włącz wyszukiwanie tekstu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Proszę poczekać — załadowanie pierwszej strony przeglądarki może chwilę potrwać..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Kliknij tutaj, aby rozpocząć"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Proszę poczekać 10–15 sekund, aż przeglądarka nawiąże połączenie."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Naciśnij przycisk „Odtwórz”, aby rozpocząć."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Dane selektora wizualnego nie są jeszcze gotowe; obserwację należy sprawdzić co najmniej raz."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Przepraszamy, ta funkcja działa tylko z modułami pobierającymi, które obsługują interaktywny JavaScript (jak dotąd są"
+" to wyłącznie moduły oparte na Playwright)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "na taką, która obsługuje interaktywny JavaScript."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "addition"
 msgstr "dodatek"
 
