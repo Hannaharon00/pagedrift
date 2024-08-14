@@ -2563,6 +2563,59 @@ msgid "Value"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr ""
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Number of history items per watch to keep"
 msgstr ""
 
