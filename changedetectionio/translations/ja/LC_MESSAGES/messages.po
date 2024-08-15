@@ -2368,6 +2368,63 @@ msgstr "フィールドは必須です。"
 msgid "Value is required."
 msgstr "値は必須です。"
 
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
+msgstr "単語数はコンテンツの長さを示す簡易指標で、テキストを空白で分割して計算されます。"
+
+#: changedetectionio/content_fetchers/requests.py
+msgid "Basic fast Plaintext/HTTP Client"
+msgstr "基本 (高速なプレーンテキスト/HTTPクライアント)"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "未実施"
+
+#: changedetectionio/flask_app.py
+msgid "0 seconds"
+msgstr "0秒"
+
+#: changedetectionio/flask_app.py
+msgid "year"
+msgstr "年"
+
+#: changedetectionio/flask_app.py
+msgid "years"
+msgstr "年"
+
+#: changedetectionio/flask_app.py
+msgid "month"
+msgstr "ヶ月"
+
+#: changedetectionio/flask_app.py
+msgid "months"
+msgstr "ヶ月"
+
+#: changedetectionio/flask_app.py
+msgid "week"
+msgstr "週"
+
+#: changedetectionio/flask_app.py
+msgid "weeks"
+msgstr "週"
+
+#: changedetectionio/flask_app.py
+msgid "day"
+msgstr "日"
+
+#: changedetectionio/flask_app.py
+msgid "days"
+msgstr "日"
+
+#: changedetectionio/flask_app.py
+msgid "hour"
+msgstr "時間"
+
+#: changedetectionio/flask_app.py
+msgid "hours"
+msgstr "時間"
+
 #: changedetectionio/forms.py
 msgid "Use time scheduler"
 msgstr "タイムスケジューラを使用"
