@@ -2638,6 +2638,65 @@ msgid "Extract lines containing"
 msgstr "Извлечь строки, содержащие"
 
 #: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Количество сохраняемых элементов истории на часы"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Тело должно быть пустым, если для метода запроса установлено значение GET."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Неверная конфигурация синтаксиса шаблона: %(error)s."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Неверный синтаксис шаблона: %(error)s."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Неверный синтаксис шаблона в заголовке «%(header)s»: %(error)s."
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Имя"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL-адрес прокси-сервера"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "URL-адреса прокси-серверов должны начинаться с http://, https:// или Socks5://."
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL-адрес подключения браузера"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "URL-адреса браузера должны начинаться с wss:// или ws://."
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Открытые текстовые запросы"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Запросы Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Прокси по умолчанию"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Случайное дрожание в секундах ± проверка"
+
+#: changedetectionio/forms.py
 msgid "Navigation sidebar"
 msgstr ""
 
