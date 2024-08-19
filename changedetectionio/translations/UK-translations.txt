@@ -1482,3 +1482,61 @@ msgstr "Режим вибору:"
 msgid "Select by element"
 msgstr "Вибір за елементом"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "Цю дію неможливо скасувати."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "Очистити історію?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "Ви впевнені, що хочете очистити всю історію для:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "Це видалить усі знімки та попередні версії. Цю дію неможливо скасувати."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "Очистити історію"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "Клонувати та Редагувати"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "Виберіть мітку часу"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Go"
+msgstr "Перейти"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "Поточний скріншот з помилкою з останнього запиту"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr "Скріншот вимагає завантажувача контенту (Sockpuppetbrowser, selenium тощо), який підтримує створення скріншотів."
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "Увага, URL {} вже існує"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "Завдання додано в стані 'Пауза', збереження зніме його з паузи."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "Завдання додано."
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "відображено <b>{start} - {end}</b> {record_name}, всього <b>{total}</b>"
+
