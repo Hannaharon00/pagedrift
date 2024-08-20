@@ -1984,6 +1984,73 @@ msgstr ""
 "yerine bir <strong>ekleme</strong> dikkate alabilir."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Bu yüzden her zaman seçmek daha iyidir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "yeni içerikle ilgilendiğinizde."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "İçerik yalnızca bir listede taşındığında, ayrıca şunu tetikleyecektir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "ekleme"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "etkinleştirmeyi düşünün"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Yalnızca benzersiz satırlar göründüğünde tetikle"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Yalnızca içeriği hareket ettiren web siteleri için iyidir ve YENİ içerik eklendiğinde bilmek istersiniz, yeni "
+"satırları bu izleyicinin tüm geçmişiyle karşılaştırır."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+"Sitelerin satırları karıştırmasından kaynaklanan tespit edilen değişiklikleri azaltmaya yardımcı olur, aşağıdaki "
+"<i>benzersiz satırları kontrol et</i> ile birleştirin."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Her metin satırından önceki ve sonraki tüm boşlukları kaldırın"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "Görsel Seçici aracı şunları seçmenizi sağlar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "metin"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+"değişiklik tespiti için kullanılacak öğeler. \"CSS/JSONPath/JQ/XPath Filtreleri\" kutusundaki filtreleri otomatik "
+"olarak doldurur"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "tab. Use"
 msgstr "sekme. Şunu kullanın"
 
