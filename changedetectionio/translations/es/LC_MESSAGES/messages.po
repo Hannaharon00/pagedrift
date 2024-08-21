@@ -2809,6 +2809,63 @@ msgid "RegEx '%s' is not a valid regular expression."
 msgstr "Expresión regular '%s' no es una expresión regular válida."
 
 #: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Eliminar líneas ignoradas"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Recortar espacios en blanco antes y después del texto"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Líneas agregadas"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Líneas reemplazadas/cambiadas"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Líneas eliminadas"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Activadores de palabras clave: activar/esperar texto"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Bloquear la detección de cambios mientras el texto coincide"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Ejecute JavaScript antes de la detección de cambios"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Enviar una notificación cuando el filtro ya no se pueda encontrar en la página"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "On"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Silenciado"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Adjunte captura de pantalla a la notificación (cuando sea posible)"
+
+#: changedetectionio/forms.py
 msgid "Match"
 msgstr "Coincidencia"
 
