@@ -3152,3 +3152,61 @@ msgstr "Las URL de proxy deben comenzar con http://, https:// o socks5://"
 msgid "Browser connection URL"
 msgstr "URL de conexión del navegador"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions"
+msgstr "La salida de la comparación - solo cambios y adiciones"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions —"
+msgstr "La salida de la comparación  - solo cambios y adiciones —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "La salida de la comparación - solo cambios y eliminaciones"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "La salida de la comparación - solo cambios y eliminaciones  —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "La salida de la comparación - salida de diferencia completa"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "La salida de la comparación  - salida de diferencia completa -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "La salida de la comparación - parche en formato unificado"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "El valor del contenido del texto de la instantánea actual, útil cuando se combina con filtros JSON o CSS"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "Texto que activó el disparador de los filtros"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+
