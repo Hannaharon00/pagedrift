@@ -338,3 +338,24 @@ def test_api_simple(client, live_server, measure_memory_usage, datastore_path):
     )
     assert len(res.json) == 0, "Watch list should be empty"
 
+    assert b"Settings updated." in res.data
+
+    res = client.get(
+        url_for("createwatch")
+    )
+    assert res.status_code == 200
+
+    # Cleanup everything
+    delete_all_watches(client)
+
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={
+            "requests-time_between_check-minutes": 180,
+            "application-fetch_backend": "html_requests",
+            "application-api_access_token_enabled": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Settings updated." in res.data
+
