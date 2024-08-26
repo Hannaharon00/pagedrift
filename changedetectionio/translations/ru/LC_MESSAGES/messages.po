@@ -1954,6 +1954,64 @@ msgstr "Извлечение данных"
 msgid "seconds ago."
 msgstr "секунды назад."
 
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "seconds ago"
+msgstr "секунды назад"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Current error-ing screenshot from most recent request"
+msgstr "Текущий скриншот с ошибкой из последнего запроса"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Pro-tip: You can enable <strong>\"share access when password is enabled\"</strong> from settings."
+msgstr "Совет: вы можете включить «общий доступ <strong> при включенном пароле» </strong> в настройках."
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Generating change summary…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Goto single snapshot"
+msgstr "Перейти к одному снимку"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Highlight text to share or add to ignore lists."
+msgstr "Выделите текст, которым хотите поделиться, или добавьте его в списки игнорирования."
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Download difference patch"
+msgstr "Скачать патч различий"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "For now, Differences are performed on text, not graphically, only the latest screenshot is available."
+msgstr "На данный момент различия выполняются в текстовом виде, а не графически, доступен только последний скриншот."
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Current screenshot from most recent request"
+msgstr "Текущий снимок экрана из последнего запроса"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "No screenshot available just yet! Try rechecking the page."
+msgstr "Скриншот пока не доступен! Попробуйте перепроверить страницу."
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Screenshot requires Playwright/WebDriver enabled"
+msgstr "Для создания снимка экрана требуется включенный Playwright/WebDriver."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Request"
+msgstr "Запрос"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Browser Steps"
+msgstr "Шаги браузера"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Filter Selector"
+msgstr "Выбор визуального фильтра"
+
 #: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Conditions"
 msgstr "Условия"
