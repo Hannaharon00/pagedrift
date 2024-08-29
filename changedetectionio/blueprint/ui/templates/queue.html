@@ -140,3 +140,69 @@ $(function () {
   if (!$root.length) return;
   const baseUrl = $root.data('queueJson');
 
+  const COMPLETION_GRACE_MS = 60 * 1000;  // keep completed rows visible this long
+
+  // Stable per-worker slots so the running table doesn't jump around as jobs come and go.
+  // slots[i] = { uuid|null, watchData|null, completedAt: 0 | <ms epoch> }
+  const slots = [];
+
+  // Queued items recently popped — keep them around (faded) for a short grace period.
+  // Map<uuid, {watchData, removedAt}>
+  const queuedGhosts = new Map();
+  let lastQueueSnapshot = [];
+
+  function currentPage() {
+    const params = new URLSearchParams(window.location.search);
+    const p = parseInt(params.get('page'), 10);
+    return Number.isFinite(p) && p > 0 ? p : 1;
+  }
+
+  function refreshUrl() {
+    const sep = baseUrl.includes('?') ? '&' : '?';
+    return baseUrl + sep + 'page=' + currentPage();
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  const I18N = window.queueI18n || {};
+
+  function renderWatchCell(w) {
+    if (!w) return '';
+    if (w.gone) return '<em>' + escapeHtml(I18N.watchGone || 'Watch no longer exists') + '</em>';
+    const title = escapeHtml(w.title || w.url || w.uuid);
+    const sub = (w.title && w.url) ? '<br><small style="opacity:0.7;">' + escapeHtml(w.url) + '</small>' : '';
+    return '<strong>' + title + '</strong>' + sub;
+  }
+
+  function workerLabel(i) {
+    const tpl = I18N.workerLabel || 'Worker __NUM__';
+    return tpl.replace('__NUM__', i + 1);
+  }
+
+  function elapsedText(since) {
+    if (!since) return '';
+    const sec = Math.max(0, Math.floor(Date.now() / 1000 - since));
+    if (sec < 60) return sec + 's';
+    if (sec < 3600) return Math.floor(sec / 60) + 'm ' + (sec % 60) + 's';
+    return Math.floor(sec / 3600) + 'h ' + Math.floor((sec % 3600) / 60) + 'm';
+  }
+
+  function refreshTimeCells() {
+    $root.find('.time-cell[data-since]').each(function () {
+      const since = parseFloat(this.dataset.since);
+      if (!isFinite(since) || since <= 0) return;
+      this.textContent = elapsedText(since);
+    });
+  }
+
+  function ensureSlotCount(target) {
+    while (slots.length < target) slots.push({ uuid: null, watchData: null, completedAt: 0 });
+    // Don't shrink — preserve trailing slots so completed entries can fade out.
+    // They'll be culled later by cleanupSlots.
+  }
+
