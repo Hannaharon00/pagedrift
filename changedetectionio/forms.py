@@ -956,6 +956,213 @@ class DefaultUAInputForm(Form):
     if os.getenv("PLAYWRIGHT_DRIVER_URL") or os.getenv("WEBDRIVER_URL"):
         html_webdriver = StringField(_l('Chrome requests'), validators=[validators.Optional()], render_kw={"placeholder": "<default>"})
 
+# datastore.data['settings']['application']..
+class globalSettingsApplicationForm(commonSettingsForm):
+
+    api_access_token_enabled = BooleanField(_l('API access token security check enabled'), default=True, validators=[validators.Optional()])
+    base_url = StringField(_l('Notification base URL override'),
+                           validators=[validators.Optional()],
+                           render_kw={"placeholder": os.getenv('BASE_URL', _l('Not set'))}
+                           )
+    empty_pages_are_a_change =  BooleanField(_l('Treat empty pages as a change?'), default=False)
+    fetch_backend = RadioField(_l('Fetch Method'), default="html_requests", choices=content_fetchers.available_fetchers(), validators=[ValidateContentFetcherIsReady()])
+    global_ignore_text = StringListField(_l('Ignore Text'), [ValidateListRegex()])
+    global_subtractive_selectors = StringListField(_l('Remove elements'), [ValidateCSSJSONXPATHInput(allow_json=False)])
+    ignore_whitespace = BooleanField(_l('Ignore whitespace'))
+
+    # Screenshot comparison settings
+    min_change_percentage = FloatField(
+        _l('Screenshot: Minimum Change Percentage'),
+        validators=[
+            validators.Optional(),
+            validators.NumberRange(min=0.0, max=100.0, message=_l('Must be between 0 and 100'))
+        ],
+        default=0.1,
+        render_kw={"placeholder": "0.1", "style": "width: 8em;"}
+    )
+
+    password = SaltyPasswordField(_l('Password'), render_kw={"autocomplete": "new-password"})
+    pager_size = IntegerField(_l('Pager size'),
+                              render_kw={"style": "width: 5em;"},
+                              validators=[validators.NumberRange(min=0,
+                                                                 message=_l("Should be atleast zero (disabled)"))])
+
+    rss_content_format = SelectField(_l('RSS Content format'), choices=list(RSS_FORMAT_TYPES.items()))
+    rss_template_type = SelectField(_l('RSS <description> body built from'), choices=list(RSS_TEMPLATE_TYPE_OPTIONS.items()))
+    rss_template_override = TextAreaField(_l('RSS "System default" template override'), render_kw={"rows": "5", "placeholder": RSS_TEMPLATE_HTML_DEFAULT}, validators=[validators.Optional(), ValidateJinja2Template()])
+
+    removepassword_button = SubmitField(_l('Remove password'), render_kw={"class": "pure-button pure-button-primary"})
+    render_anchor_tag_content = BooleanField(_l('Render anchor tag content'), default=False)
+    shared_diff_access = BooleanField(_l('Allow anonymous access to watch history page when password is enabled'), default=False, validators=[validators.Optional()])
+    strip_ignored_lines = BooleanField(_l('Strip ignored lines'))
+    rss_hide_muted_watches = BooleanField(_l('Hide muted watches from RSS feed'), default=True,
+                                      validators=[validators.Optional()])
+
+    rss_reader_mode = BooleanField(_l('Enable RSS reader mode '), default=False, validators=[validators.Optional()])
+    rss_diff_length = IntegerField(label=_l('Number of changes to show in watch RSS feed'),
+                                   render_kw={"style": "width: 5em;"},
+                                   validators=[validators.NumberRange(min=0, message=_l("Should contain zero or more attempts"))])
+
+    filter_failure_notification_threshold_attempts = IntegerField(_l('Number of times the filter can be missing before sending a notification'),
+                                                                  render_kw={"style": "width: 5em;"},
+                                                                  validators=[validators.NumberRange(min=0,
+                                                                                                     message=_l("Should contain zero or more attempts"))])
+
+    history_snapshot_max_length = IntegerField(_l('Number of history items per watch to keep'), render_kw={"style": "width: 5em;"}, validators=[validators.Optional(), validators.NumberRange(min=2)])
+    ui = FormField(globalSettingsApplicationUIForm)
+
+
+class globalSettingsLLMForm(Form):
+    """
+    LLM / AI provider settings — stored under datastore['settings']['application']['llm'].
+
+    Uses litellm under the hood, so the model string encodes both the provider and model.
+    No separate provider dropdown needed — litellm routes automatically:
+      gpt-4o-mini                           → OpenAI
+      claude-3-5-haiku-20251001             → Anthropic
+      ollama/llama3.2                       → Ollama
+      openrouter/google/gemma-3-12b-it:free → OpenRouter (free tier)
+      gemini/gemini-2.0-flash               → Google Gemini
+      azure/gpt-4o                          → Azure OpenAI
+    """
+    model = StringField(
+        _l('Model'),
+        validators=[validators.Optional()],
+        render_kw={"placeholder": "gpt-4o-mini", "style": "width: 24em;"},
+    )
+    api_key = PasswordField(
+        _l('API Key'),
+        validators=[validators.Optional()],
+        render_kw={
+            "autocomplete": "off",
+            "style": "width: 24em;",
+        },
+    )
+    api_base = StringField(
+        _l('API Base URL'),
+        validators=[validators.Optional(), validateLLMApiBaseSafe()],
+        render_kw={
+            "placeholder": "http://localhost:11434  (Ollama / custom endpoints only)",
+            "style": "width: 24em;",
+        },
+    )
+    # Persisted by the Provider dropdown JS — lets the backend distinguish a self-hosted
+    # OpenAI-compatible endpoint (vLLM, LM Studio, llama.cpp) from cloud OpenAI, so we can
+    # apply reasoning-friendly token caps only when the user opted in.
+    provider_kind = HiddenField(
+        validators=[validators.Optional()],
+        default='',
+    )
+    # Multiplier applied to LLM max_tokens caps when provider_kind is 'ollama' or
+    # 'openai_compatible' — endpoints that commonly serve reasoning models (Qwen3,
+    # DeepSeek-R1, Gemma 3, etc.) which emit chain-of-thought into
+    # message.reasoning_content before the final answer lands in message.content.
+    # Cloud providers with non-reasoning defaults (OpenAI, Anthropic, Gemini,
+    # OpenRouter) stay on the original tight caps so existing users see no
+    # behavior or cost change. Users on paid Ollama / openai_compatible endpoints
+    # who care about cost can dial this down to 1x.
+    local_token_multiplier = IntegerField(
+        _l('Token multiplier for local reasoning models'),
+        validators=[validators.Optional(), validators.NumberRange(min=1, max=20)],
+        default=5,
+        render_kw={"placeholder": "5", "style": "width: 6em;"},
+    )
+    change_summary_default = TextAreaField(
+        _l('Default AI Change Summary prompt'),
+        validators=[validators.Optional(), validators.Length(max=2000)],
+        render_kw={
+            "rows": "12",
+            "placeholder": DEFAULT_CHANGE_SUMMARY_PROMPT,
+            "style": "width: 100%; ",
+        },
+        default='',
+    )
+    max_tokens_per_count_period = IntegerField(
+        _l('Max tokens per watch per period'),
+        validators=[validators.Optional(), validators.NumberRange(min=0)],
+        default=0,
+        render_kw={
+            "placeholder": "0 = unlimited",
+            "style": "width: 8em;",
+        },
+    )
+    token_budget_month = IntegerField(
+        _l('Monthly token budget'),
+        validators=[validators.Optional(), validators.NumberRange(min=0)],
+        default=0,
+        render_kw={"style": "width: 10em;"},
+    )
+    max_input_chars = IntegerField(
+        _l('Max input characters'),
+        validators=[validators.Optional(), validators.NumberRange(min=1)],
+        default=100000,
+        render_kw={
+            "placeholder": "100000",
+            "style": "width: 10em;",
+        },
+    )
+    # Master on/off switch for ALL LLM lookups at runtime. When False, every entry point
+    # in evaluator.py (and the restock fallback) short-circuits with a logger.debug
+    # message — even if a provider+model is still configured. Saved config and the
+    # "configured" badge remain visible so the user can toggle back on without re-entering.
+    enabled = BooleanField(
+        _l('Enable AI / LLM features'),
+        default=True,
+    )
+    override_diff_with_summary = BooleanField(
+        _l('Replace {{diff}} notification token with AI summary'),
+        default=True,
+    )
+    restock_use_fallback_extract = BooleanField(
+        _l('Use LLM as a fallback for extracting price and restock info'),
+        default=True,
+    )
+    debug = BooleanField(
+        _l('Enable LLM debug logging'),
+        default=False,
+    )
+    thinking_budget = SelectField(
+        _l('AI thinking budget (tokens)'),
+        choices=[
+            ('0',    _l('Off (no thinking)')),
+            ('100',  '100'),
+            ('500',  '500'),
+            ('2000', '2000'),
+        ],
+        default=str(LLM_DEFAULT_THINKING_BUDGET),
+        validators=[validators.Optional()],
+    )
+    max_summary_tokens = SelectField(
+        _l('Max AI summary length (tokens)'),
+        choices=[
+            ('500',   '500'),
+            ('1000',  '1000'),
+            ('3000',  '3000'),
+            ('5000',  '5000'),
+            ('10000', '10000'),
+            ('15000', '15000'),
+        ],
+        default=str(LLM_DEFAULT_MAX_SUMMARY_TOKENS),
+        validators=[validators.Optional()],
+    )
+    budget_action = RadioField(
+        _l('When monthly token budget is reached'),
+        choices=[
+            ('skip_llm',   _l('Skip AI summarisation only (watch still checks)')),
+            ('skip_check', _l('Skip the watch check entirely')),
+        ],
+        default='skip_llm',
+    )
+    watchlist_overview_summary = RadioField(
+        _l('Watchlist "Summary" link compares'),
+        choices=[
+            ('second_last_version', _l('Previous version (second-last vs latest)')),
+            ('since_last_viewed',   _l('Changes since you last viewed the watch')),
+        ],
+        default='second_last_version',
+    )
+
+
 class globalSettingsForm(Form):
     # Define these as FormFields/"sub forms", this way it matches the JSON storage
     # datastore.data['settings']['application']..
