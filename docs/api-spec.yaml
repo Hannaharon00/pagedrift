@@ -38,3 +38,20 @@ servers:
 security:
   - ApiKeyAuth: []
 
+  - name: Plugin API Extensions
+    description: |
+      ## How Processor Plugins Extend the API
+
+      changedetection.io uses a **processor plugin** system to handle different types of change detection.
+      Each processor lives in `changedetectionio/processors/<name>/` and may include an `api.yaml` file
+      that extends the core Watch schema with processor-specific configuration fields.
+
+      ### How it works
+
+      At startup, changedetection.io scans all installed processors for an `api.yaml` file. Any schemas
+      and code samples defined there are deep-merged into the live API specification, making the
+      processor's configuration fields valid on all watch create and update requests.
+
+      The live, fully-merged spec is always available at `/api/v1/full-spec` — use that URL with
+      Swagger UI or Redoc to see the complete schema for your specific installation.
+
