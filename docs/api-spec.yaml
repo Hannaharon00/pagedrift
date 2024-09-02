@@ -8,6 +8,16 @@ info:
     
     changedetection.io can be driven by its built in simple API, in the examples below you will also find `curl` command line and `python` examples to help you get started faster.
     
+    For example: `x-api-key: YOUR_API_KEY`
+    
+  version: 0.1.9
+  contact:
+    name: ChangeDetection.io
+    url: https://github.com/dgtlmoon/changedetection.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
 servers:
   - url: http://localhost:5000/api/v1
     description: Development server
