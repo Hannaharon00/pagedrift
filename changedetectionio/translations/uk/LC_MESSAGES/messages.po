@@ -2670,6 +2670,66 @@ msgstr "Час між перевірками"
 msgid "Use global settings for time between check and scheduler."
 msgstr "Використовувати глобальні налаштування для часу між перевірками та планувальника."
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Надіслати сповіщення, коли фільтр більше не може бути знайдений на сторінці"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Увімк"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Заглушено"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Прикріпити скріншот до сповіщення (де можливо)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Збіг"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Збіг усіх наступних умов"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Збіг будь-якої з наступних умов"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Використовувати <title> сторінки у списку"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Кількість збережених записів історії для кожного завдання"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Тіло має бути порожнім, якщо метод запиту встановлено на GET"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Невірний синтаксис конфігурації шаблону: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Невірний синтаксис шаблону: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Невірний синтаксис шаблону в заголовку \"%(header)s\": %(error)s"
+
 #: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
 msgid "Name"
 msgstr "Ім'я"
