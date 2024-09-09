@@ -1540,6 +1540,62 @@ msgstr "Завдання додано."
 msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
 msgstr "відображено <b>{start} - {end}</b> {record_name}, всього <b>{total}</b>"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear errors"
+msgstr "Очистити помилки"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear Histories"
+msgstr "Очистити історії"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p>Are you sure you want to clear history for the selected items?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Ви впевнені, що хочете очистити історію для вибраних елементів?</p><p>Цю дію неможливо скасувати.</p>"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "OK"
+msgstr "ОК"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear/reset history"
+msgstr "Очистити/скинути історію"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Delete Watches?"
+msgstr "Видалити завдання?"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p>Are you sure you want to delete the selected watches?</strong></p><p>This action cannot be undone.</p>"
+msgstr "<p>Ви впевнені, що хочете видалити вибрані завдання?</p><p>Цю дію неможливо скасувати.</p>"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Queued size"
+msgstr "Розмір черги"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Searching"
+msgstr "Пошук"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "All"
+msgstr "Всі"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Website"
+msgstr "Вебсайт"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "Наявність та Ціна"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Checked"
+msgstr "Перевірено"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Last"
+msgstr "Останній"
+
 #: changedetectionio/forms.py
 msgid "Seconds"
 msgstr "Секунди"

@@ -1196,6 +1196,65 @@ msgid "All-time total"
 msgstr "歷史總計"
 
 #: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Monthly token budget reached. AI summarisation is paused until next month."
+msgstr "已達每月權杖配額上限。AI 摘要功能已暫停，直到下個月恢復。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Token budget this period"
+msgstr "此週期的權杖配額"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "(set via <code>LLM_TOKEN_BUDGET_MONTH</code>)"
+msgstr "（透過 <code>LLM_TOKEN_BUDGET_MONTH</code> 設定）"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "0 = unlimited"
+msgstr "0 = 不限制"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "tokens (0 = unlimited)"
+msgstr "權杖（0 = 不限制）"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Current billing period"
+msgstr "目前計費週期"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "(set via <code>LLM_MAX_INPUT_CHARS</code>)"
+msgstr "（透過 <code>LLM_MAX_INPUT_CHARS</code> 設定）"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+#, python-format
+msgid "characters — currently enforcing: %(limit)s"
+msgstr "個字元 — 目前強制執行：%(limit)s"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid ""
+"tokens — skips AI evaluation on a watch once its usage within the current period (monthly) hits this cap (0 = "
+"unlimited)"
+msgstr "權杖 — 當監測任務在目前週期（每月）內的使用量達到此上限時，將跳過該監測任務的 AI 評估（0 = 不限制）"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "No AI usage recorded yet."
+msgstr "尚無 AI 使用記錄。"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "Token budget"
+msgstr "權杖配額"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "tokens per month (0 = unlimited)"
+msgstr "每月權杖（0 = 不限制）"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "platform.openai.com → API keys"
+msgstr "platform.openai.com → API 金鑰"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
+msgid "console.anthropic.com → API keys"
+msgstr "console.anthropic.com → API 金鑰"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html
 msgid "aistudio.google.com → Get API key"
 msgstr "aistudio.google.com → 獲取 API 金鑰"
 
