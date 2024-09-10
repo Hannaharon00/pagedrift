@@ -833,6 +833,48 @@ def visual_browser_choices():
     return browser_config.radio_choices(datastore) if datastore else []
 
 
+class quickWatchForm(Form):
+    url = StringField('URL', validators=[validateURL()])
+    tags = StringTagUUID(_l('Group tag'), validators=[validators.Optional()])
+    watch_submit_button = SubmitField(_l('Watch'), render_kw={"class": "pure-button pure-button-primary"})
+    processor = RadioField(_l('Processor'), choices=lambda: processors.available_processors(), default=processors.get_default_processor)
+    # Only the Add-Watch page renders this; the watch-list quick-add posts nothing, which
+    # leaves the new watch on 'system' exactly as before.
+    #
+    # A radio list rather than a dropdown: fetcher descriptions run long (they include the
+    # driver URL) and a wrapping label reads fine in a narrow pane, where a <select> would
+    # either overflow or need truncating.
+    #
+    # choices is only what the Add-Watch page *offers* (browsers that can render a live
+    # preview), so validate_choice has to stay off: this same endpoint legitimately receives
+    # any installed backend from the watch-list quick-add, and pre_validate() would reject
+    # e.g. 'html_requests' for not being in the offered list.
+    fetch_backend = RadioField(_l('Browser'),
+                               choices=visual_browser_choices,
+                               validate_choice=False,
+                               validators=[ValidateKnownContentFetcher()])
+    edit_and_watch_submit_button = SubmitField(_l('Edit > Watch'), render_kw={"class": "pure-button pure-button-primary"})
+
+
+# Common to a single watch and the global settings
+class commonSettingsForm(Form):
+    from . import processors
+
+    def __init__(self, formdata=None, obj=None, prefix="", data=None, meta=None, **kwargs):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        self.notification_body.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+        self.notification_title.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+        self.notification_urls.extra_notification_tokens = kwargs.get('extra_notification_tokens', {})
+
+    fetch_backend = RadioField(_l('Fetch Method'), choices=content_fetchers.available_fetchers(), validators=[ValidateContentFetcherIsReady()])
+    notification_body = TextAreaField(_l('Notification Body'), default='{{ watch_url }} had a change.', validators=[validators.Optional(), ValidateJinja2Template()])
+    notification_format = SelectField(_l('Notification format'), choices=list(valid_notification_formats.items()))
+    notification_title = StringField(_l('Notification Title'), default='ChangeDetection.io Notification - {{ watch_url }}', validators=[validators.Optional(), ValidateJinja2Template()])
+    notification_urls = StringListField(_l('Notification URL List'), validators=[validators.Optional(), ValidateAppRiseServers(), ValidateJinja2Template()])
+    processor = RadioField( label=_l("Processor - What do you want to achieve?"), choices=lambda: processors.available_processors(), default=processors.get_default_processor)
+    scheduler_timezone_default = StringField(_l("Default timezone for watch check scheduler"), render_kw={"list": "timezones"}, validators=[validateTimeZoneName()])
+    webdriver_delay = IntegerField(_l('Wait seconds before extracting text'), validators=[validators.Optional(), validators.NumberRange(min=1, message=_l("Should contain one or more seconds"))])
+
 # Not true anymore but keep the validate_ hook for future use, we convert color tags
 #    def validate_notification_urls(self, field):
 #        """Validate that HTML Color format is not used with Telegram"""
