@@ -1726,6 +1726,60 @@ msgstr "По умолчанию"
 msgid "Updated watch - unpaused!"
 msgstr "Обновленные часы — сняты с паузы!"
 
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "Обновленные часы."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "Предварительный просмотр недоступен: выборка/проверка не завершена или триггеры не достигнуты."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr "Различия"
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "отображение <b>{start} - {end}</b> {record_name} всего <b>{total}</b>"
+
+#: changedetectionio/blueprint/ui/queue.py
+msgid "queued items"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py
+#, python-brace-format
+msgid "Queue cleared ({} items removed)."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "This will remove version history (snapshots) for ALL watches, but keep your list of URLs!"
+msgstr "Это приведет к удалению истории версий (снимков) для ВСЕХ часов, но сохраните список URL-адресов!"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "You may like to use the"
+msgstr "Возможно, вам захочется использовать"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "BACKUP"
+msgstr "РЕЗЕРВНОЕ КОПИРОВАНИЕ"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "link first."
+msgstr "ссылка первая."
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Confirmation text"
+msgstr "Текст подтверждения"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "Type in the word"
+msgstr "Введите слово"
+
+#: changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "to confirm that you understand."
+msgstr "чтобы подтвердить, что вы понимаете."
+
 #: changedetectionio/blueprint/ui/templates/clear_all_history.html
 msgid "Clear History!"
 msgstr "Очистить историю!"
