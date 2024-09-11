@@ -1737,6 +1737,68 @@ msgstr "Usunięto."
 msgid "Cloned, you are editing the new watch."
 msgstr "Sklonowano. Edytujesz nową obserwację."
 
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Watch is already queued or being checked."
+msgstr "Obserwacja znajduje się już w kolejce lub jest właśnie sprawdzana."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queued 1 watch for rechecking."
+msgstr "Dodano 1 obserwację do kolejki ponownego sprawdzenia."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {count} watches for rechecking ({skipped_count} already queued or running)."
+msgstr ""
+"Dodano {count} obserwacji do kolejki ponownego sprawdzenia ({skipped_count} już znajduje się w kolejce lub jest w "
+"trakcie przetwarzania)."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Queued {} watches for rechecking."
+msgstr "Dodano {} obserwacji do kolejki ponownego sprawdzenia."
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Queueing watches for rechecking in background..."
+msgstr "Dodawanie obserwacji do kolejki ponownego sprawdzenia w tle..."
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Could not share, something went wrong while communicating with the share server - {}"
+msgstr "Nie udało się udostępnić, wystąpił błąd podczas komunikacji z serwerem udostępniania — {}"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Language set to auto-detect from browser"
+msgstr "Język ustawiony na automatyczne wykrywanie na podstawie przeglądarki"
+
+#: changedetectionio/blueprint/ui/diff.py changedetectionio/blueprint/ui/preview.py
+msgid "No history found for the specified link, bad link?"
+msgstr "Nie znaleziono historii dla podanego linku – czy link jest nieprawidłowy?"
+
+#: changedetectionio/blueprint/ui/diff.py
+msgid "Not enough history (2 snapshots required) to show difference page for this watch."
+msgstr "Brak wystarczającej historii (wymagane są 2 migawki), aby wyświetlić stronę różnic dla tej obserwacji."
+
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+"Miesięczny limit tokenów AI wynoszący %(budget)s tokenów został osiągnięty (wykorzystano %(used)s tokenów). Limit "
+"zostanie zresetowany w przyszłym miesiącu."
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "Brak obserwacji do edycji"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "Nie znaleziono obserwacji o identyfikatorze UUID {}."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "Przełączono do trybu – {}."
+
 #: changedetectionio/blueprint/ui/edit.py
 #, python-brace-format
 msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
