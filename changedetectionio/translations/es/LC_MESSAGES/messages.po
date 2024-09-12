@@ -1693,6 +1693,66 @@ msgstr "No se encontró historial para el enlace especificado, ¿enlace incorrec
 msgid "Not enough history (2 snapshots required) to show difference page for this watch."
 msgstr "No hay suficiente historial (se requieren 2 instantáneas) para mostrar la página de diferencias para este monitor."
 
+#: changedetectionio/blueprint/ui/diff.py
+#, python-format
+msgid "Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "No watches to edit"
+msgstr "No hay monitores para editar"
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "No watch with the UUID {} found."
+msgstr "No se encontró ningún monitor con el UUID {}."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Switched to mode - {}."
+msgstr "Cambiado al modo: {}."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing. Please select a different processor."
+msgstr ""
+"No se pudo cargar el procesador '{}'; es posible que falte el complemento del procesador. Seleccione un procesador "
+"diferente."
+
+#: changedetectionio/blueprint/ui/edit.py
+#, python-brace-format
+msgid "Could not load '{}' processor, processor plugin might be missing."
+msgstr "No se pudo cargar el procesador '{}'; es posible que falte el complemento del procesador."
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "System settings default"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Default"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch - unpaused!"
+msgstr "Monitor actualizado: ¡sin pausa!"
+
+#: changedetectionio/blueprint/ui/edit.py
+msgid "Updated watch."
+msgstr "Monitor actualizado."
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Preview unavailable - No fetch/check completed or triggers not reached"
+msgstr "Vista previa no disponible: no se completó la búsqueda/verificación o no se alcanzaron los activadores"
+
+#: changedetectionio/blueprint/ui/preview.py
+msgid "Diff"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/queue.py changedetectionio/blueprint/watchlist/__init__.py
+#, python-brace-format
+msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
+msgstr "mostrando<b>{start} - {end}</b> {record_name}en total<b>{total}</b>"
+
 #: changedetectionio/blueprint/ui/queue.py
 msgid "queued items"
 msgstr ""
