@@ -1540,6 +1540,62 @@ msgstr "Завдання додано."
 msgid "displaying <b>{start} - {end}</b> {record_name} in total <b>{total}</b>"
 msgstr "відображено <b>{start} - {end}</b> {record_name}, всього <b>{total}</b>"
 
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "записів"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changedetection.io can monitor more than just web-pages! See our plugins!"
+msgstr "Changedetection.io може моніторити більше, ніж просто веб-сторінки! Дивіться наші плагіни!"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "More info"
+msgstr "Детальніше"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "You can also add 'shared' watches."
+msgstr "Ви також можете додати 'спільні' завдання."
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Add a new web page change detection watch"
+msgstr "Додати нове завдання відстеження змін веб-сторінки"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Watch this URL!"
+msgstr "Відстежувати цей URL!"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Edit first then Watch"
+msgstr "Спочатку редагувати, потім Відстежувати"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Pause"
+msgstr "Пауза"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnPause"
+msgstr "Старт"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mute"
+msgstr "Заглушити"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnMute"
+msgstr "Увімкнути звук"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Tag"
+msgstr "Тег"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mark viewed"
+msgstr "Позначити як переглянуте"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Use default notification"
+msgstr "Вик. сповіщення за замовчуванням"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html
 msgid "Clear errors"
 msgstr "Очистити помилки"
