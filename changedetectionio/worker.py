@@ -25,6 +25,21 @@ IN_PYTEST = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
 DEFER_SLEEP_TIME_ALREADY_QUEUED = 0.3 if IN_PYTEST else 10.0
 
 
+def set_watch_minitext_status(watch, status):
+    """
+    Set a transient status line for a watch (e.g. "Fetching...", "Querying AI/LLM..").
+
+    Writes to watch['__check_status'] so a client reloading the page can render the
+    last known status, and fires the realtime signal so already-connected clients
+    update live. __-prefixed key is filtered from disk by Watch._get_commit_data().
+
+    Status is sanitized to alphanumerics, space, and safe punctuation only.
+    """
+    safe_status = _MINITEXT_STATUS_SAFE_RE.sub('', str(status))[:_MINITEXT_STATUS_MAX_LEN]
+    watch['__check_status'] = safe_status
+    signal('watch_small_status_comment').send(watch_uuid=watch['uuid'], status=safe_status)
+
+
                 logger.info(f"Worker {worker_id} processing watch UUID {uuid} Priority {queued_item_data.priority} URL {watch['url']}")
 
                 try:
