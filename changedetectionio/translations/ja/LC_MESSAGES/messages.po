@@ -2316,6 +2316,72 @@ msgstr ""
 msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnMute notification"
+msgstr "通知のミュートを解除"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Goto web page"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Create a link to share watch config with others"
+msgstr "ウォッチ設定を他の人と共有するリンクを作成"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Detecting restock and price"
+msgstr "在庫補充と価格を検知中"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Not in stock"
+msgstr "在庫なし"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "In stock"
+msgstr "在庫あり"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price"
+msgstr "価格"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#, python-format
+msgid "Price change since previous price (%(prev)s)"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "No information"
+msgstr "情報なし"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Checked"
+msgstr "チェック済み"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/templates/base.html
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Checking now"
+msgstr "今すぐチェック"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changed"
+msgstr "変更済み"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Summary"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/processors/text_json_diff/difference.py
+msgid "History"
+msgstr "履歴"
+
 #. {pct} is a percentage including the % sign, e.g. "80%"
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html
 #: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
