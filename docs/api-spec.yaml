@@ -8,6 +8,15 @@ info:
     
     changedetection.io can be driven by its built in simple API, in the examples below you will also find `curl` command line and `python` examples to help you get started faster.
     
+    ## Where to find my API key?
+    
+    The API key can be easily found under the **SETTINGS** then **API** tab of changedetection.io dashboard.  
+    Simply click the API key to automatically copy it to your clipboard.
+    
+    ![Where to find the API key](./where-to-get-api-key.jpeg)
+    
+    ## Connection URL
+    
     For example: `x-api-key: YOUR_API_KEY`
     
   version: 0.1.9
