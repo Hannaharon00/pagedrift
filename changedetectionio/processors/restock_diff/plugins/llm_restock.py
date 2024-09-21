@@ -119,3 +119,50 @@ def _llm_cache_put(key, value):
         _LLM_RESULT_CACHE.popitem(last=False)
 
 
+# id/class fragments that strongly indicate navigation or site-chrome
+_CHROME_PATTERNS = re.compile(
+    r'\b(nav|navigation|navbar|menu|mega-menu|breadcrumb|breadcrumbs?|'
+    r'site-header|page-header|top-bar|top-nav|top-header|mobile-nav|header-bar|'
+    r'site-footer|page-footer|footer-links|related|similar|'
+    r'you-?may-?also|customers?-?also|frequently-?bought|'
+    r'people-?also|sponsored|recommendation|widget|sidebar|'
+    r'cross-?sell|up-?sell)\b',
+    re.IGNORECASE,
+)
+
+
+def _remove_chrome(html_content: str) -> str:
+    """Use BS4 to strip navigation, header, footer and recommendation noise.
+
+    Uses html.parser (built-in, no lxml) to avoid memory leak issues.
+    Falls back to the original HTML string if BS4 fails for any reason.
+    """
+    try:
+        from bs4 import BeautifulSoup, Tag
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        # Snapshot the full tag list before any decompositions so we don't
+        # mutate the tree while iterating it.  After a parent is decomposed
+        # its children become orphans (parent=None) — skip those.
+        for tag in list(soup.find_all(True)):
+            if not isinstance(tag, Tag) or tag.parent is None:
+                continue
+            name = tag.name or ''
+            if name in _CHROME_TAGS:
+                tag.decompose()
+                continue
+            try:
+                cls_list = tag.get('class') or []
+                cls_str = ' '.join(cls_list) if isinstance(cls_list, list) else str(cls_list)
+                id_str = tag.get('id') or ''
+            except Exception:
+                continue
+            if _CHROME_PATTERNS.search(cls_str + ' ' + id_str):
+                tag.decompose()
+
+        return str(soup)
+    except Exception as e:
+        logger.debug(f"BS4 chrome removal failed ({e}), using raw HTML")
+        return html_content
+
+

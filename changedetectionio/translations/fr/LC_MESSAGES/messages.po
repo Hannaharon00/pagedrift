@@ -2482,6 +2482,58 @@ msgid "Value is required."
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Utiliser le programmateur"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Fuseau horaire facultatif dans lequel exécuter"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "Lundi"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "Mardi"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Mercredi"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Jeudi"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "Vendredi"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Samedi"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Dimanche"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Semaines"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Doit contenir zéro ou plusieurs secondes"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Jours"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Heures"
+
+#: changedetectionio/forms.py
 msgid "URLs"
 msgstr "URL"
 
