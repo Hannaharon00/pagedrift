@@ -193,3 +193,11 @@ def get_language_codes():
     return list(get_available_languages().keys())
 
 
+def get_flag_for_locale(locale):
+    """Get flag emoji for a locale, or globe if unknown"""
+    return LANGUAGE_DATA.get(locale, {}).get('flag', '🌐')
+
+
+def get_name_for_locale(locale):
+    """Get native name for a locale"""
+    return LANGUAGE_DATA.get(locale, {}).get('name', locale.upper())
