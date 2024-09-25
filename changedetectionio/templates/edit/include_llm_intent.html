@@ -194,3 +194,20 @@
 </div>
 </div>
 
+{# ── Not configured: greyed-out prompt to configure ──────────────── #}
+{% else %}
+<div class="border-fieldset" id="llm-intent-section-disabled" style="opacity: 0.5;">
+    <h3>&#x2728; {{ _('AI') }}</h3>
+    <p>
+       {% if not llm_group_mode %}
+           {{ _('Configure an AI / LLM provider in <a href="%(url)s">Settings → AI / LLM</a> to enable AI Change Intent and AI Change Summary.',
+                url=url_for('settings.settings_page') + '#ai') | safe }}
+       {% else %}
+           {{ _('Configure an AI / LLM provider in <a href="%(url)s">Settings → AI / LLM</a> to enable AI features for this group.',
+                url=url_for('settings.settings_page') + '#ai') | safe }}
+       {% endif %}
+    </p>
+</div>
+{% endif %}
+
+{% endif %}{# show_ai_section #}
