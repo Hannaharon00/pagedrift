@@ -2782,6 +2782,58 @@ msgid "You must be logged in, please log in."
 msgstr "Sie müssen angemeldet sein, bitte melden Sie sich an."
 
 #: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "CSS/xPath-Filter"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Elemente entfernen"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Daten extrahieren"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Titel"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Ignorieren Sie alle übereinstimmenden Zeilen"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "Request body"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Request method"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Statuscodes ignorieren (Nicht-2xx-Statuscodes wie gewohnt verarbeiten)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Wird nur ausgelöst, wenn eindeutige Zeilen angezeigt werden"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Entfernen Sie doppelte Textzeilen"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Sortieren Sie den Text alphabetisch"
+
+#: changedetectionio/forms.py
 msgid "API Base URL"
 msgstr ""
 
