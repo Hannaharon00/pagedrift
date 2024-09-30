@@ -2195,6 +2195,70 @@ msgid "to one that supports interactive Javascript."
 msgstr "na taką, która obsługuje interaktywny JavaScript."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Musisz"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Ustaw metodę pobierania"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Wysyła powiadomienie, gdy filtr przestaje być widoczny na stronie; przydaje się to do stwierdzenia, kiedy strona "
+"uległa zmianie i filtr przestanie działać."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "Użyj przycisku „Sprawdź” (✓), aby sprawdzić, czy warunek jest spełniony w odniesieniu do bieżącej migawki."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Zapoznaj się z krótkim poradnikiem na temat"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "wykorzystanie warunkowych zmian na stronie internetowej w tym miejscu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Włącz podgląd"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Porady dla profesjonalistów:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Skorzystaj ze strony podglądu, aby zobaczyć zaznaczone filtry i wyzwalacze."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Ogranicz opcje „uruchom”, „zignoruj”, „zablokuj” i „wyodrębnij” do:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Uwaga: W zależności od długości i podobieństwa tekstu w poszczególnych wierszach algorytm może na przykład rozważyć "
+"<strong>dodanie</strong> zamiast <strong>zamiany</strong>."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Dlatego zawsze lepiej jest wybrać"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "gdy chcesz otrzymywać informacje o nowych treściach."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Gdy treść zostanie po prostu przeniesiona w obrębie listy, spowoduje to również"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "addition"
 msgstr "dodatek"
 
