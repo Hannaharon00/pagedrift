@@ -3013,3 +3013,61 @@ msgstr "공백 무시"
 msgid "Screenshot: Minimum Change Percentage"
 msgstr "스크린샷: 최소 변경 비율"
 
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "1주 후"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%s주 전"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "%s주 후"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1개월 전"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "1개월 후"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%s개월 전"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "%s개월 후"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1년 전"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "1년 후"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%s년 전"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "%s년 후"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr "해당 정규식으로 모든 모니터링 기록을 검사했지만 일치하는 항목을 찾지 못했습니다."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "비교할 기록이 충분하지 않습니다. 스냅샷이 최소 2개 필요합니다."
+
