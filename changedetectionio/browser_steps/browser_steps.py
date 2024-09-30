@@ -318,3 +318,124 @@ class steppable_browser_interface():
             })
         """)
 
+# Responsible for maintaining a live 'context' with the chrome CDP
+# @todo - how long do contexts live for anyway?
+class browsersteps_live_ui(steppable_browser_interface):
+    context = None
+    page = None
+    render_extra_delay = 1
+    stale = False
+    # bump and kill this if idle after X sec
+    age_start = 0
+    headers = {}
+    # Track if resources are properly cleaned up
+    _is_cleaned_up = False
+    
+    # use a special driver, maybe locally etc
+    command_executor = os.getenv(
+        "PLAYWRIGHT_BROWSERSTEPS_DRIVER_URL"
+    )
+    # if not..
+    if not command_executor:
+        command_executor = os.getenv(
+            "PLAYWRIGHT_DRIVER_URL",
+            'ws://playwright-chrome:3000'
+        ).strip('"')
+
+    browser_type = os.getenv("PLAYWRIGHT_BROWSER_TYPE", 'chromium').strip('"')
+
+    def __init__(self, playwright_browser, proxy=None, headers=None, start_url=None):
+        self.headers = headers or {}
+        self.age_start = time.time()
+        self.playwright_browser = playwright_browser
+        self.start_url = start_url
+        self._is_cleaned_up = False
+        self.proxy = proxy
+        # Note: connect() is now async and must be called separately
+
+    def __del__(self):
+        # Ensure cleanup happens if object is garbage collected
+        # Note: cleanup is now async, so we can only mark as cleaned up here
+        self._is_cleaned_up = True
+
+    # Connect and setup a new context
+    async def connect(self, proxy=None):
+        # Should only get called once - test that
+        keep_open = 1000 * 60 * 5
+        now = time.time()
+
+        # @todo handle multiple contexts, bind a unique id from the browser on each req?
+        self.context = await self.playwright_browser.new_context(
+            accept_downloads=False,  # Should never be needed
+            bypass_csp=get_playwright_bypass_csp(),
+            extra_http_headers=self.headers,
+            ignore_https_errors=True,
+            proxy=proxy,
+            service_workers=os.getenv('PLAYWRIGHT_SERVICE_WORKERS', 'allow'),
+            # Should be `allow` or `block` - sites like YouTube can transmit large amounts of data via Service Workers
+            user_agent=manage_user_agent(headers=self.headers),
+        )
+
+        self.page = await self.context.new_page()
+
+        # self.page.set_default_navigation_timeout(keep_open)
+        self.page.set_default_timeout(keep_open)
+        # Set event handlers
+        self.page.on("close", self.mark_as_closed)
+        # Listen for all console events and handle errors
+        self.page.on("console", lambda msg: print(f"Browser steps console - {msg.type}: {msg.text} {msg.args}"))
+
+        logger.debug(f"Time to browser setup {time.time()-now:.2f}s")
+        await self.page.wait_for_timeout(1 * 1000)
+
+    def mark_as_closed(self):
+        logger.debug("Page closed, cleaning up..")
+        # Note: This is called from a sync context (event handler)
+        # so we'll just mark as cleaned up and let __del__ handle the rest
+        self._is_cleaned_up = True
+
+    async def cleanup(self):
+        """Properly clean up all resources to prevent memory leaks"""
+        if self._is_cleaned_up:
+            return
+            
+        logger.debug("Cleaning up browser steps resources")
+        
+        # Clean up page
+        if hasattr(self, 'page') and self.page is not None:
+            try:
+                # Force garbage collection before closing
+                await self.page.request_gc()
+            except Exception as e:
+                logger.debug(f"Error during page garbage collection: {str(e)}")
+                
+            try:
+                # Remove event listeners before closing
+                self.page.remove_listener("close", self.mark_as_closed)
+            except Exception as e:
+                logger.debug(f"Error removing event listeners: {str(e)}")
+                
+            try:
+                await self.page.close()
+            except Exception as e:
+                logger.debug(f"Error closing page: {str(e)}")
+            
+            self.page = None
+
+        # Clean up context
+        if hasattr(self, 'context') and self.context is not None:
+            try:
+                await self.context.close()
+            except Exception as e:
+                logger.debug(f"Error closing context: {str(e)}")
+            
+            self.context = None
+            
+        self._is_cleaned_up = True
+        logger.debug("Browser steps resources cleanup complete")
+
+    @property
+    def has_expired(self):
+        if not self.page or self._is_cleaned_up:
+            return True
+        
