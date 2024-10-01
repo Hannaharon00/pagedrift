@@ -167,3 +167,64 @@ class TestGroupAiSettingGatesTheCascade:
 # llm_enabled_for_watch — per-watch / per-group AI on-off switch (#4204)
 # ---------------------------------------------------------------------------
 
+class TestLlmEnabledForWatch:
+    def test_enabled_by_default(self):
+        """Watches predating the switch (no key at all) keep AI on."""
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        ds = _make_datastore()
+        assert llm_enabled_for_watch(_make_watch(), ds) == (True, 'watch')
+
+    def test_watch_switch_off(self):
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        ds = _make_datastore()
+        watch = _make_watch()
+        watch['llm_backend_profile'] = False
+        assert llm_enabled_for_watch(watch, ds) == (False, 'watch')
+
+    def test_group_switch_overrides_watch_off(self):
+        """"The group setting overrides any watch on/off" — group ON beats watch OFF."""
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        tag = _make_tag(ai=True, title='ai-group')
+        ds = _make_datastore(tags={'t1': tag})
+        watch = _make_watch(tags=['t1'])
+        watch['llm_backend_profile'] = False
+        assert llm_enabled_for_watch(watch, ds) == (True, 'ai-group')
+
+    def test_group_switch_overrides_watch_on(self):
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        tag = _make_tag(ai=False, title='no-ai-group')
+        ds = _make_datastore(tags={'t1': tag})
+        watch = _make_watch(tags=['t1'])
+        watch['llm_backend_profile'] = True
+        assert llm_enabled_for_watch(watch, ds) == (False, 'no-ai-group')
+
+    def test_group_leaving_it_to_each_watch_does_not_decide(self):
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        ds = _make_datastore(tags={'t1': _make_tag(ai=None, title='undecided-group')})
+        watch = _make_watch(tags=['t1'])
+        watch['llm_backend_profile'] = False
+        assert llm_enabled_for_watch(watch, ds) == (False, 'watch')
+
+    def test_group_without_the_key_leaves_it_to_the_watch(self):
+        """Tags predating the setting behave like "leave it to each watch"."""
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        ds = _make_datastore(tags={'t1': {'title': 'legacy'}})
+        watch = _make_watch(tags=['t1'])
+        watch['llm_backend_profile'] = False
+        assert llm_enabled_for_watch(watch, ds) == (False, 'watch')
+
+    def test_first_deciding_group_wins(self):
+        """An undecided group is skipped; the next group with an opinion decides."""
+        from changedetectionio.llm.evaluator import llm_enabled_for_watch
+        ds = _make_datastore(tags={
+            'a': _make_tag(ai=None, title='undecided-group'),
+            'b': _make_tag(ai=False, title='no-ai-group'),
+        })
+        watch = _make_watch(tags=['a', 'b'])
+        assert llm_enabled_for_watch(watch, ds) == (False, 'no-ai-group')
+
+
+# ---------------------------------------------------------------------------
+# get_llm_config
+# ---------------------------------------------------------------------------
+
