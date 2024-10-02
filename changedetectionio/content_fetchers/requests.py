@@ -265,3 +265,5 @@ class RequestsFetcherPlugin:
         return ('html_requests', fetcher)
 
 
+# Create module-level instance for plugin registration
+requests_plugin = RequestsFetcherPlugin()
