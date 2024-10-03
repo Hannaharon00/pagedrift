@@ -2999,3 +2999,59 @@ msgstr "Zezwól na anonimowy dostęp do historii obserwacji, gdy hasło jest wł
 msgid "Hide muted watches from RSS feed"
 msgstr "Ukryj wyciszone obserwacje w kanale RSS"
 
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "Osiągnięto limit obserwacji ({current}/{limit}). Nie można dodać kolejnych obserwacji."
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "Wystąpił błąd podczas pobierania metadanych dla {}"
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "Protokół „watch” jest niedozwolony lub format adresu URL jest nieprawidłowy"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "Treść wszystkich powiadomień — Można użyć"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "wykorzystanie szablonów w tytule powiadomienia, treści i adresie URL oraz tokenów podanych poniżej."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Show token/placeholders"
+msgstr "Pokaż tokeny/symbole zastępcze"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Token"
+msgstr "Token"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Description"
+msgstr "Opis"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL of the changedetection.io instance you are running."
+msgstr "Adres URL instancji serwisu changedetection.io, którą uruchomiłeś."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL being watched."
+msgstr "Obserwowany adres URL."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"The Open Link Override set on the watch, otherwise the same as watch_url. Use this when the watched URL is an API "
+"endpoint or RSS feed but you want to link to the real page."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The UUID of the watch."
+msgstr "Identyfikator UUID obserwacji."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The page title of the watch, uses <title> if not set, falls back to URL"
+msgstr "Tytuł strony obserwacji; jeśli nie ustawiono go ręcznie, używany jest tag <title>, a następnie adres URL"
+
