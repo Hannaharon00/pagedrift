@@ -353,3 +353,149 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
         - Before update_28 (schema < 28): Tags saved in settings for migration
         - After update_28 (schema >= 28): Tags excluded from settings (in individual files)
 
+        Returns:
+            dict: Settings data ready for serialization
+        """
+        import copy
+
+        # Deep copy settings to avoid modifying the original
+        settings_copy = copy.deepcopy(self.__data['settings'])
+
+        # Is saved as {uuid}/tag.json
+        settings_copy['application']['tags'] = {}
+
+        return {
+            'note': 'Settings file - watches are in {uuid}/watch.json, tags are in {uuid}/tag.json',
+            'app_guid': self.__data.get('app_guid'),
+            'settings': settings_copy,
+            'build_sha': self.__data.get('build_sha'),
+            'version_tag': self.__data.get('version_tag')
+        }
+
+    def _save_settings(self):
+        """
+        Save settings to storage.
+
+        File backend implementation: saves to changedetection.json
+        Implementation of abstract method from FileSavingDataStore.
+        Uses the generic save_json_atomic helper.
+
+        Raises:
+            OSError: If disk is full or other I/O error
+        """
+        settings_data = self._build_settings_data()
+        changedetection_json = os.path.join(self.datastore_path, "changedetection.json")
+        save_json_atomic(changedetection_json, settings_data, label="settings")
+
+    def _load_watches(self):
+        """
+        Load all watches from storage.
+
+        File backend implementation: reads individual watch.json files
+        Implementation of abstract method from FileSavingDataStore.
+        Delegates to helper function and stores results in internal data structure.
+        """
+
+        # Store loaded data
+        # @note this will also work for the old legacy format because self.__data['watching'] should already have them loaded by this point.
+        self.__data['watching'].update(load_all_watches(
+            self.datastore_path,
+            self.rehydrate_entity
+        ))
+        logger.debug(f"Loaded {len(self.__data['watching'])} watches")
+
+    def _load_tags(self):
+        """
+        Load all tags from storage.
+
+        File backend implementation: reads individual tag.json files.
+        Tags loaded from files override any tags in settings (migration path).
+        """
+        from ..model import Tag
+
+        def rehydrate_tag(uuid, entity_dict):
+            """Rehydrate tag as Tag object with forced restock_diff processor."""
+            entity_dict['uuid'] = uuid
+            entity_dict['processor'] = 'restock_diff'  # Force processor for override functionality
+
+            return Tag.model(
+                datastore_path=self.datastore_path,
+                __datastore=self.__data,
+                default=entity_dict
+            )
+
+        tags = load_all_tags(
+            self.datastore_path,
+            rehydrate_tag
+        )
+
+        # Override settings tags with loaded tags
+        # This ensures tag.json files take precedence over settings
+        if tags:
+            self.__data['settings']['application']['tags'].update(tags)
+            logger.info(f"Loaded {len(tags)} tags from individual tag.json files")
+
+    def _delete_watch(self, uuid):
+        """
+        Delete a watch from storage.
+
+        File backend implementation: deletes entire {uuid}/ directory recursively.
+        Implementation of abstract method from FileSavingDataStore.
+
+        Args:
+            uuid: Watch UUID to delete
+        """
+        watch_dir = os.path.join(self.datastore_path, uuid)
+        if os.path.exists(watch_dir):
+            shutil.rmtree(watch_dir)
+            logger.info(f"Deleted watch directory: {watch_dir}")
+
+    # ============================================================================
+    # Watch Management Methods
+    # ============================================================================
+
+    def set_last_viewed(self, uuid, timestamp, send_signal=True):
+        logger.debug(f"Setting watch UUID: {uuid} last viewed to {int(timestamp)}")
+        self.data['watching'][uuid].update({'last_viewed': int(timestamp)})
+        self.data['watching'][uuid].commit()
+
+        # Bulk callers (mark-all-viewed) pass send_signal=False and emit one summary event
+        # afterwards instead. Each signal fans out to handle_watch_update(), which rescans
+        # EVERY watch twice (errored_count + unread_changes_count), takes the queue and
+        # worker-pool locks, and broadcasts 3 socket events — so signalling per watch makes
+        # a bulk mark O(n^2) with 3n emits, and floods every connected browser with n
+        # row updates it will immediately re-render anyway.
+        if send_signal:
+            watch_check_update = signal('watch_check_update')
+            if watch_check_update:
+                watch_check_update.send(watch_uuid=uuid)
+
+    def remove_password(self):
+        self.__data['settings']['application']['password'] = False
+        self.commit()
+
+    def clear_all_last_checksums(self):
+        """
+        Delete all last-checksum.txt files to force reprocessing of all watches.
+
+        This should be called when global settings change, since watches inherit
+        configuration and need to reprocess even if their individual watch dict
+        hasn't been modified.
+
+        Note: We delete the checksum file rather than setting was_edited=True because:
+        - was_edited is not persisted across restarts
+        - File deletion ensures reprocessing works across app restarts
+        """
+        deleted_count = 0
+        for uuid in self.__data['watching'].keys():
+            watch = self.__data['watching'][uuid]
+            if watch.data_dir:
+                checksum_file = os.path.join(watch.data_dir, 'last-checksum.txt')
+                if os.path.isfile(checksum_file):
+                    try:
+                        os.remove(checksum_file)
+                        deleted_count += 1
+                        logger.debug(f"Cleared checksum for watch {uuid}")
+                    except OSError as e:
+                        logger.warning(f"Failed to delete checksum file for {uuid}: {e}")
+
