@@ -2616,3 +2616,55 @@ msgstr "Proxy URL'leri http://, https:// veya socks5:// ile başlamalıdır"
 msgid "Browser connection URL"
 msgstr "Tarayıcı bağlantı URL'si"
 
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSS İçerik formatı"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "Şuradan oluşturulan RSS <description> gövdesi"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS \"Sistem varsayılanı\" şablonunu geçersiz kılma"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Parolayı kaldır"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Bağlantı etiketi içeriğini oluştur"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Parola etkinken izleme geçmişi sayfasına anonim erişime izin ver"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Sessize alınan izleyicileri RSS akışından gizle"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "RSS okuyucu modunu etkinleştir "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "İzleyici RSS akışında gösterilecek değişiklik sayısı"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "Sıfır veya daha fazla deneme içermelidir"
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "Bir bildirim göndermeden önce filtrenin eksik olabileceği sayı"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "API Anahtarı"
+
