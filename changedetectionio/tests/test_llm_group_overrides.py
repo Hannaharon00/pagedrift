@@ -65,3 +65,26 @@ def _checkbox_is_checked(body, name):
     return 'checked' in tag
 
 
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _configure_llm(datastore):
+    """Enable a fake LLM so the AI section is visible in the edit form."""
+    app = datastore.data['settings']['application']
+    if 'llm' not in app:
+        app['llm'] = {}
+    app['llm'].update({'model': 'gpt-4o-mini', 'api_key': 'sk-test'})
+
+
+def _create_watch(client, test_url, api_token):
+    res = client.post(
+        '/api/v1/watch',
+        data=json.dumps({'url': test_url}),
+        headers={'content-type': 'application/json', 'x-api-key': api_token},
+        follow_redirects=True,
+    )
+    assert res.status_code == 201
+    return res.json['uuid']
+
+
