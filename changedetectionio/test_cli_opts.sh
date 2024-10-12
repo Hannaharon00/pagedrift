@@ -74,3 +74,55 @@ test_single_url() {
     [ "$(find "$dir" -mindepth 2 -maxdepth 2 -name 'watch.json' | wc -l)" -eq 1 ]
 }
 
+test_invalid_json() {
+    local test_id=$1
+    local dir="/tmp/cli-test-invalid-${test_id}-$$"
+    timeout 5 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u0 'invalid json here' \
+        2>&1 | grep -qi "invalid json\|json decode error"
+}
+
+test_create_directory() {
+    local test_id=$1
+    local dir="/tmp/cli-test-create-${test_id}-$$/nested/path"
+    timeout 10 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -b &>/dev/null
+    [ -d "$dir" ]
+}
+
+# =============================================================================
+# Main Test Execution
+# =============================================================================
+
+echo "=========================================="
+echo "  CLI Options Test Suite (Parallel)"
+echo "=========================================="
+echo ""
+
+# Launch all tests in parallel
+run_test 1 "Help flag (--help) shows usage without initialization" test_help_flag
+run_test 2 "Version flag (--version) displays version" test_version_flag
+run_test 3 "Add single URL with -u flag" test_single_url
+run_test 4 "Add multiple URLs with multiple -u flags" test_multiple_urls
+run_test 5 "Add URL with JSON options using -u0" test_url_with_options
+run_test 6 "Add multiple URLs with different options (-u0, -u1)" test_multiple_urls_with_options
+run_test 7 "Batch mode (-b) exits automatically after processing" test_batch_mode_exit
+run_test 8 "Recheck all watches with -r all" test_recheck_all
+run_test 9 "Recheck specific watches with -r UUID" test_recheck_specific
+run_test 10 "Combined: Add URLs and recheck all with -u and -r all" test_combined_operations
+run_test 11 "Invalid JSON in -u0 option should show error" test_invalid_json
+run_test 12 "Create datastore directory with -C flag" test_create_directory
+
+# Wait for all tests to complete
+echo ""
+echo "Waiting for all tests to complete..."
+wait
+
+# Collect results
+echo ""
+echo "=========================================="
+echo "  Test Summary"
+echo "=========================================="
+
