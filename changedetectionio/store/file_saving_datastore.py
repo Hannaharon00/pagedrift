@@ -174,6 +174,39 @@ def save_json_atomic(file_path, data_dict, label="file", max_size_mb=10):
         raise e
 
 
+def save_entity_atomic(entity_dir, uuid, entity_dict, filename, entity_type, max_size_mb):
+    """
+    Save an entity (watch/tag) to disk using atomic write pattern.
+
+    Generic function for saving any watch_base subclass (Watch, Tag, etc.).
+
+    Args:
+        entity_dir: Directory for this entity (e.g., /datastore/{uuid})
+        uuid: Entity UUID (for logging)
+        entity_dict: Dictionary representation of the entity
+        filename: JSON filename (e.g., 'watch.json', 'tag.json')
+        entity_type: Type label for logging (e.g., 'watch', 'tag')
+        max_size_mb: Maximum allowed file size in MB
+
+    Raises:
+        ValueError: If serialized data exceeds max_size_mb
+        OSError: If disk is full (ENOSPC) or other I/O error
+    """
+    entity_json = os.path.join(entity_dir, filename)
+    save_json_atomic(entity_json, entity_dict, label=f"{entity_type} {uuid}", max_size_mb=max_size_mb)
+
+
+def save_watch_atomic(watch_dir, uuid, watch_dict):
+    """
+    Save a watch to disk using atomic write pattern.
+
+    Convenience wrapper around save_entity_atomic for watches.
+    Kept for backwards compatibility.
+    """
+    save_entity_atomic(watch_dir, uuid, watch_dict, "watch.json", "watch", max_size_mb=10)
+
+
+
 class _EntityFileMissing:
     """Sentinel: the directory exists but holds no file of this entity type."""
     __slots__ = ()
