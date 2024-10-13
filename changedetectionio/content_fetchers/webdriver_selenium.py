@@ -188,3 +188,12 @@ class fetcher(Fetcher):
         await loop.run_in_executor(None, _run_sync)
 
 
+# Plugin registration for built-in fetcher
+class WebDriverSeleniumFetcherPlugin:
+    """Plugin class that registers the WebDriver Selenium fetcher as a built-in plugin."""
+
+    def register_content_fetcher(self):
+        """Register the WebDriver Selenium fetcher"""
+        return ('html_webdriver', fetcher)
+
+
