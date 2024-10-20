@@ -175,3 +175,24 @@ def resolve_content_fetcher(watch, datastore):
     return fetcher_obj, prefer_fetch_backend, custom_browser_connection_url
 
 
+# Decide which is the 'real' HTML webdriver, this is more a system wide config
+# rather than site-specific.
+use_playwright_as_chrome_fetcher = os.getenv('PLAYWRIGHT_DRIVER_URL', False)
+if use_playwright_as_chrome_fetcher:
+    # @note - For now, browser steps always uses playwright
+    if not strtobool(os.getenv('FAST_PUPPETEER_CHROME_FETCHER', 'False')):
+        logger.debug('Using Playwright library as fetcher')
+        from .playwright import fetcher as html_webdriver
+    else:
+        logger.debug('Using direct Python Puppeteer library as fetcher')
+        from .puppeteer import fetcher as html_webdriver
+
+else:
+    logger.debug("Falling back to selenium as fetcher")
+    from .webdriver_selenium import fetcher as html_webdriver
+
+
+# Register built-in fetchers as plugins after all imports are complete
+from changedetectionio.pluggy_interface import register_builtin_fetchers
+register_builtin_fetchers()
+
