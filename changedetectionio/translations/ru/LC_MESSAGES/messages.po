@@ -2528,6 +2528,62 @@ msgstr "Требуется оператор."
 msgid "Field is required."
 msgstr "Поле обязательно."
 
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr "Требуется значение."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text similarity ratio"
+msgstr "Левенштейн - Коэффициент сходства текста"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text change distance"
+msgstr "Левенштейн - Расстояние изменения текста"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Not enough history to calculate Levenshtein metrics"
+msgstr "Недостаточно истории для расчёта метрик Левенштейна"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Snapshot too large for edit statistics, skipping."
+msgstr "Снимок слишком большой для статистики правок, пропуск."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Unable to calculate Levenshtein metrics"
+msgstr "Не удалось рассчитать метрики Левенштейна"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein Text Similarity Details"
+msgstr "Подробности сходства текста по Левенштейну"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Raw distance (edits needed)"
+msgstr "Исходное расстояние (нужно правок)"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Similarity ratio"
+msgstr "Коэффициент сходства"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Percent similar"
+msgstr "Процент сходства"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid ""
+"Levenshtein metrics compare the last two snapshots, measuring how many character edits are needed to transform one "
+"into the other."
+msgstr ""
+"Метрики Левенштейна сравнивают последние два снимка, измеряя, сколько правок символов нужно, чтобы преобразовать один"
+" в другой."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Error calculating Levenshtein metrics"
+msgstr "Ошибка при расчёте метрик Левенштейна"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count of content"
+msgstr "Количество слов в контенте"
+
 #: changedetectionio/flask_app.py
 msgid "hour"
 msgstr "час"
