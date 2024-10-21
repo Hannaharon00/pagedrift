@@ -3129,6 +3129,64 @@ msgid "Sort text alphabetically"
 msgstr "Sortieren Sie den Text alphabetisch"
 
 #: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Entfernen Sie ignorierte Zeilen"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Entfernen Sie alle Leerzeichen vor und nach jeder Textzeile"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Hinzugefügte Zeilen"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Zeilen ersetzt/geändert"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Entfernte Zeilen"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Schlüsselwort-Trigger – Auslösen/Warten auf Text"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Blockieren Sie die Änderungserkennung, während der Text übereinstimmt"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Führen Sie JavaScript vor der Änderungserkennung aus"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Senden Sie eine Benachrichtigung, wenn der Filter nicht mehr auf der Seite gefunden werden kann"
+
+# Context
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "An"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Stumm"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Screenshot an Benachrichtigung anhängen (sofern möglich)"
+
+#: changedetectionio/forms.py
 msgid "Use page <title> in watch overview list"
 msgstr "Verwenden Sie die Seite <title> in der Übersichtsliste der Beobachtungen"
 
