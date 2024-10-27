@@ -2061,6 +2061,70 @@ msgid "Not supported by Selenium browser"
 msgstr "Не поддерживается браузером Selenium."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Включить поиск текста"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Пожалуйста, подождите, загрузка первого шага браузера может занять некоторое время."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Нажмите здесь, чтобы начать"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Пожалуйста, подождите 10-15 секунд, пока браузер подключится."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Нажмите «Играть», чтобы начать."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Данные визуального селектора не готовы, часы необходимо проверить хотя бы один раз."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"К сожалению, эта функция работает только с сборщиками, которые поддерживают интерактивный Javascript (пока только "
+"сборщики на основе Playwright)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "на тот, который поддерживает интерактивный Javascript."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Вам нужно"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Установите метод выборки"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Отправляет уведомление, когда фильтр больше не виден на странице. Это полезно для того, чтобы узнать, когда страница "
+"изменилась и ваш фильтр больше не будет работать."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "Используйте кнопку проверки (✓), чтобы проверить, соответствует ли условие текущему снимку."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Прочтите краткое руководство по"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "использование условных изменений веб-страницы здесь"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Activate preview"
 msgstr "Активировать предварительный просмотр"
 
