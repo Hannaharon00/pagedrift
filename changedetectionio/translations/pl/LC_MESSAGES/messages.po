@@ -2196,6 +2196,60 @@ msgstr "zakładka. Sposób użycia"
 msgid "Shift+Click"
 msgstr "Shift+kliknięcie"
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "aby zaznaczyć wiele elementów."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "Tryb wyboru:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "Obszar rysowania"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "Chwileczkę, pobieram zrzut ekranu i informacje o elemencie..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
+msgstr ""
+"Przepraszamy, ta funkcja działa tylko w przypadku narzędzi do pobierania danych, które obsługują JavaScript i zrzuty "
+"ekranu (takich jak Playwright itp.)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports Javascript and screenshots."
+msgstr "na taki, który obsługuje JavaScript i zrzuty ekranu."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check count"
+msgstr "Liczba sprawdzeń"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Consecutive filter failures"
+msgstr "Kolejne awarie filtrów"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "History length"
+msgstr "Długość historii"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Last fetch duration"
+msgstr "Czas trwania ostatniego pobrania"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Notification alert count"
+msgstr "Liczba powiadomień"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Server type reply"
+msgstr "Odpowiedź dotycząca typu serwera"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr "Tak"
+
 #: changedetectionio/blueprint/ui/templates/preview.html
 msgid "Current erroring screenshot from most recent request"
 msgstr "Aktualny zrzut ekranu przedstawiający błąd z ostatniego żądania"
