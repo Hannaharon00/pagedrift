@@ -86,3 +86,74 @@ body.has-queue {
     padding: .7em 0.7em;
 }
 
+body.has-any-unviewed #post-list-mark-views {
+  display: inline-flex !important;
+}
+
+#watch-table-wrapper {
+  display: inline-block; /* so the tabs at the bottom align */
+  width: 100%; /* so the table always grows to the tab sizes if theres lots of tabs and full is OK too */
+
+  /* toolbar row: status-filter segmented control + list actions, left-aligned */
+  #list-related-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: $common-gap;
+    margin: 0;
+    padding: $common-gap*2 0 $common-gap 0;
+  }
+
+  /* post list dynamically on/off stuff */
+
+  &.has-error {
+    #list-related-buttons {
+      #post-list-with-errors {
+        display: inline-flex !important;
+      }
+    }
+  }
+
+  /* #post-list-mark-views is no longer keyed off this class — see body.has-any-unviewed.
+     Two classes tracking one fact is how they drift, so prefer the body class for anything new. */
+  &.has-unread-changes {
+    #list-related-buttons {
+      #post-list-unread {
+        display: inline-flex !important;
+      }
+    }
+  }
+
+  #tag-lister {
+    #tag-all {
+      opacity: 1.0;
+    }
+    &.active-tag {
+      .button-tag {
+        opacity: 0.35;
+        &.active, &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+.content {
+  .group-overview-table {
+    width: 100%;
+
+    .pure-button {
+      margin-top: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+    .watch-controls, .watch-count {
+      text-align: center;
+    }
+    td {
+      padding: 5px !important;
+      color: var(--color-watch-table-row-text);
+
+    }
+  }
+
