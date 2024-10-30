@@ -2190,6 +2190,59 @@ msgid "hours"
 msgstr "hodiny"
 
 #: changedetectionio/forms.py
+msgid "AI Change Intent - Notify me when.."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/forms.py
+msgid "AI Change Summary"
+msgstr "AI souhrn změny"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Change Summary prompt - Append or Replace the default?"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Replace the inherited prompt"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Append to the inherited prompt"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "CSS/JSONPath/JQ/xPath filtry"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Odstranit prvky"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr "Extrahovat řádky obsahující"
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Extrahovat text"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Titul"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Ignorovat řádky obsahující"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "Tělo žádosti"
+
+#: changedetectionio/forms.py
 msgid "Request method"
 msgstr "Metoda žádosti"
 
