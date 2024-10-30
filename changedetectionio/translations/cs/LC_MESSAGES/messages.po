@@ -2475,3 +2475,55 @@ msgstr "Neplatná syntaxe šablony: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "Neplatná syntax šablony v \"%(header)s\" hlavička: %(error)s"
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Musí být mezi 0 a 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Heslo"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Počet položek na stránku"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Mělo by být alespoň nula (vypnuto)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Formát obsahu RSS"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> tělo sestavené z"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "Úprava \"Systémové výchozí\" RSS šablony"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Odebrat heslo"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Vykreslit obsah kotvící značky"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Povolit anonymní přístup na stránku historie sledování, když je povoleno heslo"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Skrýt ztlumená sledování pro RSS zdroje"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Povolit režim čtečky RSS"
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Počet změn, které se mají zobrazit v kanálu RSS sledování"
+
