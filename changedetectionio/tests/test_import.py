@@ -123,3 +123,96 @@ def test_import_distillio(client, live_server, measure_memory_usage, datastore_p
     # Clear flask alerts
     res = client.get(url_for("watchlist.index"))
 
+def test_import_custom_xlsx(client, live_server, measure_memory_usage, datastore_path):
+    """Test can upload a excel spreadsheet and the watches are created correctly"""
+
+    
+
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'import/spreadsheet.xlsx')
+    with open(filename, 'rb') as f:
+
+        data= {
+            'file_mapping': 'custom',
+            'custom_xlsx[col_0]': '1',
+            'custom_xlsx[col_1]': '3',
+            'custom_xlsx[col_2]': '5',
+            'custom_xlsx[col_3]': '4',
+            'custom_xlsx[col_type_0]': 'title',
+            'custom_xlsx[col_type_1]': 'url',
+            'custom_xlsx[col_type_2]': 'include_filters',
+            'custom_xlsx[col_type_3]': 'interval_minutes',
+            'xlsx_file': (io.BytesIO(f.read()), 'spreadsheet.xlsx')
+        }
+
+    res = client.post(
+        url_for("imports.import_page"),
+        data=data,
+        follow_redirects=True,
+    )
+
+    assert b'4 imported from custom .xlsx' in res.data
+    # Because this row was actually just a header with no usable URL, we should get an error
+    assert b'Error processing row number 1' in res.data
+
+    res = client.get(
+        url_for("watchlist.index")
+    )
+
+    assert b'Somesite results ABC' in res.data
+    assert b'City news results' in res.data
+
+    # Just find one to check over
+    for uuid, watch in live_server.app.config['DATASTORE'].data['watching'].items():
+        if watch.get('title') == 'Somesite results ABC':
+            filters = watch.get('include_filters')
+            assert filters[0] == '/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]||//*[@id=\'content\']/div[3]/div[1]/div[1]||//*[@id=\'content\']/div[1]'
+            assert watch.get('time_between_check') == {'weeks': 0, 'days': 1, 'hours': 6, 'minutes': 24, 'seconds': 0}
+
+    delete_all_watches(client)
+
+def test_import_watchete_xlsx(client, live_server, measure_memory_usage, datastore_path):
+    """Test can upload a excel spreadsheet and the watches are created correctly"""
+
+    
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'import/spreadsheet.xlsx')
+    with open(filename, 'rb') as f:
+
+        data= {
+            'file_mapping': 'wachete',
+            'xlsx_file': (io.BytesIO(f.read()), 'spreadsheet.xlsx')
+        }
+
+    res = client.post(
+        url_for("imports.import_page"),
+        data=data,
+        follow_redirects=True,
+    )
+
+    assert b'4 imported from Wachete .xlsx' in res.data
+
+    res = client.get(
+        url_for("watchlist.index")
+    )
+
+    assert b'Somesite results ABC' in res.data
+    assert b'City news results' in res.data
+
+    # Just find one to check over
+    for uuid, watch in live_server.app.config['DATASTORE'].data['watching'].items():
+        if watch.get('title') == 'Somesite results ABC':
+            filters = watch.get('include_filters')
+            assert filters[0] == '/html[1]/body[1]/div[4]/div[1]/div[1]/div[1]||//*[@id=\'content\']/div[3]/div[1]/div[1]||//*[@id=\'content\']/div[1]'
+            assert watch.get('time_between_check') == {'weeks': 0, 'days': 1, 'hours': 6, 'minutes': 24, 'seconds': 0}
+            assert watch.get('fetch_backend') == 'html_requests' # Has inactive 'dynamic wachet'
+
+        if watch.get('title') == 'JS website':
+            assert watch.get('fetch_backend') == 'html_webdriver' # Has active 'dynamic wachet'
+
+        if watch.get('title') == 'system default website':
+            assert watch.get('fetch_backend') == 'system' # uses default if blank
+
+    delete_all_watches(client)
+
+
