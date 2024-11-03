@@ -455,3 +455,54 @@ def test_check_notification_email_formats_default_Text_override_HTML(client, liv
 
     delete_all_watches(client)
 
+def test_check_plaintext_document_plaintext_notification_smtp(client, live_server, measure_memory_usage, datastore_path):
+    """When following a plaintext document, notification in Plain Text format is sent correctly"""
+    import os
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("Some nice plain text\nwhich we add some extra data\nover here\n")
+
+    notification_url = f'mailto://changedetection@{smtp_test_server}:11025/?to=fff@home.com'
+    notification_body = f"""{default_notification_body}"""
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "fallback-title " + default_notification_title,
+              "notification_body": f"{notification_body}\nMore output test\n{ALL_MARKUP_TOKENS}",
+              "notification_format": 'text'},
+        follow_redirects=True
+    )
+    assert b"Settings updated." in res.data
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type="text/plain", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Change the content
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("Some nice plain text\nwhich we add some extra data\nAnd let's talk about <title> tags\nover here\n")
+
+
+    time.sleep(1)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Parse the email properly using Python's email library
+    msg = message_from_string(get_last_message_from_smtp_server(), policy=email_policy)
+
+    assert not msg.is_multipart()
+    assert msg.get_content_type() == 'text/plain'
+    body = msg.get_content()
+    # nothing is escaped, raw html stuff in text/plain
+    assert 'talk about <title> tags' in body
+    assert '(added)' in body
+    assert '<br' not in body
+    assert '&lt;' not in body
+    assert '<pre' not in body
+    delete_all_watches(client)
+
