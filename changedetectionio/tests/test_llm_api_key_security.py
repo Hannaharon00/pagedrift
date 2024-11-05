@@ -150,3 +150,81 @@ def test_tag_get_does_not_expose_llm_api_key(
     delete_all_watches(client)
 
 
+def test_settings_form_rejects_private_api_base(
+        client, live_server, measure_memory_usage, datastore_path, monkeypatch):
+    """The globalSettingsLLMForm validator must block private api_base values
+    when ALLOW_IANA_RESTRICTED_ADDRESSES is not set, and must NOT persist them
+    to the datastore."""
+    monkeypatch.delenv('ALLOW_IANA_RESTRICTED_ADDRESSES', raising=False)
+
+    ds = client.application.config.get('DATASTORE')
+    # Make sure no stale api_base exists from previous tests.
+    ds.data['settings']['application'].pop('llm', None)
+
+    res = client.post(
+        url_for('settings.settings_page'),
+        data={
+            'llm-model':    'gpt-4o',
+            'llm-api_key':  '',
+            'llm-api_base': 'http://127.0.0.1:11434',
+            'application-pager_size': '50',
+            'application-notification_format': 'System default',
+            'requests-time_between_check-days': '0',
+            'requests-time_between_check-hours': '0',
+            'requests-time_between_check-minutes': '5',
+            'requests-time_between_check-seconds': '0',
+            'requests-time_between_check-weeks': '0',
+            'requests-workers': '10',
+            'requests-timeout': '60',
+        },
+        follow_redirects=True,
+    )
+    # Form re-renders with the validation error — page itself returns 200.
+    assert res.status_code == 200
+    body = res.data.decode('utf-8', errors='replace')
+    assert 'ALLOW_IANA_RESTRICTED_ADDRESSES' in body, \
+        "Settings page should surface the SSRF guard's bypass-env-var hint"
+
+    saved = ds.data['settings']['application'].get('llm', {}).get('api_base', '')
+    assert saved != 'http://127.0.0.1:11434', \
+        f"Private api_base must not have been persisted (got {saved!r})"
+
+
+# ---------------------------------------------------------------------------
+# Credential exfiltration — stored api_key must NOT be auto-substituted when
+# the caller points api_base at a different (potentially attacker-controlled)
+# endpoint. GHSA-g36r-fm2p-87xm.
+# ---------------------------------------------------------------------------
+
+def test_llm_models_refuses_to_leak_stored_key_to_different_api_base(
+        client, live_server, measure_memory_usage, datastore_path, monkeypatch):
+    """If the request supplies an api_base that differs from the saved one but
+    omits api_key, the endpoint must refuse — otherwise CSRF can ship the
+    stored Authorization: Bearer <key> to an attacker-controlled URL."""
+    monkeypatch.delenv('ALLOW_IANA_RESTRICTED_ADDRESSES', raising=False)
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)   # stores CANARY_KEY, leaves api_base unset
+
+    # Patch litellm.get_valid_models so that if the guard ever lets us through
+    # we'd see it called — and we can assert it wasn't.
+    import litellm
+    calls = []
+    monkeypatch.setattr(litellm, 'get_valid_models',
+                        lambda **kwargs: calls.append(kwargs) or [])
+
+    res = client.get(
+        url_for('settings.llm.llm_get_models'),
+        query_string={
+            'provider': 'openai',
+            'api_base': 'https://attacker.example/v1',
+            # api_key intentionally omitted — this is the CSRF case
+        },
+    )
+    assert res.status_code == 400, \
+        "Endpoint should refuse to substitute stored key to a mismatched api_base"
+    body = res.get_json()
+    assert 'api_key' in body['error'], \
+        f"Error should call out that api_key is required: {body['error']!r}"
+    assert calls == [], "litellm must not have been invoked at all"
+
+
