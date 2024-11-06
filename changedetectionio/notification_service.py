@@ -543,3 +543,36 @@ The element may have moved and needs editing, or does it need a delay added?
 
 Edit link: {{{{base_url}}}}/edit/{{{{watch_uuid}}}}
 
+Thanks - Your omniscient changedetection.io installation.
+"""
+
+        n_object = NotificationContextData({
+            'notification_title': f"Changedetection.io - Alert - Browser step at position {step} could not be run",
+            'notification_body': body,
+            'notification_format': _check_cascading_vars(self.datastore, 'notification_format', watch),
+        })
+        n_object['markup_text_links_to_html_links'] = (n_object.get('notification_format') or '').startswith('html')
+
+        if len(watch['notification_urls']):
+            n_object['notification_urls'] = watch['notification_urls']
+
+        elif len(self.datastore.data['settings']['application']['notification_urls']):
+            n_object['notification_urls'] = self.datastore.data['settings']['application']['notification_urls']
+
+        # Only prepare to notify if the rules above matched
+        if 'notification_urls' in n_object:
+            n_object.update({
+                'watch_url': watch['url'],
+                'watch_open_url': watch.open_link_override or watch['url'],
+                'uuid': watch_uuid
+            })
+            self.notification_q.put(n_object)
+            logger.error(f"Sent step not found notification for {watch_uuid}")
+
+
+# Convenience functions for creating notification service instances
+def create_notification_service(datastore, notification_q):
+    """
+    Factory function to create a NotificationService instance
+    """
+    return NotificationService(datastore, notification_q)
