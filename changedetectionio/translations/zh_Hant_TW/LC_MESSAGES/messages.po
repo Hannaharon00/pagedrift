@@ -1555,6 +1555,64 @@ msgid "{} watches cleared/reset."
 msgstr "{} 個監測任務已清除 / 重置。"
 
 #: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches set to use default notification settings"
+msgstr "{} 個監測任務已設為使用預設通知設定"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Browser / fetch method updated on {} watches"
+msgstr "已更新 {} 個監測任務的瀏覽器 / 抓取方式"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid browser / fetch method selected"
+msgstr "選擇了無效的瀏覽器 / 抓取方式"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Proxy updated on {} watches"
+msgstr "已更新 {} 個監測任務的代理伺服器"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Invalid proxy selected"
+msgstr "選擇了無效的代理伺服器"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "{} watches were tagged"
+msgstr "{} 個監測任務已加上標籤"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/watchlist/__init__.py
+msgid "Watch not found"
+msgstr "找不到監測任務"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "Cleared snapshot history for watch {}"
+msgstr "已清除監測任務 {} 的快照歷史記錄"
+
+#: changedetectionio/blueprint/ui/__init__.py changedetectionio/blueprint/ui/templates/clear_all_history.html
+msgid "clear"
+msgstr "清除"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "History clearing started in background"
+msgstr "已在背景開始清除歷史記錄"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Incorrect confirmation text."
+msgstr "確認文字不正確。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+#, python-brace-format
+msgid "The watch by UUID {} does not exist."
+msgstr "UUID 為 {} 的監測任務不存在。"
+
+#: changedetectionio/blueprint/ui/__init__.py
+msgid "Deleted."
+msgstr "已刪除。"
+
+#: changedetectionio/blueprint/ui/__init__.py
 msgid "Cloned, you are editing the new watch."
 msgstr "已複製，您正在編輯新的監測任務。"
 
@@ -2603,4 +2661,60 @@ msgstr "啟用 RSS 閱讀器模式 "
 #: changedetectionio/forms.py
 msgid "Number of changes to show in watch RSS feed"
 msgstr "在 RSS Feed 中顯示的變更數量"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "自上次檢查以來價格變化的閾值（%）"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "應介於 0 到 100 之間"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "追蹤價格變化"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Restock & Price Detection"
+msgstr "補貨與價格檢測"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Re-stock & Price detection for pages with a SINGLE product"
+msgstr "針對單一產品頁面的補貨與價格檢測"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Detects if the product goes back to in-stock"
+msgstr "檢測產品是否恢復庫存"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price & stock history"
+msgstr "價格與庫存歷史記錄"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Download as XLSX"
+msgstr "下載為 XLSX"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "When"
+msgstr "時間"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Stock"
+msgstr "庫存"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Not enough price data points yet to draw a graph - keep monitoring and the price history will appear here."
+msgstr "目前尚無足夠的價格資料點以繪製圖表 - 請保持監測，價格歷史記錄將會顯示於此。"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Screenshot"
+msgstr "截圖"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "This tool will extract text data from all of the watch history."
+msgstr "此工具將從所有監測歷史記錄中提取文字資料。"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part inside of the text that you want to extract."
+msgstr "<strong>RegEx</strong>（正規表示式）是一種模式，用於精確識別文字中您想要提取的部分。"
 
