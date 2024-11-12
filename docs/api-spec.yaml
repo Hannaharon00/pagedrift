@@ -35,3 +35,6 @@ servers:
         default: yourdomain.com
         description: Your changedetection.io host
 
+security:
+  - ApiKeyAuth: []
+
