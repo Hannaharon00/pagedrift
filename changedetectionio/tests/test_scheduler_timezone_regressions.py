@@ -23,3 +23,28 @@ Run:  pytest changedetectionio/tests/test_scheduler_timezone_regressions.py
 
 import time
 
+from flask import url_for
+
+from .util import live_server_setup, wait_for_all_checks, set_original_response
+
+
+DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+
+def _schedule_form(url, enabled_days=('monday',)):
+    data = {
+        "url": url,
+        "fetch_backend": "html_requests",
+        "time_between_check_use_default": "",
+        "time_between_check-seconds": 1,
+        "time_schedule_limit-enabled": 'y',
+    }
+    for day in DAYS:
+        data[f"time_schedule_limit-{day}-start_time"] = "00:00"
+        data[f"time_schedule_limit-{day}-duration-hours"] = 24
+        data[f"time_schedule_limit-{day}-duration-minutes"] = 0
+        if day in enabled_days:
+            data[f"time_schedule_limit-{day}-enabled"] = 'y'
+    return data
+
+
