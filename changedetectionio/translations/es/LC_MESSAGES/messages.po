@@ -3152,6 +3152,62 @@ msgstr "Las URL de proxy deben comenzar con http://, https:// o socks5://"
 msgid "Browser connection URL"
 msgstr "URL de conexión del navegador"
 
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Usar <title> de la página en la lista general de monitores"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Comprobación de seguridad del token de acceso API habilitada"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "¿Tratar las páginas vacías como un cambio?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ignorar texto"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ignorar espacios en blanco"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Debe estar entre 0 y 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Contraseña"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Tamaño del paginador"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Debe ser al menos cero (deshabilitado)"
+
 #: changedetectionio/templates/_common_fields.html
 msgid "The diff output - only changes and additions"
 msgstr "La salida de la comparación - solo cambios y adiciones"
