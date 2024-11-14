@@ -637,3 +637,47 @@ class watch_base(dict):
             data_dict: Dictionary to save
             uuid: UUID for logging
 
+        Raises:
+            NotImplementedError: If subclass doesn't implement
+        """
+        raise NotImplementedError("Subclass must implement _save_to_disk()")
+
+    def commit(self):
+        """
+        Save this watch/tag immediately to disk using atomic write.
+
+        Common commit logic for Watch and Tag objects.
+        Subclasses override _get_commit_data() and _save_to_disk() for specifics.
+
+        Fire-and-forget: Logs errors but does not raise exceptions.
+        Data remains in memory even if save fails, so next commit will retry.
+        """
+        from loguru import logger
+
+        if not self.data_dir:
+            entity_type = self.__class__.__name__
+            logger.error(f"Cannot commit {entity_type} {self.get('uuid')} without datastore_path")
+            return
+
+        uuid = self.get('uuid')
+        if not uuid:
+            entity_type = self.__class__.__name__
+            logger.error(f"Cannot commit {entity_type} without UUID")
+            return
+
+        # Get data from subclass (may filter keys)
+        try:
+            data_dict = self._get_commit_data()
+        except Exception as e:
+            logger.error(f"Failed to prepare commit data for {uuid}: {e}")
+            return
+
+        # Save to disk via subclass implementation
+        try:
+            # Determine entity type from module name (Watch.py -> watch, Tag.py -> tag)
+            entity_type = _determine_entity_type(self.__class__)
+            filename = f"{entity_type}.json"
+            self._save_to_disk(data_dict, uuid)
+            logger.debug(f"Committed {entity_type} {uuid} to {uuid}/{filename}")
+        except Exception as e:
+            logger.error(f"Failed to commit {uuid}: {e}")
