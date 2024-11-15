@@ -70,3 +70,84 @@ def test_get_params(url, expected_params):
     assert dict(params) == expected_params
 
 
+@pytest.mark.parametrize(
+    "url,schema,method",
+    [
+        ("get://localhost:9999", "get", "GET"),
+        ("post://localhost:9999", "post", "POST"),
+        ("delete://localhost:9999", "delete", "DELETE"),
+    ],
+)
+@patch("requests.request")
+def test_apprise_custom_api_call_success(mock_request, url, schema, method):
+    """Test successful API calls with different HTTP methods and schemas."""
+    mock_request.return_value.raise_for_status.return_value = None
+
+    meta = {"url": url, "schema": schema}
+    result = apprise_http_custom_handler(
+        body="test body", title="Test Title", notify_type="info", meta=meta
+    )
+
+    assert result is True
+    mock_request.assert_called_once()
+
+    call_args = mock_request.call_args
+    assert call_args[1]["method"] == method.upper()
+    assert call_args[1]["url"].startswith("http")
+
+
+@patch("requests.request")
+def test_apprise_custom_api_call_with_auth(mock_request):
+    """Test API call with authentication."""
+    mock_request.return_value.raise_for_status.return_value = None
+
+    url = "get://user:pass@localhost:9999/secure"
+    meta = {"url": url, "schema": "get"}
+
+    result = apprise_http_custom_handler(
+        body=json.dumps({"key": "value"}),
+        title="Secure Test",
+        notify_type="info",
+        meta=meta,
+    )
+
+    assert result is True
+    mock_request.assert_called_once()
+    call_args = mock_request.call_args
+    assert call_args[1]["auth"] == ("user", "pass")
+
+
+@pytest.mark.parametrize(
+    "exception_type,expected_result",
+    [
+        (requests.RequestException, False),
+        (requests.HTTPError, False),
+        (Exception, False),
+    ],
+)
+@patch("requests.request")
+def test_apprise_custom_api_call_failure(mock_request, exception_type, expected_result):
+    """Test various failure scenarios."""
+    url = "get://localhost:9999/error"
+    meta = {"url": url, "schema": "get"}
+
+    # Simulate different types of exceptions
+    mock_request.side_effect = exception_type("Error occurred")
+
+    result = apprise_http_custom_handler(
+        body="error body", title="Error Test", notify_type="error", meta=meta
+    )
+
+    assert result == expected_result
+
+
+def test_invalid_url_parsing():
+    """Test handling of invalid URL parsing."""
+    meta = {"url": "invalid://url", "schema": "invalid"}
+    result = apprise_http_custom_handler(
+        body="test", title="Invalid URL", notify_type="info", meta=meta
+    )
+
+    assert result is False
+
+
