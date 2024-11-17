@@ -3362,6 +3362,63 @@ msgid "templating in the notification title, body and URL, and tokens from below
 msgstr "알림 제목, 본문, URL에 아래 토큰과 함께 템플릿을 사용할 수 있습니다."
 
 #: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "를 생략하세요. 예:"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "더 많은 도움말"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "아래에 나열된 <code>%(token)s</code> 자리표시자를 사용할 수 있습니다"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "모든 알림 제목"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "JSON 페이로드에서는"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "를 따옴표 없이 사용하면 자동으로 이스케이프됩니다. 예:"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "URL 인코딩에는"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "예 -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "정규식 치환에는"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Jinja2 기본 내장 필터 전체 목록은 다음 문서를 참고하세요."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "모든 알림 형식"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord는 HTML을 렌더링하지 않으므로"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "일반 텍스트"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "format to avoid"
 msgstr "형식으로 전환해"
 
