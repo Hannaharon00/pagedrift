@@ -172,3 +172,99 @@ def test_group_edit_form_saves_and_reloads_each_ai_state(
 # Watch edit page — llm_intent group override, gated on the checkbox
 # ---------------------------------------------------------------------------
 
+def test_watch_edit_shows_llm_intent_placeholder_when_group_overrides_enabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Group override ON + watch has no own llm_intent → the edit page shows
+    "From group '<name>': <value>" as the placeholder, and the field stays editable.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Price Watchers',
+                                 llm_intent='Notify only when price drops',
+                                 ai=True)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert 'name="llm_intent"' in text
+    assert _from_group_text('Price Watchers', 'Notify only when price drops') in text, \
+        "watch edit must show the inherited group intent as a 'From group ...' placeholder"
+
+    # Field must be editable — no readonly attribute
+    intent_pos = text.find('name="llm_intent"')
+    snippet = text[max(0, intent_pos - 50): intent_pos + 300]
+    assert 'readonly' not in snippet, \
+        f"llm_intent must be editable when group sets it; snippet: {snippet!r}"
+
+    delete_all_watches(client)
+
+
+def test_watch_edit_hides_llm_intent_placeholder_when_group_overrides_disabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Same group, same intent, checkbox OFF → no "From group ..." anywhere, and the
+    generic example placeholder is used instead. This is the pairing that makes the
+    checkbox meaningful.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Price Watchers',
+                                 llm_intent='Notify only when price drops',
+                                 ai=False)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert 'From group' not in text, \
+        "group AI settings must not leak into the watch unless the group is set to On"
+    assert 'Notify only when price drops' not in text
+    # Falls back to the normal per-watch example placeholder
+    assert 'e.g. Alert me when the price drops below $300' in text
+
+    delete_all_watches(client)
+
+
+def test_watch_edit_llm_intent_shows_own_value_not_group_placeholder(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    When the watch has its own llm_intent, the textarea body shows the watch's value
+    and the placeholder does NOT say "From group" — even with the group opted in.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Deals Group',
+                                 llm_intent='Tag intent: notify on any deal',
+                                 ai=True)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    ds.data['watching'][watch_uuid]['llm_intent'] = 'My own watch intent'
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    # Watch's own value in the textarea body
+    assert 'My own watch intent' in text
+    # No group placeholder — the watch has its own value
+    assert 'From group' not in text
+
+    delete_all_watches(client)
+
+
