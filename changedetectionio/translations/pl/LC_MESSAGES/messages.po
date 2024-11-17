@@ -2888,6 +2888,58 @@ msgid "AI Change Intent - Notify me when.."
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignoruj kody stanu (kody stanu inne niż 2xx należy przetwarzać w zwykły sposób)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Uruchamiaj tylko wtedy, gdy we wszystkich danych historycznych pojawią się unikalne wiersze"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Usuń zduplikowane wiersze tekstu"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Posortuj tekst alfabetycznie"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Usuń ignorowane wiersze"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Usuń spacje przed i po tekście"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Dodane wiersze"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Wymienione/zmienione linie"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Usunięte wiersze"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Wyzwalacze słów kluczowych — wyzwól/oczekuj na tekst"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Zablokuj wykrywanie zmian, jeśli tekst jest zgodny"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Wykonaj kod JavaScript przed wykryciem zmian"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Serwer proxy"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "Wyślij powiadomienie, gdy filtr nie będzie już widoczny na stronie"
 

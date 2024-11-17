@@ -2722,3 +2722,61 @@ msgstr ""
 msgid "in 1m"
 msgstr ""
 
+#: changedetectionio/processors/templates/extract.html
+msgid "RegEx to extract:"
+msgstr ""
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Be sure to test your RegEx here."
+msgstr ""
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Each RegEx group bracket"
+msgstr ""
+
+#: changedetectionio/processors/templates/extract.html
+msgid "will be in its own column, the first column value is always the date."
+msgstr ""
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Webpage Text/HTML, JSON and PDF changes"
+msgstr "Web Sayfası Metin/HTML, JSON ve PDF değişiklikleri"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Detects all text changes where possible"
+msgstr "Mümkün olan yerlerde tüm metin değişikliklerini tespit eder"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "İzleyici sınırına ulaşıldı ({current}/{limit} izleyici). Daha fazla izleyici eklenemez."
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "{} için meta veri getirilirken hata oluştu"
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "İzleyici protokolüne izin verilmiyor veya geçersiz URL formatı"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "Tüm bildirimler için gövde — Bildirim başlığı, gövdesi ve URL'sinde"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "şablonlarını ve aşağıdaki belirteçleri kullanabilirsiniz."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Show token/placeholders"
+msgstr "Belirteçleri/yer tutucuları göster"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Token"
+msgstr "Belirteç"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Description"
+msgstr "Açıklama"
+
