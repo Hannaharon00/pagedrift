@@ -2670,3 +2670,59 @@ msgstr "Час між перевірками"
 msgid "Use global settings for time between check and scheduler."
 msgstr "Використовувати глобальні налаштування для часу між перевірками та планувальника."
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Ім'я"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL проксі"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "URL проксі повинні починатися з http://, https:// або socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL підключення браузера"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "URL браузера повинні починатися з wss:// або ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Текстові запити"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Запити Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Проксі за замовчуванням"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Випадковий джитер (сек) ± перевірка"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Кількість воркерів завантаження"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Має бути між 1 та 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Тайм-аут запитів у секундах"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Має бути між 1 та 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Перевизначення User-Agent за замовчуванням"
+
