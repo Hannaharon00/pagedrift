@@ -2654,6 +2654,58 @@ msgid "Monday"
 msgstr "poniedziałek"
 
 #: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "wtorek"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Środa"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "czwartek"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "piątek"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "sobota"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "niedziela"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Tygodnie"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Powinna zawierać zero lub więcej sekund"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Dni"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Godziny otwarcia"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Minut"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Sekundy"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Upload .xlsx file"
 msgstr "Prześlij plik .xlsx"
 
