@@ -120,3 +120,82 @@ def test_check_filter_multiline(client, live_server, measure_memory_usage, datas
     # but the last one, which also says 'lines' shouldnt be here (non-greedy match checking)
     assert b'aaand something lines' not in res.data
 
+def test_check_filter_and_regex_extract(client, live_server, measure_memory_usage, datastore_path):
+    
+    include_filters = ".changetext"
+
+    set_original_response(datastore_path=datastore_path)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # Goto the edit page, add our ignore text
+    # Add our URL to the import page
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": include_filters,
+              'extract_text': '/\d+ online/\r\n/\d+ guests/\r\n/somecase insensitive \d+/i\r\n/somecase insensitive (345\d)/i\r\n/issue1828.+?2022/i',
+              "url": test_url,
+              "tags": "",
+              "headers": "",
+              'fetch_backend': "html_requests",
+              "time_between_check_use_default": "y"
+              },
+        follow_redirects=True
+    )
+
+    assert b"Updated watch." in res.data
+
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("watchlist.index"))
+    #issue 1828
+    assert b'not at the start of the expression' not in res.data
+
+    #  Make a change
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # It should have 'has-unread-changes' still
+    # Because it should be looking at only that 'sametext' id
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' in res.data
+
+    # Check HTML conversion detected and workd
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    assert b'1000 online' in res.data
+
+    # All regex matching should be here
+    assert b'2000 online' in res.data
+
+    # Both regexs should be here
+    assert b'80 guests' in res.data
+
+    # Regex with flag handling should be here
+    assert b'SomeCase insensitive 3456' in res.data
+
+    # Singular group from /somecase insensitive (345\d)/i
+    assert b'3456' in res.data
+
+    # Regex with multiline flag handling should be here
+
+    # Should not be here
+    assert b'Some text that did change' not in res.data
+
+
+
