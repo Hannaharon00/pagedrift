@@ -2551,6 +2551,58 @@ msgid "Word count (latest snapshot)"
 msgstr "字數（最新快照）"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "使用時間排程器"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "執行時的選用時區"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "週一"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "週二"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "週三"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "週四"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "週五"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "週六"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "週日"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "週"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "應包含 0 或更多秒"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "天"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "小時"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "當頁面上找不到過濾器時發送通知"
 

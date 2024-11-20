@@ -168,6 +168,66 @@ msgstr ""
 msgid "Edit > Watch"
 msgstr ""
 
+#: changedetectionio/forms.py:776
+msgid "Selector"
+msgstr ""
+
+#: changedetectionio/forms.py:777
+msgid "value"
+msgstr ""
+
+#: changedetectionio/forms.py:789 changedetectionio/forms.py:951
+msgid "Time Between Check"
+msgstr ""
+
+#: changedetectionio/forms.py:797
+msgid "Use global settings for time between check and scheduler."
+msgstr ""
+
+#: changedetectionio/forms.py:799
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr ""
+
+#: changedetectionio/forms.py:801 changedetectionio/forms.py:997
+msgid "Remove elements"
+msgstr ""
+
+#: changedetectionio/forms.py:803
+msgid "Extract text"
+msgstr ""
+
+#: changedetectionio/forms.py:805
+msgid "Title"
+msgstr ""
+
+#: changedetectionio/forms.py:807
+msgid "Ignore lines containing"
+msgstr ""
+
+#: changedetectionio/forms.py:809
+msgid "Request body"
+msgstr ""
+
+#: changedetectionio/forms.py:810
+msgid "Request method"
+msgstr ""
+
+#: changedetectionio/forms.py:811
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr ""
+
+#: changedetectionio/forms.py:812
+msgid "Only trigger when unique lines appear in all history"
+msgstr ""
+
+#: changedetectionio/forms.py:813
+msgid "Remove duplicate lines of text"
+msgstr ""
+
+#: changedetectionio/forms.py:814
+msgid "Sort text alphabetically"
+msgstr ""
+
 #: changedetectionio/forms.py:834
 msgid "Attach screenshot to notification (where possible)"
 msgstr ""
