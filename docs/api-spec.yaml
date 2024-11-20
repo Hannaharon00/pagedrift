@@ -38,6 +38,23 @@ servers:
 security:
   - ApiKeyAuth: []
 
+      The notification syntax uses [https://github.com/caronc/apprise](https://github.com/caronc/apprise).
+      
+  - name: Search
+    description: |
+      Search and filter your watches by URL patterns, titles, or tags. Useful for quickly finding specific 
+      monitors in large collections or identifying watches that match certain criteria.
+      
+  - name: Import
+    description: |
+      Bulk import multiple URLs for monitoring. Accepts plain text lists of URLs and can automatically 
+      apply tags, proxy settings, and other configurations to all imported watches simultaneously.
+      
+  - name: System Information
+    description: |
+      Retrieve system status and statistics about your changedetection.io instance, including total watch
+      counts, uptime information, and version details.
+
   - name: Plugin API Extensions
     description: |
       ## How Processor Plugins Extend the API
