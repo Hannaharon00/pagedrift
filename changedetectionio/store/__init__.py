@@ -217,3 +217,139 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
         changedetection_json = os.path.join(self.datastore_path, "changedetection.json")
         changedetection_json_old_schema = os.path.join(self.datastore_path, "url-watches.json")
 
+        if os.path.exists(changedetection_json):
+            # Run schema updates if needed
+            # Pass current schema version from loaded datastore (defaults to 0 if not set)
+            # Load existing datastore (changedetection.json + watch.json files)
+            logger.info("Loading existing datastore")
+            self._load_state()
+            current_schema = self.data['settings']['application'].get('schema_version', 0)
+            self.run_updates(current_schema_version=current_schema)
+
+        # Legacy datastore detected - trigger migration, even works if the schema is much before the migration step.
+        elif os.path.exists(changedetection_json_old_schema):
+
+            logger.critical(f"Legacy datastore detected at {changedetection_json_old_schema}, loading and running updates")
+            self._load_state(main_settings_filename="url-watches.json")
+            # update 26 will load the whole old config from disk to __data
+            current_schema = self.__data['settings']['application'].get('schema_version', 0)
+            self.run_updates(current_schema_version=current_schema)
+            # Probably tags were also shifted to disk and many other changes, so best to reload here.
+            self._load_state()
+
+        else:
+            # No datastore yet - check if this is a fresh install or legacy migration
+            self.init_fresh_install(include_default_watches=include_default_watches,
+                                    version_tag=version_tag)
+            # Maybe they copied a bunch of watch subdirs across too
+            self._load_state()
+
+    def init_fresh_install(self, include_default_watches, version_tag):
+      # Generate app_guid FIRST (required for all operations)
+        if "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ:
+            self.__data['app_guid'] = "test-" + str(uuid_builder.uuid4())
+        else:
+            self.__data['app_guid'] = str(uuid_builder.uuid4())
+
+        # Generate RSS access token
+        self.__data['settings']['application']['rss_access_token'] = secrets.token_hex(16)
+
+        # Generate API access token
+        self.__data['settings']['application']['api_access_token'] = secrets.token_hex(16)
+        logger.warning(f"No datastore found, creating new datastore at {self.datastore_path}")
+
+        # Set schema version to latest (no updates needed)
+        latest_update_available = self.get_updates_available().pop()
+        logger.info(f"Marking fresh install to schema version {latest_update_available}")
+        self.__data['settings']['application']['schema_version'] = latest_update_available
+
+        # Add default watches if requested
+        if include_default_watches:
+            self.add_watch(
+                url='https://news.ycombinator.com/',
+                tag='Tech news',
+                extras={'fetch_backend': 'html_requests'}
+            )
+            self.add_watch(
+                url='https://changedetection.io/CHANGELOG.txt',
+                tag='changedetection.io',
+                extras={'fetch_backend': 'html_requests'}
+            )
+
+        # Create changedetection.json immediately
+        try:
+            self._save_settings()
+            logger.info("Created changedetection.json for new datastore")
+        except Exception as e:
+            logger.error(f"Failed to create initial changedetection.json: {e}")
+
+
+
+        # Set version tag
+        self.__data['version_tag'] = version_tag
+
+        # Validate proxies.json if it exists
+        _ = self.proxy_list  # Just to test parsing
+
+        # Ensure app_guid exists (for datastores loaded from existing files)
+        if 'app_guid' not in self.__data:
+            if "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ:
+                self.__data['app_guid'] = "test-" + str(uuid_builder.uuid4())
+            else:
+                self.__data['app_guid'] = str(uuid_builder.uuid4())
+            self.commit()
+
+        # Ensure RSS access token exists
+        if not self.__data['settings']['application'].get('rss_access_token'):
+            secret = secrets.token_hex(16)
+            self.__data['settings']['application']['rss_access_token'] = secret
+            self.commit()
+
+        # Ensure API access token exists
+        if not self.__data['settings']['application'].get('api_access_token'):
+            secret = secrets.token_hex(16)
+            self.__data['settings']['application']['api_access_token'] = secret
+            self.commit()
+
+        # Handle password reset lockfile
+        password_reset_lockfile = os.path.join(self.datastore_path, "removepassword.lock")
+        if path.isfile(password_reset_lockfile):
+            self.remove_password()
+            unlink(password_reset_lockfile)
+
+    def rehydrate_entity(self, uuid, entity, processor_override=None):
+        """Set the dict back to the dict Watch object"""
+        entity['uuid'] = uuid
+
+        if processor_override:
+            watch_class = get_custom_watch_obj_for_processor(processor_override)
+            entity['processor'] = processor_override
+        else:
+            watch_class = get_custom_watch_obj_for_processor(entity.get('processor'))
+
+        if entity.get('processor') != 'text_json_diff':
+            logger.trace(f"Loading Watch object '{watch_class.__module__}.{watch_class.__name__}' for UUID {uuid}")
+
+        entity = watch_class(datastore_path=self.datastore_path, __datastore=self.__data, default=entity)
+        return entity
+
+    # ============================================================================
+    # FileSavingDataStore Abstract Method Implementations
+    # ============================================================================
+
+    def _watch_exists(self, uuid):
+        """Check if watch exists in datastore."""
+        return uuid in self.__data['watching']
+
+    def _get_watch_dict(self, uuid):
+        """Get watch as dictionary."""
+        return dict(self.__data['watching'][uuid])
+
+    def _build_settings_data(self):
+        """
+        Build settings data structure for saving.
+
+        Tags behavior depends on schema version:
+        - Before update_28 (schema < 28): Tags saved in settings for migration
+        - After update_28 (schema >= 28): Tags excluded from settings (in individual files)
+
