@@ -365,3 +365,62 @@ def test_api_queue_manipulation(client, live_server, measure_memory_usage, datas
 # TIER 3: EDGE CASES & POLISH
 # ============================================================================
 
+def test_api_history_edge_cases(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test history API with invalid timestamps and edge cases.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Create watch and generate history
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": test_url}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    watch_uuid = res.json.get('uuid')
+    wait_for_all_checks(client)
+
+    # Test 1: Get history with invalid timestamp
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp="invalid"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 404, "Invalid timestamp should return 404"
+
+    # Test 2: Future timestamp
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp="9999999999"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 404, "Future timestamp should return 404"
+
+    # Test 3: Negative timestamp
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp="-1"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 404, "Negative timestamp should return 404"
+
+    # Test 4: Diff with reversed timestamps (from > to)
+    # First get actual timestamps
+    res = client.get(
+        url_for("watchhistory", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    if len(res.json) >= 2:
+        timestamps = sorted(res.json.keys())
+        # Try reversed order
+        res = client.get(
+            url_for("watchhistorydiff", uuid=watch_uuid, from_timestamp=timestamps[-1], to_timestamp=timestamps[0]),
+            headers={'x-api-key': api_key}
+        )
+        # Should either work (show reverse diff) or return error
+        assert res.status_code in [200, 400]
+
+    # Cleanup
+    client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+    delete_all_watches(client)
+
+
