@@ -435,6 +435,30 @@ def test_roundtrip_API(client, live_server, measure_memory_usage, datastore_path
         "extract_lines_containing should be persisted and returned via API"
 
 
+def test_access_denied(client, live_server, measure_memory_usage, datastore_path):
+    # `config_api_token_enabled` Should be On by default
+    res = client.get(
+        url_for("createwatch")
+    )
+    assert res.status_code == 403
+
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': "something horrible"}
+    )
+    assert res.status_code == 403
+
+    # Disable config_api_token_enabled and it should work
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={
+            "requests-time_between_check-minutes": 180,
+            "application-fetch_backend": "html_requests",
+            "application-api_access_token_enabled": ""
+        },
+        follow_redirects=True
+    )
+
     assert b"Settings updated." in res.data
 
     res = client.get(
