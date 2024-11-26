@@ -185,3 +185,78 @@ def test_concurrent_watch_commits_dont_corrupt(client, live_server):
         assert 'Title' in data['title'], "Title should contain 'Title'"
 
 
+def test_processor_config_never_in_watch_json(client, live_server):
+    """Test that processor_config_* fields are filtered out of watch.json"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(
+        url='http://example.com',
+        extras={
+            'title': 'Test Watch',
+            'processor': 'restock_diff'
+        }
+    )
+
+    watch = datastore.data['watching'][uuid]
+
+    # Try to set processor config fields (these should be filtered during commit)
+    watch['processor_config_price_threshold'] = 10.0
+    watch['processor_config_some_setting'] = 'value'
+    watch['processor_config_another'] = {'nested': 'data'}
+    watch.commit()
+
+    # Read watch.json from disk
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+
+    # Verify processor_config_* fields are NOT in watch.json
+    for key in data.keys():
+        assert not key.startswith('processor_config_'), \
+            f"Found {key} in watch.json - processor configs should be in separate file!"
+
+    # Normal fields should still be there
+    assert data['title'] == 'Test Watch'
+    assert data['processor'] == 'restock_diff'
+
+
+def test_api_post_saves_processor_config_separately(client, live_server):
+    """Test that API POST saves processor configs to {processor}.json"""
+    import json
+    from changedetectionio.processors import extract_processor_config_from_form_data
+
+    # Get API key
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Create watch via API with processor config
+    response = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            'url': 'http://example.com',
+            'processor': 'restock_diff',
+            'processor_config_price_threshold': 10.0,
+            'processor_config_in_stock_only': True
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key}
+    )
+
+    assert response.status_code in (200, 201), f"Expected 200/201, got {response.status_code}"
+    uuid = response.json.get('uuid')
+    assert uuid, "Should return UUID"
+
+    datastore = client.application.config.get('DATASTORE')
+    watch = datastore.data['watching'][uuid]
+
+    # Check that processor config file exists
+    processor_config_path = os.path.join(watch.data_dir, 'restock_diff.json')
+    assert os.path.exists(processor_config_path), "Processor config file should exist"
+
+    with open(processor_config_path, 'r') as f:
+        config = json.load(f)
+
+    # Verify fields are saved WITHOUT processor_config_ prefix
+    assert config.get('price_threshold') == 10.0, "Should have price_threshold (no prefix)"
+    assert config.get('in_stock_only') == True, "Should have in_stock_only (no prefix)"
+    assert 'processor_config_price_threshold' not in config, "Should NOT have prefixed keys"
+
+
