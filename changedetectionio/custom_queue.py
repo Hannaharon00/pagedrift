@@ -310,6 +310,100 @@ class AsyncSignalPriorityQueue(asyncio.PriorityQueue):
         except Exception as e:
             logger.critical(f"Exception: {e}")
 
+    async def put(self, item):
+        # Call the parent's put method first
+        await super().put(item)
+
+        # After putting the item in the queue, check if it has a UUID and emit signal
+        if hasattr(item, 'item') and isinstance(item.item, dict) and 'uuid' in item.item:
+            uuid = item.item['uuid']
+            # Get the signal and send it if it exists
+            watch_check_update = signal('watch_check_update')
+            if watch_check_update:
+                # NOTE: This would block other workers from .put/.get while this signal sends
+                # Signal handlers may iterate the queue/datastore while holding locks
+                watch_check_update.send(watch_uuid=uuid)
+        
+        # Send queue_length signal with current queue size
+        try:
+            if self.queue_length_signal:
+                self.queue_length_signal.send(length=self.qsize())
+        except Exception as e:
+            logger.critical(f"Exception: {e}")
+
+    async def get(self):
+        # Call the parent's get method first
+        item = await super().get()
+        
+        # Send queue_length signal with current queue size
+        try:
+            if self.queue_length_signal:
+                self.queue_length_signal.send(length=self.qsize())
+        except Exception as e:
+            logger.critical(f"Exception: {e}")
+        return item
+    
+    @property
+    def queue(self):
+        """
+        Provide compatibility with sync PriorityQueue.queue access
+        Returns the internal queue for template access
+        """
+        return self._queue if hasattr(self, '_queue') else []
+    
+    def get_uuid_position(self, target_uuid):
+        """
+        Find the position of a watch UUID in the async priority queue.
+        Optimized for large queues - O(n) complexity instead of O(n log n).
+        
+        Args:
+            target_uuid: The UUID to search for
+            
+        Returns:
+            dict: Contains position info or None if not found
+                - position: 0-based position in queue (0 = next to be processed)
+                - total_items: total number of items in queue
+                - priority: the priority value of the found item
+        """
+        queue_list = list(self._queue)
+        total_items = len(queue_list)
+        
+        if total_items == 0:
+            return {
+                'position': None,
+                'total_items': 0,
+                'priority': None,
+                'found': False
+            }
+        
+        # Find the target item and its priority first - O(n)
+        target_item = None
+        target_priority = None
+        
+        for item in queue_list:
+            if (hasattr(item, 'item') and 
+                isinstance(item.item, dict) and 
+                item.item.get('uuid') == target_uuid):
+                target_item = item
+                target_priority = item.priority
+                break
+        
+        if target_item is None:
+            return {
+                'position': None,
+                'total_items': total_items,
+                'priority': None,
+                'found': False
+            }
+        
+        # Count how many items have higher priority (lower numbers) - O(n)
+        position = 0
+        for item in queue_list:
+            if item.priority < target_priority:
+                position += 1
+            elif item.priority == target_priority and item != target_item:
+                position += 1
+        
         return {
             'position': position,
             'total_items': total_items,
