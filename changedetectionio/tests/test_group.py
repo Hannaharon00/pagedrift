@@ -237,3 +237,66 @@ def test_group_tag_notification(client, live_server, measure_memory_usage, datas
     #@todo Test that each of multiple notifications with different settings
     delete_all_watches(client)
 
+def test_limit_tag_ui(client, live_server, measure_memory_usage, datastore_path):
+
+    test_url = url_for('test_random_content_endpoint', _external=True)
+
+    # A space can label the tag, only the first one will have a tag
+    client.post(
+        url_for("imports.import_page"),
+        data={"urls": f"{test_url} test-tag\r\n{test_url}"},
+        follow_redirects=True
+    )
+    tag_uuid = get_UUID_for_tag_name(client, name="test-tag")
+    assert tag_uuid
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'test-tag' in res.data
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Should be both unviewed
+    res = client.get(url_for("watchlist.index"))
+    assert res.data.count(b' unviewed ') == 2
+
+
+    # Now we recheck only the tag
+    client.post(url_for('ui.mark_all_viewed', tag=tag_uuid), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Should be only 1 unviewed
+    res = client.get(url_for("watchlist.index"))
+    assert res.data.count(b' unviewed ') == 1
+
+
+    delete_all_watches(client)
+    res = client.post(url_for("tags.delete_all"), follow_redirects=True)
+    assert b'All tags deleted' in res.data
+
+def test_clone_tag_on_import(client, live_server, measure_memory_usage, datastore_path):
+    
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("imports.import_page"),
+        data={"urls": test_url + " test-tag, another-tag\r\n"},
+        follow_redirects=True
+    )
+
+    assert b"1 Imported" in res.data
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'test-tag' in res.data
+    assert b'another-tag' in res.data
+
+    watch_uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+    res = client.post(url_for("ui.form_clone", uuid=watch_uuid), follow_redirects=True)
+
+    assert b'Cloned' in res.data
+    res = client.get(url_for("watchlist.index"))
+    # 2 times plus the top link to tag
+    assert res.data.count(b'test-tag') == 3
+    assert res.data.count(b'another-tag') == 3
+    delete_all_watches(client)
+
