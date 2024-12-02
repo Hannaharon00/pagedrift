@@ -47,6 +47,25 @@ servers:
 security:
   - ApiKeyAuth: []
 
+tags:
+  - name: Watch Management
+    description: |
+      Core functionality for managing web page monitors. Create, retrieve, update, and delete individual watches. 
+      Each watch represents a single URL being monitored for changes, with configurable settings for check intervals, 
+      notification preferences, and content filtering options.
+      
+  - name: Watch History
+    description: |
+      Get a list of timestamps of all changes detected for a watch.
+      
+  - name: Snapshots
+    description: |
+      Retrieve individual text snapshot of monitored content according to the `timestamp`. The text snapshot is the HTML
+      to Text at page check time. 
+      
+      Set the query argument `html` to any value to retrieve the last HTML fetched, the system only keeps the last two 
+      (2) HTML files fetched.
+      
       The notification syntax uses [https://github.com/caronc/apprise](https://github.com/caronc/apprise).
       
   - name: Search
