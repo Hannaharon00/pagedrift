@@ -32,6 +32,43 @@ function getFormattedDate() {
 }
 
 /**
+ * Helper: Walk through siblings in a given direction to find line boundary
+ */
+function findLineBoundary(node, container, searchBackwards = false) {
+    let currentNode = node;
+
+    while (currentNode && currentNode !== container) {
+        const sibling = searchBackwards ? currentNode.previousSibling : currentNode.nextSibling;
+        let currentSibling = sibling;
+
+        while (currentSibling) {
+            const result = findTextNodeWithNewline(currentSibling, searchBackwards);
+            if (result) {
+                return result;
+            }
+            currentSibling = searchBackwards ? currentSibling.previousSibling : currentSibling.nextSibling;
+        }
+
+        currentNode = currentNode.parentNode;
+    }
+
+    return null;
+}
+
+/**
+ * Helper: Get the last text node in a container
+ */
+function getLastTextNode(container) {
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let lastNode = null;
+    let textNode;
+    while (textNode = walker.nextNode()) {
+        lastNode = textNode;
+    }
+    return lastNode;
+}
+
+/**
  * Expands a selection range to include complete lines
  * If a user selects partial text, this ensures full lines are captured
  */
