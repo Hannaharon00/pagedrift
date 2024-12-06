@@ -2617,6 +2617,62 @@ msgid "Browser connection URL"
 msgstr "Tarayıcı bağlantı URL'si"
 
 #: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "İzleyici genel bakış listesinde sayfa <title>'ını kullan"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "API erişim belirteci güvenlik kontrolü etkin"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Boş sayfalar değişiklik olarak değerlendirilsin mi?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Metni Yoksay"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Boşlukları yoksay"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "0 ile 100 arasında olmalıdır"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Parola"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Sayfalayıcı boyutu"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "En az sıfır olmalıdır (devre dışı)"
+
+#: changedetectionio/forms.py
 msgid "RSS Content format"
 msgstr "RSS İçerik formatı"
 
