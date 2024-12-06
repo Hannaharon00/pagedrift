@@ -2883,3 +2883,55 @@ msgstr "Nieprawidłowa składnia szablonu: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "Nieprawidłowa składnia szablonu w nagłówku „%(header)s”: %(error)s"
 
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ignoruj spacje"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "Zrzut ekranu: Minimalna wartość procentowa zmiany"
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Wartość musi mieścić się w przedziale od 0 do 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Hasło"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Rozmiar pagera"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Powinna wynosić co najmniej zero (wyłączone)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Format treści RSS"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> body built from"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS – nadpisanie szablonu „Domyślny dla systemu”"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Usuń hasło"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Wyświetl zawartość tagu kotwicy"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Zezwól na anonimowy dostęp do historii obserwacji, gdy hasło jest włączone"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Ukryj wyciszone obserwacje w kanale RSS"
+
