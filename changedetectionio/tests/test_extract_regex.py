@@ -199,3 +199,96 @@ def test_check_filter_and_regex_extract(client, live_server, measure_memory_usag
 
 
 
+def test_extract_lines_containing_case_insensitive(client, live_server, measure_memory_usage, datastore_path):
+    """Test that extract_lines_containing is case-insensitive."""
+
+    test_return_data = """<html>
+       <body>
+         <p>PRICE: $99.99</p>
+         <p>Price drops to $79.99</p>
+         <p>Stock: Available</p>
+         <p>price history shows decline</p>
+       </body>
+       </html>
+    """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            'extract_lines_containing': 'price',
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid), follow_redirects=True)
+
+    # All three price lines (different cases) should match
+    assert b'$99.99' in res.data
+    assert b'$79.99' in res.data
+    assert b'price history' in res.data
+    # Non-price line should be excluded
+    assert b'Stock' not in res.data
+
+    delete_all_watches(client)
+
+
+def test_extract_lines_containing_multiple_terms(client, live_server, measure_memory_usage, datastore_path):
+    """Test that multiple extract_lines_containing entries act as OR (keep line if any term matches)."""
+
+    test_return_data = """<html>
+       <body>
+         <p>Temperature: 21 celsius</p>
+         <p>Humidity: 55%</p>
+         <p>Wind speed: 10 km/h</p>
+         <p>Rain chance: 20%</p>
+       </body>
+       </html>
+    """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            'extract_lines_containing': 'celsius\r\nhumidity',
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid), follow_redirects=True)
+
+    assert b'celsius' in res.data
+    assert b'Humidity' in res.data
+    # Wind and Rain lines should be excluded
+    assert b'Wind speed' not in res.data
+    assert b'Rain chance' not in res.data
+
+    delete_all_watches(client)
+
+
