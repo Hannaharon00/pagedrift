@@ -150,3 +150,28 @@ def add_worker(update_q, notification_q, app, datastore):
         return False
 
 
+def remove_worker():
+    """Remove an async worker (for dynamic scaling)"""
+    global worker_threads
+
+    if not worker_threads:
+        return False
+
+    # Stop the last worker
+    worker = worker_threads.pop()
+    worker.stop()
+    logger.info(f"Removed async worker, {len(worker_threads)} workers remaining")
+    return True
+
+
+def get_worker_count():
+    """Get current number of async workers"""
+    return len(worker_threads)
+
+
+def get_running_uuids():
+    """Get list of UUIDs currently being processed by async workers"""
+    with _uuid_processing_lock:
+        return list(currently_processing_uuids.keys())
+
+
