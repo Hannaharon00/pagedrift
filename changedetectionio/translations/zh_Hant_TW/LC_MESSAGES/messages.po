@@ -2770,3 +2770,63 @@ msgstr "此工具將從所有監測歷史記錄中提取文字資料。"
 msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part inside of the text that you want to extract."
 msgstr "<strong>RegEx</strong>（正規表示式）是一種模式，用於精確識別文字中您想要提取的部分。"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "args, e.g."
+msgstr "參數，例如"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes, additions, and removals —"
+msgstr "差異輸出 - 僅包含變更、新增和移除 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Without (added) prefix or colors"
+msgstr "不含 (新增) 字首或顏色"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions"
+msgstr "差異輸出 - 僅包含變更和新增"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions —"
+msgstr "差異輸出 - 僅包含變更和新增 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "差異輸出 - 僅包含變更和移除"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "差異輸出 - 僅包含變更和移除 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "差異輸出 - 完整差異輸出"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "差異輸出 - 完整差異輸出 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "差異輸出 - 統一格式（Unified Format）的修補檔（Patch）"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr "僅包含來自舊版本變更的字詞 / 數值 — 例如舊價格。最適合每行僅單一數值變更的情況；多個變更片段將透過換行符號連接。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr "僅包含來自新版本變更的字詞 / 數值 — 例如新價格。最適合每行僅單一數值變更的情況；多個變更片段將透過換行符號連接。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "目前快照的文字內容數值，與 JSON 或 CSS 過濾器結合使用時非常有用"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "來自過濾器並觸發變更的文字"
+
