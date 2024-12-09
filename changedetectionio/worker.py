@@ -21,6 +21,9 @@ _MINITEXT_STATUS_MAX_LEN = 80
 
 from loguru import logger
 
+# Async version of update_worker
+# Processes jobs from AsyncSignalPriorityQueue instead of threaded queue
+
 IN_PYTEST = "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ
 DEFER_SLEEP_TIME_ALREADY_QUEUED = 0.3 if IN_PYTEST else 10.0
 

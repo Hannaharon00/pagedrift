@@ -3020,6 +3020,63 @@ msgid "Wednesday"
 msgstr "Mittwoch"
 
 #: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Benachrichtigungstitel"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Liste der Benachrichtigungs-URLs"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Prozessor – Was möchten Sie erreichen?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Standardzeitzone für den Watch-Check-Planer"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Warten Sie einige Sekunden, bevor Sie Text extrahieren."
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Sollte eine oder mehrere Sekunden enthalten"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Benachrichtigungs-Basis-URL überschreiben"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Speichern"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr "Laden Sie die XLSX-Datei hoch"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr "Muss eine XLSX-Datei sein!"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "Dateizuordnung"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "UI-Optionen"
+
+#: changedetectionio/forms.py
 msgid "AI enabled for this watch?"
 msgstr ""
 
