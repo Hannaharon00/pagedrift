@@ -3129,6 +3129,62 @@ msgid "Sort text alphabetically"
 msgstr "Sortieren Sie den Text alphabetisch"
 
 #: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Verwenden Sie die Seite <title> in der Übersichtsliste der Beobachtungen"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Sicherheitsüberprüfung des API-Zugriffstokens aktiviert"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Leere Seiten als Änderung behandeln?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Text ignorieren"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Leerzeichen ignorieren"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Muss zwischen 0 und 100 liegen"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Passwort"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Pagergröße"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Sollte mindestens Null sein (deaktiviert)"
+
+#: changedetectionio/forms.py
 msgid "API Base URL"
 msgstr ""
 
