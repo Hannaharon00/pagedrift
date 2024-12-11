@@ -42,6 +42,35 @@ function setupDiffNavigation() {
             return;
         }
 
+        var $fromSelected = $fromSelect.find('option:selected');
+        var $toSelected = $toSelect.find('option:selected');
+
+        if ($fromSelected.length && $toSelected.length) {
+            if (event.key === 'ArrowLeft') {
+                var $prevFrom = $fromSelected.prev();
+                var $prevTo = $toSelected.prev();
+                if ($prevFrom.length && $prevTo.length) {
+                    var prevHref = $('#btn-previous').attr('href');
+                    if (prevHref) {
+                        event.preventDefault();
+                        window.location.href = prevHref;
+                    }
+                }
+            } else if (event.key === 'ArrowRight') {
+                var $nextFrom = $fromSelected.next();
+                var $nextTo = $toSelected.next();
+                if ($nextFrom.length && $nextTo.length) {
+                    var nextHref = $('#btn-next').attr('href');
+                    if (nextHref) {
+                        event.preventDefault();
+                        window.location.href = nextHref;
+                    }
+                }
+            }
+        }
+    }, false);
+}
+
 $(document).ready(function () {
     $('.needs-localtime').each(function () {
         for (var option of this.options) {
