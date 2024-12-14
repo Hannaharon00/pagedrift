@@ -1652,6 +1652,64 @@ msgstr "Перевірено"
 msgid "Last"
 msgstr "Останній"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Unread"
+msgstr "Непрочитане"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck all"
+msgstr "Перевірити всі"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#, python-format
+msgid "in '%(title)s'"
+msgstr "в '%(title)s'"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "Ще ні"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Вже авторизовані"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Ви повинні бути авторизовані, будь ласка, увійдіть."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Невірний пароль"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Повинен бути вказаний хоча б один часовий інтервал (тижні, дні, години, хвилини або секунди)."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr "Повинен бути вказаний хоча б один часовий інтервал, якщо не використовуються глобальні налаштування."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Невірний формат часу. Використовуйте ГГ:ХХ."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "Неприпустиме ім'я часового поясу"
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "не задано"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "Почати о"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "Тривалість виконання"
+
 #: changedetectionio/forms.py
 msgid "Seconds"
 msgstr "Секунди"
