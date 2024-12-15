@@ -428,3 +428,136 @@ label {
  }  
 }
 
+.watch-controls {
+  color: #f8321b;
+
+  .state-on {
+    img {
+      opacity: 0.8;
+    }
+  }
+
+  /* default */
+  img {
+    opacity: 0.2;
+  }
+
+  img {
+    &:hover {
+      transition: opacity 0.3s;
+      opacity: 0.8;
+    }
+  }
+}
+
+.monospaced-textarea {
+  textarea {
+    width: 100%;
+    font-family: monospace;
+    white-space: pre;
+    overflow-wrap: normal;
+    // No scrollbars until needed.
+    overflow-x: auto;
+  }
+}
+
+
+.pure-form {
+  fieldset {
+    padding-top: 0px;
+
+    ul {
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+  }
+
+  .pure-control-group,
+  .pure-group,
+  .pure-controls {
+    padding-bottom: 1em;
+
+    div {
+      margin: 0px;
+    }
+
+    .checkbox {
+      >* {
+        display: inline;
+        vertical-align: middle;
+      }
+
+      >label {
+        padding-left: 5px;
+      }
+    }
+
+    legend {
+      color: var(--color-text-legend);
+    }
+  }
+
+  /* The input fields with errors */
+  .error {
+    input {
+      background-color: var(--color-error-input);
+    }
+  }
+
+  /* The list of errors */
+  ul.errors {
+    padding: .5em .6em;
+    border: 1px solid var(--color-error-list);
+    border-radius: 4px;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    li {
+      margin-left: 1em;
+      color: var(--color-error-list);
+    }
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  .inline-radio {
+    ul {
+      margin: 0px;
+      list-style: none;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: $desktop-wide-breakpoint) {
+  .edit-form {
+    padding: 0.5em;
+    margin: 0;
+    width: 100%;
+  }
+
+  #nav-menu {
+    overflow-x: scroll;
+  }
+}
+
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: $desktop-wide-breakpoint) {
+  input[type='text'] {
+    width: 100%;
+  }
+}
+

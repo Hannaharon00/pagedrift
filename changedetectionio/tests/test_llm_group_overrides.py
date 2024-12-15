@@ -113,3 +113,62 @@ def _add_tag_with_llm(datastore, title, llm_intent='', llm_change_summary='', ai
     return tag_uuid
 
 
+def test_group_edit_page_never_shows_the_from_group_placeholder(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    "From group ..." describes something inherited by a watch; the group edit page is
+    where the value is authored, so it must show group-flavoured copy instead.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+
+    tag_uuid = _add_tag_with_llm(ds, 'Authoring Group', llm_intent='Group intent value')
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert 'From group' not in text
+    # Group copy, not the per-watch copy (both live in the same shared include)
+    assert 'Set a change intent for all watches in this tag/group' in text
+    assert 'Describe what you care about' not in text
+
+    delete_all_watches(client)
+
+
+def test_group_edit_form_saves_and_reloads_each_ai_state(
+        client, live_server, measure_memory_usage, datastore_path):
+    """All three states round-trip through the real form, and the prompt is kept regardless."""
+    res = client.post(url_for('tags.form_tag_add'), data={'name': 'Saved Group'}, follow_redirects=True)
+    assert b'Tag added' in res.data
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    tag_uuid = list(ds.data['settings']['application']['tags'].keys())[0]
+
+    for posted, expected in (('true', True), ('false', False), ('none', None)):
+        res = client.post(
+            url_for('tags.form_tag_edit_submit', uuid=tag_uuid),
+            data={'title': 'Saved Group',
+                  'llm_intent': 'Only notify me about price drops',
+                  'llm_backend_profile': posted},
+            follow_redirects=True,
+        )
+        assert b'Updated' in res.data
+        tag = ds.data['settings']['application']['tags'][tag_uuid]
+        assert tag.get('llm_backend_profile') is expected, f"posting {posted!r} should store {expected!r}"
+        # The prompt is always kept — the AI state only decides whether it is used
+        assert tag.get('llm_intent') == 'Only notify me about price drops'
+
+        # ..and the reloaded page comes back on the same option
+        body = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid)).data.decode('utf-8', errors='replace')
+        assert f'id="llm_backend_profile_{posted}" checked' in body, \
+            f"saved state {posted!r} must render as the selected option"
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Watch edit page — llm_intent group override, gated on the checkbox
+# ---------------------------------------------------------------------------
+
