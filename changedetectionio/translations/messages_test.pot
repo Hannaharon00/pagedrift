@@ -49,6 +49,64 @@ msgstr ""
 msgid "Run duration"
 msgstr ""
 
+#: changedetectionio/forms.py:188
+msgid "Use time scheduler"
+msgstr ""
+
+#: changedetectionio/forms.py:198
+msgid "Optional timezone to run in"
+msgstr ""
+
+#: changedetectionio/forms.py:212
+msgid "Monday"
+msgstr ""
+
+#: changedetectionio/forms.py:213
+msgid "Tuesday"
+msgstr ""
+
+#: changedetectionio/forms.py:214
+msgid "Wednesday"
+msgstr ""
+
+#: changedetectionio/forms.py:215
+msgid "Thursday"
+msgstr ""
+
+#: changedetectionio/forms.py:216
+msgid "Friday"
+msgstr ""
+
+#: changedetectionio/forms.py:217
+msgid "Saturday"
+msgstr ""
+
+#: changedetectionio/forms.py:218
+msgid "Sunday"
+msgstr ""
+
+#: changedetectionio/forms.py:251
+msgid "Weeks"
+msgstr ""
+
+#: changedetectionio/forms.py:251 changedetectionio/forms.py:252
+#: changedetectionio/forms.py:253 changedetectionio/forms.py:254
+#: changedetectionio/forms.py:255 changedetectionio/forms.py:956
+msgid "Should contain zero or more seconds"
+msgstr ""
+
+#: changedetectionio/forms.py:252
+msgid "Days"
+msgstr ""
+
+#: changedetectionio/forms.py:253
+msgid "Hours"
+msgstr ""
+
+#: changedetectionio/forms.py:254
+msgid "Minutes"
+msgstr ""
+
 #: changedetectionio/forms.py:255
 msgid "Seconds"
 msgstr ""
