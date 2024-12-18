@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+"""
+Comprehensive tests for time_handler module refactored to use arrow.
+
 Run from project root:
 python3 -m pytest changedetectionio/tests/unit/test_time_handler.py -v
 """
