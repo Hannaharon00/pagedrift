@@ -111,6 +111,30 @@ tags:
 
       A minimal `api.yaml` for a hypothetical `my_processor`:
 
+      ```bash
+      curl -X POST "http://localhost:5000/api/v1/watch" \
+        -H "x-api-key: YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "url": "https://example.com/product/widget",
+          "processor": "restock_diff",
+          "processor_config_restock_diff": {
+            "in_stock_processing": "in_stock_only",
+            "follow_price_changes": true,
+            "price_change_threshold_percent": 5
+          }
+        }'
+      ```
+
+      #### READ — Retrieve the monitor
+
+      The response JSON includes `processor_config_restock_diff` alongside all standard watch fields:
+
+      ```bash
+      curl -X GET "http://localhost:5000/api/v1/watch/cc0cfffa-f449-477b-83ea-0caafd1dc091" \
+        -H "x-api-key: YOUR_API_KEY"
+      ```
+
       #### DELETE — Remove the monitor
 
       ```bash
