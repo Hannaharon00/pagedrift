@@ -109,6 +109,66 @@ class WorkerThread:
         # Don't wait - thread is daemon and will die when needed
 
 
+def start_async_workers(n_workers, update_q, notification_q, app, datastore):
+    """Start async workers, each with its own thread and event loop for isolation"""
+    global worker_threads, currently_processing_uuids
+
+    _ensure_queue_executor()
+
+    # Clear any stale state
+    currently_processing_uuids.clear()
+
+    # Start each worker in its own thread with its own event loop
+    logger.info(f"Starting {n_workers} async workers (isolated threads)")
+    for i in range(n_workers):
+        try:
+            worker = WorkerThread(i, update_q, notification_q, app, datastore)
+            worker.start()
+            worker_threads.append(worker)
+            # No sleep needed - threads start independently and asynchronously
+        except Exception as e:
+            logger.error(f"Failed to start async worker {i}: {e}")
+            continue
+
+
+async def start_single_async_worker(worker_id, update_q, notification_q, app, datastore, executor=None):
+    """Start a single async worker with auto-restart capability"""
+    from changedetectionio.worker import async_update_worker
+
+    # Check if we're in pytest environment - if so, be more gentle with logging
+    import os
+    in_pytest = "pytest" in os.sys.modules or "PYTEST_CURRENT_TEST" in os.environ
+
+    while not app.config.exit.is_set():
+        try:
+            result = await async_update_worker(worker_id, update_q, notification_q, app, datastore, executor)
+
+            if result == "restart":
+                # Worker requested restart - immediately loop back and restart
+                if not in_pytest:
+                    logger.debug(f"Async worker {worker_id} restarting")
+                continue
+            else:
+                # Worker exited cleanly (shutdown)
+                if not in_pytest:
+                    logger.info(f"Async worker {worker_id} exited cleanly")
+                break
+
+        except asyncio.CancelledError:
+            # Task was cancelled (normal shutdown)
+            if not in_pytest:
+                logger.info(f"Async worker {worker_id} cancelled")
+            break
+        except Exception as e:
+            logger.error(f"Async worker {worker_id} crashed: {e}")
+            if not in_pytest:
+                logger.info(f"Restarting async worker {worker_id} in 5 seconds...")
+            await asyncio.sleep(5)
+
+    if not in_pytest:
+        logger.info(f"Async worker {worker_id} shutdown complete")
+
+
 def start_workers(n_workers, update_q, notification_q, app, datastore):
     """Start async workers - sync workers are deprecated"""
     start_async_workers(n_workers, update_q, notification_q, app, datastore)
