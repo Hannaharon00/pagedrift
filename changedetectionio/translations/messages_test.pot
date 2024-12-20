@@ -168,3 +168,63 @@ msgstr ""
 msgid "Edit > Watch"
 msgstr ""
 
+#: changedetectionio/forms.py:834
+msgid "Attach screenshot to notification (where possible)"
+msgstr ""
+
+#: changedetectionio/forms.py:836
+msgid "Match"
+msgstr ""
+
+#: changedetectionio/forms.py:836
+msgid "Match all of the following"
+msgstr ""
+
+#: changedetectionio/forms.py:836
+msgid "Match any of the following"
+msgstr ""
+
+#: changedetectionio/forms.py:838
+msgid "Use page <title> in list"
+msgstr ""
+
+#: changedetectionio/forms.py:855
+msgid "Body must be empty when Request Method is set to GET"
+msgstr ""
+
+#: changedetectionio/forms.py:864 changedetectionio/forms.py:878
+#: changedetectionio/forms.py:893
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr ""
+
+#: changedetectionio/forms.py:868 changedetectionio/forms.py:882
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr ""
+
+#: changedetectionio/forms.py:897
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr ""
+
+#: changedetectionio/forms.py:921 changedetectionio/forms.py:933
+msgid "Name"
+msgstr ""
+
+#: changedetectionio/forms.py:922
+msgid "Proxy URL"
+msgstr ""
+
+#: changedetectionio/forms.py:927
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr ""
+
+#: changedetectionio/forms.py:934
+msgid "Browser connection URL"
+msgstr ""
+
+#: changedetectionio/forms.py:939
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr ""
+
