@@ -357,6 +357,38 @@ def _jinja2_filter_regex_search(value, pattern):
     return re.search(pattern, str(value)) is not None
 
 
+# We use the whole watch object from the store/JSON so we can see if there's some related status in terms of a thread
+# running or something similar.
+@app.template_filter('format_last_checked_time')
+def _jinja2_filter_datetime(watch_obj, format="%Y-%m-%d %H:%M:%S"):
+    if watch_obj['last_checked'] == 0:
+        return gettext('Not yet')
+
+    short = datastore.data['settings']['application'].get('ui', {}).get('timeago_format') == 'short'
+    locale = get_timeago_locale(str(get_locale()), short=short)
+    try:
+        return timeago.format(int(watch_obj['last_checked']), time.time(), locale)
+    except:
+        # Fallback to English if locale not supported by timeago
+        return timeago.format(
+            int(watch_obj['last_checked']), time.time(), 'en_short' if short else 'en'
+        )
+
+
+@app.template_filter('format_timestamp_timeago')
+def _jinja2_filter_datetimestamp(timestamp, format="%Y-%m-%d %H:%M:%S"):
+    if not timestamp:
+        return gettext('Not yet')
+
+    short = datastore.data['settings']['application'].get('ui', {}).get('timeago_format') == 'short'
+    locale = get_timeago_locale(str(get_locale()), short=short)
+    try:
+        return timeago.format(int(timestamp), time.time(), locale)
+    except:
+        # Fallback to English if locale not supported by timeago
+        return timeago.format(int(timestamp), time.time(), 'en_short' if short else 'en')
+
+
 @app.template_filter('pagination_slice')
 def _jinja2_filter_pagination_slice(arr, skip):
     per_page = datastore.data['settings']['application'].get('pager_size', 50)
