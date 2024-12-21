@@ -2431,6 +2431,68 @@ msgstr "Sprawdź kolejkę"
 msgid "Live view of what the workers are doing right now and what is waiting in line."
 msgstr "Podgląd na żywo tego, czym właśnie zajmują się procesy robocze i co czeka w kolejce."
 
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "Obserwację dodano w stanie wstrzymania; zapisanie spowoduje jej wznowienie."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "Dodano obserwację."
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "zapisy"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr "Wstrzymaj sprawdzanie"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr "Wznów sprawdzanie"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr "Wycisz powiadomienie"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnMute notification"
+msgstr "Usuń wyciszenie powiadomienia"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Goto web page"
+msgstr "Przejdź do strony internetowej"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Create a link to share watch config with others"
+msgstr "Utwórz link, aby udostępnić innym konfigurację obserwacji"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Detecting restock and price"
+msgstr "Wykrywanie uzupełnienia zapasów i ceny"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Not in stock"
+msgstr "Brak na stanie"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "In stock"
+msgstr "W magazynie"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price"
+msgstr "Cena"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#, python-format
+msgid "Price change since previous price (%(prev)s)"
+msgstr "Zmiana ceny w stosunku do poprzedniej ceny (%(prev)s)"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 msgid "No information"
 msgstr "Brak informacji"
