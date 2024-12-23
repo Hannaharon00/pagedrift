@@ -375,3 +375,61 @@ def test_login_redirect_with_password(client, live_server, measure_memory_usage,
     del client.application.config['DATASTORE'].data['settings']['application']['password']
 
 
+def test_logout_with_redirect(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that logout preserves the current page URL, so after re-login
+    the user returns to where they were before logging out.
+    Example: User is on /edit/uuid, clicks logout, then logs back in and
+    returns to /edit/uuid.
+    """
+    import base64
+    import hashlib
+
+    # Set a password and login
+    password = "test123"
+    salt = os.urandom(32)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    salted_pass = base64.b64encode(salt + key).decode('ascii')
+    client.application.config['DATASTORE'].data['settings']['application']['password'] = salted_pass
+
+    # Login
+    res = client.post(
+        url_for("login"),
+        data={"password": password},
+        follow_redirects=True
+    )
+    assert res.status_code == 200
+
+    # Now logout with a redirect parameter (simulating logout from /settings)
+    res = client.post(
+        url_for("logout", redirect="/settings"),
+        follow_redirects=False
+    )
+
+    # Should redirect to login with the redirect parameter
+    assert res.status_code in [302, 303]
+    assert '/login' in res.location
+    assert 'redirect=' in res.location or 'redirect=%2F' in res.location
+
+    # Follow the redirect to login page
+    res = client.get(res.location, follow_redirects=False)
+    assert res.status_code == 200
+    assert b'Password' in res.data
+    # The redirect parameter should be preserved
+    assert b'value="/settings"' in res.data or b'value="%2Fsettings"' in res.data
+
+    # Login again with the redirect
+    res = client.post(
+        url_for("login"),
+        data={"password": password, "redirect": "/settings"},
+        follow_redirects=False
+    )
+
+    # Should redirect back to settings
+    assert res.status_code in [302, 303]
+    assert '/settings' in res.location or 'settings' in res.location
+
+    # Cleanup
+    del client.application.config['DATASTORE'].data['settings']['application']['password']
+
+
