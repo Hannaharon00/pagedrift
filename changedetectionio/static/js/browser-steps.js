@@ -181,6 +181,17 @@ $(document).ready(function () {
         }.debounce(10));
     });
 
+//    $("#browser-steps-fieldlist").bind('mouseover', function(e) {
+//        console.log(e.xpath_data_index);
+    // });
+
+
+    // callback for clicking on an xpath on the canvas
+    function process_selected(selected_in_xpath_list) {
+        found_something = false;
+        var first_available = $("ul#browser_steps li.empty").first();
+
+
         if (selected_in_xpath_list !== false) {
             // Nothing focused, so fill in a new one
             // if inpt type button or <button>
