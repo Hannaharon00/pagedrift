@@ -2763,3 +2763,66 @@ msgstr ""
 msgid "Enable LLM debug logging"
 msgstr ""
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "dans %ss"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "il y a 1min"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "dans 1min"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "il y a %smin"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "dans %smin"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "il y a 1h"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "dans 1h"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "il y a %sh"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "dans %sh"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "il y a 1j"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "dans 1j"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "il y a %sj"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "dans %sj"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "il y a 1sem"
+
