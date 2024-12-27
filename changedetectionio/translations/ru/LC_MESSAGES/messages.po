@@ -3158,6 +3158,62 @@ msgid "Extract lines containing"
 msgstr "Извлечь строки, содержащие"
 
 #: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Извлечь текст"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Заголовок"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Игнорировать строки, содержащие"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "Тело запроса"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Метод запроса"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Игнорировать коды состояния (обрабатывать коды состояния, отличные от 2xx, как обычно)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Срабатывает только тогда, когда уникальные строки появляются во всей истории"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Удаление повторяющихся строк текста"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Сортировать текст по алфавиту"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Удалить игнорируемые строки"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Обрезать пробелы до и после текста"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Добавлены строки"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Заменены/изменены строки"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Удалены строки"
+
+#: changedetectionio/forms.py
 msgid "Number of history items per watch to keep"
 msgstr "Количество сохраняемых элементов истории на часы"
 
