@@ -159,6 +159,26 @@
         return requests[namespace];
     };
 
+})(jQuery);
+
+
+
+function toggleOpacity(checkboxSelector, fieldSelector, inverted) {
+    const checkbox = document.querySelector(checkboxSelector);
+    const fields = document.querySelectorAll(fieldSelector);
+
+    function updateOpacity() {
+        const opacityValue = !checkbox.checked ? (inverted ? 0.6 : 1) : (inverted ? 1 : 0.6);
+        fields.forEach(field => {
+            field.style.opacity = opacityValue;
+        });
+    }
+
+    // Initial setup
+    updateOpacity();
+    checkbox.addEventListener('change', updateOpacity);
+}
+
 // Radio-group counterpart of toggleOpacity: fields are full opacity only while the named
 // radio group sits on activeValue, otherwise greyed out. Used by the tag AI/LLM tab, where a
 // ternary (On / Off / Leave it to each watch) decides whether the prompts below apply.
