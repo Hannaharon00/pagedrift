@@ -263,3 +263,124 @@ def test_check_notification_markdown_format(client, live_server, measure_memory_
 
     delete_all_watches(client)
 
+# Custom notification body with HTML, that is either sent as HTML or rendered to plaintext and sent
+def test_check_notification_email_formats_default_Text_override_HTML(client, live_server, measure_memory_usage, datastore_path):
+
+    # HTML problems? see this
+    # https://github.com/caronc/apprise/issues/633
+
+    set_original_response(datastore_path=datastore_path)
+
+    notification_url = f'mailto://changedetection@{smtp_test_server}:11025/?to=fff@home.com'
+    notification_body = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <h1>Test</h1>
+    {default_notification_body}
+</body>
+</html>
+"""
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "fallback-title " + default_notification_title,
+              "notification_body": notification_body,
+              "notification_format": 'text'},
+        follow_redirects=True
+    )
+    assert b"Settings updated." in res.data
+
+    # Add a watch and trigger a HTTP POST
+    test_url = url_for('test_endpoint',content_type="text/html", _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'nice one'},
+        follow_redirects=True
+    )
+
+    assert b"Watch added" in res.data
+
+    #################################### FIRST SITUATION, PLAIN TEXT NOTIFICATION IS WANTED BUT WE HAVE HTML IN OUR TEMPLATE AND CONTENT ##########
+    wait_for_all_checks(client)
+    set_longer_modified_response(datastore_path=datastore_path)
+    time.sleep(2)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    time.sleep(3)
+    msg_raw = get_last_message_from_smtp_server()
+    assert len(msg_raw) >= 1
+    #    with open('/tmp/m.txt', 'w') as f:
+    #        f.write(msg_raw)
+
+    # Parse the email properly using Python's email library
+    msg = message_from_string(msg_raw, policy=email_policy)
+
+    # The email should not have two bodies, should be TEXT only
+    assert not msg.is_multipart()
+    assert msg.get_content_type() == 'text/plain'
+
+    # Get the plain text content
+    text_content = msg.get_content()
+    assert '(added) So let\'s see what happens.\r\n' in text_content  # The plaintext part
+    assert '<!DOCTYPE html>' in text_content # even tho they added html, they selected plaintext so it should have not got converted
+
+
+    #################################### SECOND SITUATION, HTML IS CORRECTLY PASSED THROUGH TO THE EMAIL ####################
+    set_original_response(datastore_path=datastore_path)
+
+    # Now override as HTML format
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={
+            "url": test_url,
+            "notification_format": 'html',
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    time.sleep(3)
+    msg_raw = get_last_message_from_smtp_server()
+    assert len(msg_raw) >= 1
+
+    # Parse the email properly using Python's email library
+    msg = message_from_string(msg_raw, policy=email_policy)
+
+    # The email should have two bodies (multipart/alternative)
+    assert msg.is_multipart()
+    assert msg.get_content_type() == 'multipart/alternative'
+
+    # Get the parts
+    parts = list(msg.iter_parts())
+    assert len(parts) == 2
+
+    # First part should be text/plain
+    text_part = parts[0]
+    assert text_part.get_content_type() == 'text/plain'
+    text_content = text_part.get_content()
+    assert '(removed) So let\'s see what happens.\r\n' in text_content  # The plaintext part
+
+    # Second part should be text/html
+    html_part = parts[1]
+    assert html_part.get_content_type() == 'text/html'
+    html_content = html_part.get_content()
+    # GHSA-q8xq-qg4x-wphg: apostrophes in diff content are escaped (&#39;) for HTML notifications.
+    assert '(removed) So let&#39;s see what happens.' in html_content  # the html part
+    assert '&lt;!DOCTYPE html' not in html_content
+    assert '<!DOCTYPE html' in html_content # Our original template is working correctly
+
+    # https://github.com/dgtlmoon/changedetection.io/issues/2103
+    assert '<h1>Test</h1>' in html_content
+    assert '&lt;' not in html_content
+
+    delete_all_watches(client)
+
