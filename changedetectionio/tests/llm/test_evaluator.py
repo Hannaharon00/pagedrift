@@ -228,3 +228,55 @@ class TestLlmEnabledForWatch:
 # get_llm_config
 # ---------------------------------------------------------------------------
 
+class TestGetLlmConfig:
+    def test_returns_none_when_no_model(self):
+        from changedetectionio.llm.evaluator import get_llm_config
+        ds = _make_datastore(llm_cfg={})
+        assert get_llm_config(ds) is None
+
+    def test_returns_config_when_model_set(self):
+        from changedetectionio.llm.evaluator import get_llm_config
+        cfg = {'model': 'gpt-4o-mini', 'api_key': 'sk-test'}
+        ds = _make_datastore(llm_cfg=cfg)
+        result = get_llm_config(ds)
+        assert result['model'] == 'gpt-4o-mini'
+
+    def test_env_var_overrides_datastore(self):
+        """LLM_MODEL env var takes priority over datastore settings."""
+        from changedetectionio.llm.evaluator import get_llm_config
+        ds = _make_datastore(llm_cfg={'model': 'datastore-model'})
+        with patch.dict('os.environ', {'LLM_MODEL': 'ollama/llama3.2', 'LLM_API_KEY': '', 'LLM_API_BASE': ''}):
+            result = get_llm_config(ds)
+        assert result['model'] == 'ollama/llama3.2'
+
+    def test_env_var_api_key_and_base_included(self):
+        """LLM_API_KEY and LLM_API_BASE are picked up alongside LLM_MODEL."""
+        from changedetectionio.llm.evaluator import get_llm_config
+        ds = _make_datastore()
+        env = {'LLM_MODEL': 'gpt-4o', 'LLM_API_KEY': 'env-key', 'LLM_API_BASE': 'http://localhost:11434'}
+        with patch.dict('os.environ', env):
+            result = get_llm_config(ds)
+        assert result['api_key'] == 'env-key'
+        assert result['api_base'] == 'http://localhost:11434'
+
+    def test_llm_configured_via_env_true_when_model_set(self):
+        """llm_configured_via_env() returns True when LLM_MODEL is set."""
+        from changedetectionio.llm.evaluator import llm_configured_via_env
+        with patch.dict('os.environ', {'LLM_MODEL': 'gpt-4o-mini'}):
+            assert llm_configured_via_env() is True
+
+    def test_llm_configured_via_env_false_when_not_set(self):
+        """llm_configured_via_env() returns False when LLM_MODEL is absent."""
+        from changedetectionio.llm.evaluator import llm_configured_via_env
+        env = {k: '' for k in ['LLM_MODEL', 'LLM_API_KEY', 'LLM_API_BASE']}
+        with patch.dict('os.environ', env, clear=False):
+            # Ensure LLM_MODEL is truly absent
+            import os
+            os.environ.pop('LLM_MODEL', None)
+            assert llm_configured_via_env() is False
+
+
+# ---------------------------------------------------------------------------
+# evaluate_change
+# ---------------------------------------------------------------------------
+
