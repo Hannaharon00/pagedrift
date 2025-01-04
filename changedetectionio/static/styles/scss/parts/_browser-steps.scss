@@ -73,3 +73,48 @@
   }
 }
 
+/*  this is duplicate :( */
+#browsersteps-selector-wrapper {
+
+  width: 100%;
+  overflow-y: scroll;
+  position: relative;
+
+  > img {
+    position: absolute;
+    max-width: 100%;
+  }
+
+  > canvas {
+    position: relative;
+    max-width: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    max-width: 350px;
+    text-align: center;
+  }
+
+  /* nice tall skinny one */
+  .spinner, .spinner:after {
+    width: 80px;
+    height: 80px;
+    font-size: 3px;
+  }
+
+  #browsersteps-click-start {
+    &:hover {
+      cursor: pointer;
+    }
+    color: var(--color-grey-400);
+  }
+}
