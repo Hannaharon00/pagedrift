@@ -2049,6 +2049,66 @@ msgid "Headers can be also read from a file in your data-directory"
 msgstr "Cabeçalhos também podem ser lidos de um arquivo no seu diretório de dados"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "Use o botão de verificar (✓) para testar se uma condição passa contra o instantâneo atual."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Leia um tutorial rápido sobre"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "usar mudanças condicionais de página aqui"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Ativar pré-visualização"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Dicas profissionais:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Use a página de pré-visualização para ver seus filtros e gatilhos destacados."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Limitar gatilho/ignorar/bloquear/extrair para;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Nota: Dependendo do comprimento e semelhança do texto em cada linha, o algoritmo pode considerar uma "
+"<strong>adição</strong> em vez de uma <strong>substituição</strong>, por exemplo."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Portanto, é sempre melhor selecionar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "quando você estiver interessado em conteúdo novo."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Quando o conteúdo é apenas movido em uma lista, ele também disparará uma"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "adição"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "considere ativar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Disparar apenas quando linhas exclusivas aparecerem"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
 msgstr "Desculpe, esta funcionalidade só funciona com fetchers que suportam Javascript e screenshots (como playwright, etc)."
 
