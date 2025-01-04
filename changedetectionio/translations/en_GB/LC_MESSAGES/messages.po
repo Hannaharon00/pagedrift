@@ -2828,6 +2828,63 @@ msgstr ""
 msgid "hours"
 msgstr ""
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr ""
+
 #: changedetectionio/forms.py
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
