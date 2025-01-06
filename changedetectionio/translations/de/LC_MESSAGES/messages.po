@@ -3299,6 +3299,58 @@ msgid "Should be atleast zero (disabled)"
 msgstr "Sollte mindestens Null sein (deaktiviert)"
 
 #: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSS-Inhaltsformat"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS-<description>-Körper erstellt aus"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS-Vorlage „Systemstandard“ überschreiben"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Passwort entfernen"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Rendern Sie den Inhalt des Ankertags"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Erlauben Sie anonymen Zugriff auf die Seite mit dem Wiedergabeverlauf, wenn das Passwort aktiviert ist"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Ausgeblendete Beobachtungen aus RSS-Feed ausblenden"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Aktivieren Sie den RSS-Reader-Modus"
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Anzahl der Änderungen, die im Beobachtungs-RSS-Feed angezeigt werden sollen"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "Sollte null oder mehr Versuche enthalten"
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "Häufigkeit, mit der der Filter fehlen darf, bevor eine Benachrichtigung gesendet wird"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "API-Schlüssel"
+
+#: changedetectionio/forms.py
 msgid "API Base URL"
 msgstr ""
 
