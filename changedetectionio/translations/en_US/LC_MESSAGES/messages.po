@@ -1977,6 +1977,62 @@ msgid "Check/Scan all"
 msgstr ""
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Choose a proxy for this watch"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Using the current global default settings"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Show advanced options"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Please allow 10-15 seconds for the browser to connect."
 msgstr ""
 

@@ -17,6 +17,15 @@ info:
     
     ## Connection URL
     
+    The API can be found at `/api/v1/`, so for example if you run changedetection.io locally on port 5000, then URL would be `http://localhost:5000/api/v1/watch/cc0cfffa-f449-477b-83ea-0caafd1dc091/history`.
+    
+    If you are using the hosted/subscription version of changedetection.io, then the URL is based on your login URL, for example:  
+    `https://<your login url>/api/v1/watch/cc0cfffa-f449-477b-83ea-0caafd1dc091/history`
+    
+    ## Authentication
+    
+    Almost all API requests require some authentication, this is provided as an **API Key** in the header of the HTTP request.
+    
     For example: `x-api-key: YOUR_API_KEY`
     
   version: 0.1.9
