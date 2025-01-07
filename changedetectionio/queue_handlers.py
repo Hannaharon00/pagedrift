@@ -484,3 +484,78 @@ class NotificationQueue:
                 logger.debug(f"Notification blocked - all notifications are muted: {item.get('uuid', 'unknown')}")
                 return False
 
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(executor, lambda: self.put(item, block=True, timeout=5.0))
+            logger.trace(f"NotificationQueue.async_put() successfully queued notification: {item.get('uuid', 'unknown')}")
+            return True
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to async put notification {item.get('uuid', 'unknown')}: {str(e)}")
+            return False
+
+    def get(self, block: bool = True, timeout: Optional[float] = None):
+        """Thread-safe sync get"""
+        logger.trace(f"NotificationQueue.get() called, block={block}, timeout={timeout}")
+        try:
+            with self._lock:
+                item = self._notification_queue.get(block=block, timeout=timeout)
+            logger.trace(f"NotificationQueue.get() retrieved item: {item.get('uuid', 'unknown') if isinstance(item, dict) else 'unknown'}")
+            return item
+        except queue.Empty as e:
+            logger.trace(f"NotificationQueue.get() timed out - queue is empty (timeout={timeout})")
+            raise e
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get notification: {type(e).__name__}: {str(e)}")
+            raise e
+
+    async def async_get(self, executor=None):
+        """Async get - uses thread pool
+
+        Args:
+            executor: Optional ThreadPoolExecutor
+        """
+        logger.trace(f"NotificationQueue.async_get() called, executor={executor}")
+        import asyncio
+        try:
+            loop = asyncio.get_event_loop()
+            item = await loop.run_in_executor(executor, lambda: self.get(block=True, timeout=1.0))
+            logger.trace(f"NotificationQueue.async_get() retrieved item: {item.get('uuid', 'unknown') if isinstance(item, dict) else 'unknown'}")
+            return item
+        except queue.Empty as e:
+            logger.trace(f"NotificationQueue.async_get() timed out - queue is empty")
+            raise e
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to async get notification: {type(e).__name__}: {str(e)}")
+            raise e
+    
+    def qsize(self) -> int:
+        """Get current queue size"""
+        try:
+            with self._lock:
+                return self._notification_queue.qsize()
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to get notification queue size: {str(e)}")
+            return 0
+
+    def empty(self) -> bool:
+        """Check if queue is empty"""
+        return self.qsize() == 0
+
+    def close(self):
+        """Close the queue"""
+        try:
+            # Nothing to close for threading.Queue
+            logger.debug("NotificationQueue closed successfully")
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to close NotificationQueue: {str(e)}")
+    
+    def _emit_notification_signal(self, item: Dict[str, Any]):
+        """Emit notification signal"""
+        try:
+            if self.notification_event_signal and isinstance(item, dict):
+                watch_uuid = item.get('uuid')
+                if watch_uuid:
+                    self.notification_event_signal.send(watch_uuid=watch_uuid)
+                else:
+                    self.notification_event_signal.send()
+        except Exception as e:
+            logger.critical(f"CRITICAL: Failed to emit notification signal: {str(e)}")
