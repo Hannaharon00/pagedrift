@@ -100,3 +100,19 @@ tags:
       The live, fully-merged spec is always available at `/api/v1/full-spec` — use that URL with
       Swagger UI or Redoc to see the complete schema for your specific installation.
 
+      #### DELETE — Remove the monitor
+
+      ```bash
+      curl -X DELETE "http://localhost:5000/api/v1/watch/cc0cfffa-f449-477b-83ea-0caafd1dc091" \
+        -H "x-api-key: YOUR_API_KEY"
+      ```
+
+      ---
+
+      For the complete schema-validated documentation including all processor fields, fetch the live spec
+      and load it into Swagger UI or Redoc:
+
+      ```
+      GET /api/v1/full-spec
+      ```
+
