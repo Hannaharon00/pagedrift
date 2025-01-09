@@ -3243,6 +3243,62 @@ msgid "Attach screenshot to notification (where possible)"
 msgstr "Screenshot an Benachrichtigung anhängen (sofern möglich)"
 
 #: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "Browser-URLs müssen mit wss:// oder ws:// beginnen."
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Klartext-Anfragen"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Chrome-Anfragen"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Standard-Proxy"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Zufällige Jitter-Sekunden ± überprüfen"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Anzahl der Fetch Arbeiter"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Sollte zwischen 1 und 50 liegen"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Anforderungs-Timeout in Sekunden"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Sollte zwischen 1 und 999 liegen"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Standardmäßige User-Agent Überschreibungen"
+
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Es sind sowohl ein Name als auch eine Proxy-URL erforderlich."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Öffnen Sie die Seite „Verlauf“ in einem neuen Tab"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Echtzeit-UI-Updates aktiviert"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Favicons Aktiviert"
+
+#: changedetectionio/forms.py
 msgid "Use page <title> in watch overview list"
 msgstr "Verwenden Sie die Seite <title> in der Übersichtsliste der Beobachtungen"
 
