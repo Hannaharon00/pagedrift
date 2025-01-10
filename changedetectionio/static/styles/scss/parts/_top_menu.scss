@@ -94,3 +94,78 @@ ul#top-right-menu {
   cursor: pointer;
 }
 
+#pure-menu-horizontal-spinner {
+  height: 2px;
+  background: linear-gradient(-75deg, #ff6000, #ff8f00, #ffdd00, #ed0000);
+  background-size: 400% 400%;
+  animation: gradient 200s ease infinite;
+  opacity: 0.8;
+  // Fixed (not sticky): a sticky element still reserves its 2px in normal flow, and since
+  // this sits after the 100vh .app it pushed body to 100vh+2px and forced a scrollbar.
+  // Fixed pins it to the viewport bottom with zero layout impact.
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  pointer-events: none; // it's a thin overlay - never intercept clicks on content beneath
+}
+
+// "Live / Paused" scheduling status — a pill with a pulsing dot, replacing the
+// plain pause button. Sits on the gradient top menu (white text), so it uses a
+// translucent surface rather than a light card background.
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--common-round-border);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-menu-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #42dd53;                            // live = green
+    box-shadow: 0 0 0 3px rgba(66, 221, 83, 0.3);
+    animation: status-pill-pulse 2s infinite;
+  }
+
+  // Paused = steady amber dot (no pulse).
+  &.paused .live-dot {
+    background: #e8a33d;
+    box-shadow: 0 0 0 3px rgba(232, 163, 61, 0.3);
+    animation: none;
+  }
+
+  // Icon-led pills (e.g. the mute toggle) keep the feather icon compact.
+  .action-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  // Muted = notifications silenced; dim the pill and amber the bell so it reads as "off".
+  &.muted {
+    opacity: 0.8;
+    .action-icon { color: #e8a33d; }
+  }
+}
+
+@keyframes status-pill-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
