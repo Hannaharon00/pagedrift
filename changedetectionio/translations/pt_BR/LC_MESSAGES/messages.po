@@ -2049,6 +2049,66 @@ msgid "Headers can be also read from a file in your data-directory"
 msgstr "Cabeçalhos também podem ser lidos de um arquivo no seu diretório de dados"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Leia mais aqui"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Não suportado pelo navegador Selenium"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Ativar localizador de texto"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Por favor, aguarde. O primeiro passo do navegador pode levar um tempo para carregar..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Clique aqui para Começar"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Aguarde de 10 a 15 segundos para o navegador conectar."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Pressione \"Play\" para iniciar."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Dados do Seletor Visual não estão prontos; o monitoramento precisa ser verificado pelo menos uma vez."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Desculpe, esta funcionalidade só funciona com fetchers que suportam Javascript interativo (até agora apenas fetchers "
+"baseados em Playwright)"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "para um que suporte Javascript interativo."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Você precisa"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Definir o método de busca"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Envia uma notificação quando o filtro não pode mais ser visto na página, útil para saber quando a página mudou e seu "
+"filtro não funcionará mais."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
 msgstr "Use o botão de verificar (✓) para testar se uma condição passa contra o instantâneo atual."
 
