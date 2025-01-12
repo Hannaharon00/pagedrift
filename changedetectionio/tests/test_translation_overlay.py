@@ -13,6 +13,42 @@ README.md. Three separate things can break it, so there is a test for each.
    chain, overrides would stop applying while everything still looked fine.
    ``test_overlay_overrides_a_string_in_a_rendered_page`` pins it against a real rendered page.
 
+3. The directory has to actually reach ``BABEL_TRANSLATION_DIRECTORIES``.
+   ``test_overlay_dir_*`` cover the wiring in flask_app.py, including the env var.
+"""
+
+import os
+import subprocess
+import sys
+
+import pytest
+from babel.messages.catalog import Catalog
+from babel.messages.mofile import write_mo
+from flask import url_for
+
+PKG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = os.path.dirname(PKG_DIR)
+OVERLAY_DIR = os.path.join(PKG_DIR, 'translations_overlay')
+BASE_DIR = os.path.join(PKG_DIR, 'translations')
+MANAGE = os.path.join(OVERLAY_DIR, 'manage.py')
+
+# A msgid that renders as a settings-page tab label. The test asserts it is present *before*
+# overriding it, so a rename upstream fails loudly rather than making the test silently vacuous.
+OVERRIDDEN_MSGID = 'Global Filters'
+SENTINEL = 'zzOverlaySentinelFiltersZZ'
+
+
+def _write_mo(root, locale, entries):
+    """Write a compiled catalog at <root>/<locale>/LC_MESSAGES/messages.mo."""
+    catalog = Catalog(locale=locale, domain='messages')
+    for msgid, msgstr in entries.items():
+        catalog.add(msgid, msgstr)
+    mo_dir = os.path.join(root, locale, 'LC_MESSAGES')
+    os.makedirs(mo_dir, exist_ok=True)
+    with open(os.path.join(mo_dir, 'messages.mo'), 'wb') as fp:
+        write_mo(fp, catalog)
+
+
 def _import_app_with(env_overlay_dir):
     """Import flask_app in a clean subprocess and report its BABEL_TRANSLATION_DIRECTORIES.
 
