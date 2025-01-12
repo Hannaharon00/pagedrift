@@ -36,6 +36,19 @@ def _seed_token_counters(datastore, this_month=5000, total=12000):
     })
 
 
+def _get_counters(datastore):
+    llm_cfg = datastore.data['settings']['application'].get('llm') or {}
+    return {
+        'tokens_this_month': llm_cfg.get('tokens_this_month', 0),
+        'tokens_total_cumulative': llm_cfg.get('tokens_total_cumulative', 0),
+        'tokens_month_key': llm_cfg.get('tokens_month_key'),
+    }
+
+
+# ---------------------------------------------------------------------------
+# API tamper tests
+# ---------------------------------------------------------------------------
+
 def test_api_cannot_reset_token_counters_via_watch_put(
         client, live_server, measure_memory_usage, datastore_path):
     """
