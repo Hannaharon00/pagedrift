@@ -5,6 +5,93 @@ from loguru import logger
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode, quote, unquote
 
 
+def normalize_url_encoding(url):
+    """
+    Safely encode a URL's query parameters, regardless of whether they're already encoded.
+
+    Why this is necessary:
+    URLs can arrive in various states - some with already encoded query parameters (%20 for spaces),
+    some with unencoded parameters (literal spaces), or a mix of both. The validators.url() function
+    requires proper encoding, but simply encoding an already-encoded URL would double-encode it
+    (e.g., %20 would become %2520).
+
+    This function solves the problem by:
+    1. Parsing the URL to extract query parameters
+    2. parse_qsl() automatically decodes parameters if they're encoded
+    3. urlencode() re-encodes them properly
+    4. Returns a consistently encoded URL that will pass validation
+
+    Example:
+    - Input:  "http://example.com/test?time=2025-10-28 09:19"  (space not encoded)
+    - Output: "http://example.com/test?time=2025-10-28+09%3A19" (properly encoded)
+
+    - Input:  "http://example.com/test?time=2025-10-28%2009:19" (already encoded)
+    - Output: "http://example.com/test?time=2025-10-28+09%3A19" (properly encoded)
+
+    Returns a properly encoded URL string.
+    """
+    try:
+        # Parse the URL into components (scheme, netloc, path, params, query, fragment)
+        parsed = urlparse(url)
+
+        # Parse query string - this automatically decodes it if encoded
+        # parse_qsl handles both encoded and unencoded query strings gracefully
+        query_params = parse_qsl(parsed.query, keep_blank_values=True)
+
+        # Re-encode the query string properly using standard URL encoding
+        encoded_query = urlencode(query_params, safe='')
+
+        # Fragments need the same treatment - browsers accept characters there that
+        # RFC 3986 does not (e.g. '|' in "...w-4#int=S:PFreco|PF|48966", see issue #4209)
+        # and validators.url() would reject them. unquote() first so an already-encoded
+        # fragment isn't double-encoded, then re-quote keeping every character that
+        # RFC 3986 allows in a fragment (pchar / "/" / "?") intact.
+        encoded_fragment = quote(unquote(parsed.fragment), safe="/?:@!$&'()*+,;=")
+
+        # Reconstruct the URL with properly encoded query string
+        normalized = urlunparse((
+            parsed.scheme,
+            parsed.netloc,
+            parsed.path,
+            parsed.params,
+            encoded_query,  # Use the re-encoded query
+            encoded_fragment  # Use the re-encoded fragment
+        ))
+
+        return normalized
+    except Exception as e:
+        # If parsing fails for any reason, return original URL
+        logger.debug(f"URL normalization failed for '{url}': {e}")
+        return url
+
+
+# Address blocks that are NOT globally reachable but which Python's ipaddress flags
+# (is_private / is_loopback / is_link_local / is_reserved) do not report — so relying on
+# those four alone leaves them fetchable. Each entry states what it is and why it matters:
+#
+#   100.64.0.0/10   RFC 6598 Carrier-Grade NAT "shared address space". Not private per
+#                   ipaddress, yet it is exactly where an ISP/cloud tenant's other
+#                   customers, CPE admin panels and CGNAT gateways live. This is the
+#                   incomplete-remediation gap reported in GHSA-gwph-fp79-379w.
+#   192.88.99.0/24  RFC 7526 deprecated 6to4 relay anycast.
+#   224.0.0.0/4     IPv4 multicast (includes 224.0.0.1 all-hosts).
+#   ff00::/8        IPv6 multicast (includes ff02::1 link-local all-nodes).
+#   3fff::/20       RFC 9637 documentation range; unknown to older Python releases.
+#
+# Kept as an explicit, documented list rather than leaning only on `not ip.is_global`
+# because the meaning of is_global has shifted between Python releases; the is_global
+# check below is a belt-and-braces catch-all on top of these, never a replacement.
+_NON_GLOBAL_EXTRA_NETWORKS = tuple(
+    ipaddress.ip_network(n) for n in (
+        '100.64.0.0/10',
+        '192.88.99.0/24',
+        '224.0.0.0/4',
+        'ff00::/8',
+        '3fff::/20',
+    )
+)
+
+
 def is_special_purpose_ip(ip):
     """Return (blocked: bool, why: str) for a single resolved IP address.
 
