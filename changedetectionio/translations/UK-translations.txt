@@ -1893,3 +1893,59 @@ msgstr "URL виводу різниці (diff) для завдання."
 msgid "The diff output - only changes, additions, and removals"
 msgstr "Вивід diff - тільки зміни, додавання та видалення"
 
+#: changedetectionio/templates/_helpers.html
+msgid "in the"
+msgstr "у"
+
+#: changedetectionio/templates/_helpers.html
+msgid "file"
+msgstr "файлі"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Встановити розклад по годинах/днях тижня"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Обмеження часу розкладу"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Робочі години"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Вихідні"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Скидання"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Увага, один або кілька ваших 'днів' мають тривалість, що переходить на наступний день."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Це може призвести до непередбачених наслідків."
+
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Більше довідки та прикладів використання планувальника"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Хочете використовувати розклад за часом?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Спочатку підтвердіть/збережіть налаштування часового поясу"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Викликає зміну, якщо цей текст з'являється І щось змінилося в документі."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Тригерний текст"
+
