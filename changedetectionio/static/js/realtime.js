@@ -120,3 +120,70 @@ $(document).ready(function () {
                 bindSocketHandlerButtonsEvents(socket);
             });
 
+            socket.on('connect_error', function(error) {
+                console.error('Socket.IO connection error:', error);
+            });
+
+            socket.on('connect_timeout', function() {
+                console.error('Socket.IO connection timeout');
+            });
+
+            socket.on('error', function(error) {
+                console.error('Socket.IO error:', error);
+            });
+
+            socket.on('disconnect', function (reason) {
+                console.log('Socket.IO disconnected, reason:', reason);
+                $('.ajax-op').off('.socketHandlerNamespace');
+                $('#realtime-conn-error').show();
+            });
+
+            // Tell the server we're leaving cleanly so it can release the connection
+            // immediately rather than waiting for a timeout.
+            // Note: this only fires for voluntary closes (tab/window close, navigation away).
+            // Hard kills, crashes and network drops will still timeout normally on the server.
+            window.addEventListener('beforeunload', function () {
+                socket.disconnect();
+            });
+
+            socket.on('queue_size', function (data) {
+                console.log(`${data.event_timestamp} - Queue size update: ${data.q_length}`);
+                const formattedCount = parseInt(data.q_length).toLocaleString() || 'None';
+                queueSizeNodes.forEach(node => { node.textContent = formattedCount; });
+                document.body.classList.toggle('has-queue', parseInt(data.q_length) > 0);
+
+                // Update queue bubble in action sidebar
+                //if (queueBubble) {
+                if (0) {
+                    const count = parseInt(data.q_length) || 0;
+                    const oldCount = parseInt(queueBubble.getAttribute('data-count')) || 0;
+
+                    if (count > 0) {
+                        // Format number according to browser locale
+                        const formatter = new Intl.NumberFormat(navigator.language);
+                        queueBubble.textContent = formatter.format(count);
+                        queueBubble.setAttribute('data-count', count);
+                        queueBubble.classList.add('visible');
+
+                        // Add large-number class for numbers > 999
+                        if (count > 999) {
+                            queueBubble.classList.add('large-number');
+                        } else {
+                            queueBubble.classList.remove('large-number');
+                        }
+
+                        // Pulse animation if count changed
+                        if (count !== oldCount) {
+                            queueBubble.classList.remove('pulse');
+                            // Force reflow to restart animation
+                            void queueBubble.offsetWidth;
+                            queueBubble.classList.add('pulse');
+                        }
+                    } else {
+                        // Hide bubble when queue is empty
+                        queueBubble.classList.remove('visible', 'pulse', 'large-number');
+                        queueBubble.setAttribute('data-count', '0');
+                    }
+                }
+            })
+
