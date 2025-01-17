@@ -176,3 +176,28 @@ class TestAmIInsideTime(unittest.TestCase):
             self.assertFalse(result, "Should not include time before start")
 
 
+class TestIsWithinSchedule(unittest.TestCase):
+    """Tests for the is_within_schedule function."""
+
+    def test_schedule_disabled(self):
+        """Test that disabled schedule returns False."""
+        time_schedule_limit = {'enabled': False}
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertFalse(result)
+
+    def test_schedule_none(self):
+        """Test that None schedule returns False."""
+        result = time_handler.is_within_schedule(None)
+        self.assertFalse(result)
+
+    def test_schedule_empty_dict(self):
+        """Test that empty dict returns False."""
+        result = time_handler.is_within_schedule({})
+        self.assertFalse(result)
+
+    def test_schedule_enabled_but_day_disabled(self):
+        """Test schedule enabled but current day disabled."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+
