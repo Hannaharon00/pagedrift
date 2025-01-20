@@ -116,3 +116,223 @@ tags:
       GET /api/v1/full-spec
       ```
 
+        Enter your API key in the "Authorize" button above to automatically populate all code examples.
+
+  schemas:
+    WatchBase:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier
+          readOnly: true
+        date_created:
+          type: [integer, 'null']
+          description: Unix timestamp of creation
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          description: URL to monitor for changes
+          maxLength: 5000
+        link_to_open:
+          type: string
+          description: |
+            Optional human-facing URL to open instead of `url`. Use when `url` points at something
+            that is not meant to be read in a browser (an API endpoint or RSS feed, for example).
+            An empty string means "use `url`". Exposed rendered as `open_link`.
+          maxLength: 5000
+        title:
+          type: [string, 'null']
+          description: Custom title for the web page change monitor (watch), not to be confused with page_title
+          maxLength: 5000
+        tag:
+          type: string
+          deprecated: true
+          description: |
+            **Deprecated - use `tags` instead.** Kept working for API v1 and may be removed in v2.
+
+            Takes comma-separated tag *names* (not UUIDs, despite what earlier revisions of this
+            document said). Names are matched case-insensitively against existing tags and created
+            when they don't exist yet. An existing tag's UUID is also accepted and resolves to that
+            tag; a UUID matching no tag is ignored.
+          maxLength: 5000
+          example: "Production, Price tracking"
+        tags:
+          type: array
+          items:
+            type: string
+          description: |
+            Array of tag UUIDs. Unlike `tag`, these are applied exactly as given - no tag is ever
+            created from this field. The UUIDs are not validated: an unknown one is stored but
+            resolves to no group.
+        paused:
+          type: boolean
+          description: Whether the web page change monitor (watch) is paused
+        notification_muted:
+          type: boolean
+          description: Whether notifications are muted
+        method:
+          type: string
+          enum: [GET, POST, DELETE, PUT]
+          description: HTTP method to use
+        fetch_backend:
+          type: string
+          description: |
+            Backend to use for fetching content. Common values:
+            - `system` (default) - Use the system-wide default fetcher
+            - `html_requests` - Fast requests-based fetcher
+            - `html_webdriver` - Browser-based fetcher (Playwright/Puppeteer)
+            - `extra_browser_*` - Custom browser configurations (if configured)
+            - Plugin-provided fetchers (if installed)
+          pattern: '^(system|html_requests|html_webdriver|extra_browser_.+)$'
+          default: system
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: HTTP headers to include in requests
+        body:
+          type: [string, 'null']
+          description: HTTP request body
+          maxLength: 5000
+        proxy:
+          type: [string, 'null']
+          description: Proxy configuration
+          maxLength: 5000
+        ignore_status_codes:
+          type: [boolean, 'null']
+          description: Ignore HTTP status code errors (boolean or null)
+        webdriver_delay:
+          type: [integer, 'null']
+          description: Delay in seconds for webdriver
+        webdriver_js_execute_code:
+          type: [string, 'null']
+          description: JavaScript code to execute
+          maxLength: 5000
+        time_between_check:
+          type: object
+          properties:
+            weeks:
+              type: [integer, 'null']
+              minimum: 0
+              maximum: 52000
+            days:
+              type: [integer, 'null']
+              minimum: 0
+              maximum: 365000
+            hours:
+              type: [integer, 'null']
+              minimum: 0
+              maximum: 8760000
+            minutes:
+              type: [integer, 'null']
+              minimum: 0
+              maximum: 525600000
+            seconds:
+              type: [integer, 'null']
+              minimum: 0
+              maximum: 31536000000
+          description: Time intervals between checks. All fields must be non-negative. At least one non-zero value required when not using default settings.
+        time_between_check_use_default:
+          type: boolean
+          default: true
+          description: Whether to use global settings for time between checks - defaults to true if not set
+        notification_urls:
+          type: array
+          items:
+            type: string
+            maxLength: 1000
+          maxItems: 100
+          description: Notification URLs for this web page change monitor (watch). Maximum 100 URLs.
+        notification_title:
+          type: [string, 'null']
+          description: Custom notification title
+          maxLength: 5000
+        notification_body:
+          type: [string, 'null']
+          description: Custom notification body
+          maxLength: 5000
+        notification_format:
+          type: string
+          enum: ['text', 'html', 'htmlcolor', 'markdown', 'System default']
+          description: Format for notifications
+        track_ldjson_price_data:
+          type: [boolean, 'null']
+          description: Whether to track JSON-LD price data
+        browser_steps:
+          type: array
+          items:
+            type: object
+            properties:
+              operation:
+                type: [string, 'null']
+                maxLength: 5000
+              selector:
+                type: [string, 'null']
+                maxLength: 5000
+              optional_value:
+                type: [string, 'null']
+                maxLength: 5000
+            required: [operation, selector, optional_value]
+            additionalProperties: false
+          maxItems: 100
+          description: Browser automation steps. Maximum 100 steps allowed.
+        processor:
+          type: string
+          enum: [restock_diff, text_json_diff]
+          default: text_json_diff
+          description: Optional processor mode to use for change detection. Defaults to `text_json_diff` if not specified.
+
+        # Content Filtering
+        include_filters:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: CSS/XPath selectors to extract specific content from the page
+        subtractive_selectors:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: CSS/XPath selectors to remove content from the page
+        ignore_text:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: Text patterns to ignore in change detection
+        trigger_text:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: Text/regex patterns that must be present to trigger a change
+        text_should_not_be_present:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: Text that should NOT be present (triggers alert if found)
+        extract_lines_containing:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: Keep only lines containing these substrings (plain text, case-insensitive) — simpler alternative to regex
+        extract_text:
+          type: array
+          items:
+            type: string
+            maxLength: 5000
+          maxItems: 100
+          description: Regex patterns to extract specific text after filtering
+
