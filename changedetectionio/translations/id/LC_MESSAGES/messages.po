@@ -2062,6 +2062,58 @@ msgid "Set to empty to use system settings default"
 msgstr "Kosongkan untuk menggunakan default pengaturan sistem"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Connect using Bright Data and Oxylabs Proxies, find out more here."
+msgstr "Hubungkan menggunakan Proksi Bright Data dan Oxylabs, cari tahu selengkapnya di sini."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check/Scan all"
+msgstr "Periksa/Pindai semua"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Choose a proxy for this watch"
+msgstr "Pilih proksi untuk monitor ini"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Using the current global default settings"
+msgstr "Menggunakan pengaturan default global saat ini"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Show advanced options"
+msgstr "Tampilkan opsi lanjutan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "Jalankan kode ini sebelum melakukan deteksi perubahan, berguna untuk mengisi bidang dan tindakan lainnya"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "Bantuan dan contoh lainnya di sini"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "Variabel didukung dalam isi permintaan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "Variabel didukung dalam nilai header permintaan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "Peringatan! File header tambahan ditemukan dan akan ditambahkan ke monitor ini!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Header juga dapat dibaca dari file di direktori data Anda"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Baca selengkapnya di sini"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Tidak didukung oleh browser Selenium"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Remove any whitespace before and after each line of text"
 msgstr "Hapus spasi apa pun sebelum dan sesudah setiap baris teks"
 
