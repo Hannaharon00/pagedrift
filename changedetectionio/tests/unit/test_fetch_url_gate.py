@@ -16,3 +16,15 @@ These tests pin the gate's rules AND the browser-step choke point, so a future f
 forgets to call the gate is the only way to regress it.
 """
 
+import asyncio
+import unittest
+from unittest.mock import patch
+
+from changedetectionio.browser_steps.browser_steps import steppable_browser_interface
+from changedetectionio.validate_url import (
+    is_fetch_url_allowed,
+    is_special_purpose_ip,
+    validate_fetch_url,
+    validate_fetch_url_async,
+)
+
