@@ -2697,3 +2697,60 @@ msgstr "Prompt Ringkasan Perubahan AI default"
 msgid "Max tokens per watch per period"
 msgstr "Token maks. per monitor per periode"
 
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr "Riwayat harga"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "Deteksi stok kembali"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "Hanya Tersedia (Stok Habis -> Tersedia saja)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "Setiap perubahan ketersediaan"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "Nonaktif, jangan ikuti ketersediaan/stok kembali"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "Harga di bawah nilai ini untuk memicu notifikasi"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "Tanpa batas"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "Harga di atas nilai ini untuk memicu notifikasi"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "Ambang batas (%) perubahan harga sejak pemeriksaan sebelumnya"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "Harus antara 0 dan 100"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "Ikuti perubahan harga"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Restock & Price Detection"
+msgstr "Deteksi Stok Kembali & Harga"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Re-stock & Price detection for pages with a SINGLE product"
+msgstr "Deteksi Stok Kembali & Harga untuk halaman dengan SATU produk"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Detects if the product goes back to in-stock"
+msgstr "Mendeteksi jika produk kembali tersedia"
+
