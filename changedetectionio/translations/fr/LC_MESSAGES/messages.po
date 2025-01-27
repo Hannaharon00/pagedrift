@@ -2080,6 +2080,64 @@ msgid ""
 msgstr ""
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Lisez un tutoriel rapide sur"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "en utilisant les modifications conditionnelles de page Web ici"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Aperçu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Conseils de pro :"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Utilisez la page d'aperçu pour voir vos filtres et déclencheurs mis en surbrillance."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Limiter le déclenchement/ignorer/bloquer/extraire à ;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Il est donc toujours préférable de sélectionner"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "lorsque vous êtes intéressé par du nouveau contenu."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Lorsque le contenu est simplement déplacé dans une liste, cela déclenchera également un"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "ajout"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "envisager d'activer"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Se déclenche uniquement lorsque des lignes uniques apparaissent"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid ""
 "Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
 "lines against all history for this watch."
