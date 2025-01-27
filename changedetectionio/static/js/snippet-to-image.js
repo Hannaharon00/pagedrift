@@ -158,6 +158,94 @@ function expandRangeToFullLines(range, container) {
 }
 
 /**
+ * Create a temporary element with the selected content styled for capture
+ */
+function createCaptureElement(selectedFragment, originalElement) {
+    const originalStyles = window.getComputedStyle(originalElement);
+
+    // Create container with watermark background
+    const container = document.createElement("div");
+    container.innerHTML = `
+        <div style="
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            padding: 2px;
+            background-color: transparent;
+        ">
+        <div style="
+            background-color: #ffffff;
+            width: ${originalElement.offsetWidth}px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        ">
+            <!-- Watermark background -->
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: 0;
+                background-image: url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><g font-family='Arial' font-size='18' font-weight='700' fill='%23e8e8e8' transform='rotate(-45 200 100)'><text x='0' y='40'>changedetection.io   changedetection.io   changedetection.io</text><text x='0' y='100'>changedetection.io   changedetection.io   changedetection.io</text><text x='0' y='160'>changedetection.io   changedetection.io   changedetection.io</text></g></svg>&quot;);
+                background-repeat: repeat;
+                background-size: 400px 200px;
+            "></div>
+
+            <!-- Content -->
+            <pre id="temp-capture-element" style="
+                position: relative;
+                z-index: 1;
+                white-space: ${originalStyles.whiteSpace};
+                font-family: ${originalStyles.fontFamily};
+                font-size: ${originalStyles.fontSize};
+                line-height: ${originalStyles.lineHeight};
+                color: ${originalStyles.color};
+                word-wrap: ${originalStyles.wordWrap};
+                overflow-wrap: ${originalStyles.overflowWrap};
+                background-color: transparent;
+                padding: ${IMAGE_PADDING}px;
+                border: ${originalStyles.border};
+                box-sizing: border-box;
+                margin: 0;
+            "></pre>
+        </div>
+        </div>
+    `;
+
+    const outerWrapper = container.firstElementChild;
+    const innerWrapper = outerWrapper.querySelector('div');
+    const tempElement = innerWrapper.querySelector('#temp-capture-element');
+    tempElement.appendChild(selectedFragment);
+
+    // Store innerWrapper for footer appending
+    outerWrapper._innerWrapper = innerWrapper;
+
+    return outerWrapper;
+}
+
+/**
+ * Count lines in a text string or document fragment
+ */
+function countLines(content) {
+    if (!content) return 0;
+
+    let text = '';
+    if (typeof content === 'string') {
+        text = content;
+    } else if (content.textContent) {
+        text = content.textContent;
+    }
+
+    // Count newlines + 1 (for the last line)
+    const lines = text.split('\n').length;
+    return lines > 0 ? lines : 1;
+}
+
+/**
  * Create footer with metadata (URL, version info, line count)
  */
 function createFooter(selectedLines, totalLines) {
