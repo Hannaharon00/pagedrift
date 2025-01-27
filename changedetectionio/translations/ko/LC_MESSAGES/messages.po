@@ -2958,6 +2958,58 @@ msgid "Run duration"
 msgstr "실행 시간"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "시간 예약 사용"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "기준 시간대 (선택 사항)"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "월요일"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "화요일"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "수요일"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "목요일"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "금요일"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "토요일"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "일요일"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "주"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "0초 이상을 포함해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "일"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "시간"
+
+#: changedetectionio/forms.py
 msgid "Minutes"
 msgstr "분"
 
