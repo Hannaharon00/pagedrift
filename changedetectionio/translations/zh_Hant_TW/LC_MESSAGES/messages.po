@@ -2714,6 +2714,64 @@ msgstr "啟用 RSS 閱讀器模式 "
 msgid "Number of changes to show in watch RSS feed"
 msgstr "在 RSS Feed 中顯示的變更數量"
 
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "1 週後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%s 週前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "%s 週後"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1 個月前"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "1 個月後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%s 個月前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "%s 個月後"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1 年前"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "1 年後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%s 年前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "%s 年後"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr "掃描此 RegEx 的所有監測歷史記錄時找不到相符項目。"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "歷史記錄不足以進行比較。至少需要 2 個快照。"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Threshold (%) for price changes since the previous check"
 msgstr "自上次檢查以來價格變化的閾值（%）"
