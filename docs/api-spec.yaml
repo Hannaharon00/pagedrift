@@ -100,6 +100,17 @@ tags:
       The live, fully-merged spec is always available at `/api/v1/full-spec` — use that URL with
       Swagger UI or Redoc to see the complete schema for your specific installation.
 
+      ---
+
+      ### Writing a processor `api.yaml`
+
+      Place an `api.yaml` in the processor plugin's own directory, alongside its `__init__.py`
+      (e.g. `changedetectionio/processors/my_processor/api.yaml`). The schema name **must** follow the
+      convention `processor_config_<processor_name>` (e.g. `processor_config_restock_diff`). That same
+      key is used as the JSON field name when creating or updating a watch.
+
+      A minimal `api.yaml` for a hypothetical `my_processor`:
+
       #### DELETE — Remove the monitor
 
       ```bash
