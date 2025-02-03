@@ -185,6 +185,101 @@ def test_concurrent_watch_commits_dont_corrupt(client, live_server):
         assert 'Title' in data['title'], "Title should contain 'Title'"
 
 
+def test_concurrent_modifications_during_commit(client, live_server):
+    """Test that modifying watch during commit doesn't cause RuntimeError"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(url='http://example.com', extras={'title': 'Test'})
+    watch = datastore.data['watching'][uuid]
+
+    errors = []
+    stop_flag = threading.Event()
+
+    def keep_modifying():
+        """Continuously modify watch"""
+        try:
+            i = 0
+            while not stop_flag.is_set():
+                watch['title'] = f'Title {i}'
+                watch['paused'] = i % 2 == 0
+                i += 1
+                time.sleep(0.001)
+        except Exception as e:
+            errors.append(('modifier', e))
+
+    def keep_committing():
+        """Continuously commit watch"""
+        try:
+            for _ in range(20):
+                watch.commit()
+                time.sleep(0.005)
+        except Exception as e:
+            errors.append(('committer', e))
+
+    # Start concurrent modification and commits
+    modifier = threading.Thread(target=keep_modifying)
+    committer = threading.Thread(target=keep_committing)
+
+    modifier.start()
+    committer.start()
+
+    committer.join()
+    stop_flag.set()
+    modifier.join()
+
+    # Should not have RuntimeError from dict changing during iteration
+    runtime_errors = [e for source, e in errors if isinstance(e, RuntimeError)]
+    assert len(runtime_errors) == 0, f"Should not have RuntimeError, got: {runtime_errors}"
+
+
+def test_datastore_lock_protects_commit_snapshot(client, live_server):
+    """Test that datastore.lock prevents race conditions during deepcopy"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(url='http://example.com', extras={'title': 'Test'})
+    watch = datastore.data['watching'][uuid]
+
+    # Add some complex nested data
+    watch['browser_steps'] = [
+        {'operation': 'click', 'selector': '#foo'},
+        {'operation': 'wait', 'seconds': 5}
+    ]
+
+    errors = []
+    commits_succeeded = [0]
+
+    def rapid_commits():
+        try:
+            for i in range(50):
+                watch['title'] = f'Title {i}'
+                watch.commit()
+                commits_succeeded[0] += 1
+                time.sleep(0.001)
+        except Exception as e:
+            errors.append(e)
+
+    # Multiple threads doing rapid commits
+    threads = [threading.Thread(target=rapid_commits) for _ in range(3)]
+
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    assert len(errors) == 0, f"Expected no errors, got: {errors}"
+    assert commits_succeeded[0] == 150, f"Expected 150 commits, got {commits_succeeded[0]}"
+
+    # Final JSON should be valid
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+        assert data['uuid'] == uuid
+
+
+# ==============================================================================
+# 4. Processor Config Separation Tests
+# ==============================================================================
+
 def test_processor_config_never_in_watch_json(client, live_server):
     """Test that processor_config_* fields are filtered out of watch.json"""
     datastore = client.application.config.get('DATASTORE')
