@@ -3414,6 +3414,66 @@ msgid "templating in the notification title, body and URL, and tokens from below
 msgstr "알림 제목, 본문, URL에 아래 토큰과 함께 템플릿을 사용할 수 있습니다."
 
 #: changedetectionio/templates/_common_fields.html
+msgid "args, e.g."
+msgstr "인자를 지원합니다. 예:"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes, additions, and removals —"
+msgstr "비교 결과 - 변경, 추가, 삭제만 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Without (added) prefix or colors"
+msgstr "(added) 접두사나 색상 없이"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions"
+msgstr "비교 결과 - 변경 및 추가만"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions —"
+msgstr "비교 결과 - 변경 및 추가만 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "비교 결과 - 변경 및 삭제만"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "비교 결과 - 변경 및 삭제만 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "비교 결과 - 전체 차이"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "비교 결과 - 전체 차이 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "비교 결과 - unified 형식 패치"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr "이전 버전에서 변경된 단어/값만 표시합니다. 예: 이전 가격. 한 줄당 하나의 값만 바뀔 때 가장 적합하며, 여러 조각이 바뀌면 줄바꿈으로 연결됩니다."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr "새 버전에서 변경된 단어/값만 표시합니다. 예: 새 가격. 한 줄당 하나의 값만 바뀔 때 가장 적합하며, 여러 조각이 바뀌면 줄바꿈으로 연결됩니다."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "현재 스냅샷의 텍스트 내용 값입니다. JSON 또는 CSS 필터와 함께 쓰면 유용합니다."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "필터에서 트리거를 발생시킨 텍스트입니다."
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "를 생략하세요. 예:"
 
