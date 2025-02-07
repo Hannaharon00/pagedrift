@@ -2246,6 +2246,68 @@ msgstr ""
 "<i>проверьте уникальные строки</i> ниже."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Удалите все пробелы до и после каждой строки текста."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr "Предварительный просмотр намерений ИИ"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "Инструмент «Визуальный выбор» позволяет выбрать"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "текст"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+"элементы, которые будут использоваться для обнаружения изменений. Он автоматически заполняет фильтры в поле «Фильтры "
+"CSS/JSONPath/JQ/XPath» окна"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "вкладка. Использовать"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+щелчок"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "чтобы выбрать несколько элементов."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "Режим выбора:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "Область рисования"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "Один момент, получение снимка экрана и информации об элементе.."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
+msgstr ""
+"К сожалению, эта функция работает только с сборщиками, которые поддерживают Javascript и снимки экрана (например, "
+"драматург и т. д.)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports Javascript and screenshots."
+msgstr "на тот, который поддерживает Javascript и снимки экрана."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Check count"
 msgstr "Проверьте количество"
 
