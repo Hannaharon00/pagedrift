@@ -3091,3 +3091,60 @@ msgstr "Ativar modo de leitor RSS"
 msgid "Number of changes to show in watch RSS feed"
 msgstr "Número de mudanças a exibir no feed RSS do monitoramento"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "para não-SSL, ex:"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "mais ajuda aqui"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "Aceita os espaços reservados <code>%(token)s</code> listados abaixo"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Título para todas as notificações"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "Para payloads JSON, use"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "sem aspas para escape automático, por exemplo -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "Codificação de URL, use"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "por exemplo -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Substituição por expressão regular, use"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Para uma referência completa de todos os filtros nativos do Jinja2, os usuários podem consultar o"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Formato para todas as notificações"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr ""
+
