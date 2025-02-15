@@ -197,3 +197,5 @@ class WebDriverSeleniumFetcherPlugin:
         return ('html_webdriver', fetcher)
 
 
+# Create module-level instance for plugin registration
+webdriver_selenium_plugin = WebDriverSeleniumFetcherPlugin()
