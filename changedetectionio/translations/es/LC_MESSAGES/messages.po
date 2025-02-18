@@ -3325,3 +3325,61 @@ msgid ""
 "raw diff when not configured."
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr ""
+"¡Use las <a target=\"newwindow\" href=\"%(url)s\">URL de notificación de AppRise</a> para notificar a casi cualquier "
+"servicio!"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr "<i>Lea la wiki de servicios de notificación aquí para obtener notas de configuración importantes</i>"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "Mostrar ayuda y consejos avanzados"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "(o"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "sólo admite un máximo"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2.000 caracteres"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "del texto de la notificación, incluido el título."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr ""
+"Los bots no pueden enviar mensajes a otros bots, por lo que debes especificar el ID de chat de un usuario que no sea "
+"un bot."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "solo admite HTML muy limitado y puede fallar cuando se envían etiquetas adicionales,"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "(o utilice formato de texto sin formato/rebajas)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "para llamadas API directas (u omitir el"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "para no SSL, es decir"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "más ayuda aquí"
+
