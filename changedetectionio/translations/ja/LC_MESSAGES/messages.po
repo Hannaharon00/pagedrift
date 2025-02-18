@@ -3003,6 +3003,66 @@ msgstr "変更検知前にJavaScriptを実行"
 msgid "Proxy"
 msgstr "プロキシ"
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "フィルタがページで見つからなくなったときに通知を送信"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "オン"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "通知"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "ミュート済み"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "通知にスクリーンショットを添付（可能な場合）"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "一致条件"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "以下のすべてに一致"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "以下のいずれかに一致"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "リストでページの <title> を使用"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "ウォッチごとに保持する履歴の件数"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "リクエストメソッドがGETの場合、ボディは空にしてください"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "無効なテンプレート構文設定: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "無効なテンプレート構文: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "\"%(header)s\" ヘッダーのテンプレート構文が無効です: %(error)s"
+
 #: changedetectionio/processors/image_ssim_diff/preview.py
 msgid "Preview unavailable - No snapshots captured yet"
 msgstr "プレビューを表示できません - まだスナップショットが取得されていません"
