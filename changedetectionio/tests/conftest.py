@@ -193,3 +193,108 @@ def cleanup(datastore_path):
             if os.path.isfile(f):
                 os.unlink(f)
 
+# So the app can also know which test name it was
+@pytest.fixture(autouse=True)
+def set_test_name(request):
+  """Automatically set TEST_NAME env var for every test"""
+  test_name = request.node.name
+  os.environ['PYTEST_CURRENT_TEST'] = test_name
+  yield
+  # Cleanup if needed
+
+
+@pytest.fixture(scope='session')
+def app(request, datastore_path):
+    """Create application once per worker (session).
+
+    Note: Actual per-test isolation is handled by:
+    - prepare_test_function() recreates datastore and cleans directory
+    - All tests on same worker use same directory (cleaned between tests)
+    """
+    # So they don't delay in fetching
+    os.environ["MINIMUM_SECONDS_RECHECK_TIME"] = "0"
+    logger.debug(f"Testing with datastore_path={datastore_path}")
+    cleanup(datastore_path)
+
+    app_config = {'datastore_path': datastore_path, 'disable_checkver' : True}
+    cleanup(app_config['datastore_path'])
+
+    logger_level = 'TRACE'
+
+    logger.remove()
+    log_level_for_stdout = { 'DEBUG', 'SUCCESS' }
+    logger.configure(handlers=[
+        {"sink": sys.stdout, "level": logger_level,
+         "filter" : lambda record: record['level'].name in log_level_for_stdout},
+        {"sink": sys.stderr, "level": logger_level,
+         "filter": lambda record: record['level'].name not in log_level_for_stdout},
+        ])
+
+    datastore = store.ChangeDetectionStore(datastore_path=app_config['datastore_path'], include_default_watches=False)
+    app = changedetection_app(app_config, datastore)
+
+    # Disable CSRF while running tests
+    app.config['WTF_CSRF_ENABLED'] = False
+    app.config['STOP_THREADS'] = True
+    # Store datastore_path so Flask routes can access it
+    app.config['TEST_DATASTORE_PATH'] = datastore_path
+
+    def teardown():
+        import threading
+        import time
+
+        # Stop all threads and services
+        datastore.stop_thread = True
+        app.config.exit.set()
+
+        # Shutdown workers gracefully before loguru cleanup
+        try:
+            from changedetectionio import worker_pool
+            worker_pool.shutdown_workers()
+        except Exception:
+            pass
+
+        # Stop socket server threads
+        try:
+            from changedetectionio.flask_app import socketio_server
+            if socketio_server and hasattr(socketio_server, 'shutdown'):
+                socketio_server.shutdown()
+        except Exception:
+            pass
+
+        # Get all active threads before cleanup
+        main_thread = threading.main_thread()
+        active_threads = [t for t in threading.enumerate() if t != main_thread and t.is_alive()]
+
+        # Wait for non-daemon threads to finish (with timeout)
+        timeout = 2.0  # 2 seconds max wait
+        start_time = time.time()
+
+        for thread in active_threads:
+            if not thread.daemon:
+                remaining_time = timeout - (time.time() - start_time)
+                if remaining_time > 0:
+                    logger.debug(f"Waiting for non-daemon thread to finish: {thread.name}")
+                    thread.join(timeout=remaining_time)
+                    if thread.is_alive():
+                        logger.warning(f"Thread {thread.name} did not finish in time")
+
+        # Give daemon threads a moment to finish their current work
+        time.sleep(0.2)
+
+        # Log any threads still running
+        remaining_threads = [t for t in threading.enumerate() if t != main_thread and t.is_alive()]
+        if remaining_threads:
+            logger.debug(f"Threads still running after teardown: {[t.name for t in remaining_threads]}")
+
+        # Remove all loguru handlers to prevent "closed file" errors
+        logger.remove()
+
+        # Cleanup files
+        cleanup(app_config['datastore_path'])
+
+       
+    request.addfinalizer(teardown)
+    yield app
+
+
