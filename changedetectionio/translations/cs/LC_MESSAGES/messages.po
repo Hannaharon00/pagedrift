@@ -1963,6 +1963,67 @@ msgid "Only trigger when unique lines appear"
 msgstr "Spustit pouze tehdy, když se objeví jedinečné čáry"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Remove any whitespace before and after each line of text"
+msgstr "Odstraňte všechny mezery před a za každým řádkem textu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI Intent preview"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Loading..."
+msgstr "Načítání..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "The Visual Selector tool lets you select the"
+msgstr "Nástroj Visual Selector umožňuje vybrat"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "text"
+msgstr "text"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"elements that will be used for the change detection. It automatically fills-in the filters in the "
+"\"CSS/JSONPath/JQ/XPath Filters\" box of the"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "tab. Use"
+msgstr "Pauza"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Shift+Click"
+msgstr "Shift+kliknutí"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to select multiple items."
+msgstr "pro výběr více položek."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Selection Mode:"
+msgstr "Režim výběru:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "Kreslit oblast"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "Okamžik, načítání snímku obrazovky a informací o prvku."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
 msgstr ""
 
