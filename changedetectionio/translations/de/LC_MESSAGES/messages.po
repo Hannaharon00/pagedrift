@@ -3462,6 +3462,60 @@ msgstr ""
 msgid "When monthly token budget is reached"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx zum Extrahieren"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Als CSV exportieren"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr "gerade eben"
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr "gleich"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr "vor %ss"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "in %ss"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "vor 1Min"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "in 1Min"
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "%sm ago"
