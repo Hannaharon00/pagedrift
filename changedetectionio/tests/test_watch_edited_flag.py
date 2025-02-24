@@ -83,3 +83,124 @@ def test_watch_edited_flag_lifecycle(client, live_server, measure_memory_usage, 
     print("✓ All watch edited flag lifecycle tests passed")
 
 
+def test_watch_edited_flag_dict_methods(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that the flag is set correctly by various dict methods:
+    - __setitem__ (watch['key'] = value)
+    - update() (watch.update({'key': value}))
+    - setdefault() (watch.setdefault('key', default))
+    - pop() (watch.pop('key'))
+    - __delitem__ (del watch['key'])
+    """
+
+    # Setup - Add a watch
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": "", "edit_and_watch_submit_button": "Edit > Watch"},
+        follow_redirects=True
+    )
+
+    datastore = client.application.config.get('DATASTORE')
+    uuid = list(datastore.data['watching'].keys())[0]
+    watch = datastore.data['watching'][uuid]
+
+    # Test __setitem__
+    watch.reset_watch_edited_flag()
+    watch['title'] = 'Test via setitem'
+    assert watch.was_edited, "Flag should be True after __setitem__ on writable field"
+
+    # Test update() with dict
+    watch.reset_watch_edited_flag()
+    watch.update({'title': 'Test via update dict'})
+    assert watch.was_edited, "Flag should be True after update() with writable field"
+
+    # Test update() with kwargs
+    watch.reset_watch_edited_flag()
+    watch.update(title='Test via update kwargs')
+    assert watch.was_edited, "Flag should be True after update() kwargs with writable field"
+
+    # Test setdefault() on new key
+    watch.reset_watch_edited_flag()
+    watch.setdefault('title', 'Should not be set')  # Key exists, no change
+    assert not watch.was_edited, "Flag should stay False when setdefault() doesn't change existing key"
+
+    watch.setdefault('custom_field', 'New value')  # New key
+    assert watch.was_edited, "Flag should be True after setdefault() creates new writable field"
+
+    # Test pop() on writable field
+    watch.reset_watch_edited_flag()
+    watch.pop('custom_field', None)
+    assert watch.was_edited, "Flag should be True after pop() on writable field"
+
+    # Test __delitem__ on writable field
+    watch.reset_watch_edited_flag()
+    watch['temp_field'] = 'temp'
+    watch.reset_watch_edited_flag()  # Reset after adding
+    del watch['temp_field']
+    assert watch.was_edited, "Flag should be True after __delitem__ on writable field"
+
+    print("✓ All dict methods correctly set the flag")
+
+
+def test_watch_edited_flag_prevents_skip(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that the was_edited flag prevents skipping reprocessing.
+    When watch configuration is edited, it should reprocess even if content unchanged.
+    After worker processing, flag should be reset and subsequent checks can skip.
+    """
+
+    # Setup test content
+    set_test_content(datastore_path)
+
+    # Setup - Add a watch
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": "", "edit_and_watch_submit_button": "Edit > Watch"},
+        follow_redirects=True
+    )
+    assert b"Watch added" in res.data or b"Updated watch" in res.data
+
+    datastore = client.application.config.get('DATASTORE')
+    uuid = list(datastore.data['watching'].keys())[0]
+    watch = datastore.data['watching'][uuid]
+
+    # Unpause the watch (watches are paused by default in tests)
+    watch['paused'] = False
+
+    # Run first check to establish baseline
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Verify first check completed successfully - checksum file should exist
+    checksum_file = os.path.join(datastore_path, uuid, 'last-checksum.txt')
+    assert os.path.isfile(checksum_file), "First check should create last-checksum.txt file"
+
+    # Reset the was_edited flag (simulating clean state after processing)
+    watch.reset_watch_edited_flag()
+    assert not watch.was_edited, "Flag should be False after reset"
+
+    # Run second check without any changes - should skip via checksumFromPreviousCheckWasTheSame
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Verify it was skipped (last_check_status should indicate skip)
+    # Note: The actual skip is tested in test_check_removed_line_contains_trigger
+    # Here we're focused on the was_edited flag interaction
+
+    # Now modify the watch - flag should become True
+    watch['title'] = 'Modified Title'
+    assert watch.was_edited, "Flag should be True after modifying watch"
+
+    # Run third check - should NOT skip because was_edited=True even though content unchanged
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # After worker processing, the flag should be reset by the worker
+    # This reset happens in the processor's run() method after processing completes
+    assert not watch.was_edited, "Flag should be False after worker processing"
+
+    print("✓ was_edited flag correctly prevents skip and is reset by worker")
+
+

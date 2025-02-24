@@ -77,6 +77,100 @@ def test_headers_in_request(client, live_server, measure_memory_usage, datastore
 
     delete_all_watches(client)
 
+def test_body_in_request(client, live_server, measure_memory_usage, datastore_path):
+    import os
+
+    # Add our URL to the import page
+    test_url = url_for('test_body', _external=True)
+    if os.getenv('PLAYWRIGHT_DRIVER_URL'):
+        # Because its no longer calling back to localhost but from the browser container, set in test-only.yml
+        test_url = test_url.replace('localhost', 'cdio')
+
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+    # add the first 'version'
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+              "url": test_url,
+              "tags": "",
+              "method": "POST",
+              "fetch_backend": "html_requests",
+              "body": "something something",
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+
+    wait_for_all_checks(client)
+
+    # Now the change which should trigger a change
+    body_value = 'Test Body Value {{ 1+1 }}'
+    body_value_formatted = 'Test Body Value 2'
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+              "url": test_url,
+              "tags": "",
+              "method": "POST",
+              "fetch_backend": "html_requests",
+              "body": body_value,
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+
+    wait_for_all_checks(client)
+
+    # The service should echo back the body
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid=uuid),
+        follow_redirects=True
+    )
+
+    # If this gets stuck something is wrong, something should always be there
+    assert b"No history found" not in res.data
+    # We should see the formatted value of what we sent in the reply
+    assert str.encode(body_value) not in res.data
+    assert str.encode(body_value_formatted) in res.data
+
+    ####### data sanity checks
+    # Add the test URL twice, we will check
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    watches_with_body = 0
+
+    # Read individual watch.json files
+    for uuid in client.application.config.get('DATASTORE').data['watching'].keys():
+        watch_json_file = os.path.join(datastore_path, uuid, 'watch.json')
+        assert os.path.exists(watch_json_file), f"watch.json should exist at {watch_json_file}"
+        with open(watch_json_file, 'r', encoding='utf-8') as f:
+            watch_data = json.load(f)
+            if watch_data.get('body') == body_value:
+                watches_with_body += 1
+
+    # Should be only one with body set
+    assert watches_with_body==1
+
+    # Attempt to add a body with a GET method
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+              "url": test_url,
+              "tags": "",
+              "method": "GET",
+              "fetch_backend": "html_requests",
+              "body": "invalid",
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Body must be empty when Request Method is set to GET" in res.data
+    delete_all_watches(client)
+
 def test_method_in_request(client, live_server, measure_memory_usage, datastore_path):
     import os
     # Add our URL to the import page
