@@ -2828,6 +2828,60 @@ msgstr "此工具將從所有監測歷史記錄中提取文字資料。"
 msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part inside of the text that you want to extract."
 msgstr "<strong>RegEx</strong>（正規表示式）是一種模式，用於精確識別文字中您想要提取的部分。"
 
+#: changedetectionio/processors/templates/extract.html
+msgid "For example, to extract only the numbers from text"
+msgstr "例如，若要僅從文字中提取數字"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Raw text"
+msgstr "原始文字"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "RegEx to extract:"
+msgstr "要提取的 RegEx："
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Be sure to test your RegEx here."
+msgstr "請務必在此處測試您的 RegEx。"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Each RegEx group bracket"
+msgstr "每個 RegEx 群組括號"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "will be in its own column, the first column value is always the date."
+msgstr "都將位於獨立的欄位中，第一欄的值一律為日期。"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Webpage Text/HTML, JSON and PDF changes"
+msgstr "網頁文字 / HTML、JSON 和 PDF 變更"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Detects all text changes where possible"
+msgstr "盡可能檢測所有文字變更"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "已達到監測任務上限（{current}/{limit}）。無法再新增。"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "讀取 {} 的中繼資料時發生錯誤"
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "監測協定不被允許或 URL 格式無效"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "所有通知的內文 — 您可以使用"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "在通知標題、內文和 URL 中使用範本，以及下方的權杖。"
+
 #: changedetectionio/templates/_common_fields.html
 msgid "args, e.g."
 msgstr "參數，例如"
