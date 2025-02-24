@@ -32,6 +32,49 @@ function getFormattedDate() {
 }
 
 /**
+ * Utility: Get version comparison info from the diff selectors
+ */
+function getVersionInfo() {
+    const fromSelect = document.getElementById('diff-from-version');
+    const toSelect = document.getElementById('diff-to-version');
+
+    if (!fromSelect || !toSelect) {
+        return '';
+    }
+
+    const fromOption = fromSelect.options[fromSelect.selectedIndex];
+    const toOption = toSelect.options[toSelect.selectedIndex];
+    const fromLabel = fromOption ? (fromOption.getAttribute('label') || fromOption.text) : 'Unknown';
+    const toLabel = toOption ? (toOption.getAttribute('label') || toOption.text) : 'Unknown';
+
+    return `Change comparison from <strong>${fromLabel}</strong> to <strong>${toLabel}</strong>`;
+}
+
+/**
+ * Helper: Find text node containing newline in a given direction
+ */
+function findTextNodeWithNewline(node, searchBackwards = false) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        const idx = searchBackwards ? text.lastIndexOf('\n') : text.indexOf('\n');
+        if (idx !== -1) {
+            return { node, offset: searchBackwards ? idx + 1 : idx };
+        }
+    } else {
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+        let textNode;
+        while (textNode = walker.nextNode()) {
+            const text = textNode.textContent;
+            const idx = searchBackwards ? text.lastIndexOf('\n') : text.indexOf('\n');
+            if (idx !== -1) {
+                return { node: textNode, offset: searchBackwards ? idx + 1 : idx };
+            }
+        }
+    }
+    return null;
+}
+
+/**
  * Helper: Walk through siblings in a given direction to find line boundary
  */
 function findLineBoundary(node, container, searchBackwards = false) {
