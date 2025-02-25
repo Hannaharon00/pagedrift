@@ -85,3 +85,138 @@ def test_restock_itemprop_minmax(client, live_server, measure_memory_usage, data
     }
     _run_test_minmax_limit(client, extra_watch_edit_form=extras, datastore_path=datastore_path)
 
+def test_restock_itemprop_with_tag(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    res = client.post(
+        url_for("tags.form_tag_add"),
+        data={"name": "test-tag"},
+        follow_redirects=True
+    )
+    assert b"Tag added" in res.data
+
+    res = client.post(
+        url_for("tags.form_tag_edit_submit", uuid="first"),
+        data={"name": "test-tag",
+              "processor_config_restock_diff-follow_price_changes": "y",
+              "processor_config_restock_diff-price_change_min": 900.0,
+              "processor_config_restock_diff-price_change_max": 1100.10,
+              "overrides_watch": "y", #overrides_watch should be restock_overrides_watch
+              },
+        follow_redirects=True
+    )
+
+    extras = {
+        "tags": "test-tag"
+    }
+
+    _run_test_minmax_limit(client, extra_watch_edit_form=extras,datastore_path=datastore_path)
+    delete_all_watches(client)
+
+
+
+def test_itemprop_percent_threshold(client, live_server, measure_memory_usage, datastore_path):
+
+    delete_all_watches(client)
+
+    test_url = url_for('test_endpoint', _external=True)
+
+    set_original_response(props_markup=instock_props[0], price="950.95", datastore_path=datastore_path)
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+
+    # A change in price, should trigger a change by default
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"processor_config_restock_diff-follow_price_changes": "y",
+              "processor_config_restock_diff-price_change_threshold_percent": 5.0,
+              "url": test_url,
+              "tags": "",
+              "headers": "",
+              'fetch_backend': "html_requests",
+              "time_between_check_use_default": "y"
+              },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+
+    # Basic change should not trigger
+    set_original_response(props_markup=instock_props[0], price='960.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'960.45' in res.data
+    assert b'has-unread-changes' not in res.data
+
+    # Bigger INCREASE change than the threshold should trigger
+    set_original_response(props_markup=instock_props[0], price='1960.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'1,960.45' in res.data or b'1960.45' in res.data #depending on locale
+    assert b'has-unread-changes' in res.data
+
+
+    # Small decrease should NOT trigger
+    client.post(url_for("ui.mark_all_viewed"))
+    set_original_response(props_markup=instock_props[0], price='1950.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'1,950.45' in res.data or b'1950.45' in res.data #depending on locale
+    assert b'has-unread-changes' not in res.data
+
+    # PROOF that the threshold is measured "since the PREVIOUS check" and NOT "since the first check":
+    # a slow upward creep where every single step is below the 5% threshold versus the *previous*
+    # check, but the total drift from where the creep started (1950.45) ends up ABOVE 5%.
+    #   1950.45 -> 2000.00  = +2.54% vs previous  (below 5%)
+    #   2000.00 -> 2050.00  = +2.50% vs previous  (below 5%)
+    #   2050.00 -> 2100.00  = +2.44% vs previous  (below 5%)
+    #   1950.45 -> 2100.00  = +7.67% in total     (ABOVE 5%)
+    # Under "since previous check" NONE of these trigger (each step is sub-threshold).
+    # Under "since first check" the accumulated drift would cross 5% and trigger here - so the
+    # final assertion below would fail. We deliberately never mark_all_viewed during the creep,
+    # so any single trigger would leave has-unread-changes set.
+    for creep_price in ['2000.00', '2050.00', '2100.00']:
+        set_original_response(props_markup=instock_props[0], price=creep_price, datastore_path=datastore_path)
+        client.post(url_for("ui.form_watch_checknow"))
+        wait_for_all_checks(client)
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'2,100.00' in res.data or b'2100.00' in res.data #depending on locale
+    # +7.67% total drift since the creep started, yet still unread-free -> comparison is vs PREVIOUS check
+    assert b'has-unread-changes' not in res.data
+
+
+    # Re #2600 - Switch the mode to normal type and back, and see if the values stick..
+    ###################################################################################
+    uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={"processor_config_restock_diff-follow_price_changes": "y",
+              "processor_config_restock_diff-price_change_threshold_percent": 5.05,
+              "processor": "text_json_diff",
+              "url": test_url,
+              'fetch_backend': "html_requests",
+              "time_between_check_use_default": "y"
+              },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    # And back again
+    live_server.app.config['DATASTORE'].data['watching'][uuid]['processor'] = 'restock_diff'
+    res = client.get(url_for("ui.ui_edit.edit_page", uuid=uuid))
+    assert b'type="text" value="5.05"' in res.data
+
+    delete_all_watches(client)
+
+
+
