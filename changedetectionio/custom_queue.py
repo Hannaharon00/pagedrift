@@ -485,3 +485,53 @@ class AsyncSignalPriorityQueue(asyncio.PriorityQueue):
                     })
                     processed += 1
             
+            return {
+                'items': result,
+                'total_items': total_items,
+                'returned_items': len(result),
+                'has_more': (offset + len(result)) < total_items,
+                'note': 'Positions are approximate for performance with large queues'
+            }
+    
+    def get_queue_summary(self):
+        """
+        Get a quick summary of async queue state.
+        O(n) complexity - fast even for large queues.
+        """
+        queue_list = list(self._queue)
+        total_items = len(queue_list)
+        
+        if total_items == 0:
+            return {
+                'total_items': 0,
+                'priority_breakdown': {},
+                'immediate_items': 0,
+                'clone_items': 0,
+                'scheduled_items': 0
+            }
+        
+        immediate_items = 0
+        clone_items = 0
+        scheduled_items = 0
+        priority_counts = {}
+        
+        for item in queue_list:
+            priority = item.priority
+            priority_counts[priority] = priority_counts.get(priority, 0) + 1
+            
+            if priority == 1:
+                immediate_items += 1
+            elif priority == 5:
+                clone_items += 1
+            elif priority > 100:
+                scheduled_items += 1
+        
+        return {
+            'total_items': total_items,
+            'priority_breakdown': priority_counts,
+            'immediate_items': immediate_items,
+            'clone_items': clone_items,
+            'scheduled_items': scheduled_items,
+            'min_priority': min(priority_counts.keys()) if priority_counts else None,
+            'max_priority': max(priority_counts.keys()) if priority_counts else None
+        }

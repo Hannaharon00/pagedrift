@@ -47,3 +47,86 @@
                 }
             }
 
+            // Ensure handle stays within container bounds
+            handleTop = Math.max(24, Math.min(handleTop, containerRect.height - 24));
+
+            handle.style.top = handleTop + 'px';
+        }
+
+        /**
+         * Track mouse position over container
+         */
+        function onMouseMoveContainer(e) {
+            mouseY = e.clientY;
+            updateHandlePosition();
+        }
+
+        /**
+         * Mouse enters container
+         */
+        function onMouseEnter() {
+            isMouseOverContainer = true;
+        }
+
+        /**
+         * Mouse leaves container
+         */
+        function onMouseLeave() {
+            isMouseOverContainer = false;
+            updateHandlePosition();
+        }
+
+        /**
+         * Update slider position and clip-path
+         */
+        function updateSlider(clientX) {
+            const rect = container.getBoundingClientRect();
+            const pos = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const percentage = (pos / rect.width) * 100;
+
+            slider.style.left = percentage + '%';
+            afterWrapper.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+        }
+
+        /**
+         * Handle move events (mouse or touch)
+         */
+        function onMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            updateSlider(clientX);
+        }
+
+        /**
+         * Start dragging
+         */
+        function onStart(e) {
+            isDragging = true;
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            updateSlider(clientX);
+        }
+
+        /**
+         * Stop dragging
+         */
+        function onEnd() {
+            isDragging = false;
+        }
+
+        /**
+         * Click anywhere on container to jump slider to that position
+         */
+        function onClick(e) {
+            if (e.target !== slider && !slider.contains(e.target)) {
+                const clientX = e.clientX;
+                updateSlider(clientX);
+            }
+        }
+
+        // Mouse events
+        slider.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+
