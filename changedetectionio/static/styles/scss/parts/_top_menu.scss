@@ -169,3 +169,102 @@ ul#top-right-menu {
   50% { opacity: 0.4; }
 }
 
+// "More" overflow menu: a kebab icon button revealing a floating popup of items
+// (Settings / Import / Language). The popup is a light surface card that floats
+// over the page (toggled open by static/js/menu-pop.js).
+.menu-pop-wrap {
+  position: relative;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--common-round-border);
+  background: transparent;
+  color: var(--color-text-menu-heading);
+  cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.menu-pop {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  padding: 6px;
+  border: 1px solid var(--color-border-table-cell);
+  border-radius: 12px;
+  background: var(--color-background);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  z-index: 80;
+
+  &.open {
+    display: block;
+  }
+
+  .mi {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text);
+    font-size: 0.85rem;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-background-menu-link-hover);
+    }
+
+    .ico {
+      display: inline-flex;
+      color: var(--color-text-input-description);
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+      }
+    }
+
+    .right {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--color-text-input-description);
+    }
+  }
+}
+
+
+.top-menu-list {
+  .action-label {
+   color: var(--color-text-menu-heading);
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+
