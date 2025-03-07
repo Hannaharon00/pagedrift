@@ -147,3 +147,90 @@ def test_branches_to_visit(html_content, xpath, answer):
     assert type(html_content) == str
     assert answer in html_content
 
+trips = """
+<trips>
+   <trip reservation_number="10">
+       <depart>2023-10-06</depart>
+       <arrive>2023-10-10</arrive>
+       <traveler name="Christopher Anderson">
+           <duration>4</duration>
+           <price>2000.00</price>
+       </traveler>
+   </trip>
+   <trip reservation_number="12">
+       <depart>2023-10-06</depart>
+       <arrive>2023-10-12</arrive>
+       <traveler name="Frank Carter">
+           <duration>6</duration>
+           <price>3500.34</price>
+       </traveler>
+   </trip>
+</trips>"""
+@pytest.mark.parametrize("html_content", [trips])
+@pytest.mark.parametrize("xpath, answer", [
+    ("1 + 9 * 9 + 5 div 5", "83"),
+    ("(1 + 9 * 9 + 5) div 6", "14.5"),
+    ("23 idiv 3", "7"),
+    ("23 div 3", "7.66666666"),
+    ("for $i in ./trip return $i/traveler/duration * $i/traveler/price", "21002.04"),
+    ("for $i in ./trip return $i/traveler/duration ", "4"),
+    ("for $i in .//trip return $i/traveler/duration * $i/traveler/price", "21002.04"),
+    ("sum(for $i in ./trip return $i/traveler/duration * $i/traveler/price)", "29002.04"),
+    ("sum(for $i in .//trip return $i/traveler/duration * $i/traveler/price)", "29002.04"),
+    #("trip[1]/depart - trip[1]/arrive", "fail_to_get_answer"),
+    #("//trip[1]/depart - //trip[1]/arrive", "fail_to_get_answer"),
+    #("trip[1]/depart + trip[1]/arrive", "fail_to_get_answer"),
+    #("xs:date(trip[1]/depart) + xs:date(trip[1]/arrive)", "fail_to_get_answer"),
+    ("(//trip[1]/arrive cast as xs:date) - (//trip[1]/depart cast as xs:date)", "P4D"),
+    ("(//trip[1]/depart cast as xs:date) - (//trip[1]/arrive cast as xs:date)", "-P4D"),
+    ("(//trip[1]/depart cast as xs:date) + xs:dayTimeDuration('P3D')", "2023-10-09"),
+    ("(//trip[1]/depart cast as xs:date) - xs:dayTimeDuration('P3D')", "2023-10-03"),
+    ("(456, 623) instance of xs:integer", "false"),
+    ("(456, 623) instance of xs:integer*", "true"),
+    ("/trips/trip instance of element()", "false"),
+    ("/trips/trip instance of element()*", "true"),
+    ("/trips/trip[1]/arrive instance of xs:date", "false"),
+    ("date(/trips/trip[1]/arrive) instance of xs:date", "true"),
+    ("'8' cast as xs:integer", "8"),
+    ("'11.1E3' cast as xs:double", "11100"),
+    ("6.5 cast as xs:integer", "6"),
+    #("/trips/trip[1]/arrive cast as xs:dateTime", "fail_to_get_answer"),
+    ("/trips/trip[1]/arrive cast as xs:date", "2023-10-10"),
+    ("('2023-10-12') cast as xs:date", "2023-10-12"),
+    ("for $i in //trip return concat($i/depart, '  ', $i/arrive)", "2023-10-06  2023-10-10"),
+                          ])
+def test_trips(html_content, xpath, answer):
+    html_content = html_tools.xpath_filter(xpath, html_content, append_pretty_line_formatting=True)
+    assert type(html_content) == str
+    assert answer in html_content
+
+
+# Test for UTF-8 encoding bug fix (issue #3658)
+# Polish and other UTF-8 characters should be preserved correctly
+polish_html = """<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body>
+<div class="index--s-headline-link">
+    <a class="index--s-headline-link" href="#">
+        Naukowcy potwierdzają: oglądanie krótkich filmików prowadzi do "zgnilizny mózgu"
+    </a>
+</div>
+<div>
+    <a class="other-class" href="#">
+        Test with Polish chars: żółć ąę śń
+    </a>
+</div>
+<div>
+    <p class="unicode-test">Cyrillic: Привет мир</p>
+    <p class="unicode-test">Greek: Γειά σου κόσμε</p>
+    <p class="unicode-test">Arabic: مرحبا بالعالم</p>
+    <p class="unicode-test">Chinese: 你好世界</p>
+    <p class="unicode-test">Japanese: こんにちは世界</p>
+    <p class="unicode-test">Emoji: 🌍🎉✨</p>
+</div>
+</body>
+</html>
+"""
+
+
