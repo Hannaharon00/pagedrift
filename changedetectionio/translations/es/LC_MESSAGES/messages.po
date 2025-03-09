@@ -3041,6 +3041,62 @@ msgid "RegEx '%s' is not a valid regular expression."
 msgstr "Expresión regular '%s' no es una expresión regular válida."
 
 #: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' no es una expresión XPath válida. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' no es una expresión JSONPath válida. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' no es una expresión jq válida. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Valor vacío no permitido."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Valor no válido."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Etiqueta de grupo"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "Monitor"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "Procesador"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Editar > Ver"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Método de recuperación"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Organismo de notificación"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Formato de notificación"
+
+#: changedetectionio/forms.py
 msgid "AI enabled for this watch?"
 msgstr ""
 
