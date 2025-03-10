@@ -145,3 +145,46 @@ $(document).ready(function () {
             alert("'Ignore' Filters for this watch were updated.")
             clean();
 
+        }).fail(function (data) {
+            console.log(data);
+            alert('There was an error communicating with the server.');
+        })
+    });
+
+    function clean(event) {
+        $('#bottom-horizontal-offscreen').hide();
+    }
+
+    // Listen for Escape key press
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            clean();
+        }
+    }, false);
+
+    function dragTextHandler(event) {
+        console.log('mouseupped');
+
+        // Check if any text was selected
+        if (window.getSelection().toString().length > 0) {
+            $('#bottom-horizontal-offscreen').show();
+        } else {
+            clean();
+        }
+    }
+
+    $('#diff-form').on('submit', function (e) {
+        if ($('select[name=from_version]').val() === $('select[name=to_version]').val()) {
+            e.preventDefault();
+            alert('Error - You are trying to compare the same version.');
+        }
+    });
+
+    // Auto-submit form on change of any input elements (checkboxes, radio buttons, dropdowns)
+    $('#diff-form').on('change', 'input[type="checkbox"], input[type="radio"], select', function (e) {
+        // Check if we're trying to compare the same version before submitting
+        if ($('select[name=from_version]').val() !== $('select[name=to_version]').val()) {
+            $('#diff-form').submit();
+        }
+    });
+});
