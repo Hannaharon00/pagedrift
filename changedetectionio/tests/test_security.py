@@ -220,6 +220,45 @@ def _runner_test_various_file_slash(client, file_uri):
 
     delete_all_watches(client)
 
+def test_xss(client, live_server, measure_memory_usage, datastore_path):
+    
+    from changedetectionio.notification import (
+        default_notification_format
+    )
+    # the template helpers were named .jinja which meant they were not having jinja2 autoescape enabled.
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": '"><img src=x onerror=alert(document.domain)>',
+              "notification_title": '"><img src=x onerror=alert(document.domain)>',
+              "notification_body": '"><img src=x onerror=alert(document.domain)>',
+              "notification_format": default_notification_format},
+        follow_redirects=True
+    )
+
+    assert b"<img src=x onerror=alert(" not in res.data
+    assert b"&lt;img" in res.data
+
+    # Check that even forcing an update directly still doesnt get to the frontend
+    set_original_response(datastore_path=datastore_path)
+    XSS_HACK = 'javascript:alert(document.domain)'
+    uuid = client.application.config.get('DATASTORE').add_watch(url=url_for('test_endpoint', _external=True))
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    set_modified_response(datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    live_server.app.config['DATASTORE'].data['watching'][uuid]['url']=XSS_HACK
+
+
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid))
+    assert XSS_HACK.encode('utf-8') not in res.data and res.status_code == 200
+    client.get(url_for("ui.ui_diff.diff_history_page", uuid=uuid))
+    assert XSS_HACK.encode('utf-8') not in res.data and res.status_code == 200
+    res = client.get(url_for("watchlist.index"))
+    assert XSS_HACK.encode('utf-8') not in res.data and res.status_code == 200
+
+
 def test_login_redirect_safe_urls(client, live_server, measure_memory_usage, datastore_path):
     """
     Test that safe redirect URLs work correctly in login flow.

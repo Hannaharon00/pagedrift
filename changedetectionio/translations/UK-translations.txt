@@ -1483,6 +1483,66 @@ msgid "Select by element"
 msgstr "Вибір за елементом"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Draw area"
+msgstr "Малювання області"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear selection"
+msgstr "Очистити вибір"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "One moment, fetching screenshot and element information.."
+msgstr "Хвилинку, отримання скріншота та інформації про елементи..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Currently:"
+msgstr "В даний час:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
+msgstr "Вибачте, ця функція працює лише із завантажувачами, що підтримують Javascript і скріншоти (наприклад, playwright)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports Javascript and screenshots."
+msgstr "на підтримуючий Javascript і скріншоти."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check count"
+msgstr "Кількість перевірок"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Consecutive filter failures"
+msgstr "Послідовні помилки фільтра"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "History length"
+msgstr "Довжина історії"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Last fetch duration"
+msgstr "Тривалість останнього завантаження"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Notification alert count"
+msgstr "Кількість надісланих сповіщень"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Server type reply"
+msgstr "Відповідь типу сервера"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download latest HTML snapshot"
+msgstr "Завантажити останній знімок HTML"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Delete Watch?"
+msgstr "Видалити завдання?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "Ви впевнені, що хочете видалити завдання для:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "This action cannot be undone."
 msgstr "Цю дію неможливо скасувати."
 
