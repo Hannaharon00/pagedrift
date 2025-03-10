@@ -3174,6 +3174,58 @@ msgstr "Nieprawidłowa składnia szablonu: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "Nieprawidłowa składnia szablonu w nagłówku „%(header)s”: %(error)s"
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Imię i nazwisko"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "Adres URL serwera proxy"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Adresy URL serwerów proxy muszą zaczynać się od http://, https:// lub socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "Adres URL połączenia przeglądarki"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "Adresy URL w przeglądarce muszą zaczynać się od wss:// lub ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Żądania w postaci zwykłego tekstu"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Żądania przeglądarki Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Domyślny serwer proxy"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Losowe wahania w sekundach ± sprawdź"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Liczba procesów pobierających dane"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Powinna wynosić od 1 do 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Limit czasu oczekiwania na żądania w sekundach"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Powinna wynosić od 1 do 999"
+
 #: changedetectionio/forms.py
 msgid "Ignore whitespace"
 msgstr "Ignoruj spacje"
