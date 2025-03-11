@@ -1,5 +1,19 @@
 name: ChangeDetection.io App Test
 
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: 'Python version to use'
+        required: true
+        type: string
+        default: '3.11'
+      skip-pypuppeteer:
+        description: 'Skip PyPuppeteer (not supported in 3.11/3.12)'
+        required: false
+        type: boolean
+        default: false
+
 jobs:
   # Build the Docker image once and share it with all test jobs
   build:
