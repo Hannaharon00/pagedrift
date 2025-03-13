@@ -75,6 +75,25 @@ tags:
       Set the query argument `html` to any value to retrieve the last HTML fetched, the system only keeps the last two 
       (2) HTML files fetched.
       
+      Use the Watch History API endpoint to get a list of timestamps to pass to this query.
+      
+  - name: Favicon
+    description: |
+      Retrieve favicon images associated with monitored web pages. These are used in the dashboard interface 
+      to visually identify different watches in your monitoring list.
+      
+  - name: Group / Tag Management
+    description: |
+      Organize your watches using tags and groups. Tags (also known as Groups) allow you to categorize monitors, set group-wide 
+      notification preferences, and perform bulk operations like mass rechecking or status changes across 
+      multiple related watches.
+      
+  - name: Notifications
+    description: |
+      Configure global notification endpoints that can be used across all your watches. Supports various 
+      notification services including email, Discord, Slack, webhooks, and many other popular platforms. 
+      These settings serve as defaults that can be overridden at the individual watch or tag level.
+
       The notification syntax uses [https://github.com/caronc/apprise](https://github.com/caronc/apprise).
       
   - name: Search
