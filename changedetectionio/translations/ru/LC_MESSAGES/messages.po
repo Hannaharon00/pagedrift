@@ -3499,6 +3499,65 @@ msgid "Detects if the product goes back to in-stock"
 msgstr "Определяет, возвращается ли товар на склад"
 
 #: changedetectionio/templates/base.html
+#, python-format
+msgid "Failed to generate image: %(error)s"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Change Detection Diff"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Check out this change detected via changedetection.io"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Please fill in all fields (Field, Operator, and Value) before verifying."
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Error verifying condition."
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Destination email"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Content after filters"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Content raw/before filters"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Main navigation"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Share this link:"
+msgstr "Поделитесь этой ссылкой:"
+
+#: changedetectionio/templates/base.html
+msgid "Real-time updates offline"
+msgstr "Обновления в режиме реального времени в автономном режиме"
+
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "Выберите язык"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "Автоматическое определение из браузера"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr ""
+"Языковая поддержка находится в стадии бета-тестирования. Помогите нам улучшить ее, открыв PR на GitHub с любыми "
+"обновлениями."
+
+#: changedetectionio/templates/base.html
 msgid "AI / LLM not configured"
 msgstr "AI/LLM не настроен"
 

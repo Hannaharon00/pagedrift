@@ -2731,6 +2731,63 @@ msgstr "Oznacz wszystkie jako przeczytane"
 msgid "Recheck all"
 msgstr "Sprawdź wszystko ponownie"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#, python-format
+msgid "in '%(title)s'"
+msgstr "w „%(title)s”"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "RSS Feed"
+msgstr "Kanał RSS"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Invert"
+msgstr "Odwróć"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Pause"
+msgstr "Wstrzymaj"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnPause"
+msgstr "Włącz"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mute"
+msgstr "Wycisz"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnMute"
+msgstr "Włącz dźwięk"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Tag"
+msgstr "Etykieta"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Set browser / fetch method for selected"
+msgstr "Ustaw przeglądarkę / metodę pobierania dla zaznaczonych obserwacji"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Set proxy for selected"
+msgstr "Ustaw serwer proxy dla zaznaczonych obserwacji"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mark viewed"
+msgstr "Oznacz jako przeczytane"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Use default notification"
+msgstr "Użyj domyślnego powiadomienia"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear errors"
+msgstr "Wyraźne błędy"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Does NOT Match Regex"
 msgstr "Tekst NIE pasuje do wyrażenia regularnego"
