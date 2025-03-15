@@ -538,6 +538,53 @@ label {
   padding-left: 40px;
 }
 
+#diff-jump {
+  position: fixed;
+  left: 0px;
+  top: 120px;
+  background: var(--color-background);
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 1px 1px 4px var(--color-shadow-jump);
+
+  a {
+    color: var(--color-link);
+    cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+  }
+}
+
+footer {
+  padding: 10px;
+  background: var(--color-background);
+  color: var(--color-text-footer);
+  text-align: center;
+}
+
+#feed-icon {
+  vertical-align: middle;
+}
+
+#top-right-menu {
+  // Just let flex overflow the x axis for now
+  /*
+      position: absolute;
+      right: 0px;
+      background: linear-gradient(to right, #fff0, #fff 10%);
+      padding-left: 20px;
+      padding-right: 10px;
+      */
+}
+
+#new-version-text a {
+  color: var(--color-link-new-version);
+}
+
 .watch-controls {
   color: #f8321b;
 
