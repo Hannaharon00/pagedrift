@@ -114,3 +114,107 @@ class TestLLMRestockPluginDisabled:
         assert result is None
 
 
+class TestLLMRestockPluginExtraction:
+    def test_extracts_price_and_in_stock(self):
+        llm_json = '{"price": 49.99, "currency": "USD", "availability": "instock"}'
+        result = _call_plugin(
+            '<html><body><span class="price">$49.99</span> <span>In Stock</span></body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 49.99
+        assert result['currency'] == 'USD'
+        assert result['availability'] == 'instock'
+
+    def test_extracts_out_of_stock(self):
+        llm_json = '{"price": 129.00, "currency": "EUR", "availability": "outofstock"}'
+        result = _call_plugin(
+            '<html><body>129,00 € — Sold out</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 129.0
+        assert result['currency'] == 'EUR'
+        assert result['availability'] == 'outofstock'
+
+    def test_returns_availability_only_when_no_price(self):
+        llm_json = '{"price": null, "currency": null, "availability": "instock"}'
+        result = _call_plugin(
+            '<html><body>Item available</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] is None
+        assert result['availability'] == 'instock'
+
+    def test_returns_price_only_when_no_availability(self):
+        llm_json = '{"price": 19.95, "currency": "GBP", "availability": null}'
+        result = _call_plugin(
+            '<html><body>£19.95</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 19.95
+        assert result['availability'] is None
+
+    def test_returns_none_when_both_null(self):
+        llm_json = '{"price": null, "currency": null, "availability": null}'
+        result = _call_plugin(
+            '<html><body>No pricing info here</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is None
+
+    def test_strips_markdown_fences(self):
+        llm_json = '```json\n{"price": 9.99, "currency": "USD", "availability": "instock"}\n```'
+        result = _call_plugin(
+            '<html><body>$9.99 In Stock</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 9.99
+
+    def test_handles_integer_price(self):
+        llm_json = '{"price": 100, "currency": "USD", "availability": "instock"}'
+        result = _call_plugin(
+            '<html><body>$100 In Stock</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 100.0
+
+    def test_handles_string_price(self):
+        """Model might return price as a string despite the prompt."""
+        llm_json = '{"price": "49.99", "currency": "USD", "availability": "instock"}'
+        result = _call_plugin(
+            '<html><body>$49.99</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['price'] == 49.99
+
+
+class TestLLMRestockPluginTokenAccounting:
+    def test_result_includes_token_metadata(self):
+        """Plugin result must carry _tokens/_input_tokens/_output_tokens/_model."""
+        llm_json = '{"price": 49.99, "currency": "USD", "availability": "instock"}'
+        result = _call_plugin(
+            '<html><body>$49.99 In Stock</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is not None
+        assert result['_tokens'] == 50
+        assert result['_input_tokens'] == 40
+        assert result['_output_tokens'] == 10
+        assert result['_model'] == 'gpt-4o-mini'
+
+    def test_token_keys_not_in_none_result(self):
+        """When LLM returns nothing useful, result is None — no token metadata leaked."""
+        llm_json = '{"price": null, "currency": null, "availability": null}'
+        result = _call_plugin(
+            '<html><body>No pricing info</body></html>',
+            llm_json=llm_json,
+        )
+        assert result is None
+
+
