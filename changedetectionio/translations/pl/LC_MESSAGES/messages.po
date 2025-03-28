@@ -3226,6 +3226,62 @@ msgstr "Zezwól na anonimowy dostęp do historii obserwacji, gdy hasło jest wł
 msgid "Hide muted watches from RSS feed"
 msgstr "Ukryj wyciszone obserwacje w kanale RSS"
 
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Włącz tryb czytnika RSS "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Liczba zmian do wyświetlenia w kanale RSS obserwacji"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "Powinno zawierać zero lub więcej prób"
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "Liczba przypadków, w których filtr może nie działać, zanim zostanie wysłane powiadomienie"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr "Model"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "Klucz API"
+
+#: changedetectionio/forms.py
+msgid "API Base URL"
+msgstr "Podstawowy adres URL interfejsu API"
+
+#: changedetectionio/forms.py
+msgid "Token multiplier for local reasoning models"
+msgstr "Mnożnik tokenów dla modeli wnioskowania lokalnego"
+
+#: changedetectionio/forms.py
+msgid "Default AI Change Summary prompt"
+msgstr "Domyślny prompt podsumowania zmian AI"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max tokens per watch per period"
+msgstr "Maksymalna liczba tokenów na obserwację w danym okresie"
+
+#: changedetectionio/forms.py
+msgid "Monthly token budget"
+msgstr "Miesięczny budżet na tokeny"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max input characters"
+msgstr "Maksymalna liczba znaków w polu wprowadzania danych"
+
+#: changedetectionio/forms.py
+msgid "Enable AI / LLM features"
+msgstr "Włącz funkcje AI / LLM"
+
+#: changedetectionio/forms.py
+msgid "Replace {{diff}} notification token with AI summary"
+msgstr "Zastąp token powiadomienia {{diff}} podsumowaniem wygenerowanym przez sztuczną inteligencję"
+
 #: changedetectionio/store/__init__.py
 #, python-brace-format
 msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
