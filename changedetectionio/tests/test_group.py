@@ -300,3 +300,236 @@ def test_clone_tag_on_import(client, live_server, measure_memory_usage, datastor
     assert res.data.count(b'another-tag') == 3
     delete_all_watches(client)
 
+def test_order_of_filters_tag_filter_and_watch_filter(client, live_server, measure_memory_usage, datastore_path):
+
+    # Add a tag with some config, import a tag and it should roughly work
+    res = client.post(
+        url_for("tags.form_tag_add"),
+        data={"name": "test-tag-keep-order"},
+        follow_redirects=True
+    )
+    assert b"Tag added" in res.data
+    assert b"test-tag-keep-order" in res.data
+    tag_filters = [
+            '#only-this', # duplicated filters
+            '#only-this',
+            '#only-this',
+            '#only-this',
+            ]
+
+    res = client.post(
+        url_for("tags.form_tag_edit_submit", uuid="first"),
+        data={"name": "test-tag-keep-order",
+              "include_filters": '\n'.join(tag_filters) },
+        follow_redirects=True
+    )
+    assert b"Updated" in res.data
+    tag_uuid = get_UUID_for_tag_name(client, name="test-tag-keep-order")
+    res = client.get(
+        url_for("tags.form_tag_edit", uuid="first")
+    )
+    assert b"#only-this" in res.data
+
+
+    d = """<html>
+       <body>
+     Some initial text<br>
+     <p id="only-this">And 1 this</p>
+     <br>
+     <p id="not-this">And 2 this</p>
+     <p id="">And 3 this</p><!--/html/body/p[3]/-->
+     <p id="">And 4 this</p><!--/html/body/p[4]/-->
+     <p id="">And 5 this</p><!--/html/body/p[5]/-->
+     <p id="">And 6 this</p><!--/html/body/p[6]/-->
+     <p id="">And 7 this</p><!--/html/body/p[7]/-->
+     <p id="">And 8 this</p><!--/html/body/p[8]/-->
+     <p id="">And 9 this</p><!--/html/body/p[9]/-->
+     <p id="">And 10 this</p><!--/html/body/p[10]/-->
+     <p id="">And 11 this</p><!--/html/body/p[11]/-->
+     <p id="">And 12 this</p><!--/html/body/p[12]/-->
+     <p id="">And 13 this</p><!--/html/body/p[13]/-->
+     <p id="">And 14 this</p><!--/html/body/p[14]/-->
+     <p id="not-this">And 15 this</p><!--/html/body/p[15]/-->
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(d)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    filters = [
+            '/html/body/p[3]',
+            '/html/body/p[4]',
+            '/html/body/p[5]',
+            '/html/body/p[6]',
+            '/html/body/p[7]',
+            '/html/body/p[8]',
+            '/html/body/p[9]',
+            '/html/body/p[10]',
+            '/html/body/p[11]',
+            '/html/body/p[12]',
+            '/html/body/p[13]', # duplicated tags
+            '/html/body/p[13]',
+            '/html/body/p[13]',
+            '/html/body/p[13]',
+            '/html/body/p[13]',
+            '/html/body/p[14]',
+            ]
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"include_filters": '\n'.join(filters),
+            "url": test_url,
+            "tags": "test-tag-keep-order",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    assert b"And 1 this" in res.data  # test-tag-keep-order
+
+    a_tag_filter_check = b'And 1 this' #'#only-this' of tag_filters
+    # check there is no duplication of tag_filters
+    assert res.data.count(a_tag_filter_check) == 1, f"duplicated filters didn't removed {res.data.count(a_tag_filter_check)} of {a_tag_filter_check} in {res.data=}"
+
+    a_filter_check = b"And 13 this" # '/html/body/p[13]'
+    # check there is no duplication of filters
+    assert res.data.count(a_filter_check) == 1, f"duplicated filters didn't removed. {res.data.count(a_filter_check)} of {a_filter_check} in {res.data=}"
+
+    a_filter_check_not_include = b"And 2 this" # '/html/body/p[2]'
+    assert a_filter_check_not_include not in res.data
+
+    checklist = [
+            b"And 3 this",
+            b"And 4 this",
+            b"And 5 this",
+            b"And 6 this",
+            b"And 7 this",
+            b"And 8 this",
+            b"And 9 this",
+            b"And 10 this",
+            b"And 11 this",
+            b"And 12 this",
+            b"And 13 this",
+            b"And 14 this",
+            b"And 1 this", # result of filter from tag.
+            ]
+    # check whether everything a user requested is there
+    for test in checklist:
+        assert test in res.data
+
+    # check whether everything a user requested is in order of filters.
+    n = 0
+    for test in checklist:
+        t_index = res.data[n:].find(test)
+        # if the text is not searched, return -1.
+        assert t_index >= 0, f"""failed because {test=} not in {res.data[n:]=}
+#####################
+Looks like some feature changed the order of result of filters.
+#####################
+the {test} appeared before. {test in res.data[:n]=}
+{res.data[:n]=}
+        """
+        n += t_index + len(test)
+
+    delete_all_watches(client)
+
+
+def test_tag_json_persistence(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that tags are saved to individual tag.json files and loaded correctly.
+
+    This test verifies the update_27 tag storage refactoring:
+    - Tags are saved to {uuid}/tag.json files
+    - Tags persist across datastore restarts
+    - Tag edits write to tag.json
+    - Tag deletion removes tag.json file
+    """
+    import json
+
+    datastore = client.application.config.get('DATASTORE')
+
+    # 1. Create a tag
+    res = client.post(
+        url_for("tags.form_tag_add"),
+        data={"name": "persistence-test-tag"},
+        follow_redirects=True
+    )
+    assert b"Tag added" in res.data
+
+    tag_uuid = get_UUID_for_tag_name(client, name="persistence-test-tag")
+    assert tag_uuid, "Tag UUID should exist"
+
+    # 2. Verify tag.json file was created
+    tag_json_path = os.path.join(datastore_path, tag_uuid, "tag.json")
+    assert os.path.exists(tag_json_path), f"tag.json should exist at {tag_json_path}"
+
+    # 3. Verify tag.json contains correct data
+    with open(tag_json_path, 'r') as f:
+        tag_data = json.load(f)
+    assert tag_data['title'] == 'persistence-test-tag'
+    assert tag_data['uuid'] == tag_uuid
+    assert 'date_created' in tag_data
+
+    # 4. Edit the tag
+    res = client.post(
+        url_for("tags.form_tag_edit_submit", uuid=tag_uuid),
+        data={
+            "name": "persistence-test-tag",
+            "notification_muted": True,
+            "include_filters": '#test-filter'
+        },
+        follow_redirects=True
+    )
+    assert b"Updated" in res.data
+
+    # 5. Verify tag.json was updated
+    with open(tag_json_path, 'r') as f:
+        tag_data = json.load(f)
+    assert tag_data['notification_muted'] == True
+    assert '#test-filter' in tag_data.get('include_filters', [])
+
+    # 5a. Verify tag is NOT in changedetection.json (tags should be in tag.json only)
+    changedetection_json_path = os.path.join(datastore_path, "changedetection.json")
+    with open(changedetection_json_path, 'r') as f:
+        settings_data = json.load(f)
+    # Tags dict should be empty in settings (all tags are in individual files)
+    assert settings_data['settings']['application']['tags'] == {}, \
+        "Tags should NOT be saved to changedetection.json (should be empty dict)"
+
+    # 6. Simulate restart - reload datastore
+    datastore2 = ChangeDetectionStore(datastore_path=datastore_path, include_default_watches=False, version_tag='test')
+
+    # 7. Verify tag was loaded from tag.json
+    assert tag_uuid in datastore2.data['settings']['application']['tags']
+    loaded_tag = datastore2.data['settings']['application']['tags'][tag_uuid]
+    assert loaded_tag['title'] == 'persistence-test-tag'
+    assert loaded_tag['notification_muted'] == True
+    assert '#test-filter' in loaded_tag.get('include_filters', [])
+
+    # 8. Delete the tag via API
+    res = client.post(url_for("tags.delete", uuid=tag_uuid), follow_redirects=True)
+    assert b"Tag deleted" in res.data
+
+    # 9. Verify tag.json file was deleted
+    assert not os.path.exists(tag_json_path), f"tag.json should be deleted at {tag_json_path}"
+
+    # 10. Verify tag is removed from settings
+    assert tag_uuid not in datastore.data['settings']['application']['tags']
+
+    delete_all_watches(client)
+
+
