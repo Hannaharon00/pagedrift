@@ -2937,6 +2937,63 @@ msgstr "Povolit režim čtečky RSS"
 msgid "Number of changes to show in watch RSS feed"
 msgstr "Počet změn, které se mají zobrazit v kanálu RSS sledování"
 
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr "AI pracovní rozpočet (tokeny)"
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr "Při dosažení měsíčního rozpočtu tokenů"
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx k extrahování"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Extrahujte data"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr "právě teď"
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr "za chvíli"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr "před %ss"
+
 #: changedetectionio/processors/image_ssim_diff/preview.py
 msgid "Preview unavailable - No snapshots captured yet"
 msgstr "Náhled nedostupný - Zatím nebyly pořízeny žádné snapshoty"
