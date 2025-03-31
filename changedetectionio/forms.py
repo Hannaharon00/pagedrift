@@ -956,6 +956,49 @@ class DefaultUAInputForm(Form):
     if os.getenv("PLAYWRIGHT_DRIVER_URL") or os.getenv("WEBDRIVER_URL"):
         html_webdriver = StringField(_l('Chrome requests'), validators=[validators.Optional()], render_kw={"placeholder": "<default>"})
 
+# datastore.data['settings']['requests']..
+class globalSettingsRequestForm(Form):
+    time_between_check = RequiredFormField(TimeBetweenCheckForm, label=_l('Time Between Check'))
+    time_schedule_limit = FormField(ScheduleLimitForm)
+    proxy = RadioField(_l('Default proxy'))
+    jitter_seconds = IntegerField(_l('Random jitter seconds ± check'),
+                                  render_kw={"style": "width: 5em;"},
+                                  validators=[validators.NumberRange(min=0, message=_l("Should contain zero or more seconds"))])
+    
+    workers = IntegerField(_l('Number of fetch workers'),
+                          render_kw={"style": "width: 5em;"},
+                          validators=[validators.NumberRange(min=1, max=50,
+                                                             message=_l("Should be between 1 and 50"))])
+
+    timeout = IntegerField(_l('Requests timeout in seconds'),
+                           render_kw={"style": "width: 5em;"},
+                           validators=[validators.NumberRange(min=1, max=999,
+                                                              message=_l("Should be between 1 and 999"))])
+
+    extra_proxies = FieldList(FormField(SingleExtraProxy), min_entries=5)
+    extra_browsers = FieldList(FormField(SingleExtraBrowser), min_entries=5)
+
+    default_ua = FormField(DefaultUAInputForm, label=_l("Default User-Agent overrides"))
+
+    def validate_extra_proxies(self, extra_validators=None):
+        for e in self.data['extra_proxies']:
+            if e.get('proxy_name') or e.get('proxy_url'):
+                if not e.get('proxy_name','').strip() or not e.get('proxy_url','').strip():
+                    self.extra_proxies.errors.append(gettext('Both a name, and a Proxy URL is required.'))
+                    return False
+
+class globalSettingsApplicationUIForm(Form):
+    open_diff_in_new_tab = BooleanField(_l("Open 'History' page in a new tab"), default=True, validators=[validators.Optional()])
+    socket_io_enabled = BooleanField(_l('Realtime UI Updates Enabled'), default=True, validators=[validators.Optional()])
+    favicons_enabled = BooleanField(_l('Favicons Enabled'), default=True, validators=[validators.Optional()])
+    use_page_title_in_list = BooleanField(_l('Use page <title> in watch overview list')) #BooleanField=True
+    timeago_format = SelectField(_l('Relative time format'),
+                                 choices=[('long', _l('Long (1 minute ago)')), ('short', _l('Short (1m ago)'))],
+                                 default='long', validators=[validators.Optional()])
+    sidebar_mode = SelectField(_l('Navigation sidebar'),
+                               choices=MENU_SIDEBAR_ACTIONMODES,
+                               default=MENU_SIDEBAR_ACTIONMODES_DEFAULT, validators=[validators.Optional()])
+
 # datastore.data['settings']['application']..
 class globalSettingsApplicationForm(commonSettingsForm):
 
