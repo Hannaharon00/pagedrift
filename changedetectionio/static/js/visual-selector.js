@@ -506,3 +506,81 @@ window.initVisualSelector = function (opts) {
             drawnBox.x = Math.max(0, Math.min(drawnBox.x, c.width - drawnBox.width));
             drawnBox.y = Math.max(0, Math.min(drawnBox.y, c.height - drawnBox.height));
 
+    function isInsideBox(x, y) {
+        if (!drawnBox) return false;
+
+        const drawX = drawnBox.width >= 0 ? drawnBox.x : drawnBox.x + drawnBox.width;
+        const drawY = drawnBox.height >= 0 ? drawnBox.y : drawnBox.y + drawnBox.height;
+        const drawW = Math.abs(drawnBox.width);
+        const drawH = Math.abs(drawnBox.height);
+
+        return x >= drawX && x <= drawX + drawW && y >= drawY && y <= drawY + drawH;
+    }
+
+    function getResizeHandle(x, y) {
+        if (!drawnBox) return null;
+
+        const drawX = drawnBox.width >= 0 ? drawnBox.x : drawnBox.x + drawnBox.width;
+        const drawY = drawnBox.height >= 0 ? drawnBox.y : drawnBox.y + drawnBox.height;
+        const drawW = Math.abs(drawnBox.width);
+        const drawH = Math.abs(drawnBox.height);
+
+        const handles = {
+            'tl': { x: drawX, y: drawY },
+            'tr': { x: drawX + drawW, y: drawY },
+            'bl': { x: drawX, y: drawY + drawH },
+            'br': { x: drawX + drawW, y: drawY + drawH }
+        };
+
+        for (const [key, handle] of Object.entries(handles)) {
+            if (Math.abs(x - handle.x) <= HANDLE_SIZE && Math.abs(y - handle.y) <= HANDLE_SIZE) {
+                return key;
+            }
+        }
+
+        return null;
+    }
+
+    function getHandleCursor(handle) {
+        const cursors = {
+            'tl': 'nw-resize',
+            'tr': 'ne-resize',
+            'bl': 'sw-resize',
+            'br': 'se-resize'
+        };
+        return cursors[handle] || 'crosshair';
+    }
+
+    function resizeBox(x, y) {
+        const dx = x - drawStartX;
+        const dy = y - drawStartY;
+
+        const originalBox = { ...drawnBox };
+
+        switch (resizeHandle) {
+            case 'tl':
+                drawnBox.x = x;
+                drawnBox.y = y;
+                drawnBox.width = originalBox.x + originalBox.width - x;
+                drawnBox.height = originalBox.y + originalBox.height - y;
+                break;
+            case 'tr':
+                drawnBox.y = y;
+                drawnBox.width = x - originalBox.x;
+                drawnBox.height = originalBox.y + originalBox.height - y;
+                break;
+            case 'bl':
+                drawnBox.x = x;
+                drawnBox.width = originalBox.x + originalBox.width - x;
+                drawnBox.height = y - originalBox.y;
+                break;
+            case 'br':
+                drawnBox.width = x - originalBox.x;
+                drawnBox.height = y - originalBox.y;
+                break;
+        }
+
+        drawStartX = x;
+        drawStartY = y;
+    }
+
