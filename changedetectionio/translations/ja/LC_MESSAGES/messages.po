@@ -2733,6 +2733,64 @@ msgstr "フィールドは必須です。"
 msgid "Value is required."
 msgstr "値は必須です。"
 
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text similarity ratio"
+msgstr "レーベンシュタイン - テキスト類似度"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein - Text change distance"
+msgstr "レーベンシュタイン - テキスト変化距離"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Not enough history to calculate Levenshtein metrics"
+msgstr "レーベンシュタイン指標を計算するのに十分な履歴がありません"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Snapshot too large for edit statistics, skipping."
+msgstr "スナップショットが大きすぎるため、編集統計をスキップします。"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Unable to calculate Levenshtein metrics"
+msgstr "レーベンシュタイン指標を計算できません"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein Text Similarity Details"
+msgstr "レーベンシュタイン テキスト類似度の詳細"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Raw distance (edits needed)"
+msgstr "編集距離（必要な編集回数）"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Similarity ratio"
+msgstr "類似度"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Percent similar"
+msgstr "類似度（%）"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid ""
+"Levenshtein metrics compare the last two snapshots, measuring how many character edits are needed to transform one "
+"into the other."
+msgstr "レーベンシュタイン指標は直近2つのスナップショットを比較し、一方を他方に変換するために必要な文字編集回数を測定します。"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Error calculating Levenshtein metrics"
+msgstr "レーベンシュタイン指標の計算中にエラーが発生しました"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count of content"
+msgstr "コンテンツの単語数"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Content Analysis"
+msgstr "コンテンツ分析"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count (latest snapshot)"
+msgstr "単語数（最新のスナップショット）"
+
 #: changedetectionio/conditions/plugins/wordcount_plugin.py
 msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
 msgstr "単語数はコンテンツの長さを示す簡易指標で、テキストを空白で分割して計算されます。"
