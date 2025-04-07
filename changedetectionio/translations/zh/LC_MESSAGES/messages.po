@@ -1844,6 +1844,67 @@ msgstr "错误文本"
 msgid "Error Screenshot"
 msgstr "错误截图"
 
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/templates/extract.html
+msgid "Text"
+msgstr "文本"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Current screenshot"
+msgstr "当前截图"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/processors/extract.py
+#: changedetectionio/processors/templates/extract.html
+msgid "Extract Data"
+msgstr "提取数据"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "seconds ago."
+msgstr "秒前。"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "seconds ago"
+msgstr "秒前"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Current error-ing screenshot from most recent request"
+msgstr "最近请求的错误截图"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Pro-tip: You can enable <strong>\"share access when password is enabled\"</strong> from settings."
+msgstr "提示：你可以在设置中启用 <strong>“启用密码时允许共享访问”</strong>。"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Generating change summary…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Goto single snapshot"
+msgstr "查看单个快照"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Highlight text to share or add to ignore lists."
+msgstr "选中文本以分享或加入忽略列表。"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Download difference patch"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "For now, Differences are performed on text, not graphically, only the latest screenshot is available."
+msgstr "目前差异仅按文本比较，非图形对比，只提供最新截图。"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Current screenshot from most recent request"
+msgstr "最近请求的当前截图"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "No screenshot available just yet! Try rechecking the page."
+msgstr "目前还没有截图！请尝试重新检查页面。"
+
 #: changedetectionio/blueprint/ui/templates/diff.html
 msgid "Screenshot requires Playwright/WebDriver enabled"
 msgstr "截图需要启用 Playwright/WebDriver"
@@ -2891,6 +2952,62 @@ msgstr "检查间隔"
 #: changedetectionio/forms.py
 msgid "Use global settings for time between check and scheduler."
 msgstr "检查间隔与调度时间使用全局设置。"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "请求方法"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "忽略状态代码（正常处理非 2xx 状态码）"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "仅当全历史中出现新的唯一行时触发"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "删除重复的文本行"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "按字母顺序排序文本"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "去除忽略的行"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "去除文本前后空白"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "新增行"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "替换/更改的行"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "删除的行"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "关键字触发器 - 触发/等待文本"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "文本匹配时阻止变更检测"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "在变更检测前执行 JavaScript"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "代理"
 
 #: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
