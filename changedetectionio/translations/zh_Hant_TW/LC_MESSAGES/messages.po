@@ -3112,3 +3112,59 @@ msgstr "目前快照的文字內容數值，與 JSON 或 CSS 過濾器結合使�
 msgid "Text that tripped the trigger from filters"
 msgstr "來自過濾器並觸發變更的文字"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr "格式，以避免"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr "及其他 HTML 實體字元直接以字面形式出現在您的通知中。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "項目"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "操作"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "在後方新增一行 / 規則"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "移除此行 / 規則"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "針對目前快照驗證此規則"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "設定每小時 / 平日排程"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "排程時間限制"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "營業時間"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "週末"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "重設"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "警告，您設定的一個或多個「天」持續時間將延伸至隔天。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "這可能會產生非預期的後果。"
+
