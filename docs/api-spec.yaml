@@ -380,3 +380,146 @@ tags:
           maxItems: 100
           description: Regex patterns to extract specific text after filtering
 
+        # History & Display
+        use_page_title_in_list:
+          type: [boolean, 'null']
+          description: Display page title in watch list (null = use system default)
+        history_snapshot_max_length:
+          type: [integer, 'null']
+          minimum: 1
+          maximum: 1000
+          description: Maximum number of history snapshots to keep (null = use system default)
+
+        # Scheduling
+        time_schedule_limit:
+          type: object
+          description: Weekly schedule limiting when checks can run
+          properties:
+            enabled:
+              type: boolean
+              default: false
+            monday:
+              $ref: '#/components/schemas/DaySchedule'
+            tuesday:
+              $ref: '#/components/schemas/DaySchedule'
+            wednesday:
+              $ref: '#/components/schemas/DaySchedule'
+            thursday:
+              $ref: '#/components/schemas/DaySchedule'
+            friday:
+              $ref: '#/components/schemas/DaySchedule'
+            saturday:
+              $ref: '#/components/schemas/DaySchedule'
+            sunday:
+              $ref: '#/components/schemas/DaySchedule'
+            timezone:
+              type: string
+              nullable: true
+              description: >-
+                Optional IANA timezone name the schedule is evaluated in, e.g.
+                "America/Los_Angeles". When empty or omitted, the global
+                scheduler_timezone_default is used, falling back to $TZ then UTC.
+                Must be a name recognised by the server's timezone database -
+                an unknown value is rejected with HTTP 400, because the scheduler
+                cannot resolve it and the watch would never be checked.
+              example: America/Los_Angeles
+
+        # Conditions (advanced logic)
+        conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field to check (e.g., 'page_filtered_text', 'page_title')
+              operator:
+                type: string
+                description: Comparison operator (e.g., 'contains_regex', 'equals', 'not_equals')
+              value:
+                type: string
+                description: Value to compare against
+            required: [field, operator, value]
+          maxItems: 100
+          description: Array of condition rules for change detection logic (empty array when not set)
+        conditions_match_logic:
+          type: string
+          enum: ['ALL', 'ANY']
+          default: 'ALL'
+          description: Logic operator - ALL (match all conditions) or ANY (match any condition)
+
+        # AI / LLM
+        llm_backend_profile:
+          type: [boolean, 'null']
+          default: true
+          description: |
+            Whether AI/LLM features are enabled. On a watch this is a plain on/off (default true).
+            On a tag/group it is ternary and is that group's only AI control:
+            - true: AI on for every watch in the group, and the group's `llm_intent` /
+              `llm_change_summary` are inherited by its watches (unless a watch sets its own)
+            - false: AI off for every watch in the group
+            - null (group default): the group has no say; each watch uses its own AI settings
+            (Reserved for selecting a named LLM profile in future - currently a plain on/off.)
+        llm_intent:
+          type: string
+          maxLength: 2000
+          default: ''
+          description: Plain-English intent for AI-based change filtering. The AI evaluates every detected change against this and only notifies when it matches.
+        llm_change_summary:
+          type: string
+          maxLength: 2000
+          default: ''
+          description: Instructions for the AI to summarise changes in notifications. When set, replaces {{diff}} with a human-readable description.
+        llm_change_summary_mode:
+          type: string
+          enum: ['replace', 'append']
+          default: 'replace'
+          description: Whether llm_change_summary replaces the prompt inherited from the tag/global settings, or is appended to the end of it.
+        llm_prefilter:
+          type: [string, 'null']
+          readOnly: true
+          description: CSS selector derived by the AI to narrow content scope before evaluation (auto-managed, do not set manually).
+        llm_evaluation_cache:
+          type: object
+          readOnly: true
+          description: Internal cache of AI evaluation results keyed by (intent, diff) hash (auto-managed).
+        llm_last_tokens_used:
+          type: [integer, 'null']
+          readOnly: true
+          description: Number of tokens consumed by the AI on the most recent check.
+        llm_tokens_used_cumulative:
+          type: [integer, 'null']
+          readOnly: true
+          description: Total tokens consumed by the AI across all checks for this watch.
+        llm_tokens_this_period:
+          type: [integer, 'null']
+          readOnly: true
+          description: Tokens consumed by the AI on this watch within the current rollover period (currently month). Used to enforce max_tokens_per_count_period.
+        llm_tokens_period_key:
+          type: [string, 'null']
+          readOnly: true
+          description: Identifier of the current rollover period (e.g. "2026-05"). Set automatically; resets llm_tokens_this_period when the period changes.
+
+    DaySchedule:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+        start_time:
+          type: string
+          pattern: '^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'
+          default: '00:00'
+          description: Start time in HH:MM format
+        duration:
+          type: object
+          properties:
+            hours:
+              type: string
+              pattern: '^[0-9]+$'
+              default: '24'
+            minutes:
+              type: string
+              pattern: '^[0-9]+$'
+              default: '00'
+
