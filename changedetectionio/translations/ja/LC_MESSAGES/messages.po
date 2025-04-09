@@ -3307,3 +3307,64 @@ msgstr "制限なし"
 msgid "Above price to trigger notification"
 msgstr "通知をトリガーする上限価格"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "非SSLの場合、例："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "詳細なヘルプはこちら"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "下記の <code>%(token)s</code> プレースホルダーを受け付けます"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "すべての通知のタイトル"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "JSONペイロードの場合は以下を使用："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "自動エスケープのための引用符なし。例："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "URLエンコードの場合は使用："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "例："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "正規表現による置換の場合は使用："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "すべての Jinja2 組み込みフィルタの完全なリファレンスは以下を参照してください："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "すべての通知のフォーマット"
+
+# 訳注: "Discord does not render HTML — switch to <Plain Text> format to avoid <&nbsp;> and other HTML entities appearing
+# literally in your notifications."
+# → 「Discord は HTML をレンダリングしません。プレーンテキスト形式に切り替えて、通知で &nbsp; などの HTML エンティティがそのまま表示されるのを回避してください。」
+# 3分割された文をプレースホルダー位置に合わせて再配分
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord は HTML をレンダリングしません。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "プレーンテキスト"
+
