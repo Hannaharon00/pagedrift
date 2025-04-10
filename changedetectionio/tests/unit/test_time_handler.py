@@ -201,3 +201,139 @@ class TestIsWithinSchedule(unittest.TestCase):
         now = arrow.now(timezone_str)
         current_day = now.format('dddd').lower()
 
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': False,
+                'start_time': '09:00',
+                'duration': {'hours': 8, 'minutes': 0}
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertFalse(result, "Disabled day should return False")
+
+    def test_schedule_enabled_within_time(self):
+        """Test schedule enabled and within time window."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        current_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': current_hour,
+                'duration': {'hours': 2, 'minutes': 0}
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertTrue(result, "Current time should be within schedule")
+
+    def test_schedule_enabled_outside_time(self):
+        """Test schedule enabled but outside time window."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        # Set time to 3 hours ago
+        past_time = now.shift(hours=-3).format('HH:mm')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': past_time,
+                'duration': {'hours': 1, 'minutes': 0}  # Only 1 hour duration
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertFalse(result, "3 hours ago with 1 hour duration should be False")
+
+    def test_schedule_with_default_timezone(self):
+        """Test schedule without timezone uses default."""
+        now = arrow.now('America/New_York')
+        current_day = now.format('dddd').lower()
+        current_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            # No timezone specified
+            current_day: {
+                'enabled': True,
+                'start_time': current_hour,
+                'duration': {'hours': 2, 'minutes': 0}
+            }
+        }
+
+        # Should use default UTC, but since we're testing with NY time,
+        # the result depends on time difference
+        result = time_handler.is_within_schedule(
+            time_schedule_limit,
+            default_tz='America/New_York'
+        )
+        self.assertTrue(result, "Should work with default timezone")
+
+    def test_schedule_different_timezones(self):
+        """Test schedule works correctly across different timezones."""
+        # Test with Tokyo timezone
+        timezone_str = 'Asia/Tokyo'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        current_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': current_hour,
+                'duration': {'hours': 1, 'minutes': 30}
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertTrue(result)
+
+    def test_schedule_with_minutes_in_duration(self):
+        """Test schedule with minutes specified in duration."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        current_time = now.format('HH:mm')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': current_time,
+                'duration': {'hours': 0, 'minutes': 45}
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertTrue(result, "Should handle minutes in duration")
+
+    def test_schedule_with_timezone_whitespace(self):
+        """Test that timezone with whitespace is handled."""
+        timezone_str = '  UTC  '
+        now = arrow.now('UTC')
+        current_day = now.format('dddd').lower()
+        current_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': current_hour,
+                'duration': {'hours': 1, 'minutes': 0}
+            }
+        }
+
