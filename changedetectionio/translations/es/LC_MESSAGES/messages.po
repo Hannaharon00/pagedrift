@@ -3435,3 +3435,59 @@ msgstr "para no SSL, es decir"
 msgid "more help here"
 msgstr "más ayuda aquí"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Entrada"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Acciones"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Agregar una fila/regla después"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Eliminar esta fila/regla"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Verifique esta regla con la instantánea actual"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Establecer un horario por horas/días de la semana"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Programar límites de tiempo"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Horario comercial"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Fines de semana"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Advertencia, uno o más de sus 'días' tienen una duración que se extendería hasta el día siguiente."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Esto podría tener consecuencias no deseadas."
+
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Más ayuda y ejemplos sobre el uso del planificador"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "¿Quieres utilizar un horario?"
+
