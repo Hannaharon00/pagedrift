@@ -76,3 +76,12 @@ def test_restock_itemprop_basic(client, live_server, measure_memory_usage, datas
 
         delete_all_watches(client)
 
+def test_restock_itemprop_minmax(client, live_server, measure_memory_usage, datastore_path):
+    
+    extras = {
+        "processor_config_restock_diff-follow_price_changes": "y",
+        "processor_config_restock_diff-price_change_min": 900.0,
+        "processor_config_restock_diff-price_change_max": 1100.10
+    }
+    _run_test_minmax_limit(client, extra_watch_edit_form=extras, datastore_path=datastore_path)
+
