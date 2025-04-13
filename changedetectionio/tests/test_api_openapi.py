@@ -74,3 +74,61 @@ def test_openapi_validation_invalid_content_type_on_create_watch(client, live_se
     delete_all_watches(client)
 
 
+def test_openapi_validation_missing_required_field_create_watch(client, live_server, measure_memory_usage, datastore_path):
+    """Test that creating a watch without required URL field triggers OpenAPI validation error."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Try to create a watch without the required 'url' field
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"title": "Test Watch Without URL"}),  # Missing required 'url' field
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        follow_redirects=True
+    )
+
+    # Should get 400 error due to missing required field
+    assert res.status_code == 400, f"Expected 400 but got {res.status_code}"
+    assert b"Validation failed" in res.data, "Should contain validation error message"
+    delete_all_watches(client)
+
+
+def test_openapi_validation_invalid_field_in_request_body(client, live_server, measure_memory_usage, datastore_path):
+    """Test that including invalid fields triggers OpenAPI validation error."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # First create a valid watch
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "https://example.com", "title": "Test Watch"}),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        follow_redirects=True
+    )
+    assert res.status_code == 201, "Watch creation should succeed"
+
+    # Get the watch list to find the UUID
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200
+    watch_uuid = list(res.json.keys())[0]
+
+    # Now try to update the watch with an invalid field
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({
+            "title": "Updated title",
+            "invalid_field_that_doesnt_exist": "this should cause validation error"
+        }),
+    )
+
+    # Should get 400 error due to invalid field (this will be caught by internal validation)
+    # Note: This tests the flow where OpenAPI validation passes but internal validation catches it
+    assert res.status_code == 400, f"Expected 400 but got {res.status_code}"
+    # Backend validation now returns "Unknown field(s):" message
+    assert b"Unknown field" in res.data, \
+            "Should contain validation error about unknown fields"
+    delete_all_watches(client)
+
+
