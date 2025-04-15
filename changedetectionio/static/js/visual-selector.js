@@ -355,6 +355,73 @@ window.initVisualSelector = function (opts) {
             console.log('Loaded saved mode:', savedMode);
         }
 
+        // Load existing bounding box if present
+        const existingBox = $boundingBoxField.val();
+        if (existingBox) {
+            try {
+                const parts = existingBox.split(',').map(p => parseFloat(p));
+                if (parts.length === 4) {
+                    drawnBox = {
+                        x: parts[0] * xScale,
+                        y: parts[1] * yScale,
+                        width: parts[2] * xScale,
+                        height: parts[3] * yScale
+                    };
+                    console.log('Loaded saved bounding box:', existingBox);
+                }
+            } catch (e) {
+                console.error('Failed to parse existing bounding box:', e);
+            }
+        }
+
+        // Update mode when radio changes
+        $selectorModeRadios.off('change').on('change', function() {
+            const newMode = $(this).val();
+            drawMode = newMode === 'draw';
+            console.log('Mode changed to:', newMode);
+
+            // Save the mode to the hidden field
+            $selectionModeField.val(newMode);
+
+            if (drawMode) {
+                enableDrawMode();
+            } else {
+                disableDrawMode();
+            }
+        });
+
+        // Set initial mode based on which radio is checked
+        drawMode = $selectorModeRadios.filter(':checked').val() === 'draw';
+        console.log('Initial mode:', drawMode ? 'draw' : 'element');
+
+        // Save initial mode
+        $selectionModeField.val(drawMode ? 'draw' : 'element');
+
+        if (drawMode) {
+            enableDrawMode();
+        }
+    }
+
+    function enableDrawMode() {
+        console.log('Enabling draw mode...');
+
+        // Unbind element selection handlers
+        $selectorCanvasElem.unbind('mousemove mousedown mouseleave');
+
+        // Set cursor to crosshair
+        $selectorCanvasElem.css('cursor', 'crosshair');
+
+        // Bind draw mode handlers
+        $selectorCanvasElem.on('mousedown', handleDrawMouseDown);
+        $selectorCanvasElem.on('mousemove', handleDrawMouseMove);
+        $selectorCanvasElem.on('mouseup', handleDrawMouseUp);
+        $selectorCanvasElem.on('mouseleave', handleDrawMouseUp);
+
+        // Clear element selections and xpath display
+        currentSelections = [];
+        $includeFiltersElem.val('');
+        $selectorCurrentXpathElem.html(i18nT('vsDrawMode', 'Draw mode - click and drag to select an area'));
+
         // Clear the canvas
         if (ctx && xctx) {
             ctx.clearRect(0, 0, c.width, c.height);
