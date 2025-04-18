@@ -2933,6 +2933,62 @@ msgid "Use global settings for time between check and scheduler."
 msgstr "Utilisez les paramètres globaux pour le temps entre la vérification et le programmateur."
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Demande"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignorer les codes d'état (traiter les codes d'état non-2xx comme d'habitude)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Se déclenche uniquement lorsque des lignes uniques apparaissent"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Supprimer les lignes de texte en double"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Trier le texte par ordre alphabétique"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Supprimer les lignes ignorées"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Supprimez tout espace avant et après chaque ligne de texte"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Lignes ajoutées"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Lignes remplacées/modifiées"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Lignes supprimées"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Déclencheurs de mots clés – Déclencher/attendre du texte"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Bloquer la détection des modifications lorsque le texte correspond"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Exécuter JavaScript avant la détection des modifications"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "Envoyer une notification lorsque le filtre n'est plus trouvé sur la page"
 
