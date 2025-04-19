@@ -149,3 +149,62 @@ def test_submit_still_accepts_any_installed_fetcher(client, live_server, measure
     assert datastore.data['watching'][uuid].get('fetch_backend') == 'html_requests'
 
 
+def test_submit_saves_chosen_browser(client, live_server, measure_memory_usage, datastore_path):
+    """The picked browser lands on the watch instead of leaving it on 'system'."""
+    datastore = _datastore(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "fetch_backend": "html_webdriver"},
+        follow_redirects=True
+    )
+    assert b"Watch added" in res.data
+
+    uuid = next(iter(datastore.data['watching']))
+    assert datastore.data['watching'][uuid].get('fetch_backend') == 'html_webdriver'
+
+
+def test_parked_snapshot_browser_wins_over_form(client, live_server, measure_memory_usage, datastore_path):
+    """The browser that actually rendered the snapshot is the one the watch keeps.
+
+    /snapshot records it in the temporary watch's own watch.json; promoting the snapshot
+    must prefer that over whatever the form posted, since the parked screenshot and
+    element data came from it.
+    """
+    datastore = _datastore(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    temp_uuid = '11111111-2222-3333-4444-555555555555'
+    temp_dir = datastore.get_temporary_watch_dir(temp_uuid)
+    os.makedirs(temp_dir, exist_ok=True)
+    with open(os.path.join(temp_dir, "watch.json"), 'w') as f:
+        json.dump({"fetch_backend": "html_webdriver"}, f)
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "fetch_backend": "html_requests", "temporary_uuid": temp_uuid},
+        follow_redirects=True
+    )
+    assert b"Watch added" in res.data
+
+    uuid = next(iter(datastore.data['watching']))
+    assert datastore.data['watching'][uuid].get('fetch_backend') == 'html_webdriver'
+    # The snapshot dir was promoted into the watch, not left behind
+    assert not os.path.isdir(temp_dir)
+
+
+def test_watchlist_quick_add_is_unaffected(client, live_server, measure_memory_usage, datastore_path):
+    """The watch-list quick-add posts no browser at all - that still means 'system'."""
+    datastore = _datastore(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url},
+        follow_redirects=True
+    )
+    assert b"Watch added" in res.data
+
+    uuid = next(iter(datastore.data['watching']))
+    assert datastore.data['watching'][uuid].get('fetch_backend') in (None, '', 'system')
