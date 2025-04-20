@@ -3282,6 +3282,64 @@ msgstr "Włącz funkcje AI / LLM"
 msgid "Replace {{diff}} notification token with AI summary"
 msgstr "Zastąp token powiadomienia {{diff}} podsumowaniem wygenerowanym przez sztuczną inteligencję"
 
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr "właśnie teraz"
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr "w tej chwili"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr "%ss temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "w %ss"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "1 minuta temu"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "w 1 m"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "%sm temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "w %sm"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "1 godz. temu"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "za godzinę"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "%sh temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "w %sh"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "1 dzień temu"
+
 #: changedetectionio/store/__init__.py
 #, python-brace-format
 msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
