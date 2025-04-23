@@ -2674,6 +2674,62 @@ msgid "RegEx '%s' is not a valid regular expression."
 msgstr "'%s' RegEx'i geçerli bir düzenli ifade değil."
 
 #: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' geçerli bir XPath ifadesi değil. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' geçerli bir JSONPath ifadesi değil. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' geçerli bir jq ifadesi değil. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Boş değere izin verilmez."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Geçersiz değer."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Grup etiketi"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "İzleyici"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "İşlemci"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Düzenle > İzleyici"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Getirme Yöntemi"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Bildirim Gövdesi"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Bildirim formatı"
+
+#: changedetectionio/forms.py
 msgid "AI enabled for this watch?"
 msgstr ""
 
