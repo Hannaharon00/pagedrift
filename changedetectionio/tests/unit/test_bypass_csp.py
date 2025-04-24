@@ -95,3 +95,63 @@ def test_browser_steps_passes_bypass_csp_to_browser_context(monkeypatch, configu
     assert browser.new_context.await_args.kwargs['bypass_csp'] is (configured_value == 'true')
 
 
+@pytest.mark.parametrize('configured_value', ('true', 'false'))
+def test_puppeteer_only_sends_set_bypass_csp_when_enabled(monkeypatch, configured_value):
+    monkeypatch.setenv('PLAYWRIGHT_BYPASS_CSP', configured_value)
+
+    from changedetectionio.content_fetchers.puppeteer import _configure_puppeteer_csp
+
+    page = SimpleNamespace(setBypassCSP=AsyncMock())
+    asyncio.run(_configure_puppeteer_csp(page))
+
+    if configured_value == 'true':
+        page.setBypassCSP.assert_awaited_once_with(True)
+    else:
+        page.setBypassCSP.assert_not_awaited()
+
+
+def test_puppeteer_fetcher_configures_csp_on_created_page(monkeypatch):
+    from changedetectionio.content_fetchers import puppeteer
+
+    class CSPConfigurationReached(Exception):
+        pass
+
+    page = SimpleNamespace(
+        evaluate=AsyncMock(return_value='Mozilla/5.0'),
+        setUserAgent=AsyncMock(),
+        # fetch_page() attaches an 'error' listener before it configures CSP - the crash
+        # handling itself is covered by test_puppeteer_page_crash.py
+        on=Mock(),
+    )
+    browser = SimpleNamespace(newPage=AsyncMock(return_value=page))
+    pyppeteer_instance = SimpleNamespace(connect=AsyncMock(return_value=browser))
+
+    pyppeteer_module = ModuleType('pyppeteer')
+    pyppeteer_module.Pyppeteer = Mock(return_value=pyppeteer_instance)
+    stealth_module = ModuleType('pyppeteerstealth')
+    stealth_module.inject_evasions_into_page = AsyncMock()
+    monkeypatch.setitem(sys.modules, 'pyppeteer', pyppeteer_module)
+    monkeypatch.setitem(sys.modules, 'pyppeteerstealth', stealth_module)
+
+    configure_csp = AsyncMock(side_effect=CSPConfigurationReached)
+    monkeypatch.setattr(puppeteer, '_configure_puppeteer_csp', configure_csp)
+
+    with pytest.raises(CSPConfigurationReached):
+        asyncio.run(
+            puppeteer.fetcher().fetch_page(
+                current_include_filters=None,
+                empty_pages_are_a_change=False,
+                fetch_favicon=False,
+                ignore_status_codes=False,
+                is_binary=False,
+                request_body=None,
+                request_headers={},
+                request_method='GET',
+                screenshot_format=None,
+                timeout=45,
+                url='https://example.com',
+                watch_uuid='test-watch',
+            )
+        )
+
+    configure_csp.assert_awaited_once_with(page)
