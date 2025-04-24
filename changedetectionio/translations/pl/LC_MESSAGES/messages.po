@@ -2487,6 +2487,60 @@ msgstr "Sprawdź kolejkę"
 msgid "Live view of what the workers are doing right now and what is waiting in line."
 msgstr "Podgląd na żywo tego, czym właśnie zajmują się procesy robocze i co czeka w kolejce."
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers"
+msgstr "Procesy robocze"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Running now"
+msgstr "Teraz w trakcie"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Queued"
+msgstr "W kolejce"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue?"
+msgstr "Wyczyścić kolejkę?"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
+msgstr "<p>Spowoduje to usunięcie wszystkich oczekujących kontroli z kolejki.</p><p>Trwające kontrole będą kontynuowane.</p>"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear"
+msgstr "Wyczyść"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr "Wyczyść kolejkę"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr "Procesy robocze i kolejka"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr "Czas trwania"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr "Status"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr "Nie skonfigurowano żadnych procesów roboczych (FETCH_WORKERS=0), a kolejka jest pusta"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr "Oczekiwanie na nowe strony do sprawdzenia…"
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "Ostrzeżenie: adres URL {} już istnieje"
+
 #: changedetectionio/blueprint/ui/views.py
 msgid "Watch added in Paused state, saving will unpause."
 msgstr "Obserwację dodano w stanie wstrzymania; zapisanie spowoduje jej wznowienie."
