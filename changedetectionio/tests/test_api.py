@@ -367,6 +367,55 @@ def test_api_delete_watch_history(client, live_server, measure_memory_usage, dat
     )
     assert len(res.json) == 2, "Should have two history entries before clearing"
 
+    # Unknown watch UUID should 404 and not blow up
+    res = client.delete(
+        url_for("watchhistory", uuid='4d8b5b4a-8e0b-4d4a-9f57-3f2b1c0d9e11'),
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 404
+
+    # Requires the API key
+    res = client.delete(url_for("watchhistory", uuid=watch_uuid))
+    assert res.status_code == 403
+
+    # Pause it first - clearing resets last_checked to 0 which otherwise makes the ticker
+    # queue an instant recheck, and that would race with the assertions below
+    client.get(url_for("watch", uuid=watch_uuid, paused='paused'), headers={'x-api-key': api_key})
+
+    # Now really clear it
+    res = client.delete(
+        url_for("watchhistory", uuid=watch_uuid),
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 204
+
+    res = client.get(
+        url_for("watchhistory", uuid=watch_uuid),
+        headers={'x-api-key': api_key},
+    )
+    assert res.json == {}, "History should be empty after DELETE"
+
+    # The watch itself must survive, with its state reset
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200
+    assert res.json.get('url') == test_url
+    assert res.json.get('history_n') == 0
+    assert res.json.get('last_checked') == 0
+    assert res.json.get('previous_md5') == False
+
+    # And a snapshot fetch now has nothing to give
+    res = client.get(
+        url_for("watchsinglehistory", uuid=watch_uuid, timestamp='latest'),
+        headers={'x-api-key': api_key},
+    )
+    assert res.status_code == 404
+
+    delete_all_watches(client)
+
+
 def test_roundtrip_API(client, live_server, measure_memory_usage, datastore_path):
     """
     Test the full round trip, this way we test the default Model fits back into OpenAPI spec
