@@ -3097,6 +3097,63 @@ msgid "Notification format"
 msgstr "Formato de notificación"
 
 #: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Título de la notificación"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Lista de URL de notificación"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Procesador: ¿Qué quieres lograr?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Zona horaria predeterminada para el programador de verificación de monitores"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Segundos de espera antes de extraer el texto"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Debe contener uno o más segundos"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Anulación de URL de base de notificaciones"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Guardar"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr "Subir archivo .xlsx"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr "¡Debe ser un archivo .xlsx!"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "Mapeo de archivos"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "Operación"
+
+#: changedetectionio/forms.py
 msgid "AI enabled for this watch?"
 msgstr ""
 
