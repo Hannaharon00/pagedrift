@@ -121,3 +121,108 @@ class TestReasoningBlockEdgeCases:
         assert _extract_json(raw) == raw
 
 
+class TestParseEvalResponse:
+    def test_valid_important_true(self):
+        raw = '{"important": true, "summary": "Price dropped from $500 to $400"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is True
+        assert result['summary'] == 'Price dropped from $500 to $400'
+
+    def test_valid_important_false(self):
+        raw = '{"important": false, "summary": "Only a date counter changed"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is False
+        assert 'date counter' in result['summary']
+
+    def test_string_false_evaluates_to_false(self):
+        raw = '{"important": "false", "summary": "No relevant changes found"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is False
+        assert result['summary'] == 'No relevant changes found'
+
+    def test_string_true_evaluates_to_true(self):
+        raw = '{"important": "true", "summary": "Price updated"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is True
+        assert result['summary'] == 'Price updated'
+
+    def test_markdown_fenced_response(self):
+        raw = '```json\n{"important": true, "summary": "New job posted"}\n```'
+        result = parse_eval_response(raw)
+        assert result['important'] is True
+        assert result['summary'] == 'New job posted'
+
+    def test_reasoning_model_response_parsed_correctly(self):
+        raw = (
+            '<think>\n'
+            '1. Checking diff: {"important": false} was our initial thought.\n'
+            '2. However the price dropped from $100 to $80.\n'
+            '</think>\n'
+            '{"important": true, "summary": "Price dropped by $20"}'
+        )
+        result = parse_eval_response(raw)
+        assert result['important'] is True
+        assert result['summary'] == 'Price dropped by $20'
+
+    def test_malformed_json_falls_back_to_safe_default(self):
+        result = parse_eval_response('this is not json at all')
+        assert result['important'] is False
+        assert result['summary'] == ''
+
+    def test_empty_string_falls_back(self):
+        result = parse_eval_response('')
+        assert result['important'] is False
+
+    def test_truthy_integer_coerced_to_bool(self):
+        raw = '{"important": 1, "summary": "yes"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is True
+
+    def test_falsy_integer_coerced_to_bool(self):
+        raw = '{"important": 0, "summary": "no"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is False
+
+    def test_summary_stripped_of_whitespace(self):
+        raw = '{"important": false, "summary": "  no match  "}'
+        result = parse_eval_response(raw)
+        assert result['summary'] == 'no match'
+
+    def test_missing_summary_defaults_to_empty_string(self):
+        raw = '{"important": true}'
+        result = parse_eval_response(raw)
+        assert result['summary'] == ''
+
+    def test_extra_keys_ignored(self):
+        raw = '{"important": false, "summary": "skip", "confidence": 0.3, "debug": "xyz"}'
+        result = parse_eval_response(raw)
+        assert result['important'] is False
+        assert result['summary'] == 'skip'
+
+
+class TestParsePreviewResponse:
+    def test_valid_found_true(self):
+        raw = '{"found": true, "answer": "Price is $49.99"}'
+        result = parse_preview_response(raw)
+        assert result['found'] is True
+        assert result['answer'] == 'Price is $49.99'
+
+    def test_valid_found_false(self):
+        raw = '{"found": false, "answer": "Item not listed"}'
+        result = parse_preview_response(raw)
+        assert result['found'] is False
+        assert result['answer'] == 'Item not listed'
+
+    def test_string_false_in_preview(self):
+        raw = '{"found": "false", "answer": "Not found"}'
+        result = parse_preview_response(raw)
+        assert result['found'] is False
+        assert result['answer'] == 'Not found'
+
+    def test_preview_with_think_tags(self):
+        raw = '<think>Looking for price...</think>\n{"found": true, "answer": "$19.99"}'
+        result = parse_preview_response(raw)
+        assert result['found'] is True
+        assert result['answer'] == '$19.99'
+
+
