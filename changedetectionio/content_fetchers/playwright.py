@@ -460,3 +460,7 @@ class fetcher(Fetcher):
                 gc.collect()
 
 
+# Create module-level instance for plugin registration
+playwright_plugin = PlaywrightFetcherPlugin()
+
+
