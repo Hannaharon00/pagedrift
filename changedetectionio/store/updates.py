@@ -206,6 +206,140 @@ class DatastoreUpdatesMixin:
                     logger.warning("No schema version found but watches exist - running all updates from version 0")
                     current_schema_version = 0
 
+        logger.info(f"Current schema version: {current_schema_version}")
+
+        updates_ran = []
+
+        for update_n in updates_available:
+            if update_n > current_schema_version:
+                logger.critical(f"Applying update_{update_n}")
+
+                # Create tarball backup of entire datastore structure
+                # This includes all watch.json files, settings, and preserves directory structure
+                backup_path = create_backup_tarball(self.datastore_path, update_n)
+                if backup_path:
+                    logger.info(f"Backup created at: {backup_path}")
+                else:
+                    logger.warning("Backup creation failed, but continuing with update")
+
+                try:
+                    update_method = getattr(self, f"update_{update_n}")()
+                except Exception as e:
+                    logger.critical(f"Error while trying update_{update_n}")
+                    logger.exception(e)
+                    sys.exit(1)
+                else:
+                    # Bump the version
+                    self.data['settings']['application']['schema_version'] = update_n
+                    self.commit()
+
+                    logger.success(f"Update {update_n} completed")
+
+                    # Track which updates ran
+                    updates_ran.append(update_n)
+
+    # ============================================================================
+    # Individual Update Methods
+    # ============================================================================
+
+    def update_1(self):
+        """Convert minutes to seconds on settings and each watch."""
+        if self.data['settings']['requests'].get('minutes_between_check'):
+            self.data['settings']['requests']['time_between_check']['minutes'] = self.data['settings']['requests']['minutes_between_check']
+            # Remove the default 'hours' that is set from the model
+            self.data['settings']['requests']['time_between_check']['hours'] = None
+
+        for uuid, watch in self.data['watching'].items():
+            if 'minutes_between_check' in watch:
+                # Only upgrade individual watch time if it was set
+                if watch.get('minutes_between_check', False):
+                    self.data['watching'][uuid]['time_between_check']['minutes'] = watch['minutes_between_check']
+
+    def update_2(self):
+        """
+        Move the history list to a flat text file index.
+        Better than SQLite because this list is only appended to, and works across NAS / NFS type setups.
+        """
+        # @todo test running this on a newly updated one (when this already ran)
+        for uuid, watch in self.data['watching'].items():
+            history = []
+
+            if watch.get('history', False):
+                for d, p in watch['history'].items():
+                    d = int(d)  # Used to be keyed as str, we'll fix this now too
+                    history.append("{},{}\n".format(d, p))
+
+                if len(history):
+                    target_path = os.path.join(self.datastore_path, uuid)
+                    if os.path.exists(target_path):
+                        with open(os.path.join(target_path, "history.txt"), "w") as f:
+                            f.writelines(history)
+                    else:
+                        logger.warning(f"Datastore history directory {target_path} does not exist, skipping history import.")
+
+                # No longer needed, dynamically pulled from the disk when needed.
+                # But we should set it back to a empty dict so we don't break if this schema runs on an earlier version.
+                # In the distant future we can remove this entirely
+                self.data['watching'][uuid]['history'] = {}
+
+    def update_3(self):
+        """We incorrectly stored last_changed when there was not a change, and then confused the output list table."""
+        # see https://github.com/dgtlmoon/changedetection.io/pull/835
+        return
+
+    def update_4(self):
+        """`last_changed` not needed, we pull that information from the history.txt index."""
+        for uuid, watch in self.data['watching'].items():
+            try:
+                # Remove it from the struct
+                del(watch['last_changed'])
+            except:
+                continue
+        return
+
+    def update_5(self):
+        """
+        If the watch notification body, title look the same as the global one, unset it, so the watch defaults back to using the main settings.
+        In other words - the watch notification_title and notification_body are not needed if they are the same as the default one.
+        """
+        current_system_body = self.data['settings']['application']['notification_body'].translate(TRANSLATE_WHITESPACE_TABLE)
+        current_system_title = self.data['settings']['application']['notification_body'].translate(TRANSLATE_WHITESPACE_TABLE)
+        for uuid, watch in self.data['watching'].items():
+            try:
+                watch_body = watch.get('notification_body', '')
+                if watch_body and watch_body.translate(TRANSLATE_WHITESPACE_TABLE) == current_system_body:
+                    # Looks the same as the default one, so unset it
+                    watch['notification_body'] = None
+
+                watch_title = watch.get('notification_title', '')
+                if watch_title and watch_title.translate(TRANSLATE_WHITESPACE_TABLE) == current_system_title:
+                    # Looks the same as the default one, so unset it
+                    watch['notification_title'] = None
+            except Exception as e:
+                continue
+        return
+
+    def update_7(self):
+        """
+        We incorrectly used common header overrides that should only apply to Requests.
+        These are now handled in content_fetcher::html_requests and shouldnt be passed to Playwright/Selenium.
+        """
+        # These were hard-coded in early versions
+        for v in ['User-Agent', 'Accept', 'Accept-Encoding', 'Accept-Language']:
+            if self.data['settings']['headers'].get(v):
+                del self.data['settings']['headers'][v]
+
+    def update_8(self):
+        """Convert filters to a list of filters css_filter -> include_filters."""
+        for uuid, watch in self.data['watching'].items():
+            try:
+                existing_filter = watch.get('css_filter', '')
+                if existing_filter:
+                    watch['include_filters'] = [existing_filter]
+            except:
+                continue
+        return
+
             if os.path.exists(json_path):
                 with open(json_path, "rb") as f_j:
                     with open(deflate_path, "wb") as f_d:
