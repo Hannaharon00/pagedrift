@@ -2033,6 +2033,66 @@ msgid "Headers can be also read from a file in your data-directory"
 msgstr "Заголовки також можуть бути прочитані з файлу у вашій директорії даних"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Читати більше тут"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Не підтримується браузером Selenium"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Увімкнути текстовий пошук"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Будь ласка, зачекайте, перший крок браузера може зайняти деякий час..."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Натисніть тут для запуску"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Будь ласка, зачекайте 10-15 секунд для підключення браузера."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Натисніть \"Play\" для старту."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Дані візуального селектора не готові, завдання має бути перевірено хоча б один раз."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Вибачте, ця функція працює лише із завантажувачами, що підтримують інтерактивний Javascript (наразі лише на базі "
+"Playwright)"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "на той, що підтримує інтерактивний Javascript."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Вам потрібно"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Встановити метод завантаження"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Надсилає сповіщення, коли фільтр більше не видно на сторінці. Корисно, щоб дізнатися, що сторінка змінилася і ваш "
+"фільтр більше не працює."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
 msgstr "Використовуйте кнопку перевірки (✓), щоб протестувати умову на поточному знімку."
 
