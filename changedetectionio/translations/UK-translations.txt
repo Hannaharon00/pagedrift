@@ -2179,3 +2179,63 @@ msgstr "Викликає зміну, якщо цей текст з'являєт�
 msgid "Triggered text"
 msgstr "Тригерний текст"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Кожен рядок обробляється окремо (сприймайте кожен рядок як \"АБО\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Примітка: Обгорніть у скісну риску / для використання regex, приклад:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Matching text will be ignored in the text snapshot (you can still see it but it wont trigger a change)"
+msgstr "Текст, що збігається, буде проігноровано у текстовому знімку (ви його побачите, але він не викличе сповіщення)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Блокувати виявлення змін, поки цей текст є на сторінці. Весь текст і regex без урахування регістру. Корисно "
+"для очікування, коли товар знову з'явиться в наявності"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Блокуючий текст обробляється з результуючого тексту після CSS/JSON фільтрів для цього завдання"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "Усі рядки тут не повинні існувати (кожен рядок як \"АБО\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr "Вилучає текст у фінальний вивід (по-рядково) після інших фільтрів, використовуючи регулярні вирази або збіг рядків:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "Регулярний вираз - приклад"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "Не забудьте врахувати пробіли на початку рядка"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "type flags (more"
+msgstr "прапори типу (більше"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "information here"
+msgstr "інформації тут"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example"
+msgstr "Ключове слово - приклад"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "Використовуйте групи для вилучення тільки цього тексту - приклад"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "повертає тільки список років"
+
