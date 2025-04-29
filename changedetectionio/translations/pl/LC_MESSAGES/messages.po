@@ -3392,6 +3392,62 @@ msgstr "w %sh"
 msgid "1d ago"
 msgstr "1 dzień temu"
 
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "Wszelkie zmiany dotyczące dostępności"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "Wyłącz, nie śledź dostępności/uzupełnień zapasów"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "Cena poniżej poziomu uruchamiającego powiadomienie"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "Bez ograniczeń"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "Cena powyżej tej wartości spowoduje wysłanie powiadomienia"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "Próg (%) zmian cen od ostatniej kontroli"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "Powinna wynosić od 0 do 100"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "Śledź zmiany cen"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Restock & Price Detection"
+msgstr "Wykrywanie ponownej dostępności i zmian cen"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Re-stock & Price detection for pages with a SINGLE product"
+msgstr "Wykrywanie uzupełnienia zapasów i zmian cen na stronach zawierających JEDEN produkt"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Detects if the product goes back to in-stock"
+msgstr "Wykrywa, czy produkt ponownie pojawił się w magazynie"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price & stock history"
+msgstr "Historia cen i stanów magazynowych"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Download as XLSX"
+msgstr "Pobierz jako plik XLSX"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "When"
+msgstr "Kiedy"
+
 #: changedetectionio/store/__init__.py
 #, python-brace-format
 msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
