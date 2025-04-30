@@ -234,3 +234,39 @@ polish_html = """<!DOCTYPE html>
 """
 
 
+# Test with real-world example from wyborcza.pl (issue #3658)
+wyborcza_style_html = """<!DOCTYPE html>
+<html lang="pl">
+<head><meta charset="utf-8"></head>
+<body>
+<div class="article-list">
+    <a class="index--s-headline-link" href="/article1">
+        Naukowcy potwierdzają: oglądanie krótkich filmików prowadzi do "zgnilizny mózgu"
+    </a>
+    <a class="index--s-headline-link" href="/article2">
+        Zmiany klimatyczne wpływają na życie w miastach
+    </a>
+    <a class="index--s-headline-link" href="/article3">
+        Łódź: Nowe inwestycje w infrastrukturę miejską
+    </a>
+</div>
+</body>
+</html>
+"""
+
+
+def test_wyborcza_real_world_example():
+    """Test real-world case from wyborcza.pl that was failing (issue #3658)"""
+    xpath = '//a[(contains(@class,"index--s-headline-link"))]'
+    result = html_tools.xpath_filter(xpath, wyborcza_style_html, append_pretty_line_formatting=False)
+
+    # These exact strings should appear in the result
+    assert 'Naukowcy potwierdzają' in result
+    assert 'oglądanie krótkich filmików' in result
+    assert 'zgnilizny mózgu' in result
+    assert 'Łódź' in result
+
+    # Make sure they're NOT corrupted to mojibake like "potwierdzajÄ"
+    assert 'potwierdzajÄ' not in result
+    assert 'ogl&#261;danie' not in result
+    assert 'm&#243;zgu' not in result
