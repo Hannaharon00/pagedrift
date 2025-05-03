@@ -61,3 +61,44 @@ def watch_in_context(datastore, watch, f):
     return True
 
 
+def watch_passes_status(watch, f):
+    """The mutually-presented status toggle (All / Unread / Deals / With errors)."""
+    if f['with_errors'] and not watch.get('last_error'):
+        return False
+    if f['unread_only'] and (watch.viewed or watch.last_changed == 0):
+        return False
+    if f['deals'] and not watch_is_deal(watch):
+        return False
+    return True
+
+
+def watch_passes_search(watch, f):
+    search_q = f['search_q']
+    if not search_q:
+        return True
+    if (watch.get('title') and search_q in watch.get('title').lower()) or search_q in watch.get('url', '').lower():
+        return True
+    if watch.get('last_error') and search_q in watch.get('last_error').lower():
+        return True
+    return False
+
+
+def watch_matches_filters(datastore, watch, f):
+    """The full filter the watch list applies: context + status + search."""
+    return watch_in_context(datastore, watch, f) and watch_passes_status(watch, f) and watch_passes_search(watch, f)
+
+
+def matching_watch_uuids(datastore, args):
+    """UUIDs of every watch matching the watch-list filters in `args` (no pagination)."""
+    f = list_filters_from_args(datastore, args)
+    return [uuid for uuid, watch in datastore.data['watching'].items() if watch_matches_filters(datastore, watch, f)]
+
+
+# The query-string keys that define a watch-list view.
+FILTER_KEYS = ('tag', 'processor', 'unread', 'with_errors', 'deals', 'q')
+
+
+def filter_query_args(args):
+    """The active filter params (drop blanks) — used to redirect back to the same
+    filtered view after a bulk action so the operator doesn't lose their filters."""
+    return {k: args.get(k) for k in FILTER_KEYS if args.get(k)}
