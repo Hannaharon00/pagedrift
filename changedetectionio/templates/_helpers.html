@@ -144,3 +144,12 @@
   </div>
 {% endmacro %}
 
+{% endmacro %}
+
+{% macro highlight_trigger_ignored_explainer() %}
+                <p>
+                    <span title="{{ _('Triggers a change if this text appears, AND something changed in the document.') }}" style="background-color: var(--highlight-trigger-text-bg-color); color: #fff; padding: 4px; border-radius: 2px; margin-right: 4px;">{{ _('Triggered text') }}</span>
+                    <span title="{{ _('Ignored for calculating changes, but still shown.') }}" style="background-color: var(--highlight-ignored-text-bg-color); color: #fff; padding: 4px; border-radius: 2px; margin-right: 4px;">{{ _('Ignored text') }}</span>
+                    <span title="{{ _('No change-detection will occur because this text exists.') }}" style="background-color: var(--highlight-blocked-text-bg-color); color: #fff; padding: 4px; border-radius: 2px; margin-right: 4px;">{{ _('Blocked text') }}</span>
+                </p>
+{% endmacro %}

@@ -2937,6 +2937,63 @@ msgstr "Ошибка при расчёте метрик Левенштейна"
 msgid "Word count of content"
 msgstr "Количество слов в контенте"
 
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Content Analysis"
+msgstr "Анализ содержимого"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count (latest snapshot)"
+msgstr "Количество слов (последний снимок)"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
+msgstr "Количество слов — простая мера длины содержимого, рассчитываемая разбиением текста по пробелам."
+
+#: changedetectionio/content_fetchers/requests.py
+msgid "Basic fast Plaintext/HTTP Client"
+msgstr "Базовый быстрый текстовый/HTTP-клиент"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "Еще нет"
+
+#: changedetectionio/flask_app.py
+msgid "0 seconds"
+msgstr "0 секунд"
+
+#: changedetectionio/flask_app.py
+msgid "year"
+msgstr "год"
+
+#: changedetectionio/flask_app.py
+msgid "years"
+msgstr "лет"
+
+#: changedetectionio/flask_app.py
+msgid "month"
+msgstr "месяц"
+
+#: changedetectionio/flask_app.py
+msgid "months"
+msgstr "месяцев"
+
+#: changedetectionio/flask_app.py
+msgid "week"
+msgstr "неделя"
+
+#: changedetectionio/flask_app.py
+msgid "weeks"
+msgstr "недель"
+
+#: changedetectionio/flask_app.py
+msgid "day"
+msgstr "день"
+
+#: changedetectionio/flask_app.py
+msgid "days"
+msgstr "дней"
+
 #: changedetectionio/flask_app.py
 msgid "hour"
 msgstr "час"
