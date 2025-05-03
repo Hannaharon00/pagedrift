@@ -151,3 +151,61 @@ def test_invalid_url_parsing():
     assert result is False
 
 
+@pytest.mark.parametrize(
+    "schema,expected_method",
+    [
+        (http_method, http_method.upper())
+        for http_method in SUPPORTED_HTTP_METHODS
+    ],
+)
+@patch("requests.request")
+def test_http_methods(mock_request, schema, expected_method):
+    """Test all supported HTTP methods."""
+    mock_request.return_value.raise_for_status.return_value = None
+
+    url = f"{schema}://localhost:9999"
+
+    result = apprise_http_custom_handler(
+        body="test body",
+        title="Test Title",
+        notify_type="info",
+        meta={"url": url, "schema": schema},
+    )
+
+    assert result is True
+    mock_request.assert_called_once()
+
+    call_args = mock_request.call_args
+    assert call_args[1]["method"] == expected_method
+
+
+@pytest.mark.parametrize(
+    "input_schema,expected_method",
+    [
+        (f"{http_method}s", http_method.upper())
+        for http_method in SUPPORTED_HTTP_METHODS
+    ],
+)
+@patch("requests.request")
+def test_https_method_conversion(
+    mock_request, input_schema, expected_method
+):
+    """Validate that methods ending with 's' use HTTPS and correct HTTP method."""
+    mock_request.return_value.raise_for_status.return_value = None
+
+    url = f"{input_schema}://localhost:9999"
+
+    result = apprise_http_custom_handler(
+        body="test body",
+        title="Test Title",
+        notify_type="info",
+        meta={"url": url, "schema": input_schema},
+    )
+
+    assert result is True
+    mock_request.assert_called_once()
+
+    call_args = mock_request.call_args
+
+    assert call_args[1]["method"] == expected_method
+    assert call_args[1]["url"].startswith("https")
