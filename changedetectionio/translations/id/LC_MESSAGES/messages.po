@@ -2697,6 +2697,65 @@ msgstr "Prompt Ringkasan Perubahan AI default"
 msgid "Max tokens per watch per period"
 msgstr "Token maks. per monitor per periode"
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "%sj lalu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "dalam %sj"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "1h lalu"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "dalam 1h"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "%sh lalu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "dalam %sh"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "1mgg lalu"
+
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "dalam 1mgg"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%smgg lalu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "dalam %smgg"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1bln lalu"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "dalam 1bln"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%sbln lalu"
+
 #: changedetectionio/processors/restock_diff/difference.py
 #: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
 msgid "Price history"

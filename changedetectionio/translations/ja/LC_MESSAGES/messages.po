@@ -3187,6 +3187,58 @@ msgstr "無効なテンプレート構文: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "\"%(header)s\" ヘッダーのテンプレート構文が無効です: %(error)s"
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "0から100の間で指定してください"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "パスワード"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "ページサイズ"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "0以上の値を入力してください（0で無効化）"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSSコンテンツ形式"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> 本文の構築元"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS「システムデフォルト」テンプレートの上書き"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "パスワードを削除"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "アンカータグのコンテンツをレンダリング"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "パスワードが有効な場合でもウォッチ履歴ページへの匿名アクセスを許可"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "ミュートされたウォッチをRSSフィードから非表示にする"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "RSSリーダーモードを有効化 "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "ウォッチRSSフィードに表示する変更件数"
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "in %ss"
