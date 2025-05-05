@@ -2716,6 +2716,62 @@ msgid "Hours"
 msgstr "小時"
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr "請求方式"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "忽略狀態碼（將非 2xx 狀態碼視為正常處理）"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "僅當歷史記錄中出現獨特行時觸發"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "移除重複的文字行"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "按字母順序排序文字"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "移除被忽略的行"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "移除文字前後的空白"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "新增的行"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "替換 / 變更的行"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "移除的行"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "關鍵字觸發 - 觸發 / 等待文字"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "當文字符合時，阻擋變更檢測"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "在變更檢測前執行 JavaScript"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "代理伺服器"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "當頁面上找不到過濾器時發送通知"
 
