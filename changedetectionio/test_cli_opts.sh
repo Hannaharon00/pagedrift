@@ -74,6 +74,109 @@ test_single_url() {
     [ "$(find "$dir" -mindepth 2 -maxdepth 2 -name 'watch.json' | wc -l)" -eq 1 ]
 }
 
+test_multiple_urls() {
+    local test_id=$1
+    local dir="/tmp/cli-test-multi-${test_id}-$$"
+    timeout 12 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u https://github.com \
+        -u https://httpbin.org \
+        -b &>/dev/null
+    # Count watch directories (UUID directories containing watch.json)
+    [ "$(find "$dir" -mindepth 2 -maxdepth 2 -name 'watch.json' | wc -l)" -eq 3 ]
+}
+
+test_url_with_options() {
+    local test_id=$1
+    local dir="/tmp/cli-test-opts-${test_id}-$$"
+    timeout 10 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u0 '{"title":"Test Site","processor":"text_json_diff"}' \
+        -b &>/dev/null
+    # Check that at least one watch.json contains the title "Test Site"
+    python3 -c "
+import json, glob, sys
+watch_files = glob.glob('$dir/*/watch.json')
+for wf in watch_files:
+    with open(wf) as f:
+        data = json.load(f)
+        if data.get('title') == 'Test Site':
+            sys.exit(0)
+sys.exit(1)
+"
+}
+
+test_multiple_urls_with_options() {
+    local test_id=$1
+    local dir="/tmp/cli-test-multi-opts-${test_id}-$$"
+    timeout 12 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u0 '{"title":"Site One"}' \
+        -u https://github.com \
+        -u1 '{"title":"Site Two"}' \
+        -b &>/dev/null
+    # Check that we have 2 watches and both titles are present
+    python3 -c "
+import json, glob, sys
+watch_files = glob.glob('$dir/*/watch.json')
+if len(watch_files) != 2:
+    sys.exit(1)
+titles = []
+for wf in watch_files:
+    with open(wf) as f:
+        data = json.load(f)
+        titles.append(data.get('title'))
+sys.exit(0 if 'Site One' in titles and 'Site Two' in titles else 1)
+"
+}
+
+test_batch_mode_exit() {
+    local test_id=$1
+    local dir="/tmp/cli-test-batch-${test_id}-$$"
+    local start=$(date +%s)
+    timeout 15 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -b &>/dev/null
+    local end=$(date +%s)
+    local elapsed=$((end - start))
+    [ $elapsed -lt 14 ]
+}
+
+test_recheck_all() {
+    local test_id=$1
+    local dir="/tmp/cli-test-recheck-all-${test_id}-$$"
+    # Create a watch using CLI, then recheck it
+    timeout 10 python3 changedetection.py -d "$dir" -C -u https://example.com -b &>/dev/null
+    # Now recheck all watches
+    timeout 10 python3 changedetection.py -d "$dir" -r all -b 2>&1 | grep -q "Queuing"
+}
+
+test_recheck_specific() {
+    local test_id=$1
+    local dir="/tmp/cli-test-recheck-uuid-${test_id}-$$"
+    # Create 2 watches using CLI
+    timeout 12 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u https://github.com \
+        -b &>/dev/null
+    # Get the UUIDs that were created
+    local uuids=$(find "$dir" -mindepth 2 -maxdepth 2 -name 'watch.json' -exec dirname {} \; | xargs -n1 basename | tr '\n' ',' | sed 's/,$//')
+    # Now recheck specific UUIDs
+    timeout 10 python3 changedetection.py -d "$dir" -r "$uuids" -b 2>&1 | grep -q "Queuing"
+}
+
+test_combined_operations() {
+    local test_id=$1
+    local dir="/tmp/cli-test-combined-${test_id}-$$"
+    timeout 12 python3 changedetection.py -d "$dir" -C \
+        -u https://example.com \
+        -u https://github.com \
+        -r all \
+        -b &>/dev/null
+    # Count watch directories (UUID directories containing watch.json)
+    [ "$(find "$dir" -mindepth 2 -maxdepth 2 -name 'watch.json' | wc -l)" -eq 2 ]
+}
+
 test_invalid_json() {
     local test_id=$1
     local dir="/tmp/cli-test-invalid-${test_id}-$$"
