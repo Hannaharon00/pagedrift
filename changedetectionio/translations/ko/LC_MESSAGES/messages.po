@@ -3129,6 +3129,59 @@ msgid "Save"
 msgstr "저장"
 
 #: changedetectionio/forms.py
+msgid "AI Change Intent - Notify me when.."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/forms.py
+msgid "AI Change Summary"
+msgstr "AI 변경 요약"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Change Summary prompt - Append or Replace the default?"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Replace the inherited prompt"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Append to the inherited prompt"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "CSS/JSONPath/JQ/XPath 필터"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "요소 제거"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr "다음을 포함한 줄 추출"
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "텍스트 추출"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "제목"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "포함된 줄 무시"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "요청 본문"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "페이지에서 필터를 더 이상 찾을 수 없으면 알림 보내기"
 
