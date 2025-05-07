@@ -2827,6 +2827,63 @@ msgstr "啟用 RSS 閱讀器模式 "
 msgid "Number of changes to show in watch RSS feed"
 msgstr "在 RSS Feed 中顯示的變更數量"
 
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr "AI 思考配額（權杖）"
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr "關閉（不進行思考）"
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr "最大 AI 摘要長度（權杖）"
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr "當達到每月權杖配額上限時"
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr "僅跳過 AI 摘要（監測任務仍會進行檢查）"
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr "完全跳過該監測任務檢查"
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr "監測列表「摘要」連結比對對象"
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr "上一個版本（倒數第二個快照 vs 最新快照）"
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr "自您上次檢視該監測任務以來的變更"
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "要提取的 RegEx"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "提取為 CSV"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr "剛剛"
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr "立刻"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr "%s 秒前"
+
 #: changedetectionio/languages.py
 msgid "in 1w"
 msgstr "1 週後"
