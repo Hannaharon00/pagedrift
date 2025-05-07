@@ -187,3 +187,35 @@ $(document).ready(function () {
                 }
             })
 
+                // Updating watch table rows
+                const $watchRow = $('tr[data-watch-uuid="' + watch.uuid + '"]');
+                console.log('Found watch row elements:', $watchRow.length);
+
+                if ($watchRow.length) {
+                    $($watchRow).toggleClass('checking-now', watch.checking_now);
+                    $($watchRow).toggleClass('queued', watch.queued);
+                    $($watchRow).toggleClass('unviewed', watch.unviewed);
+                    $($watchRow).toggleClass('has-error', watch.has_error);
+                    $($watchRow).toggleClass('has-favicon', watch.has_favicon);
+                    $($watchRow).toggleClass('notification_muted', watch.notification_muted);
+                    $($watchRow).toggleClass('paused', watch.paused);
+                    $($watchRow).toggleClass('single-history', watch.history_n === 1);
+                    $($watchRow).toggleClass('multiple-history', watch.history_n >= 2);
+
+                    $('td.title-col .error-text', $watchRow).html(watch.error_text)
+                    $('td.last-changed', $watchRow).text(watch.last_changed_text)
+                    $('td.last-checked .innertext', $watchRow).text(watch.last_checked_text)
+                    $('td.last-checked', $watchRow).data('timestamp', watch.last_checked).data('fetchduration', watch.fetch_time);
+                    $('td.last-checked', $watchRow).data('eta_complete', watch.last_checked + watch.fetch_time);
+
+                    console.log('Updated UI for watch:', watch.uuid);
+                }
+                $('body').toggleClass('checking-now', watch.checking_now && window.location.href.includes(watch.uuid));
+            });
+
+        } catch (e) {
+            // If Socket.IO fails to initialize, just log it and continue
+            console.log('Socket.IO initialization error:', e);
+        }
+    }
+});
