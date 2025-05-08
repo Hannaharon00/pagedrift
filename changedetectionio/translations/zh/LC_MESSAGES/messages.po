@@ -3242,6 +3242,62 @@ msgid "Above price to trigger notification"
 msgstr "高于该价格时触发通知"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "通知调试日志"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "处理中.."
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr "使用 <a target=\"newwindow\" href=\"%(url)s\">AppRise通知URL</a>，向几乎任何服务发送通知！"
+
+# TN: CJK scripts degrade when italicized; emphasis is rendered with <strong>
+# instead.
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr "<strong>请阅读通知服务 Wiki 以了解重要配置说明</strong>"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "显示高级帮助和提示"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "（或"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "最多仅支持"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2,000 个字符"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "通知文本,包括标题。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr "机器人无法向其他机器人发送消息，因此应指定非机器人用户的聊天 ID。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "仅支持非常有限的 HTML，发送额外标签可能失败，"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "（或使用纯文本/Markdown 格式）"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "用于直接 API 调用（或省略"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "用于非 SSL，例如"
 
