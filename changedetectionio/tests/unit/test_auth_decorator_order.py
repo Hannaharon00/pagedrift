@@ -30,3 +30,66 @@ decorators that are equally dead up there.
 Stacked @route decorators are a legitimate Flask idiom and are exempt.
 """
 
+import ast
+import pathlib
+import pytest
+
+REPO_ROOT = pathlib.Path(__file__).parents[3]  # …/changedetection.io/
+SOURCE_ROOT = REPO_ROOT / "changedetectionio"
+
+
+def _is_route_decorator(node: ast.expr) -> bool:
+    """Return True if the decorator looks like @something.route(...)."""
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "route"
+    )
+
+
+def collect_violations() -> list[str]:
+    violations = []
+
+    for path in SOURCE_ROOT.rglob("*.py"):
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        except SyntaxError:
+            continue
+
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+
+            decorators = node.decorator_list
+            route_indices = [i for i, d in enumerate(decorators) if _is_route_decorator(d)]
+            if not route_indices:
+                continue
+
+            # Everything above the last @route is discarded by the registration.
+            # Other @route decorators up there are fine — stacking routes is normal.
+            last_route = max(route_indices)
+            for i, decorator in enumerate(decorators):
+                if i < last_route and not _is_route_decorator(decorator):
+                    rel = path.relative_to(REPO_ROOT)
+                    violations.append(
+                        f"{rel}:{node.lineno} — `{node.name}`: "
+                        f"@{ast.unparse(decorator)} (line {decorator.lineno}) is above @route "
+                        f"(line {decorators[last_route].lineno}); it will never be applied "
+                        f"to the registered view"
+                    )
+
+    return violations
+
+
+def test_auth_decorator_order():
+    violations = collect_violations()
+    if violations:
+        msg = (
+            "\n\nFound decorators placed ABOVE @blueprint.route().\n"
+            "@route() registers the raw function and returns it unchanged, so anything\n"
+            "above it is never applied to the view Flask dispatches to. If the decorator\n"
+            "is an auth wrapper, the route is left completely unauthenticated.\n\n"
+            "Fix: move @blueprint.route() to be the outermost (topmost) decorator.\n\n"
+            + "\n".join(f"  • {v}" for v in violations)
+        )
+        pytest.fail(msg)
