@@ -206,3 +206,137 @@ class DatastoreUpdatesMixin:
                     logger.warning("No schema version found but watches exist - running all updates from version 0")
                     current_schema_version = 0
 
+            if os.path.exists(json_path):
+                with open(json_path, "rb") as f_j:
+                    with open(deflate_path, "wb") as f_d:
+                        logger.debug(f"Compressing {str(json_path)} to {str(deflate_path)}..")
+                        f_d.write(zlib.compress(f_j.read()))
+                        os.unlink(json_path)
+
+    def update_20(self):
+        """Migrate extract_title_as_title to use_page_title_in_list."""
+        for uuid, watch in self.data['watching'].items():
+            if self.data['watching'][uuid].get('extract_title_as_title'):
+                self.data['watching'][uuid]['use_page_title_in_list'] = self.data['watching'][uuid].get('extract_title_as_title')
+                del self.data['watching'][uuid]['extract_title_as_title']
+
+        if self.data['settings']['application'].get('extract_title_as_title'):
+            # Ensure 'ui' key exists (defensive for edge cases where base_config merge didn't happen)
+            if 'ui' not in self.data['settings']['application']:
+                self.data['settings']['application']['ui'] = {
+                    'use_page_title_in_list': True,
+                    'open_diff_in_new_tab': True,
+                    'socket_io_enabled': True,
+                    'favicons_enabled': True
+                }
+            self.data['settings']['application']['ui']['use_page_title_in_list'] = self.data['settings']['application'].get('extract_title_as_title')
+
+    def update_21(self):
+        """Migrate timezone to scheduler_timezone_default."""
+        if self.data['settings']['application'].get('timezone'):
+            self.data['settings']['application']['scheduler_timezone_default'] = self.data['settings']['application'].get('timezone')
+            del self.data['settings']['application']['timezone']
+
+    def update_23(self):
+        """Some notification formats got the wrong name type."""
+
+        def re_run(formats):
+            sys_n_format = self.data['settings']['application'].get('notification_format')
+            key_exists_as_value = next((k for k, v in formats.items() if v == sys_n_format), None)
+            if key_exists_as_value:  # key of "Plain text"
+                logger.success(f"['settings']['application']['notification_format'] '{sys_n_format}' -> '{key_exists_as_value}'")
+                self.data['settings']['application']['notification_format'] = key_exists_as_value
+
+            for uuid, watch in self.data['watching'].items():
+                n_format = self.data['watching'][uuid].get('notification_format')
+                key_exists_as_value = next((k for k, v in formats.items() if v == n_format), None)
+                if key_exists_as_value and key_exists_as_value != USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH:  # key of "Plain text"
+                    logger.success(f"['watching'][{uuid}]['notification_format'] '{n_format}' -> '{key_exists_as_value}'")
+                    self.data['watching'][uuid]['notification_format'] = key_exists_as_value  # should be 'text' or whatever
+
+            for uuid, tag in self.data['settings']['application']['tags'].items():
+                n_format = self.data['settings']['application']['tags'][uuid].get('notification_format')
+                key_exists_as_value = next((k for k, v in formats.items() if v == n_format), None)
+                if key_exists_as_value and key_exists_as_value != USE_SYSTEM_DEFAULT_NOTIFICATION_FORMAT_FOR_WATCH:  # key of "Plain text"
+                    logger.success(
+                        f"['settings']['application']['tags'][{uuid}]['notification_format'] '{n_format}' -> '{key_exists_as_value}'")
+                    self.data['settings']['application']['tags'][uuid][
+                        'notification_format'] = key_exists_as_value  # should be 'text' or whatever
+
+        from ..notification import valid_notification_formats
+        formats = deepcopy(valid_notification_formats)
+        re_run(formats)
+        # And in previous versions, it was "text" instead of Plain text, Markdown instead of "Markdown to HTML"
+        formats['text'] = 'Text'
+        formats['markdown'] = 'Markdown'
+        re_run(formats)
+
+    def update_24(self):
+        """RSS types should be inline with the same names as notification types."""
+        rss_format = self.data['settings']['application'].get('rss_content_format')
+        if not rss_format or 'text' in rss_format:
+            # might have been 'plaintext, 'plain text' or something
+            self.data['settings']['application']['rss_content_format'] = RSS_CONTENT_FORMAT_DEFAULT
+        elif 'html' in rss_format:
+            self.data['settings']['application']['rss_content_format'] = 'htmlcolor'
+        else:
+            # safe fallback to text
+            self.data['settings']['application']['rss_content_format'] = RSS_CONTENT_FORMAT_DEFAULT
+
+    def update_25(self):
+        """Different processors now hold their own history.txt."""
+        for uuid, watch in self.data['watching'].items():
+            processor = self.data['watching'][uuid].get('processor')
+            if processor != 'text_json_diff':
+                old_history_txt = os.path.join(self.datastore_path, "history.txt")
+                target_history_name = f"history-{processor}.txt"
+                if os.path.isfile(old_history_txt) and not os.path.isfile(target_history_name):
+                    new_history_txt = os.path.join(self.datastore_path, target_history_name)
+                    logger.debug(f"Renaming history index {old_history_txt} to {new_history_txt}...")
+                    shutil.move(old_history_txt, new_history_txt)
+
+    def migrate_legacy_db_format(self):
+        """
+        Migration: Individual watch persistence (COPY-based, safe rollback).
+
+        Loads legacy url-watches.json format and migrates to:
+        - {uuid}/watch.json (per watch)
+        - changedetection.json (settings only)
+
+        IMPORTANT:
+        - A tarball backup (before-update-26-timestamp.tar.gz) is created before migration
+        - url-watches.json is LEFT INTACT for rollback safety
+        - Users can roll back by simply downgrading to the previous version
+        - Or restore from tarball: tar -xzf before-update-26-*.tar.gz
+
+        This is a dedicated migration release - users upgrade at their own pace.
+        """
+        logger.critical("=" * 80)
+        logger.critical("Running migration: Individual watch persistence (update_26)")
+        logger.critical("COPY-based migration: url-watches.json will remain intact for rollback")
+        logger.critical("=" * 80)
+
+        # Populate settings from legacy data
+        logger.info("Populating settings from legacy data...")
+        watch_count = len(self.data['watching'])
+        logger.success(f"Loaded {watch_count} watches from legacy format")
+
+        # Phase 1: Save all watches to individual files
+        logger.critical(f"Phase 1/4: Saving {watch_count} watches to individual watch.json files...")
+
+        saved_count = 0
+        for uuid, watch in self.data['watching'].items():
+            try:
+                watch.commit()
+                saved_count += 1
+
+                if saved_count % 100 == 0:
+                    logger.info(f"  Progress: {saved_count}/{watch_count} watches migrated...")
+
+            except Exception as e:
+                logger.error(f"Failed to save watch {uuid}: {e}")
+                raise Exception(
+                    f"Migration failed: Could not save watch {uuid}. "
+                    f"url-watches.json remains intact, safe to retry. Error: {e}"
+                )
+
