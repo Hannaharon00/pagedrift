@@ -383,6 +383,37 @@ def llm_configured_via_env() -> bool:
     return bool(os.getenv('LLM_MODEL', '').strip())
 
 
+def _runtime_llm_config(datastore) -> dict | None:
+    """
+    Runtime gate used by every LLM entry point in this module (and the restock
+    fallback). Returns the resolved config dict only when both:
+      - the master 'llm_enabled' toggle is on (default True)
+      - a provider+model is actually configured
+
+    When the toggle is off but a config exists, logs a debug message and returns
+    None so callers fall through their existing "not configured" early-return path.
+
+    The settings UI deliberately still calls get_llm_config() directly so the
+    "AI / LLM configured: ..." badge keeps showing the saved provider even while
+    the toggle is off.
+    """
+    cfg = get_llm_config(datastore)
+    if not get_llm_settings(datastore).enabled:
+        if cfg:
+            logger.debug("LLM features disabled via settings (enabled=False) — skipping LLM lookup")
+        return None
+    return cfg
+
+
+# ---------------------------------------------------------------------------
+# Global monthly token budget
+# ---------------------------------------------------------------------------
+
+def _get_month_key() -> str:
+    """Returns 'YYYY-MM' for the current UTC month."""
+    return datetime.now(timezone.utc).strftime("%Y-%m")
+
+
 def get_global_token_budget_month(datastore=None) -> int:
     """
     Monthly token budget ceiling. Resolution order:
