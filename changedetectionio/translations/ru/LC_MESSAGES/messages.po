@@ -3717,6 +3717,62 @@ msgstr "Пополнение запасов и определение цен д�
 msgid "Detects if the product goes back to in-stock"
 msgstr "Определяет, возвращается ли товар на склад"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "Внимание: Содержание"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "и"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "зависят от того, как алгоритм разницы воспринимает изменение."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "Например, в некоторых случаях добавление или удаление может восприниматься как изменение."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "Больше здесь"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "Добавить адрес электронной почты"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "Отправить тестовое уведомление"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "Журналы отладки уведомлений"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "Обработка.."
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr ""
+"Используйте URL-адреса уведомлений <a target=\"newwindow\" href=\"%(url)s\">AppRise</a> для уведомлений практически о"
+" любой службе!"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr "<i>Пожалуйста, прочитайте здесь вики-сайт служб уведомлений, где вы найдете важные примечания по настройке</i>"
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Failed to generate image: %(error)s"
