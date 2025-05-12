@@ -3547,6 +3547,58 @@ msgstr "Переопределение шаблона RSS «Системное �
 msgid "Remove password"
 msgstr "Удалить пароль"
 
+#: changedetectionio/forms.py
+msgid "Monthly token budget"
+msgstr "Ежемесячный бюджет токенов"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max input characters"
+msgstr "Максимальное количество входных символов"
+
+#: changedetectionio/forms.py
+msgid "Enable AI / LLM features"
+msgstr "Включить функции AI/LLM"
+
+#: changedetectionio/forms.py
+msgid "Replace {{diff}} notification token with AI summary"
+msgstr "Замените токен уведомления {{diff}} сводкой AI."
+
+#: changedetectionio/forms.py
+msgid "Use LLM as a fallback for extracting price and restock info"
+msgstr "Используйте LLM в качестве запасного варианта для получения информации о ценах и пополнении запасов."
+
+#: changedetectionio/forms.py
+msgid "Enable LLM debug logging"
+msgstr "Включить ведение журнала отладки LLM"
+
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr "Бюджет мышления ИИ (токены)"
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr "Выкл. (не думая)"
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr "Максимальная длина сводки AI (токены)"
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr "Когда будет достигнут ежемесячный бюджет токенов"
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr "Пропустить только обобщение AI (смотреть еще проверяет)"
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr "Полностью пропустить проверку часов"
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "in %smo"
