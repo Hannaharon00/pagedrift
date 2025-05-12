@@ -355,3 +355,75 @@ def test_api_post_saves_processor_config_separately(client, live_server):
     assert 'processor_config_price_threshold' not in config, "Should NOT have prefixed keys"
 
 
+def test_api_put_saves_processor_config_separately(client, live_server):
+    """Test that API PUT updates processor configs in {processor}.json"""
+    import json
+    datastore = client.application.config.get('DATASTORE')
+
+    # Get API key
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Create watch
+    uuid = datastore.add_watch(
+        url='http://example.com',
+        extras={'processor': 'restock_diff'}
+    )
+
+    # Update via API with processor config
+    response = client.put(
+        url_for("watch", uuid=uuid),
+        data=json.dumps({
+            'processor_config_price_threshold': 15.0,
+            'processor_config_min_stock': 5
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key}
+    )
+
+    # PUT might return different status codes, 200 or 204 are both OK
+    assert response.status_code in (200, 204), f"Expected 200/204, got {response.status_code}: {response.data}"
+
+    watch = datastore.data['watching'][uuid]
+
+    # Check processor config file
+    processor_config_path = os.path.join(watch.data_dir, 'restock_diff.json')
+    assert os.path.exists(processor_config_path), "Processor config file should exist"
+
+    with open(processor_config_path, 'r') as f:
+        config = json.load(f)
+
+    assert config.get('price_threshold') == 15.0, "Should have updated price_threshold"
+    assert config.get('min_stock') == 5, "Should have min_stock"
+
+
+def test_ui_edit_saves_processor_config_separately(client, live_server):
+    """Test that processor_config_* fields never appear in watch.json (even from UI)"""
+    datastore = client.application.config.get('DATASTORE')
+
+    # Create watch
+    uuid = datastore.add_watch(
+        url='http://example.com',
+        extras={'processor': 'text_json_diff', 'title': 'Test'}
+    )
+
+    watch = datastore.data['watching'][uuid]
+
+    # Simulate someone accidentally trying to set processor_config fields directly
+    watch['processor_config_should_not_save'] = 'test_value'
+    watch['processor_config_another_field'] = 123
+    watch['normal_field'] = 'this_should_save'
+    watch.commit()
+
+    # Check watch.json has NO processor_config_* fields (main point of this test)
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        watch_data = json.load(f)
+
+    for key in watch_data.keys():
+        assert not key.startswith('processor_config_'), \
+            f"Found {key} in watch.json - processor configs should be filtered during commit"
+
+    # Verify normal fields still save
+    assert watch_data['normal_field'] == 'this_should_save', "Normal fields should save"
+    assert watch_data['title'] == 'Test', "Original fields should still be there"
+
+
