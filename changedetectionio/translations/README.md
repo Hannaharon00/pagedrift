@@ -251,3 +251,35 @@ The `W303` rule ensures that HTML tags in the `msgstr` match the `msgid`. This i
 
 ##### Handling intentional deviations
 
+Some W303 warnings are intentional.
+Use the `dennis-ignore: W303` comment in the source files (templates or Python code) within a `TRANSLATORS` comment to suppress these warnings.
+This ensures the ignore instruction is extracted into the `.po` files.
+
+- **CJK italic policy**: When replacing `<i>` with locale-conventional quotation marks, tags will no longer match.
+
+**Examples in Jinja2 templates:**
+
+```jinja
+{# TRANSLATORS: CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303 #}
+<p>{{ _('These settings are <strong><i>added</i></strong> to any existing watch configurations.')|safe }}</p>
+```
+
+**Example in Python source:**
+
+```python
+# dennis-ignore: W303 - CJK fonts lack native italics; allow substitution with conventional local styling.
+message = StringField(_l('This is <i>experimental</i> and may change'))
+```
+
+---
+
+
+## CI linter
+
+A GitHub Actions job (`lint-template-i18n`) checks for adjacent `{{ _(...) }}` calls on the same line
+separated only by HTML — the primary symptom of fragmented `msgid`s. It enforces a declining baseline:
+the count of existing violations may only go down, never up. When you fix a template, lower the
+`BASELINE_LIMIT` in `.github/workflows/test-only.yml` by the number of lines you fixed.
+
+See [issue #4074](https://github.com/dgtlmoon/changedetection.io/issues/4074) for full background and
+[PR #4076](https://github.com/dgtlmoon/changedetection.io/pull/4076) for worked consolidation examples.
