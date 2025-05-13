@@ -3589,3 +3589,59 @@ msgstr "Discord は HTML をレンダリングしません。"
 msgid "Plain Text"
 msgstr "プレーンテキスト"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr " 形式に切り替えて、通知で "
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr " などの HTML エンティティがそのまま表示されるのを回避してください。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "エントリー"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "アクション"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "後に行/ルールを追加"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "この行/ルールを削除"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "現在のスナップショットに対してこのルールを検証"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "時間/曜日スケジュールを設定"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "スケジュールの時間制限"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "営業時間"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "週末"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "リセット"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "警告：1つ以上の「曜日」の期間が翌日まで延長されています。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "これは意図しない結果を引き起こす可能性があります。"
+
