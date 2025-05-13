@@ -2884,6 +2884,58 @@ msgstr "Começar em"
 msgid "Run duration"
 msgstr "Duração da execução"
 
+#: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Usar agendador de tempo"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Fuso horário opcional para execução"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "Segunda-feira"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "Terça-feira"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Quarta-feira"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Quinta-feira"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "Sexta-feira"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Sábado"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Domingo"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Semanas"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Deve conter zero ou mais segundos"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Dias"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Horas"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
 msgid "Browser"
 msgstr ""
