@@ -389,6 +389,326 @@ async def async_update_worker(worker_id, q, notification_q, app, datastore, exec
                         watch.save_screenshot(screenshot=e.screenshot, as_error=True)
                         e.screenshot = None  # Free memory immediately
 
+                    datastore.update_watch(uuid=uuid, update_obj={'last_error': err_text,
+                                                                'last_check_status': e.status_code,
+                                                                'has_ldjson_price_data': None})
+                    process_changedetection_results = False
+                    
+                except content_fetchers_exceptions.BrowserStepsInUnsupportedFetcher as e:
+                    err_text = "This watch has Browser Steps configured and so it cannot run with the 'Basic fast Plaintext/HTTP Client', either remove the Browser Steps or select a Chrome fetcher."
+                    datastore.update_watch(uuid=uuid, update_obj={'last_error': err_text})
+                    process_changedetection_results = False
+                    logger.error(f"Exception (BrowserStepsInUnsupportedFetcher) reached processing watch UUID: {uuid}")
+
+                except Exception as e:
+                    import traceback
+                    logger.error(f"Worker {worker_id} exception processing watch UUID: {uuid}")
+                    logger.exception(f"Worker {worker_id} full exception details:")
+                    datastore.update_watch(uuid=uuid, update_obj={'last_error': "Exception: " + str(e)})
+                    process_changedetection_results = False
+
+                else:
+                    if not datastore.data['watching'].get(uuid):
+                        continue
+
+                    update_obj['content-type'] = str(update_handler.fetcher.get_all_headers().get('content-type', '') or "").lower()
+
+                    if not watch.get('ignore_status_codes'):
+                        update_obj['consecutive_filter_failures'] = 0
+
+                    update_obj['last_error'] = False
+                    cleanup_error_artifacts(uuid, datastore)
+
+                if not datastore.data['watching'].get(uuid):
+                    continue
+
+                logger.debug(f"Processing watch UUID: {uuid} - xpath_data length returned {len(update_handler.xpath_data) if update_handler and update_handler.xpath_data else 'empty.'}")
+                if update_handler and process_changedetection_results:
+                    try:
+                        # Reset the edited flag BEFORE update_watch (which calls watch.update() and would set it again)
+                        watch.reset_watch_edited_flag()
+
+                        # LLM evaluation — intent filtering + change summary
+                        update_obj['_llm_result'] = None
+                        update_obj['_llm_intent'] = ''
+                        update_obj['_llm_change_summary'] = ''
+                        # skip_check: when budget exceeded, don't run LLM or the check.
+                        # Also gated on llm_enabled — a disabled LLM can't be spending tokens,
+                        # so the budget enforcement shouldn't suppress changes when the user
+                        # has explicitly switched LLM off.
+                        from changedetectionio.llm.evaluator import is_llm_features_disabled as _is_llm_features_disabled, get_llm_settings as _get_llm_settings
+                        _llm_settings = _get_llm_settings(datastore)
+                        _llm_master_enabled = _llm_settings.enabled and not _is_llm_features_disabled()
+                        _llm_budget_action = _llm_settings.budget_action
+                        if _llm_master_enabled and _llm_budget_action == 'skip_check':
+                            from changedetectionio.llm.evaluator import is_global_token_budget_exceeded
+                            if is_global_token_budget_exceeded(datastore):
+                                logger.info(f"LLM monthly budget exceeded — skipping check for {uuid} (budget_action=skip_check)")
+                                changed_detected = False
+
+                        # Only run AI intent/summary when there's a PREVIOUS snapshot to diff
+                        # against. On the very first check history_n is 0 (the new snapshot is
+                        # saved further below), so there's no "change" to describe — running the
+                        # LLM here would summarise the whole page as if it just changed (e.g.
+                        # "price updated to 860" on first sight). Mirrors the notification gate
+                        # (which only fires at history_n >= 2).
+                        if changed_detected and watch.history_n >= 1:
+                            try:
+                                from changedetectionio.llm.evaluator import (
+                                    evaluate_change, llm_enabled_for_watch, resolve_intent,
+                                    resolve_llm_field, summarise_change, _runtime_llm_config,
+                                )
+                                # Per-watch (or group-wide) AI on/off — #4204. Checked before
+                                # any diff work so a switched-off watch costs nothing.
+                                _llm_on, _llm_on_source = llm_enabled_for_watch(watch, datastore)
+                                if not _llm_on:
+                                    logger.debug(f"LLM disabled for {uuid} (by {_llm_on_source}) — skipping AI intent/summary")
+                                # _runtime_llm_config returns None (and logs a debug skip
+                                # message) when the master 'llm_enabled' toggle is off, so
+                                # the whole block — diff computation, status minitext, and
+                                # the two executor dispatches — is skipped, not just the
+                                # inner LLM lookups.
+                                _llm_cfg = _runtime_llm_config(datastore) if _llm_on else None
+                                if _llm_cfg:
+                                    # Compute unified diff once — used by both intent and summary
+                                    _watch_dates = list(watch.history.keys())
+                                    # Capture from_version before new snapshot is added
+                                    _llm_from_version = _watch_dates[-1] if _watch_dates else None
+                                    if _watch_dates:
+                                        _prev_text = watch.get_history_snapshot(timestamp=_watch_dates[-1]) or ''
+                                        from difflib import unified_diff as _unified_diff
+                                        _diff_lines = list(_unified_diff(
+                                            _prev_text.splitlines(keepends=True),
+                                            contents.splitlines(keepends=True),
+                                            lineterm='',
+                                            n=3
+                                        ))
+                                        _diff_text = ''.join(_diff_lines) if _diff_lines else contents
+                                    else:
+                                        _diff_text = contents
+
+                                    # Step 1: AI Change Intent — may suppress notification
+                                    _llm_intent, _llm_intent_source = resolve_intent(watch, datastore)
+                                    if _llm_intent:
+                                        set_watch_minitext_status(watch, "AI/LLM (rules)..")
+                                        _llm_result = await loop.run_in_executor(
+                                            executor,
+                                            lambda diff=_diff_text, snap=contents: evaluate_change(
+                                                watch, datastore, diff=diff, current_snapshot=snap
+                                            )
+                                        )
+                                        update_obj['_llm_result'] = _llm_result
+                                        update_obj['_llm_intent'] = _llm_intent
+
+                                        if _llm_result and not _llm_result.get('important', True):
+                                            changed_detected = False
+                                            logger.info(
+                                                f"LLM filtered out change for {uuid} "
+                                                f"(intent from {_llm_intent_source}): "
+                                                f"{_llm_result.get('summary', '')[:80]}"
+                                            )
+
+                                    # Step 2: AI Change Summary — only compute it when a notification
+                                    # is actually going to be sent, because that's the only place
+                                    # the worker needs it (it fills {{diff}}/{{llm_summary}} in the
+                                    # notification body). The watch-list / diff-page "Summary" button
+                                    # computes it on demand via the diff_llm_summary AJAX endpoint, so
+                                    # we deliberately do NOT pre-compute it here just for the UI —
+                                    # that would spend tokens on every change for a summary nobody
+                                    # may ever look at.
+                                    from changedetectionio.notification_service import watch_will_send_content_changed_notification
+                                    if changed_detected and watch_will_send_content_changed_notification(datastore, watch):
+                                        set_watch_minitext_status(watch, "AI/LLM (summary)..")
+                                        _change_summary = await loop.run_in_executor(
+                                            executor,
+                                            lambda diff=_diff_text, snap=contents: summarise_change(
+                                                watch, datastore, diff=diff, current_snapshot=snap
+                                            )
+                                        )
+                                        if _change_summary:
+                                            update_obj['_llm_change_summary'] = _change_summary
+                            except Exception as e:
+                                logger.warning(f"LLM evaluation error for {uuid}: {e}")
+
+                        datastore.update_watch(uuid=uuid, update_obj=update_obj)
+
+                        if changed_detected or not watch.history_n:
+                            if update_handler.screenshot:
+                                watch.save_screenshot(screenshot=update_handler.screenshot)
+                                # Free screenshot memory immediately after saving
+                                update_handler.screenshot = None
+                                if hasattr(update_handler, 'fetcher') and hasattr(update_handler.fetcher, 'screenshot'):
+                                    update_handler.fetcher.screenshot = None
+
+                            if update_handler.xpath_data:
+                                watch.save_xpath_data(data=update_handler.xpath_data)
+                                # Free xpath data memory
+                                update_handler.xpath_data = None
+                                if hasattr(update_handler, 'fetcher') and hasattr(update_handler.fetcher, 'xpath_data'):
+                                    update_handler.fetcher.xpath_data = None
+
+                            # Ensure unique timestamp for history
+                            if watch.newest_history_key and int(fetch_start_time) == int(watch.newest_history_key):
+                                logger.warning(f"Timestamp {fetch_start_time} already exists, waiting 1 seconds")
+                                fetch_start_time += 1
+                                await asyncio.sleep(1)
+
+                            watch.save_history_blob(contents=contents,
+                                                    timestamp=int(fetch_start_time),
+                                                    snapshot_id=update_obj.get('previous_md5', 'none'))
+
+                            # Save AI summary file now that the new snapshot is committed —
+                            # watch.history.keys()[-1] now reflects the just-saved version,
+                            # so the cache filename matches what the UI will later look up.
+                            # Cache key must use build_summary_cache_prompt() with UI defaults so
+                            # the worker write and the UI read hash to the same prompt_hash.
+                            if update_obj.get('_llm_change_summary') and _llm_from_version:
+                                try:
+                                    from changedetectionio.llm.evaluator import (
+                                        get_effective_summary_prompt, build_summary_cache_prompt,
+                                    )
+                                    _llm_to_version = list(watch.history.keys())[-1]
+                                    from changedetectionio.llm.evaluator import get_llm_settings as _get_llm_settings_inner
+                                    _ls = _get_llm_settings_inner(datastore)
+                                    _llm_max_summary_tokens = _ls.max_summary_tokens
+                                    _llm_model = _ls.model
+                                    _llm_cache_prompt = build_summary_cache_prompt(
+                                        effective_prompt=get_effective_summary_prompt(watch, datastore),
+                                        max_summary_tokens=_llm_max_summary_tokens,
+                                        model=_llm_model,
+                                    )
+                                    watch.save_llm_diff_summary(
+                                        update_obj['_llm_change_summary'],
+                                        _llm_from_version,
+                                        _llm_to_version,
+                                        prompt=_llm_cache_prompt,
+                                    )
+                                except Exception as _fe:
+                                    logger.warning(f"Could not write change-summary file for {uuid}: {_fe}")
+
+                            empty_pages_are_a_change = datastore.data['settings']['application'].get('empty_pages_are_a_change', False)
+                            if update_handler.fetcher.content or (not update_handler.fetcher.content and empty_pages_are_a_change):
+                                watch.save_last_fetched_html(contents=update_handler.fetcher.content, timestamp=int(fetch_start_time))
+
+                            # Explicitly delete large content variables to free memory IMMEDIATELY after saving
+                            # These are no longer needed after being saved to history
+                            del contents
+
+                            # Send notifications on second+ check
+                            if watch.history_n >= 2:
+                                logger.info(f"Change detected in UUID {uuid} - {watch['url']}")
+                                if not watch.get('notification_muted'):
+                                    await send_content_changed_notification(uuid, notification_q, datastore)
+
+                    except Exception as e:
+
+                        logger.critical(f"Worker {worker_id} exception in process_changedetection_results")
+                        logger.exception(f"Worker {worker_id} full exception details:")
+                        datastore.update_watch(uuid=uuid, update_obj={'last_error': str(e)})
+
+
+                # Always record attempt count
+                count = watch.get('check_count', 0) + 1
+
+                final_updates = {'fetch_time': round(time.time() - fetch_start_time, 3),
+                                                                  'check_count': count,
+                                                                  }
+                # Record server header
+                try:
+                    server_header = str(update_handler.fetcher.get_all_headers().get('server', '') or "").strip().lower()[:255]
+                    if server_header:
+                        final_updates['remote_server_reply'] = server_header
+                except Exception as e:
+                    server_header = None
+                    pass
+
+                if update_handler: # Could be none or empty if the processor was not found
+                    # Always record page title (used in notifications, and can change even when the content is the same)
+                    if update_obj.get('content-type') and 'html' in update_obj.get('content-type'):
+                        try:
+                            page_title = html_tools.extract_title(data=update_handler.fetcher.content)
+                            if page_title:
+                                page_title = page_title.strip()[:2000]
+                                logger.debug(f"UUID: {uuid} Page <title> is '{page_title}'")
+                                final_updates['page_title'] = page_title
+                        except Exception as e:
+                            logger.exception(f"Worker {worker_id} full exception details:")
+                            logger.warning(f"UUID: {uuid} Exception when extracting <title> - {str(e)}")
+
+                    # Store favicon if necessary
+                    if update_handler.fetcher.favicon_blob and update_handler.fetcher.favicon_blob.get('base64'):
+                        watch.bump_favicon(url=update_handler.fetcher.favicon_blob.get('url'),
+                                           favicon_base_64=update_handler.fetcher.favicon_blob.get('base64'),
+                                           mime_type=update_handler.fetcher.favicon_blob.get('mime_type')
+                                           )
+
+                    datastore.update_watch(uuid=uuid, update_obj=final_updates)
+
+                    # NOW clear fetcher content - after all processing is complete
+                    # This is the last point where we need the fetcher data
+                    if update_handler and hasattr(update_handler, 'fetcher') and update_handler.fetcher:
+                        update_handler.fetcher.clear_content()
+
+                    # Explicitly delete update_handler to free all references
+                    if update_handler:
+                        del update_handler
+                        update_handler = None
+
+                # Force garbage collection
+                import gc
+                gc.collect()
+
+        except Exception as e:
+            # Store the processing exception for plugin finalization hook
+            processing_exception = e
+
+            logger.error(f"Worker {worker_id} unexpected error processing {uuid}: {e}")
+            logger.exception(f"Worker {worker_id} full exception details:")
+
+            # Also update the watch with error information
+            if datastore and uuid in datastore.data['watching']:
+                datastore.update_watch(uuid=uuid, update_obj={'last_error': f"Worker error: {str(e)}"})
+        
+        finally:
+            # Always cleanup - this runs whether there was an exception or not
+            if uuid:
+                # Capture references for plugin finalize hook BEFORE cleanup
+                # (cleanup may delete these variables, but plugins need the original references)
+                finalize_handler = update_handler  # Capture now, before cleanup deletes it
+                finalize_watch = watch              # Capture now, before any modifications
+
+                # Call quit() as backup (Puppeteer/Playwright have internal cleanup, but this acts as safety net)
+                try:
+                    if update_handler and hasattr(update_handler, 'fetcher') and update_handler.fetcher:
+                        await update_handler.fetcher.quit(watch=watch)
+                except Exception as e:
+                    logger.error(f"Exception while cleaning/quit after calling browser: {e}")
+                    logger.exception(f"Worker {worker_id} full exception details:")
+
+                try:
+
+                    # Clean up all memory references BEFORE garbage collection
+                    if update_handler:
+                        if hasattr(update_handler, 'fetcher') and update_handler.fetcher:
+                            update_handler.fetcher.clear_content()
+                        if hasattr(update_handler, 'content_processor'):
+                            update_handler.content_processor = None
+                        del update_handler
+                        update_handler = None
+
+                    # Clear large content variables
+                    if 'contents' in locals():
+                        del contents
+
+                    # Force garbage collection after all references are cleared
+                    import gc
+                    gc.collect()
+
+                    logger.debug(f"Worker {worker_id} completed watch {uuid} in {time.time()-fetch_start_time:.2f}s")
+                except Exception as cleanup_error:
+                    logger.error(f"Worker {worker_id} error during cleanup: {cleanup_error}")
+                    logger.exception(f"Worker {worker_id} full exception details:")
+
                 # Call plugin finalization hook after all cleanup is done
                 # Use captured references from before cleanup
                 try:

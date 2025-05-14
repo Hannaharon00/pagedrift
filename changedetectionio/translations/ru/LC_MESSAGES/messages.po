@@ -3326,6 +3326,58 @@ msgid "Random jitter seconds ± check"
 msgstr "Случайное дрожание в секундах ± проверка"
 
 #: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Количество работников по выборке"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Должно быть от 1 до 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Запрашивает таймаут в секундах"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Должно быть от 1 до 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Переопределения User-Agent по умолчанию"
+
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Требуется как имя, так и URL-адрес прокси-сервера."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Открыть страницу «История» в новой вкладке"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Обновления пользовательского интерфейса в реальном времени включены"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Фавиконки включены"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Использовать страницу <title> в обзорном списке просмотра"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Navigation sidebar"
 msgstr ""
 
