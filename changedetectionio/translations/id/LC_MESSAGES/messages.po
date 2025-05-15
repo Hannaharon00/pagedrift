@@ -2587,6 +2587,59 @@ msgid "Should contain zero or more seconds"
 msgstr "Harus berisi nol detik atau lebih"
 
 #: changedetectionio/forms.py
+msgid "Open Link Override"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Group Tag"
+msgstr "Tag Grup"
+
+#: changedetectionio/forms.py
+msgid "Time Between Check"
+msgstr "Waktu Antar Pemeriksaan"
+
+#: changedetectionio/forms.py
+msgid "Use global settings for time between check and scheduler."
+msgstr "Gunakan pengaturan global untuk waktu antar pemeriksaan dan penjadwal."
+
+#: changedetectionio/forms.py
+msgid "AI Change Intent - Notify me when.."
+msgstr "Intent Perubahan AI - Beri tahu saya saat.."
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/forms.py
+msgid "AI Change Summary"
+msgstr "Ringkasan Perubahan AI"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Change Summary prompt - Append or Replace the default?"
+msgstr "Prompt Ringkasan Perubahan - Tambahkan atau Ganti default?"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Replace the inherited prompt"
+msgstr "Ganti prompt yang diwarisi"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Append to the inherited prompt"
+msgstr "Tambahkan ke prompt yang diwarisi"
+
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr "Aktifkan AI untuk monitor ini?"
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "Filter CSS/JSONPath/JQ/XPath"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Hapus elemen"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr "Ekstrak baris yang mengandung"
+
+#: changedetectionio/forms.py
 msgid "Number of history items per watch to keep"
 msgstr "Jumlah item riwayat per monitor yang disimpan"
 
