@@ -1800,6 +1800,62 @@ msgstr "Eşleşen satırları yoksay"
 msgid "Ignore any lines matching excluding digits"
 msgstr "Rakamlar hariç eşleşen satırları yoksay"
 
+#. 'From' labels the older snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "From"
+msgstr "Kimden"
+
+#. 'To' labels the newer snapshot version selector on the diff page
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgctxt "diff version"
+msgid "To"
+msgstr "Kime"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Words"
+msgstr "Kelimeler"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Lines"
+msgstr "Satırlar"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Ignore Whitespace"
+msgstr "Boşlukları Yoksay"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Same/non-changed"
+msgstr "Aynı/değişmemiş"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Removed"
+msgstr "Kaldırıldı"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Added"
+msgstr "Eklendi"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/edit.html
+msgid "Replaced"
+msgstr "Değiştirildi"
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "Include all intermediate snapshots between the selected versions in the AI summary"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html
+msgid "AI: every change between versions"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Keyboard:"
+msgstr "Klavye:"
+
+#: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
+msgid "Previous"
+msgstr "Önceki"
+
 #: changedetectionio/blueprint/ui/templates/diff.html changedetectionio/blueprint/ui/templates/preview.html
 msgid "Next"
 msgstr "Sonraki"

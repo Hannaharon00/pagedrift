@@ -629,3 +629,119 @@ def test_access_denied(client, live_server, measure_memory_usage, datastore_path
     )
     assert b"Settings updated." in res.data
 
+def test_api_watch_PUT_update(client, live_server, measure_memory_usage, datastore_path):
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    # Create a watch
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Create new
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": test_url,
+                         'tag': "One, Two",
+                         "title": "My test URL",
+                         'headers': {'cookie': 'yum'},
+                         "conditions": [
+                             {
+                                 "field": "page_filtered_text",
+                                 "operator": "contains_regex",
+                                 "value": "."  # contains anything
+                             }
+                         ],
+                         "conditions_match_logic": "ALL",
+                         }
+                        ),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    if res.status_code != 201:
+        print(f"\n=== POST createwatch failed with {res.status_code} ===")
+        print(f"Response: {res.data}")
+    assert res.status_code == 201
+
+    wait_for_all_checks(client)
+    # Get a listing, it will be the first one
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key}
+    )
+
+    watch_uuid = list(res.json.keys())[0]
+    assert not res.json[watch_uuid].get('viewed'), 'A newly created watch can only be unviewed'
+
+    # Check in the edit page just to be sure
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid=watch_uuid),
+    )
+    assert b"cookie: yum" in res.data, "'cookie: yum' found in 'headers' section"
+    assert b"One" in res.data, "Tag 'One' was found"
+    assert b"Two" in res.data, "Tag 'Two' was found"
+
+    # HTTP PUT ( UPDATE an existing watch )
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({
+            "title": "new title",
+            'time_between_check': {'minutes': 552},
+            'headers': {'cookie': 'all eaten'},
+            'last_viewed': int(time.time())
+        }),
+    )
+    assert res.status_code == 200, "HTTP PUT update was sent OK"
+
+    # HTTP GET single watch, title should be updated
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.json.get('title') == 'new title'
+    assert res.json.get('viewed'), 'With the timestamp greater than "changed" a watch can be updated to viewed'
+
+    # Check in the edit page just to be sure
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid=watch_uuid),
+    )
+    assert b"new title" in res.data, "new title found in edit page"
+    assert b"552" in res.data, "552 minutes found in edit page"
+    assert b"One" in res.data, "Tag 'One' was found"
+    assert b"Two" in res.data, "Tag 'Two' was found"
+    assert b"cookie: all eaten" in res.data, "'cookie: all eaten' found in 'headers' section"
+
+    ######################################################
+
+    # HTTP PUT try a field that doesn't exist
+
+    # HTTP PUT an update
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"title": "new title", "some other field": "uh oh"}),
+    )
+
+    assert res.status_code == 400, "Should get error 400 when we give a field that doesnt exist"
+    # Backend validation now rejects unknown fields with a clear error message
+    assert (b'Unknown field' in res.data or
+            b'Additional properties are not allowed' in res.data or
+            b'Unevaluated properties are not allowed' in res.data or
+            b'does not match any of the regexes' in res.data), \
+            "Should reject unknown fields with validation error"
+
+
+    # Try a XSS URL
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({
+            'url': 'javascript:alert(document.domain)'
+        }),
+    )
+    assert res.status_code == 400
+
+    # Cleanup everything
+    delete_all_watches(client)
+
+
