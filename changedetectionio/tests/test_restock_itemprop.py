@@ -76,6 +76,131 @@ def test_restock_itemprop_basic(client, live_server, measure_memory_usage, datas
 
         delete_all_watches(client)
 
+def test_itemprop_price_change(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    # Out of the box 'Follow price changes' should be ON
+    test_url = url_for('test_endpoint', _external=True)
+
+    set_original_response(props_markup=instock_props[0], price="190.95", datastore_path=datastore_path)
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+
+    # A change in price, should trigger a change by default
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'190.95' in res.data
+
+    # basic price change, look for notification
+    set_original_response(props_markup=instock_props[0], price='180.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'180.45' in res.data
+    assert b'has-unread-changes' in res.data
+    client.post(url_for("ui.mark_all_viewed"), follow_redirects=True)
+    time.sleep(0.2)
+
+
+    # turning off price change trigger, but it should show the new price, with no change notification
+    set_original_response(props_markup=instock_props[0], price='120.45', datastore_path=datastore_path)
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"processor_config_restock_diff-follow_price_changes": "", "url": test_url, "tags": "", "headers": "", 'fetch_backend': "html_requests", "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'120.45' in res.data
+    assert b'has-unread-changes' not in res.data
+
+
+    delete_all_watches(client)
+
+def _run_test_minmax_limit(client, extra_watch_edit_form, datastore_path):
+
+    delete_all_watches(client)
+
+    test_url = url_for('test_endpoint', _external=True)
+
+    set_original_response(props_markup=instock_props[0], price="950.95", datastore_path=datastore_path)
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+    wait_for_all_checks(client)
+
+    data = {
+        "tags": "",
+        "url": test_url,
+        "headers": "",
+        "time_between_check-hours": 5,
+        'fetch_backend': "html_requests",
+        "time_between_check_use_default": "y"
+    }
+    data.update(extra_watch_edit_form)
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data=data,
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    client.post(url_for("ui.mark_all_viewed"))
+
+    # price changed to something greater than min (900), BUT less than max (1100).. should be no change
+    set_original_response(props_markup=instock_props[0], price='1000.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+
+    assert b'more than one price detected' not in res.data
+    # BUT the new price should show, even tho its within limits
+    assert b'1,000.45' or b'1000.45' in res.data #depending on locale
+    assert b'has-unread-changes' not in res.data
+
+    # price changed to something LESS than min (900), SHOULD be a change
+    set_original_response(props_markup=instock_props[0], price='890.45', datastore_path=datastore_path)
+
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    assert b'Queued 1 watch for rechecking.' in res.data
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'890.45' in res.data
+    assert b'has-unread-changes' in res.data
+
+    client.post(url_for("ui.mark_all_viewed"))
+
+
+    # 2715 - Price detection (once it crosses the "lower" threshold) again with a lower price - should trigger again!
+    set_original_response(props_markup=instock_props[0], price='820.45', datastore_path=datastore_path)
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    assert b'Queued 1 watch for rechecking.' in res.data
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'820.45' in res.data
+    assert b'has-unread-changes' in res.data
+    client.post(url_for("ui.mark_all_viewed"))
+
+    # price changed to something MORE than max (1100.10), SHOULD be a change
+    set_original_response(props_markup=instock_props[0], price='1890.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    # Depending on the LOCALE it may be either of these (generally for US/default/etc)
+    assert b'1,890.45' in res.data or b'1890.45' in res.data
+    assert b'has-unread-changes' in res.data
+
+    delete_all_watches(client)
+
+
 def test_restock_itemprop_minmax(client, live_server, measure_memory_usage, datastore_path):
     
     extras = {
