@@ -424,6 +424,79 @@ def test_login_redirect_with_password(client, live_server, measure_memory_usage,
     del client.application.config['DATASTORE'].data['settings']['application']['password']
 
 
+def test_login_redirect_from_protected_page(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test the complete redirect flow: accessing a protected page while logged out
+    should redirect to login with the page URL, then redirect back after login.
+    This is the real-world scenario where users try to access /edit/uuid or /settings
+    and need to login first.
+    """
+    import base64
+    import hashlib
+
+    # Add a watch first
+    set_original_response(datastore_path=datastore_path)
+    res = client.post(
+        url_for("imports.import_page"),
+        data={"urls": url_for('test_endpoint', _external=True)},
+        follow_redirects=True
+    )
+    assert b"1 Imported" in res.data
+    wait_for_all_checks(client)
+
+    # Set a password
+    password = "test123"
+    salt = os.urandom(32)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    salted_pass = base64.b64encode(salt + key).decode('ascii')
+    client.application.config['DATASTORE'].data['settings']['application']['password'] = salted_pass
+
+    # Logout to ensure we're not authenticated
+    client.post(url_for("logout"))
+
+    # Try to access a protected page (edit page for first watch)
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        follow_redirects=False
+    )
+
+    # Should redirect to login with the edit page as redirect parameter
+    assert res.status_code in [302, 303]
+    assert '/login' in res.location
+    assert 'redirect=' in res.location or 'redirect=%2F' in res.location
+
+    # Follow the redirect to login page
+    res = client.get(res.location, follow_redirects=False)
+    assert res.status_code == 200
+    assert b'Password' in res.data
+
+    # The redirect parameter should be preserved in the login form
+    # It should contain the edit page URL
+    assert b'name="redirect"' in res.data
+    assert b'value="/edit/first"' in res.data or b'value="%2Fedit%2Ffirst"' in res.data
+
+    # Now login with correct password and the redirect parameter
+    res = client.post(
+        url_for("login"),
+        data={"password": password, "redirect": "/edit/first"},
+        follow_redirects=False
+    )
+
+    # Should redirect to the edit page
+    assert res.status_code in [302, 303]
+    assert '/edit/first' in res.location
+
+    # Follow the redirect to verify we're on the edit page
+    res = client.get(res.location, follow_redirects=True)
+    assert res.status_code == 200
+    # Should see edit page content
+    assert b'Edit' in res.data or b'Watching' in res.data
+
+    # Cleanup
+    client.post(url_for("logout"))
+    del client.application.config['DATASTORE'].data['settings']['application']['password']
+
+
 def test_logout_with_redirect(client, live_server, measure_memory_usage, datastore_path):
     """
     Test that logout preserves the current page URL, so after re-login
