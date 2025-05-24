@@ -3018,6 +3018,63 @@ msgstr "ウォッチ"
 msgid "Processor"
 msgstr "プロセッサー"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "編集 > ウォッチ"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "取得方式"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "通知本文"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "通知フォーマット"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "通知タイトル"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "通知URLリスト"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "プロセッサー - 何を達成したいですか？"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "ウォッチチェックスケジューラーのデフォルトタイムゾーン"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "テキスト抽出前の待機秒数"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "1秒以上の値を入力してください"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "通知ベースURLの上書き"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "未設定"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "保存"
+
 #: changedetectionio/forms.py
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
