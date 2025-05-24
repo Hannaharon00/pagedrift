@@ -173,3 +173,72 @@ class perform_site_check(difference_detection_processor):
         try:
             from .image_handler import isolated_opencv as process_screenshot_handler
 
+# stuff in watch doesnt need to be there
+            logger.debug(f"UUID: {watch.get('uuid')} - Starting isolated subprocess comparison (crop_region={crop_region})")
+
+            # Compare using isolated subprocess with OpenCV (async-safe to avoid blocking event loop)
+            # Pass raw bytes and crop region - subprocess handles all image operations
+            import asyncio
+            import threading
+
+            # Async-safe wrapper: runs coroutine in new thread with its own event loop
+            # This prevents blocking the async update worker's event loop
+            def run_async_in_thread():
+                return asyncio.run(
+                    process_screenshot_handler.compare_images_isolated(
+                        img_bytes_from=previous_screenshot_bytes,
+                        img_bytes_to=self.screenshot,
+                        pixel_difference_threshold=pixel_difference_threshold_sensitivity,
+                        blur_sigma=OPENCV_BLUR_SIGMA,
+                        crop_region=crop_region  # Pass crop region for isolated cropping
+                    )
+                )
+
+            # Run in thread to avoid blocking event loop when called from async update worker
+            result_container = [None]
+            exception_container = [None]
+
+            def thread_target():
+                try:
+                    result_container[0] = run_async_in_thread()
+                except Exception as e:
+                    exception_container[0] = e
+
+            thread = threading.Thread(target=thread_target, daemon=True, name="ImageDiff-Processor")
+            thread.start()
+            thread.join(timeout=60)
+
+            if exception_container[0]:
+                raise exception_container[0]
+
+            # Subprocess returns only the change score - we decide if it's a "change"
+            change_score = result_container[0]
+            if change_score is None:
+                raise RuntimeError("Image comparison subprocess returned no result")
+
+            changed_detected = change_score > min_change_percentage
+            logger.info(f"UUID: {watch.get('uuid')} -  {process_screenshot_handler.IMPLEMENTATION_NAME}: {change_score:.2f}% pixels changed, pixel_diff_threshold_sensitivity: {pixel_difference_threshold_sensitivity:.0f} score={change_score:.2f}%, min_change_threshold={min_change_percentage}%")
+
+        except Exception as e:
+            logger.error(f"UUID: {watch.get('uuid')} - Failed to compare screenshots: {e}")
+            logger.trace(f"UUID: {watch.get('uuid')} - Processed in {time.time() - now:.3f}s")
+
+            raise ProcessorException(
+                message=f"UUID: {watch.get('uuid')} - Screenshot comparison failed: {e}",
+                url=watch.get('url')
+            )
+
+        # Return results
+        update_obj = {
+            'previous_md5': hashlib.md5(self.screenshot).hexdigest(),
+            'last_error': False
+        }
+
+        if changed_detected:
+            logger.info(f"UUID: {watch.get('uuid')} - Change detected using OpenCV! Score: {change_score:.2f}")
+        else:
+            logger.debug(f"UUID: {watch.get('uuid')} - No significant change using OpenCV. Score: {change_score:.2f}")
+        logger.trace(f"UUID: {watch.get('uuid')} - Processed in {time.time() - now:.3f}s")
+
+        return changed_detected, update_obj, self.screenshot
+
