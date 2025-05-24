@@ -2028,6 +2028,62 @@ msgid "Show advanced options"
 msgstr "Gelişmiş seçenekleri göster"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Run this code before performing change detection, handy for filling in fields and other actions"
+msgstr "Değişiklik tespiti yapmadan önce bu kodu çalıştırın, alanları doldurmak ve diğer eylemler için kullanışlıdır"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "More help and examples here"
+msgstr "Daha fazla yardım ve örnek burada"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request body"
+msgstr "İstek gövdesinde değişkenler desteklenir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Variables are supported in the request header values"
+msgstr "İstek başlığı değerlerinde değişkenler desteklenir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Alert! Extra headers file found and will be added to this watch!"
+msgstr "Uyarı! Ekstra başlık dosyası bulundu ve bu izleyiciye eklenecek!"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Headers can be also read from a file in your data-directory"
+msgstr "Başlıklar ayrıca veri dizininizdeki bir dosyadan da okunabilir"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read more here"
+msgstr "Daha fazlasını buradan okuyun"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Not supported by Selenium browser"
+msgstr "Selenium tarayıcısı tarafından desteklenmiyor"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Metin bulucuyu aç"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Lütfen bekleyin, ilk tarayıcı adımının yüklenmesi biraz zaman alabilir.."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Başlamak için buraya tıklayın"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Lütfen tarayıcının bağlanması için 10-15 saniye bekleyin."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Başlamak için \"Oynat\"a basın."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Görsel Seçici verileri hazır değil, izleyicinin en az bir kez kontrol edilmesi gerekiyor."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid ""
 "Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
 "fetchers)"

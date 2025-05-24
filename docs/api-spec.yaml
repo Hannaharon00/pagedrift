@@ -139,6 +139,40 @@ tags:
 
       A minimal `api.yaml` for a hypothetical `my_processor`:
 
+      ```yaml
+      components:
+        schemas:
+          processor_config_my_processor:
+            type: object
+            description: Configuration for my_processor
+            properties:
+              some_option:
+                type: boolean
+                default: true
+                description: Enable some behaviour
+
+      paths:
+        /watch:
+          post:
+            x-code-samples:
+              - lang: curl
+                label: my_processor example
+                source: |
+                  curl -X POST "http://localhost:5000/api/v1/watch" \
+                    -H "x-api-key: YOUR_API_KEY" \
+                    -H "Content-Type: application/json" \
+                    -d '{
+                      "url": "https://example.com",
+                      "processor": "my_processor",
+                      "processor_config_my_processor": { "some_option": true }
+                    }'
+      ```
+
+      The `paths` section in `api.yaml` is used only for injecting additional `x-code-samples` into
+      existing endpoints — you cannot define new routes via plugin.
+
+      ---
+
       ```bash
       curl -X POST "http://localhost:5000/api/v1/watch" \
         -H "x-api-key: YOUR_API_KEY" \
