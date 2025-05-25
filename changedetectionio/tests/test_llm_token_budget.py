@@ -150,3 +150,86 @@ def test_api_watch_put_llm_readonly_fields_are_ignored(
 # Settings form tamper tests
 # ---------------------------------------------------------------------------
 
+def test_accumulate_global_tokens_same_month(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Within the same month, both counters accumulate additively."""
+    from changedetectionio.llm.evaluator import accumulate_global_tokens, _get_month_key
+
+    ds = client.application.config.get('DATASTORE')
+    current_month = _get_month_key()
+    ds.data['settings']['application']['llm'] = {
+        'model': 'gpt-4o-mini',
+        'tokens_this_month': 200,
+        'tokens_total_cumulative': 800,
+        'tokens_month_key': current_month,
+    }
+
+    accumulate_global_tokens(ds, 50)
+
+    llm_cfg = ds.data['settings']['application']['llm']
+    assert llm_cfg['tokens_this_month'] == 250
+    assert llm_cfg['tokens_total_cumulative'] == 850
+
+    delete_all_watches(client)
+
+
+def test_is_global_token_budget_exceeded(
+        client, live_server, measure_memory_usage, datastore_path):
+    """is_global_token_budget_exceeded returns True only when budget is set and reached."""
+    from changedetectionio.llm.evaluator import is_global_token_budget_exceeded, _get_month_key
+
+    ds = client.application.config.get('DATASTORE')
+    current_month = _get_month_key()
+
+    # No budget env var → never exceeded
+    with pytest.MonkeyPatch().context() as mp:
+        mp.delenv('LLM_TOKEN_BUDGET_MONTH', raising=False)
+        ds.data['settings']['application']['llm'] = {
+            'tokens_this_month': 999999,
+            'tokens_month_key': current_month,
+        }
+        assert not is_global_token_budget_exceeded(ds)
+
+    # Budget set, under limit
+    with pytest.MonkeyPatch().context() as mp:
+        mp.setenv('LLM_TOKEN_BUDGET_MONTH', '10000')
+        ds.data['settings']['application']['llm'] = {
+            'tokens_this_month': 5000,
+            'tokens_month_key': current_month,
+        }
+        assert not is_global_token_budget_exceeded(ds)
+
+    # Budget set, at limit (exact)
+    with pytest.MonkeyPatch().context() as mp:
+        mp.setenv('LLM_TOKEN_BUDGET_MONTH', '10000')
+        ds.data['settings']['application']['llm'] = {
+            'tokens_this_month': 10000,
+            'tokens_month_key': current_month,
+        }
+        assert is_global_token_budget_exceeded(ds)
+
+    # Budget set, over limit
+    with pytest.MonkeyPatch().context() as mp:
+        mp.setenv('LLM_TOKEN_BUDGET_MONTH', '10000')
+        ds.data['settings']['application']['llm'] = {
+            'tokens_this_month': 12345,
+            'tokens_month_key': current_month,
+        }
+        assert is_global_token_budget_exceeded(ds)
+
+    # Budget set but stale month key → counter is 0 for current month → not exceeded
+    with pytest.MonkeyPatch().context() as mp:
+        mp.setenv('LLM_TOKEN_BUDGET_MONTH', '100')
+        ds.data['settings']['application']['llm'] = {
+            'tokens_this_month': 9999,
+            'tokens_month_key': '2020-01',  # stale
+        }
+        assert not is_global_token_budget_exceeded(ds)
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Cost accumulation tests
+# ---------------------------------------------------------------------------
+
