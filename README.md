@@ -280,6 +280,57 @@ When you enable a `json:` or `jq:` filter, you can even automatically extract an
 The application also supports notifying you that it can follow this information automatically
 
 
+## Proxy Configuration
+
+See the wiki https://github.com/dgtlmoon/changedetection.io/wiki/Proxy-configuration , we also support using [Bright Data proxy services where possible](https://github.com/dgtlmoon/changedetection.io/wiki/Proxy-configuration#brightdata-proxy-support) and [Oxylabs](https://oxylabs.go2cloud.org/SH2d) proxy services.
+
+## Raspberry Pi support?
+
+Raspberry Pi and linux/arm/v6 linux/arm/v7 arm64 devices are supported! See the wiki for [details](https://github.com/dgtlmoon/changedetection.io/wiki/Fetching-pages-with-WebDriver)
+
+## Import support
+
+Easily [import your list of websites to watch for changes in Excel .xslx file format](https://changedetection.io/tutorial/how-import-your-website-change-detection-lists-excel), or paste in lists of website URLs as plaintext. 
+
+Excel import is recommended - that way you can better organise tags/groups of websites and other features.
+
+
+## API Support
+
+Full REST API for programmatic management of watches, tags, notifications and more. 
+
+- **[Interactive API Documentation](https://changedetection.io/docs/api_v1/index.html)** - Complete API reference with live testing
+- **[OpenAPI Specification](docs/api-spec.yaml)** - Generate SDKs for any programming language
+
+## Support us
+
+Do you use changedetection.io to make money? does it save you time or money? Does it make your life easier? less stressful? Remember, we write this software when we should be doing actual paid work, we have to buy food and pay rent just like you.
+
+
+Consider taking out an officially supported [website change detection subscription](https://changedetection.io?src=github) , even if you don't use it, you still get the warm fuzzy feeling of helping out the project. (And who knows, you might just use it!)
+
+## Commercial Support
+
+I offer commercial support, this software is depended on by network security, aerospace , data-science and data-journalist professionals just to name a few, please reach out at dgtlmoon@gmail.com for any enquiries, I am more than glad to work with your organisation to further the possibilities of what can be done with changedetection.io
+
+
+[release-shield]: https://img.shields.io:/github/v/release/dgtlmoon/changedetection.io?style=for-the-badge
+[docker-pulls]: https://img.shields.io/docker/pulls/dgtlmoon/changedetection.io?style=for-the-badge
+[test-shield]: https://github.com/dgtlmoon/changedetection.io/actions/workflows/test-only.yml/badge.svg?branch=master
+
+[license-shield]: https://img.shields.io/github/license/dgtlmoon/changedetection.io.svg?style=for-the-badge
+[release-link]: https://github.com/dgtlmoon/changedetection.io/releases
+[docker-link]: https://hub.docker.com/r/dgtlmoon/changedetection.io
+
+
+## Disclaimer
+
+**This software is provided "as-is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.**
+
+### Website content monitoring
+
+You are solely responsible for ensuring that your use of this software complies with the terms of service, `robots.txt` directives, access policies, and all applicable laws of any website or service you choose to monitor. The authors and contributors of this software accept no liability whatsoever for how you choose to use it or for any consequences arising from that use.
+
 ### AI / LLM features
 
 If you choose to enable AI / LLM features, content detected on monitored websites — including page diffs and extracted text — will be transmitted to a third-party AI provider of your choosing, outside of this installation. You are solely responsible for:
