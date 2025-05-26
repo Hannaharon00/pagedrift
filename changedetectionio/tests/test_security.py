@@ -269,6 +269,37 @@ def test_xss(client, live_server, measure_memory_usage, datastore_path):
     assert XSS_HACK.encode('utf-8') not in res.data and res.status_code == 200
 
 
+def test_xss_watch_last_error(client, live_server, measure_memory_usage, datastore_path):
+    set_original_response(datastore_path=datastore_path)
+    # Add our URL to the import page
+    res = client.post(
+        url_for("imports.import_page"),
+        data={"urls": url_for('test_endpoint', _external=True)},
+        follow_redirects=True
+    )
+
+    assert b"1 Imported" in res.data
+
+    wait_for_all_checks(client)
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={
+            "include_filters": '<a href="https://foobar"></a><script>alert(123);</script>',
+            "url": url_for('test_endpoint', _external=True),
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+
+    assert b"<script>alert(123);</script>" not in res.data  # this text should be there
+    assert b'&lt;a href=&#34;https://foobar&#34;&gt;&lt;/a&gt;&lt;script&gt;alert(123);&lt;/script&gt;' in res.data
+    assert b"https://foobar" in res.data # this text should be there
+
+
 def test_login_redirect_safe_urls(client, live_server, measure_memory_usage, datastore_path):
     """
     Test that safe redirect URLs work correctly in login flow.
