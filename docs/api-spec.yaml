@@ -433,6 +433,68 @@ tags:
           maxItems: 100
           description: Regex patterns to extract specific text after filtering
 
+        # Text Processing
+        trim_text_whitespace:
+          type: boolean
+          default: false
+          description: Strip leading/trailing whitespace from text
+        sort_text_alphabetically:
+          type: boolean
+          default: false
+          description: Sort lines alphabetically before comparison
+        remove_duplicate_lines:
+          type: boolean
+          default: false
+          description: Remove duplicate lines from content
+        check_unique_lines:
+          type: boolean
+          default: false
+          description: Compare against all history for unique lines
+        strip_ignored_lines:
+          type: [boolean, 'null']
+          description: Remove lines matching ignore patterns
+
+        # Change Detection Filters
+        filter_text_added:
+          type: boolean
+          default: true
+          description: Include added text in change detection
+        filter_text_removed:
+          type: boolean
+          default: true
+          description: Include removed text in change detection
+        filter_text_replaced:
+          type: boolean
+          default: true
+          description: Include replaced text in change detection
+
+        # Restock/Price Detection
+        in_stock_only:
+          type: boolean
+          default: true
+          description: Only trigger on in-stock transitions (restock_diff processor)
+        follow_price_changes:
+          type: boolean
+          default: true
+          description: Monitor and track price changes (restock_diff processor)
+        price_change_threshold_percent:
+          type: [number, 'null']
+          description: Minimum price change percentage to trigger notification
+        has_ldjson_price_data:
+          type: [boolean, 'null']
+          description: Whether page has LD-JSON price data (auto-detected)
+          readOnly: true
+
+        # Notifications
+        notification_screenshot:
+          type: boolean
+          default: false
+          description: Include screenshot in notifications (if supported by notification URL)
+        filter_failure_notification_send:
+          type: boolean
+          default: true
+          description: Send notification when filters fail to match content
+
         # History & Display
         use_page_title_in_list:
           type: [boolean, 'null']
