@@ -3158,6 +3158,63 @@ msgstr "Ativar modo de leitor RSS"
 msgid "Number of changes to show in watch RSS feed"
 msgstr "Número de mudanças a exibir no feed RSS do monitoramento"
 
+#: changedetectionio/processors/image_ssim_diff/preview.py
+msgid "Preview unavailable - No snapshots captured yet"
+msgstr "Pré-visualização indisponível - Nenhum instantâneo capturado ainda"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Visual / Image screenshot change detection"
+msgstr "Detecção de mudança visual / imagem por screenshot"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
+msgstr "Compara screenshots usando algoritmo OpenCV rápido, 10-100x mais rápido que SSIM"
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Date"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Stock status"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Currency"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "Detecção de re-estoque"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "Apenas Em Estoque (Apenas de Fora de Estoque para Em Estoque)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "Qualquer mudança de disponibilidade"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "Desligado, não seguir disponibilidade/estoque"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "Preço abaixo deste valor para disparar notificação"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "Sem limite"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "Preço acima deste valor para disparar notificação"
+
 #: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "para não-SSL, ex:"
