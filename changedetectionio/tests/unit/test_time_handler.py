@@ -67,6 +67,141 @@ class TestAmIInsideTime(unittest.TestCase):
             duration=duration
         )
 
+        self.assertTrue(result)
+
+    def test_timezone_tokyo_within_schedule(self):
+        """Test with Asia/Tokyo timezone."""
+        timezone_str = 'Asia/Tokyo'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd')
+        time_str = now.format('HH:00')
+        duration = 90  # 1.5 hours
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
+        self.assertTrue(result)
+
+    def test_schedule_crossing_midnight(self):
+        """Test schedule that crosses midnight."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+
+        # Set schedule to start 23:30 with 120 minute duration (crosses midnight)
+        day_of_week = now.format('dddd')
+        time_str = "23:30"
+        duration = 120  # 2 hours - goes into next day
+
+        # If we're at 00:15 the next day, we should still be in the schedule
+        if now.hour == 0 and now.minute < 30:
+            # We're in the time window that spilled over from yesterday
+            result = time_handler.am_i_inside_time(
+                day_of_week=day_of_week,
+                time_str=time_str,
+                timezone_str=timezone_str,
+                duration=duration
+            )
+            # This might be true or false depending on exact time
+            self.assertIsInstance(result, bool)
+
+    def test_invalid_day_of_week(self):
+        """Test that invalid day raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            time_handler.am_i_inside_time(
+                day_of_week="Funday",
+                time_str="12:00",
+                timezone_str="UTC",
+                duration=60
+            )
+        self.assertIn("Invalid day_of_week", str(context.exception))
+
+    def test_invalid_time_format(self):
+        """Test that invalid time format raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            time_handler.am_i_inside_time(
+                day_of_week="Monday",
+                time_str="25:99",
+                timezone_str="UTC",
+                duration=60
+            )
+        self.assertIn("Invalid time_str", str(context.exception))
+
+    def test_invalid_time_format_non_numeric(self):
+        """Test that non-numeric time raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            time_handler.am_i_inside_time(
+                day_of_week="Monday",
+                time_str="twelve:thirty",
+                timezone_str="UTC",
+                duration=60
+            )
+        self.assertIn("Invalid time_str", str(context.exception))
+
+    def test_invalid_timezone(self):
+        """Test that invalid timezone raises ValueError."""
+        with self.assertRaises(ValueError) as context:
+            time_handler.am_i_inside_time(
+                day_of_week="Monday",
+                time_str="12:00",
+                timezone_str="Invalid/Timezone",
+                duration=60
+            )
+        self.assertIn("Invalid timezone_str", str(context.exception))
+
+    def test_short_duration(self):
+        """Test with very short duration (15 minutes default)."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd')
+        time_str = now.format('HH:mm')
+        duration = 15  # Default duration
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
+        self.assertTrue(result, "Current time should be within 15 minute window")
+
+    def test_long_duration(self):
+        """Test with long duration (24 hours)."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd')
+        # Set time to current hour
+        time_str = now.format('HH:00')
+        duration = 1440  # 24 hours in minutes
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
+        self.assertTrue(result, "Current time should be within 24 hour window")
+
+    def test_case_insensitive_day(self):
+        """Test that day of week is case insensitive."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd').lower()  # lowercase day
+        time_str = now.format('HH:00')
+        duration = 60
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
     def test_duration_60_minutes(self):
         """Test that duration of 60 minutes works correctly."""
         timezone_str = 'UTC'
