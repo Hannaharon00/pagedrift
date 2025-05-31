@@ -3406,6 +3406,62 @@ msgid "Screenshot: Minimum Change Percentage"
 msgstr "스크린샷: 최소 변경 비율"
 
 #: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "0회 이상이어야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "알림을 보내기 전에 필터가 누락될 수 있는 횟수"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr "모델"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "API 키"
+
+#: changedetectionio/forms.py
+msgid "API Base URL"
+msgstr "API 기본 URL"
+
+#: changedetectionio/forms.py
+msgid "Token multiplier for local reasoning models"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Default AI Change Summary prompt"
+msgstr "기본 AI 변경 요약 프롬프트"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max tokens per watch per period"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Monthly token budget"
+msgstr "월간 토큰 예산"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max input characters"
+msgstr "최대 입력 문자 수"
+
+#: changedetectionio/forms.py
+msgid "Enable AI / LLM features"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Replace {{diff}} notification token with AI summary"
+msgstr "{{diff}} 알림 토큰을 AI 요약으로 대체"
+
+#: changedetectionio/forms.py
+msgid "Use LLM as a fallback for extracting price and restock info"
+msgstr "가격 및 재입고 정보 추출의 대체 수단으로 LLM 사용"
+
+#: changedetectionio/forms.py
+msgid "Enable LLM debug logging"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "AI thinking budget (tokens)"
 msgstr "AI 추론 예산 (토큰)"
 
