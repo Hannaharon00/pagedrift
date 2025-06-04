@@ -638,3 +638,80 @@ tags:
               pattern: '^[0-9]+$'
               default: '00'
 
+    delete:
+      operationId: deleteWatch
+      tags: [Watch Management]
+      summary: Delete watch
+      description: Delete a web page change monitor (watch) and all related history
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X DELETE "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            response = requests.delete(f'http://localhost:5000/api/v1/watch/{uuid}', headers=headers)
+            print(response.text)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Web page change monitor (watch) deleted successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+
+  /watch/{uuid}/history:
+    get:
+      operationId: getWatchHistory
+      tags: [Watch History]
+      summary: Get watch history
+      description: | 
+        Get a list of all historical snapshots available for a web page change monitor (watch), use the key `timestamp`
+        as the query argument for fetching a single watch history snapshot.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/history" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            response = requests.get(f'http://localhost:5000/api/v1/watch/{uuid}/history', headers=headers)
+            print(response.json())
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of available snapshots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchHistory'
+              example:
+                "1640995200": "/path/to/snapshot1.txt"
+                "1640998800": "/path/to/snapshot2.txt"
+        '404':
+          description: Web page change monitor (watch) not found
+
