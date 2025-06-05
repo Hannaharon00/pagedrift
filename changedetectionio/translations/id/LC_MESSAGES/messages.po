@@ -2697,6 +2697,60 @@ msgstr "hari"
 msgid "days"
 msgstr "hari"
 
+#: changedetectionio/flask_app.py
+msgid "hour"
+msgstr "jam"
+
+#: changedetectionio/flask_app.py
+msgid "hours"
+msgstr "jam"
+
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "menit"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "menit"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "detik"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "detik"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Sudah masuk"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Anda harus masuk, silakan masuk."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Kata sandi salah"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Setidaknya satu interval waktu (minggu, hari, jam, menit, atau detik) harus ditentukan."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+"Setidaknya satu interval waktu (minggu, hari, jam, menit, atau detik) harus ditentukan saat tidak menggunakan "
+"pengaturan global."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Format waktu tidak valid. Gunakan JJ:MM."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "Nama zona waktu tidak valid"
+
 #: changedetectionio/forms.py
 msgid "not set"
 msgstr "belum diatur"
