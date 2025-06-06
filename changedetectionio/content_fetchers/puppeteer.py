@@ -151,6 +151,29 @@ async def capture_full_page(page, screenshot_format='JPEG', watch_uuid=None, loc
         for chunk in screenshot_chunks:
             parent_conn.send_bytes(chunk)
 
+        screenshot = parent_conn.recv_bytes()
+        p.join()
+
+        parent_conn.close()
+        child_conn.close()
+        del p, parent_conn, child_conn
+
+        stitch_time = time.time() - stitch_start
+        total_time = time.time() - start
+        setup_time = total_time - capture_time - stitch_time
+        logger.debug(
+            f"{watch_info}Screenshot complete - Page height: {page_height}px, Capture height: {SCREENSHOT_MAX_TOTAL_HEIGHT}px | "
+            f"Setup: {setup_time:.2f}s, Capture: {capture_time:.2f}s, Stitching: {stitch_time:.2f}s, Total: {total_time:.2f}s")
+        return screenshot
+
+    total_time = time.time() - start
+    setup_time = total_time - capture_time
+    logger.debug(
+        f"{watch_info}Screenshot complete - Page height: {page_height}px, Capture height: {SCREENSHOT_MAX_TOTAL_HEIGHT}px | "
+        f"Setup: {setup_time:.2f}s, Single chunk: {capture_time:.2f}s, Total: {total_time:.2f}s")
+    return screenshot_chunks[0]
+
+
 class fetcher(Fetcher):
     fetcher_description = "Puppeteer/direct {}/Javascript".format(
         os.getenv("PLAYWRIGHT_BROWSER_TYPE", 'chromium').capitalize()
