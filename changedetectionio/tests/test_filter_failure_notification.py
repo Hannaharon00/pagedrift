@@ -190,3 +190,10 @@ def test_check_include_filters_failure_notification(client, live_server, measure
     run_filter_test(client=client, live_server=live_server, content_filter='#nope-doesnt-exist', app_notification_format=valid_notification_formats.get('text'), datastore_path=datastore_path)
     delete_all_watches(client)
 
+def test_check_xpath_filter_failure_notification(client, live_server, measure_memory_usage, datastore_path):
+    #   #  live_server_setup(live_server) # Setup on conftest per function
+    run_filter_test(client=client, live_server=live_server, content_filter='//*[@id="nope-doesnt-exist"]', app_notification_format=valid_notification_formats.get('htmlcolor'), datastore_path=datastore_path)
+    delete_all_watches(client)
+
+# Test that notification is never sent
+
