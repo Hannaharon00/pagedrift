@@ -3102,6 +3102,62 @@ msgstr "Ignorar linhas contendo"
 msgid "Request body"
 msgstr "Corpo da solicitação (Body)"
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Nome"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL do Proxy"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "URLs de proxy devem começar com http://, https:// ou socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL de conexão do navegador"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "URLs de navegador devem começar com wss:// ou ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Requisições em texto simples"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Requisições Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Proxy padrão"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Segundos de jitter aleatório ± verificação"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Número de workers de busca"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Deve estar entre 1 e 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Timeout de requisições em segundos"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Deve estar entre 1 e 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Substituições de User-Agent padrão"
+
 #: changedetectionio/forms.py
 msgid "Both a name, and a Proxy URL is required."
 msgstr "Ambos, nome e URL do Proxy, são obrigatórios."
