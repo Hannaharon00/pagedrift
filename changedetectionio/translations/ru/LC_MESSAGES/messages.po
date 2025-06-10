@@ -3215,6 +3215,63 @@ msgid "Wait seconds before extracting text"
 msgstr "Подождите несколько секунд, прежде чем извлекать текст."
 
 #: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Должно содержать одну или несколько секунд."
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Переопределение URL-адреса базы уведомлений"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "Не установлено"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Сохранять"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL-адреса"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr "Загрузите файл .xlsx"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr "Должен быть файл .xlsx!"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "Сопоставление файлов"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "Операция"
+
+#: changedetectionio/forms.py
+msgid "Selector"
+msgstr "Селектор"
+
+#: changedetectionio/forms.py
+msgid "CSS or xPath selector"
+msgstr "Селектор CSS или xPath"
+
+#: changedetectionio/forms.py
+msgid "value"
+msgstr "ценить"
+
+#: changedetectionio/conditions/form.py changedetectionio/forms.py
+msgid "Value"
+msgstr "Ценить"
+
+#: changedetectionio/forms.py
+msgid "Web Page URL"
+msgstr "URL-адрес веб-страницы"
+
+#: changedetectionio/forms.py
 msgid "Open Link Override"
 msgstr ""
 
