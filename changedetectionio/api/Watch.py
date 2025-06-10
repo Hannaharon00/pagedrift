@@ -485,3 +485,163 @@ class WatchHistoryDiff(Resource):
         return response
 
 
+class CreateWatch(Resource):
+    def __init__(self, **kwargs):
+        # datastore is a black box dependency
+        self.datastore = kwargs['datastore']
+        self.update_q = kwargs['update_q']
+
+    @auth.check_token
+    @validate_openapi_request('createWatch')
+    def post(self):
+        """Create a single watch."""
+
+        # Silently discard `__`-prefixed transient/internal keys (not part of the public schema).
+        json_data = strip_internal_api_fields(request.get_json())
+        url = json_data['url'].strip()
+
+        if not is_safe_valid_url(url):
+            return "Invalid or unsupported URL", 400
+
+        if json_data.get('proxy'):
+            plist = self.datastore.proxy_list
+            if not plist or json_data.get('proxy') not in plist:
+                proxy_list_str = ', '.join(plist) if plist else 'none configured'
+                return f"Invalid proxy choice, currently supported proxies are '{proxy_list_str}'", 400
+
+        # Validate time_between_check when not using defaults
+        validation_error = validate_time_between_check_required(json_data)
+        if validation_error:
+            return validation_error, 400
+
+        # An invalid timezone here makes the watch permanently unschedulable
+        validation_error = validate_time_schedule_limit(json_data)
+        if validation_error:
+            return validation_error, 400
+
+        # Validate notification_urls if provided
+        if 'notification_urls' in json_data:
+            from wtforms import ValidationError
+            from changedetectionio.api.Notifications import validate_notification_urls
+            try:
+                notification_urls = json_data.get('notification_urls', [])
+                validate_notification_urls(notification_urls)
+            except ValidationError as e:
+                return str(e), 400
+
+        # Handle processor-config-* fields separately (save to JSON, not watch)
+        from changedetectionio import processors
+
+        extras = copy.deepcopy(json_data)
+
+        # Extract and remove processor config fields from extras
+        processor_config_data = processors.extract_processor_config_from_form_data(extras)
+
+        # Because we renamed 'tag' to 'tags' but don't want to change the API (can do this in v2 of the API)
+        tags = None
+        if extras.get('tag'):
+            tags = extras.get('tag')
+            del extras['tag']
+
+        del extras['url']
+
+        # PAGE_WATCH_LIMIT - checked up front so a blocked add is reported as 429 rather than
+        # being guessed at from add_watch() returning None
+        if self.datastore.watch_limit_reached():
+            current_watch_count = len(self.datastore.data['watching'])
+            return f"Watch limit reached ({current_watch_count}/{self.datastore.watch_limit} watches). Cannot add more watches.", 429
+
+        new_uuid = self.datastore.add_watch(url=url, extras=extras, tag=tags)
+
+        # Save processor config to separate JSON file
+        if new_uuid and processor_config_data:
+            processors.save_processor_config(self.datastore, new_uuid, processor_config_data)
+        if new_uuid:
+# Dont queue because the scheduler will check that it hasnt been checked before anyway
+#            worker_pool.queue_item_async_safe(self.update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': new_uuid}))
+            return {'uuid': new_uuid}, 201
+        else:
+            return "Invalid or unsupported URL", 400
+
+    @auth.check_token
+    @validate_openapi_request('listWatches')
+    def get(self):
+        """List watches."""
+        list = {}
+
+        tag_limit = request.args.get('tag', '').lower()
+        for uuid, watch in self.datastore.data['watching'].items():
+            # Watch tags by name (replace the other calls?)
+            tags = self.datastore.get_all_tags_for_watch(uuid=uuid)
+            if tag_limit and not any(v.get('title').lower() == tag_limit for k, v in tags.items()):
+                continue
+
+            list[uuid] = {
+                'last_changed': watch.last_changed,
+                'last_checked': watch['last_checked'],
+                'last_error': watch['last_error'],
+                'link': watch.link,
+                'open_link': watch.open_link,
+                'page_title': watch['page_title'],
+                'tags': [*tags],  # Unpack dict keys to list (can't use list() since variable named 'list')
+                'title': watch['title'],
+                'url': watch['url'],
+                'viewed': watch.viewed
+            }
+
+        if request.args.get('recheck_all'):
+            # Collect all watches to queue
+            watches_to_queue = self.datastore.data['watching'].keys()
+
+            # If less than 20 watches, queue synchronously for immediate feedback
+            if len(watches_to_queue) < 20:
+                # Get already queued/running UUIDs once (efficient)
+                queued_uuids = set(self.update_q.get_queued_uuids())
+                running_uuids = set(worker_pool.get_running_uuids())
+
+                # Filter out watches that are already queued or running
+                watches_to_queue_filtered = [
+                    uuid for uuid in watches_to_queue
+                    if uuid not in queued_uuids and uuid not in running_uuids
+                ]
+
+                # Queue only the filtered watches
+                for uuid in watches_to_queue_filtered:
+                    worker_pool.queue_item_async_safe(self.update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid}))
+
+                # Provide feedback about skipped watches
+                skipped_count = len(watches_to_queue) - len(watches_to_queue_filtered)
+                if skipped_count > 0:
+                    return {'status': f'OK, queued {len(watches_to_queue_filtered)} watches for rechecking ({skipped_count} already queued or running)'}, 200
+                else:
+                    return {'status': f'OK, queued {len(watches_to_queue_filtered)} watches for rechecking'}, 200
+            else:
+                # 20+ watches - queue in background thread to avoid blocking API response
+                # Capture queued/running state before background thread
+                queued_uuids = set(self.update_q.get_queued_uuids())
+                running_uuids = set(worker_pool.get_running_uuids())
+
+                def queue_all_watches_background():
+                    """Background thread to queue all watches - discarded after completion."""
+                    try:
+                        queued_count = 0
+                        skipped_count = 0
+                        for uuid in watches_to_queue:
+                            # Check if already queued or running (state captured at start)
+                            if uuid not in queued_uuids and uuid not in running_uuids:
+                                worker_pool.queue_item_async_safe(self.update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid}))
+                                queued_count += 1
+                            else:
+                                skipped_count += 1
+
+                        logger.info(f"Background queueing complete: {queued_count} watches queued, {skipped_count} skipped (already queued/running)")
+                    except Exception as e:
+                        logger.error(f"Error in background queueing all watches: {e}")
+
+                # Start background thread and return immediately
+                thread = threading.Thread(target=queue_all_watches_background, daemon=True, name="QueueAllWatches-Background")
+                thread.start()
+
+                return {'status': f'OK, queueing {len(watches_to_queue)} watches in background'}, 202
+
+        return list, 200
