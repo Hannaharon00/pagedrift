@@ -2719,6 +2719,58 @@ msgid "hours"
 msgstr "hodiny"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Použijte časový plánovač"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Volitelné časové pásmo pro spuštění"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "pondělí"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "úterý"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "středa"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "čtvrtek"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "pátek"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "sobota"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "neděle"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Týdny"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Je třeba zadat nula nebo více sekund"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Dny"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Hodiny"
+
+#: changedetectionio/forms.py
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
 
