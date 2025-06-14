@@ -651,3 +651,13 @@ window.initVisualSelector = function (opts) {
         drawStartY = y;
     }
 
+    // ---- public API ----
+    return {
+        load: load,
+        clear: clearReset,
+        setSelectionEnabled: setSelectionEnabled,
+        markClearMode: function () { runInClearMode = true; }
+    };
+};
+
+
