@@ -2496,6 +2496,63 @@ msgstr "目前處於一般水準"
 msgid "Currently high"
 msgstr "目前處於高點"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Deals"
+msgstr "特惠"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "With errors"
+msgstr "有錯誤"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Filter by type"
+msgstr "按類型過濾"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "All types"
+msgstr "所有類型"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mark all viewed"
+msgstr "標記所有為已讀"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Recheck all"
+msgstr "複查全部"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#, python-format
+msgid "in '%(title)s'"
+msgstr "於 '%(title)s'"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "RSS Feed"
+msgstr "RSS Feed"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Invert"
+msgstr "反選"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Pause"
+msgstr "暫停"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnPause"
+msgstr "取消暫停"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mute"
+msgstr "靜音"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "UnMute"
+msgstr "取消靜音"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Tag"
+msgstr "標籤"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Ends With"
 msgstr "文字結尾為"
