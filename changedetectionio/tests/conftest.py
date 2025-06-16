@@ -193,6 +193,47 @@ def cleanup(datastore_path):
             if os.path.isfile(f):
                 os.unlink(f)
 
+def pytest_configure(config):
+    """Configure pytest environment before tests run.
+
+    CRITICAL: Set multiprocessing start method to 'fork' for Python 3.14+ compatibility.
+
+    Python 3.14 changed the default start method from 'fork' to 'forkserver' on Linux.
+    The forkserver method requires all objects to be picklable, but pytest-flask's
+    LiveServer uses nested functions that can't be pickled.
+
+    Setting 'fork' explicitly:
+    - Maintains compatibility with Python 3.11-3.13 (where 'fork' was already default)
+    - Fixes Python 3.14 pickling errors
+    - Only affects Unix-like systems (Windows uses 'spawn' regardless)
+
+    See: https://github.com/python/cpython/issues/126831
+    See: https://docs.python.org/3/whatsnew/3.14.html
+    """
+    # Only set if not already set (respects existing configuration)
+    if multiprocessing.get_start_method(allow_none=True) is None:
+        try:
+            # 'fork' is available on Unix-like systems (Linux, macOS)
+            # On Windows, this will have no effect as 'spawn' is the only option
+            multiprocessing.set_start_method('fork', force=False)
+            logger.debug("Set multiprocessing start method to 'fork' for Python 3.14+ compatibility")
+        except (ValueError, RuntimeError):
+            # Already set, not available on this platform, or context already created
+            pass
+
+def pytest_addoption(parser):
+    """Add custom command-line options for pytest.
+
+    Provides --datastore-path option for specifying custom datastore location.
+    Note: Cannot use -d short option as it's reserved by pytest for debug mode.
+    """
+    parser.addoption(
+        "--datastore-path",
+        action="store",
+        default=None,
+        help="Custom datastore path for tests"
+    )
+
 # So the app can also know which test name it was
 @pytest.fixture(autouse=True)
 def set_test_name(request):
