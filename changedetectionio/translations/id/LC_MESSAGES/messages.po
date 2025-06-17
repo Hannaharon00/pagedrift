@@ -2640,6 +2640,63 @@ msgstr "Kesalahan saat menghitung metrik Levenshtein"
 msgid "Word count of content"
 msgstr "Jumlah kata konten"
 
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Content Analysis"
+msgstr "Analisis Konten"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count (latest snapshot)"
+msgstr "Jumlah kata (snapshot terbaru)"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
+msgstr "Jumlah kata adalah ukuran sederhana panjang konten, dihitung dengan memisahkan teks berdasarkan spasi."
+
+#: changedetectionio/content_fetchers/requests.py
+msgid "Basic fast Plaintext/HTTP Client"
+msgstr "Klien Plaintext/HTTP Dasar yang cepat"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "Belum"
+
+#: changedetectionio/flask_app.py
+msgid "0 seconds"
+msgstr "0 detik"
+
+#: changedetectionio/flask_app.py
+msgid "year"
+msgstr "tahun"
+
+#: changedetectionio/flask_app.py
+msgid "years"
+msgstr "tahun"
+
+#: changedetectionio/flask_app.py
+msgid "month"
+msgstr "bulan"
+
+#: changedetectionio/flask_app.py
+msgid "months"
+msgstr "bulan"
+
+#: changedetectionio/flask_app.py
+msgid "week"
+msgstr "minggu"
+
+#: changedetectionio/flask_app.py
+msgid "weeks"
+msgstr "minggu"
+
+#: changedetectionio/flask_app.py
+msgid "day"
+msgstr "hari"
+
+#: changedetectionio/flask_app.py
+msgid "days"
+msgstr "hari"
+
 #: changedetectionio/forms.py
 msgid "not set"
 msgstr "belum diatur"
@@ -2695,6 +2752,63 @@ msgstr "Minggu"
 #: changedetectionio/forms.py
 msgid "Should contain zero or more seconds"
 msgstr "Harus berisi nol detik atau lebih"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Hari"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Jam"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Menit"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Detik"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr "Metode pengambilan tidak dikenal."
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Isi dan Judul Notifikasi wajib diisi saat URL Notifikasi digunakan"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s' bukan URL AppRise yang valid."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "RegEx '%s' bukan regular expression yang valid."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' bukan ekspresi XPath yang valid. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' bukan ekspresi JSONPath yang valid. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' bukan ekspresi jq yang valid. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Nilai kosong tidak diizinkan."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Nilai tidak valid."
 
 #: changedetectionio/forms.py
 msgid "Open Link Override"
