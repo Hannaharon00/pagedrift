@@ -2372,6 +2372,63 @@ msgstr ""
 msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
 msgstr ""
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "警告: URL {} はすでに存在します"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "ウォッチは一時停止状態で追加されました。保存すると再開されます。"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "ウォッチを追加しました。"
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "件"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr "チェックを一時停止"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr "チェックを再開"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr "通知をミュート"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 msgid "UnMute notification"
 msgstr "通知のミュートを解除"
