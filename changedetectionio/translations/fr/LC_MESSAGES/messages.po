@@ -3068,6 +3068,63 @@ msgstr "Moniteur"
 msgid "Processor"
 msgstr "Processeur"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Modifier > Surveiller"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Définir la méthode de récupération"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Corps de notification"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Format de notification"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Titre de notification"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Liste d'URL de notification"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Processeur – Que souhaitez-vous réaliser ?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Fuseau horaire par défaut pour le planificateur de contrôle de surveillance"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "secondes avant d’extraire le texte."
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Doit contenir une ou plusieurs secondes"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "URL de base pour les notifications"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Sauvegarder"
+
 #: changedetectionio/forms.py
 msgid "URLs"
 msgstr "URL"
