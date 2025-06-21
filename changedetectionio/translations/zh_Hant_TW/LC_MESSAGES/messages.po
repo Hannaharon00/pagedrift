@@ -2663,6 +2663,62 @@ msgstr "小時"
 msgid "hours"
 msgstr "小時"
 
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "分鐘"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "分鐘"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "秒"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "秒"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "已經登入"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "您必須先登入，請登入。"
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "密碼錯誤"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "必須指定至少一個時間間隔（週、天、小時、分鐘或秒）。"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr "當不使用全域設定時，必須指定至少一個時間間隔（週、天、小時、分鐘或秒）。"
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "時間格式無效。請使用 HH:MM。"
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "不是有效的時區名稱"
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "未設定"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "開始於"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "執行時長"
+
 #: changedetectionio/forms.py
 msgid "Use time scheduler"
 msgstr "使用時間排程器"
