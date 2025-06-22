@@ -331,3 +331,52 @@ def test_watch_edit_llm_intent_shows_own_value_not_group_placeholder(
     delete_all_watches(client)
 
 
+def test_tag_append_mode_ignored_when_group_overrides_disabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Without the opt-in the group's appended text never reaches the effective prompt."""
+    from changedetectionio.llm.evaluator import get_effective_summary_prompt
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    ds.data['settings']['application']['llm']['change_summary_default'] = 'GLOBAL RULES'
+
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    tag_uuid = _add_tag_with_llm(ds, 'Append Group', llm_change_summary='Group extra line.',
+                                 ai=False)
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_change_summary_mode'] = 'append'
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    watch = ds.data['watching'][watch_uuid]
+    assert get_effective_summary_prompt(watch, ds) == 'GLOBAL RULES'
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# AI on/off per watch, and per group when the group overrides — #4204
+# ---------------------------------------------------------------------------
+
+def test_watch_edit_has_ai_enabled_checkbox(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Every watch gets its own AI on/off switch, on by default."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    watch_uuid = _create_watch(client, url_for('test_endpoint', _external=True), api_token)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    body = res.data.decode('utf-8', errors='replace')
+
+    assert 'name="llm_backend_profile"' in body, \
+        "watch edit page is missing the AI on/off checkbox (#4204)"
+    assert _checkbox_is_checked(body, 'llm_backend_profile'), \
+        "AI should default to on for a new watch"
+    # No group involved, so no override note
+    assert 'overrides this' not in _page_text(res)
+
+    delete_all_watches(client)
+
+
