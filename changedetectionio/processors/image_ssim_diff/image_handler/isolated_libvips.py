@@ -13,6 +13,68 @@ Research: https://github.com/libvips/pyvips/issues/234
 
 import multiprocessing
 
+# CRITICAL: Use 'spawn' context instead of 'fork' to avoid inheriting parent's
+# LibVIPS threading state which can cause hangs in gaussblur operations
+# https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods
+
+
+def _worker_generate_diff(conn, img_bytes_from, img_bytes_to, threshold, blur_sigma, max_width, max_height):
+    """
+    Worker: Generate diff visualization using LibvipsImageDiffHandler in isolated subprocess.
+
+    This runs in a separate process for complete memory isolation.
+    Uses print() instead of loguru to avoid forking issues.
+    """
+    try:
+        # Import handler inside worker
+        from .libvips_handler import LibvipsImageDiffHandler
+
+        print(f"[Worker] Initializing handler", flush=True)
+        handler = LibvipsImageDiffHandler()
+
+        # Load images using handler
+        img_from = handler.load_from_bytes(img_bytes_from)
+        img_to = handler.load_from_bytes(img_bytes_to)
+
+        # Ensure same size
+        w1, h1 = handler.get_dimensions(img_from)
+        w2, h2 = handler.get_dimensions(img_to)
+        if (w1, h1) != (w2, h2):
+            img_from = handler.resize(img_from, w2, h2)
+
+        # Downscale for faster diff visualization
+        img_from = handler.resize(img_from, max_width, max_height)
+        img_to = handler.resize(img_to, max_width, max_height)
+
+        # Convert to grayscale
+        gray_from = handler.to_grayscale(img_from)
+        gray_to = handler.to_grayscale(img_to)
+
+        # Optional blur - DISABLED due to LibVIPS threading issues in fork
+        # gray_from = handler.gaussian_blur(gray_from, blur_sigma)
+        # gray_to = handler.gaussian_blur(gray_to, blur_sigma)
+
+        # Calculate difference
+        diff = handler.absolute_difference(gray_from, gray_to)
+
+        # Threshold to get mask
+        _, diff_mask = handler.threshold(diff, int(threshold))
+
+        # Generate diff image with red overlay
+        diff_image_bytes = handler.apply_red_overlay(img_to, diff_mask)
+
+        print(f"[Worker] Generated diff ({len(diff_image_bytes)} bytes)", flush=True)
+        conn.send(diff_image_bytes)
+
+    except Exception as e:
+        print(f"[Worker] Error: {e}", flush=True)
+        import traceback
+        traceback.print_exc()
+        conn.send(None)
+    finally:
+        conn.close()
+
+
 def generate_diff_isolated(img_bytes_from, img_bytes_to, threshold, blur_sigma, max_width, max_height):
     """
     Generate diff visualization in isolated subprocess for memory leak prevention.

@@ -745,3 +745,46 @@ def test_api_watch_PUT_update(client, live_server, measure_memory_usage, datasto
     delete_all_watches(client)
 
 
+    assert res.status_code == 400, "Should reject invalid processor"
+    assert b"Invalid processor" in res.data, "Error message should mention invalid processor"
+
+    # Test 6: Import with invalid field (should fail)
+    res = client.post(
+        url_for("import") + "?unknown_field=value",
+        data='https://website7.com',
+        headers={'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 400, "Should reject unknown field"
+    assert b"Unknown watch configuration parameter" in res.data, "Error message should mention unknown parameter"
+
+    # Test 7: Import with complex nested array (browser_steps) - array of objects
+    browser_steps = json.dumps([
+        {"operation": "wait", "selector": "5", "optional_value": ""},
+        {"operation": "click", "selector": "button.submit", "optional_value": ""}
+    ])
+    params = urllib.parse.urlencode({
+        'tag': 'browser-test',
+        'browser_steps': browser_steps
+    })
+
+    res = client.post(
+        url_for("import") + "?" + params,
+        data='https://website8.com',
+        headers={'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200, "Should accept browser_steps array"
+    uuid = res.json[0]
+    watch = live_server.app.config['DATASTORE'].data['watching'][uuid]
+    assert len(watch['browser_steps']) == 2, "Should have 2 browser steps"
+    assert watch['browser_steps'][0]['operation'] == 'wait', "First step should be wait"
+    assert watch['browser_steps'][1]['operation'] == 'click', "Second step should be click"
+    assert watch['browser_steps'][1]['selector'] == 'button.submit', "Second step selector should be button.submit"
+
+    # Cleanup
+    delete_all_watches(client)
+
+
