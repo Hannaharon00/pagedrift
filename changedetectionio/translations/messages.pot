@@ -2913,6 +2913,62 @@ msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Empty value not allowed."
 msgstr ""
 
