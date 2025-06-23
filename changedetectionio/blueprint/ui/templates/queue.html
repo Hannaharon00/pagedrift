@@ -206,3 +206,163 @@ $(function () {
     // They'll be culled later by cleanupSlots.
   }
 
+  function reconcileRunningSlots(running, workerCount) {
+    ensureSlotCount(workerCount);
+
+    const incoming = new Map();
+    for (const w of running) incoming.set(w.uuid, w);
+
+    // 1) Confirm or expire existing slot assignments
+    for (const slot of slots) {
+      if (slot.uuid && incoming.has(slot.uuid)) {
+        slot.watchData = incoming.get(slot.uuid);
+        slot.completedAt = 0;
+        incoming.delete(slot.uuid);
+      } else if (slot.uuid && !slot.completedAt) {
+        slot.completedAt = Date.now();
+      }
+    }
+
+    // 2) Place newly-running uuids into free slots
+    for (const [uuid, w] of incoming) {
+      let target = slots.find(s => !s.uuid);
+      if (!target) {
+        // No vacant slot — bump the oldest completed entry (or append)
+        target = slots.find(s => s.completedAt) || null;
+        if (target) {
+          target.uuid = null;
+          target.watchData = null;
+          target.completedAt = 0;
+        } else {
+          target = { uuid: null, watchData: null, completedAt: 0 };
+          slots.push(target);
+        }
+      }
+      target.uuid = uuid;
+      target.watchData = w;
+      target.completedAt = 0;
+    }
+  }
+
+  function cleanupSlots() {
+    const cutoff = Date.now() - COMPLETION_GRACE_MS;
+    for (const slot of slots) {
+      if (slot.completedAt && slot.completedAt < cutoff) {
+        slot.uuid = null;
+        slot.watchData = null;
+        slot.completedAt = 0;
+      }
+    }
+    for (const [uuid, ghost] of queuedGhosts) {
+      if (ghost.removedAt < cutoff) queuedGhosts.delete(uuid);
+    }
+  }
+
+  function reconcileQueuedGhosts(queued) {
+    const incoming = new Set(queued.map(w => w.uuid));
+    // Anything we showed last time but isn't in the new snapshot → ghost
+    for (const prev of lastQueueSnapshot) {
+      if (!incoming.has(prev.uuid) && !queuedGhosts.has(prev.uuid)) {
+        queuedGhosts.set(prev.uuid, { watchData: prev, removedAt: Date.now() });
+      }
+    }
+    // If something reappears in queue, drop its ghost
+    for (const w of queued) queuedGhosts.delete(w.uuid);
+    lastQueueSnapshot = queued.slice();
+  }
+
+  function renderWorkers() {
+    const $tbody = $root.find('[data-section="workers"]').empty();
+    if (!slots.length) return;
+    slots.forEach((slot, i) => {
+      const slotLabel = '<strong>' + escapeHtml(workerLabel(i)) + '</strong>';
+      let classes, watchCell, statusCell, since;
+      if (slot.uuid && slot.completedAt) {
+        classes = 'worker-slot is-completed';
+        watchCell = renderWatchCell(slot.watchData);
+        statusCell = '<span class="inline-tag inline-tag--done">' + escapeHtml(I18N.statusDone || 'done') + '</span>';
+        since = slot.watchData && slot.watchData.started_at;
+      } else if (slot.uuid) {
+        classes = 'worker-slot worker-busy';
+        watchCell = renderWatchCell(slot.watchData);
+        statusCell =
+          '<span class="inline-tag inline-tag--running">' + escapeHtml(I18N.statusRunning || 'running') + '</span> ' +
+          '<a href="#" class="queue-cancel" data-uuid="' + escapeHtml(slot.uuid) + '">' +
+            escapeHtml(I18N.cancel || 'cancel') +
+          '</a>';
+        since = slot.watchData && slot.watchData.started_at;
+      } else {
+        classes = 'worker-slot worker-idle';
+        watchCell = '<small style="opacity:0.55;">' + escapeHtml(I18N.idle || '— idle') + '</small>';
+        statusCell = '<span class="inline-tag inline-tag--idle">' + escapeHtml(I18N.statusIdle || 'idle') + '</span>';
+        since = null;
+      }
+      const timeCell = since
+        ? '<td class="time-cell" data-since="' + since + '">' + escapeHtml(elapsedText(since)) + '</td>'
+        : '<td class="time-cell"><small style="opacity:0.4;">—</small></td>';
+      $tbody.append(
+        '<tr class="' + classes + '"' +
+          (slot.uuid ? ' data-uuid="' + escapeHtml(slot.uuid) + '"' : '') +
+          '>' +
+          '<td>' + slotLabel + '</td>' +
+          '<td class="watch-cell">' + watchCell + '</td>' +
+          timeCell +
+          '<td>' + statusCell + '</td>' +
+        '</tr>'
+      );
+    });
+  }
+
+  function renderQueued() {
+    const $tbody = $root.find('[data-section="queued"]').empty();
+    const live = lastQueueSnapshot;
+    const ghosts = Array.from(queuedGhosts.values())
+      .sort((a, b) => b.removedAt - a.removedAt);  // most recently popped first
+
+    if (!live.length && !ghosts.length && slots.length === 0) {
+      $tbody.append('<tr class="empty-row"><td colspan="4"><em>' + escapeHtml(I18N.noWorkers || 'No workers configured and queue is empty') + '</em></td></tr>');
+      return;
+    }
+    live.forEach(w => {
+      const since = w.enqueued_at;
+      const timeCell = since
+        ? '<td class="time-cell" data-since="' + since + '">' + escapeHtml(elapsedText(since)) + '</td>'
+        : '<td class="time-cell"><small style="opacity:0.4;">—</small></td>';
+      $tbody.append(
+        '<tr data-uuid="' + escapeHtml(w.uuid) + '">' +
+          '<td>' + (w.position + 1) + '</td>' +
+          '<td class="watch-cell">' + renderWatchCell(w) + '</td>' +
+          timeCell +
+          '<td><span class="inline-tag">' + escapeHtml(w.priority_label) + '</span></td>' +
+        '</tr>'
+      );
+    });
+    ghosts.forEach(g => {
+      const w = g.watchData;
+      $tbody.append(
+        '<tr class="is-completed" data-uuid="' + escapeHtml(w.uuid) + '">' +
+          '<td><small>—</small></td>' +
+          '<td class="watch-cell">' + renderWatchCell(w) + '</td>' +
+          '<td class="time-cell"><small style="opacity:0.4;">—</small></td>' +
+          '<td><span class="inline-tag inline-tag--done">' + escapeHtml(I18N.statusDone || 'done') + '</span></td>' +
+        '</tr>'
+      );
+    });
+  }
+
+  function repaint(snap) {
+    $root.find('[data-stat="worker_count"]').text(snap.worker_count);
+    $root.find('[data-stat="running_count"]').text(snap.running_count);
+    $root.find('[data-stat="queued_count"]').text(snap.queued_count);
+
+    reconcileQueuedGhosts(snap.queued || []);
+    reconcileRunningSlots(snap.running || [], snap.worker_count || 0);
+    cleanupSlots();
+    renderWorkers();
+    renderQueued();
+
+    // Footer "waiting…" indicator: only show when nothing is actually running or queued.
+    const idle = (snap.running_count === 0) && (snap.queued_count === 0);
+    $root.find('.queue-waiting').attr('data-show', idle ? 'true' : 'false');
+  }
+
