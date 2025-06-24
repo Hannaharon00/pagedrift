@@ -2730,6 +2730,63 @@ msgid "Notification format"
 msgstr "Bildirim formatı"
 
 #: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Bildirim Başlığı"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Bildirim URL Listesi"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "İşlemci - Ne başarmak istiyorsunuz?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "İzleyici kontrol zamanlayıcısı için varsayılan saat dilimi"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Metni çıkarmadan önce beklenecek saniye"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Bir veya daha fazla saniye içermelidir"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Bildirim temel URL'sini geçersiz kılma"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Kaydet"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL'ler"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr ".xlsx dosyası yükle"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr ".xlsx dosyası olmalıdır!"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "Dosya eşleme"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "Operasyon"
+
+#: changedetectionio/forms.py
 msgid "AI enabled for this watch?"
 msgstr ""
 
