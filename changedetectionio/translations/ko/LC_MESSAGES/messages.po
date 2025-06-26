@@ -3234,6 +3234,62 @@ msgid "Request body"
 msgstr "요청 본문"
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr "요청 방법"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "응답 코드 무시(2xx가 아닌 응답 코드도 정상 처리)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "모든 기록에서 고유한 줄이 나타날 때만 트리거"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "중복된 텍스트 줄 제거"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "텍스트를 알파벳순으로 정렬"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "무시된 줄 제거"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "텍스트 앞뒤 공백 제거"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "추가된 줄"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "교체/변경된 줄"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "삭제된 줄"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "키워드 트리거 - 텍스트 트리거/대기"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "텍스트가 일치하는 동안 변경 감지 차단"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "변경 감지 전에 JavaScript 실행"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "프록시"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "페이지에서 필터를 더 이상 찾을 수 없으면 알림 보내기"
 

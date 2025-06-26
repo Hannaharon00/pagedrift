@@ -43,6 +43,54 @@ def write_test_file_and_sync(filepath, content, mode='w'):
         f.flush()  # Flush Python buffer to OS
         os.fsync(f.fileno())  # Force OS to write to disk
 
+def set_original_response(datastore_path, extra_title=''):
+    test_return_data = f"""<html>
+    <head><title>head title{extra_title}</title></head>
+    <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <span class="foobar-detection" style='display:none'></span>
+     </body>
+     </html>
+    """
+
+    write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
+    return None
+
+def set_modified_response(datastore_path):
+    test_return_data = """<html>
+    <head><title>modified head title</title></head>
+    <body>
+     Some initial text<br>
+     <p>which has this one new line</p>
+     <br>
+     So let's see what happens.  <br>
+     </body>
+     </html>
+    """
+
+    write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
+    return None
+def set_longer_modified_response(datastore_path):
+    test_return_data = """<html>
+    <head><title>modified head title</title></head>
+    <body>
+     Some initial text<br>
+     <p>which has this one new line</p>
+     <br>
+     So let's see what happens.  <br>
+     So let's see what happens.  <br>
+      So let's see what happens.  <br>
+     So let's see what happens.  <br>
+     </body>
+     </html>
+    """
+
+    write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
+    return None
+
 # kinda funky, but works for now
 def get_UUID_for_tag_name(client, name):
     app_config = client.application.config.get('DATASTORE').data
