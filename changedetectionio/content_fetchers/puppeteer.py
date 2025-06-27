@@ -469,3 +469,12 @@ class fetcher(Fetcher):
             logger.critical(response)
             raise PageUnloadable(url=url, status_code=None, message=str(e))
 
+# Plugin registration for built-in fetcher
+class PuppeteerFetcherPlugin:
+    """Plugin class that registers the Puppeteer fetcher as a built-in plugin."""
+
+    def register_content_fetcher(self):
+        """Register the Puppeteer fetcher"""
+        return ('html_webdriver', fetcher)
+
+
