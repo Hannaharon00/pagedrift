@@ -55,6 +55,23 @@ def set_original_response(datastore_path):
 
 
 
+def set_back_in_stock_response(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <div>price: $10.99</div>
+     <div id="sametext">Available!</div>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
 def set_price_response(datastore_path, price, nonce=''):
     # JSON-LD product offer so the price + availability are extracted deterministically
     # without needing a real browser (extruct parses the raw HTML).
