@@ -91,6 +91,42 @@ def set_longer_modified_response(datastore_path):
     write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
     return None
 
+def set_more_modified_response(datastore_path):
+    test_return_data = """<html>
+    <head><title>modified head title</title></head>
+    <body>
+     Some initial text<br>
+     <p>which has this one new line</p>
+     <br>
+     So let's see what happens.  <br>
+     Ohh yeah awesome<br>
+     </body>
+     </html>
+    """
+
+    write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
+    return None
+
+
+def set_empty_text_response(datastore_path):
+    test_return_data = """<html><body></body></html>"""
+
+    write_test_file_and_sync(os.path.join(datastore_path, "endpoint-content.txt"), test_return_data)
+
+    return None
+
+def wait_for_notification_endpoint_output(datastore_path):
+    '''Apprise can take a few seconds to fire'''
+    #@todo - could check the apprise object directly instead of looking for this file
+    from os.path import isfile
+    notification_file = os.path.join(datastore_path, "notification.txt")
+    for i in range(1, 20):
+        time.sleep(1)
+        if isfile(notification_file):
+            return True
+
+    return False
+
 # kinda funky, but works for now
 def get_UUID_for_tag_name(client, name):
     app_config = client.application.config.get('DATASTORE').data
