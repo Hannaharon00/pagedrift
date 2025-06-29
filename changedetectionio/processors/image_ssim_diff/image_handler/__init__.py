@@ -108,3 +108,135 @@ class ImageDiffHandler(ABC):
         """
         Apply Gaussian blur to image.
 
+        Args:
+            img: Handler-specific image object
+            sigma: Blur sigma value (0 = no blur)
+
+        Returns:
+            Blurred image object
+        """
+        pass
+
+    @abstractmethod
+    def absolute_difference(self, img1: Any, img2: Any) -> Any:
+        """
+        Calculate absolute difference between two images.
+
+        Args:
+            img1: First image (handler-specific object)
+            img2: Second image (handler-specific object)
+
+        Returns:
+            Difference image object
+        """
+        pass
+
+    @abstractmethod
+    def threshold(self, img: Any, threshold_value: int) -> Tuple[float, Any]:
+        """
+        Apply threshold to image and calculate change percentage.
+
+        Args:
+            img: Handler-specific image object (typically grayscale difference)
+            threshold_value: Threshold value (0-255)
+
+        Returns:
+            Tuple of (change_percentage, binary_mask)
+            - change_percentage: Percentage of pixels above threshold (0-100)
+            - binary_mask: Handler-specific binary mask object
+        """
+        pass
+
+    @abstractmethod
+    def apply_red_overlay(self, img: Any, mask: Any) -> bytes:
+        """
+        Apply red overlay to image where mask is True.
+
+        Args:
+            img: Handler-specific image object (color)
+            mask: Handler-specific binary mask object
+
+        Returns:
+            JPEG bytes with red overlay applied
+        """
+        pass
+
+    @abstractmethod
+    def close(self, img: Any) -> None:
+        """
+        Clean up image resources if needed.
+
+        Args:
+            img: Handler-specific image object
+        """
+        pass
+
+    @abstractmethod
+    def find_template(
+        self,
+        img: Any,
+        template_img: Any,
+        original_bbox: Tuple[int, int, int, int],
+        search_tolerance: float = 0.2
+    ) -> Optional[Tuple[int, int, int, int]]:
+        """
+        Find template in image using template matching.
+
+        Args:
+            img: Handler-specific image object to search in
+            template_img: Handler-specific template image object to find
+            original_bbox: Original bounding box (left, top, right, bottom)
+            search_tolerance: How far to search (0.2 = ±20% of region size)
+
+        Returns:
+            New bounding box (left, top, right, bottom) or None if not found
+        """
+        pass
+
+    @abstractmethod
+    def save_template(
+        self,
+        img: Any,
+        bbox: Tuple[int, int, int, int],
+        output_path: str
+    ) -> bool:
+        """
+        Save a cropped region as a template file.
+
+        Args:
+            img: Handler-specific image object
+            bbox: Bounding box to crop (left, top, right, bottom)
+            output_path: Where to save the template PNG
+
+        Returns:
+            True if successful, False otherwise
+        """
+        pass
+
+    @abstractmethod
+    def draw_bounding_box(
+        self,
+        img_bytes: bytes,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        color: Tuple[int, int, int] = (255, 0, 0),
+        thickness: int = 3
+    ) -> bytes:
+        """
+        Draw a bounding box rectangle on image.
+
+        Args:
+            img_bytes: Image data as bytes
+            x: Left coordinate
+            y: Top coordinate
+            width: Box width
+            height: Box height
+            color: BGR color tuple (default: blue)
+            thickness: Line thickness in pixels
+
+        Returns:
+            Image bytes with bounding box drawn
+        """
+        pass
