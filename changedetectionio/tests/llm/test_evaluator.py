@@ -405,3 +405,44 @@ class TestEvaluateChange:
 # Token budget enforcement
 # ---------------------------------------------------------------------------
 
+class TestResolveLlmField:
+    def test_watch_value_takes_priority(self):
+        from changedetectionio.llm.evaluator import resolve_llm_field
+        tag = _make_tag(title='mygroup', llm_change_summary='tag summary prompt')
+        ds = _make_datastore(tags={'tag-1': tag})
+        watch = _make_watch(llm_change_summary='watch summary prompt', tags=['tag-1'])
+        value, source = resolve_llm_field(watch, ds, 'llm_change_summary')
+        assert value == 'watch summary prompt'
+        assert source == 'watch'
+
+    def test_tag_value_used_when_watch_empty(self):
+        from changedetectionio.llm.evaluator import resolve_llm_field
+        tag = _make_tag(title='events-group', llm_change_summary='list new events')
+        ds = _make_datastore(tags={'tag-1': tag})
+        watch = _make_watch(llm_change_summary='', tags=['tag-1'])
+        value, source = resolve_llm_field(watch, ds, 'llm_change_summary')
+        assert value == 'list new events'
+        assert source == 'events-group'
+
+    def test_returns_empty_when_not_set_anywhere(self):
+        from changedetectionio.llm.evaluator import resolve_llm_field
+        ds = _make_datastore()
+        watch = _make_watch()
+        value, source = resolve_llm_field(watch, ds, 'llm_change_summary')
+        assert value == ''
+        assert source == ''
+
+    def test_works_for_llm_intent_field_too(self):
+        """resolve_llm_field is generic — works for llm_intent same as llm_change_summary."""
+        from changedetectionio.llm.evaluator import resolve_llm_field
+        tag = _make_tag(llm_intent='flag price drops')
+        ds = _make_datastore(tags={'t1': tag})
+        watch = _make_watch(llm_intent='', tags=['t1'])
+        value, source = resolve_llm_field(watch, ds, 'llm_intent')
+        assert value == 'flag price drops'
+
+
+# ---------------------------------------------------------------------------
+# summarise_change
+# ---------------------------------------------------------------------------
+
