@@ -2772,6 +2772,62 @@ msgid "Hours"
 msgstr "小時"
 
 #: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL 列表"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr "上傳 .xlsx 檔案"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr "必須是 .xlsx 檔案！"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "檔案對應"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "操作"
+
+#: changedetectionio/forms.py
+msgid "Selector"
+msgstr "選擇器"
+
+#: changedetectionio/forms.py
+msgid "CSS or xPath selector"
+msgstr "CSS 或 xPath 選擇器"
+
+#: changedetectionio/forms.py
+msgid "value"
+msgstr "值"
+
+#: changedetectionio/conditions/form.py changedetectionio/forms.py
+msgid "Value"
+msgstr "值"
+
+#: changedetectionio/forms.py
+msgid "Web Page URL"
+msgstr "網頁 URL"
+
+#: changedetectionio/forms.py
+msgid "Open Link Override"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Group Tag"
+msgstr "群組標籤"
+
+#: changedetectionio/forms.py
+msgid "Time Between Check"
+msgstr "檢查間隔"
+
+#: changedetectionio/forms.py
+msgid "Use global settings for time between check and scheduler."
+msgstr "檢查與排程時間使用全域設定。"
+
+#: changedetectionio/forms.py
 msgid "Request method"
 msgstr "請求方式"
 
