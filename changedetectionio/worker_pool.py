@@ -309,3 +309,64 @@ def claim_uuid_for_processing(uuid, worker_id):
         return True
 
 
+def is_watch_running_by_another_worker(watch_uuid, current_worker_id):
+    """Check if a specific watch is currently being processed by a different worker"""
+    with _uuid_processing_lock:
+        if watch_uuid not in currently_processing_uuids:
+            return False
+        processing_worker_id = currently_processing_uuids[watch_uuid]
+        return processing_worker_id != current_worker_id
+
+
+def queue_item_async_safe(update_q, item, silent=False):
+    """Bulletproof queue operation with comprehensive error handling"""
+    item_uuid = 'unknown'
+
+    try:
+        # Safely extract UUID for logging
+        if hasattr(item, 'item') and isinstance(item.item, dict):
+            item_uuid = item.item.get('uuid', 'unknown')
+    except Exception as uuid_e:
+        logger.critical(f"CRITICAL: Failed to extract UUID from queue item: {uuid_e}")
+
+    # Validate inputs
+    if not update_q:
+        logger.critical(f"CRITICAL: Queue is None/invalid for item {item_uuid}")
+        return False
+
+    if not item:
+        logger.critical(f"CRITICAL: Item is None/invalid")
+        return False
+
+    # Attempt queue operation with multiple fallbacks
+    try:
+        # Primary: Use sync interface (thread-safe)
+        success = update_q.put(item, block=True, timeout=5.0)
+        if success is False:  # Explicit False return means failure
+            logger.critical(f"CRITICAL: Queue.put() returned False for item {item_uuid}")
+            return False
+
+        if not silent:
+            logger.trace(f"Successfully queued item: {item_uuid}")
+        return True
+        
+    except Exception as e:
+        logger.critical(f"CRITICAL: Exception during queue operation for item {item_uuid}: {type(e).__name__}: {e}")
+        
+        # Secondary: Attempt queue health check
+        try:
+            queue_size = update_q.qsize()
+            is_empty = update_q.empty()
+            logger.critical(f"CRITICAL: Queue health - size: {queue_size}, empty: {is_empty}")
+        except Exception as health_e:
+            logger.critical(f"CRITICAL: Queue health check failed: {health_e}")
+        
+        # Log queue type for debugging
+        try:
+            logger.critical(f"CRITICAL: Queue type: {type(update_q)}, has sync_q: {hasattr(update_q, 'sync_q')}")
+        except Exception:
+            logger.critical(f"CRITICAL: Cannot determine queue type")
+        
+        return False
+
+
