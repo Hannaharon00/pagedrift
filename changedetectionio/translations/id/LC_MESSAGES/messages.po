@@ -2175,6 +2175,63 @@ msgstr ""
 msgid "to one that supports Javascript and screenshots."
 msgstr "ke pengambil yang mendukung Javascript dan tangkapan layar."
 
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to delete the watch for:"
+msgstr "Anda yakin ingin menghapus monitor untuk:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This action cannot be undone."
+msgstr "Tindakan ini tidak dapat dibatalkan."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History?"
+msgstr "Hapus Riwayat?"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Are you sure you want to clear all history for:"
+msgstr "Anda yakin ingin menghapus seluruh riwayat untuk:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "This will remove all snapshots and previous versions. This action cannot be undone."
+msgstr "Ini akan menghapus semua snapshot dan versi sebelumnya. Tindakan ini tidak dapat dibatalkan."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clear History"
+msgstr "Hapus Riwayat"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Clone & Edit"
+msgstr "Kloning & Edit"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Select timestamp"
+msgstr "Pilih stempel waktu"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Current erroring screenshot from most recent request"
+msgstr "Tangkapan layar kesalahan saat ini dari permintaan terbaru"
+
+#: changedetectionio/blueprint/ui/templates/preview.html
+msgid "Screenshot requires a Content Fetcher ( Sockpuppetbrowser, selenium, etc ) that supports screenshots."
+msgstr "Tangkapan layar memerlukan Pengambil Konten (Sockpuppetbrowser, selenium, dll.) yang mendukung tangkapan layar."
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#, python-format
+msgid "Worker %(num)s"
+msgstr "Worker %(num)s"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "— idle"
+msgstr "— menganggur"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "running"
+msgstr "berjalan"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "idle"
+msgstr "menganggur"
+
 #: changedetectionio/blueprint/ui/templates/queue.html
 msgid "done"
 msgstr "selesai"
