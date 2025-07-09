@@ -283,3 +283,88 @@ class difference_detection_processor():
         # Also note: By this point we SHOULD know the original encoding so it can safely convert to utf-8 for the rest of the app.
         # See: https://github.com/dgtlmoon/changedetection.io/issues/3952
 
+        if self.fetcher.content and isinstance(self.fetcher.content, str):
+            self.fetcher.content = self.fetcher.content.encode('utf-8', errors='replace').decode('utf-8')
+
+        # After init, call run_changedetection() which will do the actual change-detection
+
+    @staticmethod
+    def _resolve_watch_config_path(data_dir, filename):
+        """Resolve `filename` inside `data_dir`, refusing anything that escapes it.
+
+        Security: callers derive `filename` from watch['processor'] (see
+        processors/save_processor_config), and that value is not enum-validated on every
+        write path - so it must be treated as untrusted here. os.path.join() will happily
+        accept '../../../../tmp/pwned', which previously escaped the watch directory and
+        allowed an arbitrary-path JSON file write (and read) as the app user.
+
+        Returns the absolute path, or None if it is not safely contained.
+        """
+        import os
+
+        if not filename or filename in ('.', '..'):
+            logger.error(f"Refusing unsafe watch config filename {filename!r}")
+            return None
+
+        # Must be a bare filename - no directory component, no separator of either flavour
+        if filename != os.path.basename(filename) or '/' in filename or '\\' in filename:
+            logger.error(f"Refusing watch config filename with a path component: {filename!r}")
+            return None
+
+        # realpath both sides so a symlink planted inside data_dir cannot redirect the write
+        base = os.path.realpath(data_dir)
+        filepath = os.path.realpath(os.path.join(base, filename))
+        if os.path.dirname(filepath) != base:
+            logger.error(f"Refusing watch config path outside the watch directory: {filepath!r}")
+            return None
+
+        return filepath
+
+    def get_extra_watch_config(self, filename):
+        """
+        Read processor-specific JSON config file from watch data directory.
+
+        Args:
+            filename: Name of JSON file (e.g., "visual_ssim_score.json")
+
+        Returns:
+            dict: Parsed JSON data, or empty dict if file doesn't exist
+        """
+        import json
+        import os
+
+        watch = self.datastore.data['watching'].get(self.watch_uuid)
+        data_dir = watch.data_dir
+
+        if not data_dir:
+            return {}
+
+        filepath = self._resolve_watch_config_path(data_dir, filename)
+        if not filepath:
+            return {}
+
+        if not os.path.isfile(filepath):
+            return {}
+
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            logger.warning(f"Failed to read extra watch config {filename}: {e}")
+            return {}
+
+    def update_extra_watch_config(self, filename, data, merge=True):
+        """
+        Write processor-specific JSON config file to watch data directory.
+
+        Args:
+            filename: Name of JSON file (e.g., "visual_ssim_score.json")
+            data: Dictionary to serialize as JSON
+            merge: If True, merge with existing data; if False, overwrite completely
+        """
+        import json
+        import os
+
+        watch = self.datastore.data['watching'].get(self.watch_uuid)
+        data_dir = watch.data_dir
+
