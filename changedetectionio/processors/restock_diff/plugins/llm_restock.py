@@ -119,6 +119,33 @@ def _llm_cache_put(key, value):
         _LLM_RESULT_CACHE.popitem(last=False)
 
 
+# JSON-LD blocks worth sending: only those that actually carry price/stock signals. This drops
+# the noise (BreadcrumbList, WebSite, Organization, ItemList…) that otherwise dominates and
+# pushes the useful data out of the (truncated) prompt.
+_JSONLD_RELEVANT = re.compile(
+    r'"(price|priceCurrency|lowPrice|highPrice|availability|offers|InStock|OutOfStock|priceSpecification)"',
+    re.IGNORECASE,
+)
+
+
+def _extract_jsonld(html_content: str) -> str:
+    """Extract the JSON-LD blocks that contain price/availability info (reliable structured
+    product data). Blocks without any price/stock signal (breadcrumbs, site metadata, etc.)
+    are skipped so they don't crowd out the useful content."""
+    blocks = re.findall(
+        r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        html_content, flags=re.DOTALL | re.IGNORECASE
+    )
+    if not blocks:
+        return ''
+    relevant = [b.strip() for b in blocks if _JSONLD_RELEVANT.search(b)]
+    combined = ' '.join(relevant)
+    return combined[:2000]
+
+
+# Semantic tags always treated as chrome (nav/header/footer)
+_CHROME_TAGS = {'nav', 'header', 'footer', 'aside'}
+
 # id/class fragments that strongly indicate navigation or site-chrome
 _CHROME_PATTERNS = re.compile(
     r'\b(nav|navigation|navbar|menu|mega-menu|breadcrumb|breadcrumbs?|'
