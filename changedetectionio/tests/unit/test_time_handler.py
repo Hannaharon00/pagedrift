@@ -472,3 +472,22 @@ class TestIsWithinSchedule(unittest.TestCase):
             }
         }
 
+class TestWeekdayEnum(unittest.TestCase):
+    """Tests for the Weekday enum."""
+
+    def test_weekday_values(self):
+        """Test that weekday enum has correct values."""
+        self.assertEqual(time_handler.Weekday.Monday, 0)
+        self.assertEqual(time_handler.Weekday.Tuesday, 1)
+        self.assertEqual(time_handler.Weekday.Wednesday, 2)
+        self.assertEqual(time_handler.Weekday.Thursday, 3)
+        self.assertEqual(time_handler.Weekday.Friday, 4)
+        self.assertEqual(time_handler.Weekday.Saturday, 5)
+        self.assertEqual(time_handler.Weekday.Sunday, 6)
+
+    def test_weekday_string_access(self):
+        """Test accessing weekday enum by string."""
+        self.assertEqual(time_handler.Weekday['Monday'], 0)
+        self.assertEqual(time_handler.Weekday['Sunday'], 6)
+
+
