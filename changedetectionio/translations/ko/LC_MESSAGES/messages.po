@@ -3576,6 +3576,62 @@ msgstr "해당 정규식으로 모든 모니터링 기록을 검사했지만 일
 msgid "Not enough history to compare. Need at least 2 snapshots."
 msgstr "비교할 기록이 충분하지 않습니다. 스냅샷이 최소 2개 필요합니다."
 
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "이전 확인 대비 가격 변동 기준(%)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "0에서 100 사이여야 합니다."
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "가격 변동 추적"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Restock & Price Detection"
+msgstr "재입고 및 가격 감지"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Re-stock & Price detection for pages with a SINGLE product"
+msgstr "단일 제품이 포함된 페이지의 재입고 및 가격 감지"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Detects if the product goes back to in-stock"
+msgstr "제품이 다시 재고 있음 상태가 되었는지 감지합니다."
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price & stock history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Download as XLSX"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "When"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Stock"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Not enough price data points yet to draw a graph - keep monitoring and the price history will appear here."
+msgstr ""
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Screenshot"
+msgstr "스크린샷"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "This tool will extract text data from all of the watch history."
+msgstr "모든 모니터링 기록에서 텍스트 데이터를 추출합니다."
+
+#: changedetectionio/processors/templates/extract.html
+msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part inside of the text that you want to extract."
+msgstr "<strong>정규식</strong>은 텍스트에서 추출하려는 부분을 정확히 식별하는 패턴입니다."
+
 #: changedetectionio/processors/templates/extract.html
 msgid "For example, to extract only the numbers from text"
 msgstr "예를 들어, 텍스트에서 숫자만 추출하려면"
