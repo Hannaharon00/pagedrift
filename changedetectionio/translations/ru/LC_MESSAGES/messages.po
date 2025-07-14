@@ -3548,6 +3548,58 @@ msgid "Remove password"
 msgstr "Удалить пароль"
 
 #: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Отображение содержимого тега привязки"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Разрешить анонимный доступ к странице истории просмотра, если включен пароль"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Скрыть часы с отключенным звуком из RSS-канала"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Включить режим чтения RSS"
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Количество изменений, отображаемых в RSS-канале просмотра"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "Должно содержать ноль или более попыток."
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "Сколько раз фильтр может отсутствовать перед отправкой уведомления"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr "Модель"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "API-ключ"
+
+#: changedetectionio/forms.py
+msgid "API Base URL"
+msgstr "Базовый URL-адрес API"
+
+#: changedetectionio/forms.py
+msgid "Token multiplier for local reasoning models"
+msgstr "Множитель токена для локальных моделей рассуждений"
+
+#: changedetectionio/forms.py
+msgid "Default AI Change Summary prompt"
+msgstr "Подсказка сводки изменений AI по умолчанию"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max tokens per watch per period"
+msgstr "Максимальное количество токенов за просмотр за период"
+
+#: changedetectionio/forms.py
 msgid "Monthly token budget"
 msgstr "Ежемесячный бюджет токенов"
 
