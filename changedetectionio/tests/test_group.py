@@ -300,6 +300,36 @@ def test_clone_tag_on_import(client, live_server, measure_memory_usage, datastor
     assert res.data.count(b'another-tag') == 3
     delete_all_watches(client)
 
+def test_clone_tag_on_quickwatchform_add(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    test_url = url_for('test_endpoint', _external=True)
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": ' test-tag, another-tag      '},
+        follow_redirects=True
+    )
+
+    assert b"Watch added" in res.data
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'test-tag' in res.data
+    assert b'another-tag' in res.data
+
+    watch_uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+    res = client.post(url_for("ui.form_clone", uuid=watch_uuid), follow_redirects=True)
+    assert b'Cloned' in res.data
+
+    res = client.get(url_for("watchlist.index"))
+    # 2 times plus the top link to tag
+    assert res.data.count(b'test-tag') == 3
+    assert res.data.count(b'another-tag') == 3
+    delete_all_watches(client)
+
+    res = client.post(url_for("tags.delete_all"), follow_redirects=True)
+    assert b'All tags deleted' in res.data
+
 def test_order_of_filters_tag_filter_and_watch_filter(client, live_server, measure_memory_usage, datastore_path):
 
     # Add a tag with some config, import a tag and it should roughly work
