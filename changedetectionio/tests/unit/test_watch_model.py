@@ -9,3 +9,5 @@ import pickle
 import tempfile
 from copy import deepcopy
 
+from changedetectionio.model import Watch, Tag
+
