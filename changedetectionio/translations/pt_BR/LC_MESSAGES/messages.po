@@ -3102,6 +3102,62 @@ msgstr "Ignorar linhas contendo"
 msgid "Request body"
 msgstr "Corpo da solicitação (Body)"
 
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Método da solicitação (Method)"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignorar códigos de status (processar códigos não-2xx como normal)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Disparar apenas quando linhas exclusivas aparecerem em todo o histórico"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Remover linhas de texto duplicadas"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Ordenar texto alfabeticamente"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Remover linhas ignoradas"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Remover espaços antes e depois do texto"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Linhas adicionadas"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Linhas substituídas/alteradas"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Linhas removidas"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Gatilhos de palavras-chave - Disparar/aguardar por texto"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Bloquear detecção de mudança enquanto o texto corresponder"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Executar JavaScript antes da detecção de mudanças"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
 #: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
 msgid "Name"
 msgstr "Nome"
