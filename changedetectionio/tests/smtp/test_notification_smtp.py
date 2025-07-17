@@ -506,6 +506,155 @@ def test_check_plaintext_document_plaintext_notification_smtp(client, live_serve
     assert '<pre' not in body
     delete_all_watches(client)
 
+def test_check_plaintext_document_html_notifications(client, live_server, measure_memory_usage, datastore_path):
+    """When following a plaintext document, notification in Plain Text format is sent correctly"""
+    import os
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("    Some nice plain text\nwhich we add some extra data\nover here\n")
+
+    notification_url = f'mailto://changedetection@{smtp_test_server}:11025/?to=fff@home.com'
+    notification_body = f"""{default_notification_body}"""
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "fallback-title " + default_notification_title,
+              "notification_body": f"{notification_body}\nMore output test\n{ALL_MARKUP_TOKENS}",
+              "notification_format": 'html'},
+        follow_redirects=True
+    )
+    assert b"Settings updated." in res.data
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type="text/plain", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Change the content
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("    Some nice plain text\nwhich we add some extra data\nAnd let's talk about <title> tags\nover here\n")
+
+
+    time.sleep(2)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Parse the email properly using Python's email library
+    msg = message_from_string(get_last_message_from_smtp_server(), policy=email_policy)
+
+
+    # The email should have two bodies (multipart/alternative)
+    assert msg.is_multipart()
+    assert msg.get_content_type() == 'multipart/alternative'
+
+    # Get the parts
+    parts = list(msg.iter_parts())
+    assert len(parts) == 2
+
+    # First part should be text/plain
+    text_part = parts[0]
+    assert text_part.get_content_type() == 'text/plain'
+    text_content = text_part.get_content()
+    html_part = parts[1]
+    assert html_part.get_content_type() == 'text/html'
+    html_content = html_part.get_content()
+
+
+    assert 'And let\'s talk about <title> tags\r\n' in text_content
+    assert '&lt;br' not in text_content
+    assert '<span' not in text_content
+
+
+    assert 'talk about <title>' not in html_content  # the html part, should have got marked up to &lt; etc
+    assert 'talk about &lt;title&gt;' in html_content
+    # Should be the HTML, but not HTML Color
+    assert 'background-color' not in html_content
+    assert '<br>(added) And let&#39;s talk about &lt;title&gt; tags<br>' in html_content
+    assert 'PLACEMARKER' not in html_content
+    assert '&lt;br' not in html_content
+    assert '<pre role="article"' in html_content # Should have got wrapped nicely in email_helpers.py
+
+    # And now for the whitespace retention
+    assert '&nbsp;&nbsp;&nbsp;&nbsp;Some nice plain text' in html_content
+    assert '(added) And let' in html_content # just to show a single whitespace didnt get touched
+    delete_all_watches(client)
+
+
+def test_check_plaintext_document_html_color_notifications(client, live_server, measure_memory_usage, datastore_path):
+    """When following a plaintext document, notification in Plain Text format is sent correctly"""
+    import os
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("Some nice plain text\nwhich we add some extra data\nover here\n")
+
+    notification_url = f'mailto://changedetection@{smtp_test_server}:11025/?to=fff@home.com'
+    notification_body = f"""{default_notification_body}"""
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "fallback-title " + default_notification_title,
+              "notification_body": f"{notification_body}\nMore output test\n{ALL_MARKUP_TOKENS}",
+              "notification_format": 'htmlcolor'},
+        follow_redirects=True
+    )
+
+    assert b"Settings updated." in res.data
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type="text/plain", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Change the content
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("Some nice plain text\nwhich we add some extra data\nAnd let's talk about <title> tags\nover here\n")
+
+    time.sleep(1)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Parse the email properly using Python's email library
+    msg = message_from_string(get_last_message_from_smtp_server(), policy=email_policy)
+
+    # The email should have two bodies (multipart/alternative)
+    assert msg.is_multipart()
+    assert msg.get_content_type() == 'multipart/alternative'
+
+    # Get the parts
+    parts = list(msg.iter_parts())
+    assert len(parts) == 2
+
+    # First part should be text/plain
+    text_part = parts[0]
+    assert text_part.get_content_type() == 'text/plain'
+    text_content = text_part.get_content()
+    html_part = parts[1]
+    assert html_part.get_content_type() == 'text/html'
+    html_content = html_part.get_content()
+
+
+    assert 'And let\'s talk about <title> tags\r\n' in text_content
+    assert '&lt;br' not in text_content
+    assert '<span' not in text_content
+
+    assert 'talk about <title>' not in html_content  # the html part, should have got marked up to &lt; etc
+    assert 'talk about &lt;title&gt;' in html_content
+    # Should be the HTML, but not HTML Color
+    assert 'background-color' in html_content
+    assert '(added) And let' not in html_content
+    assert '&lt;br' not in html_content
+    assert '<br>' in html_content
+    assert '<pre role="article"' in html_content # Should have got wrapped nicely in email_helpers.py
+    delete_all_watches(client)
+
 def test_check_html_document_plaintext_notification(client, live_server, measure_memory_usage, datastore_path):
     """When following a HTML document, notification in Plain Text format is sent correctly"""
     import os

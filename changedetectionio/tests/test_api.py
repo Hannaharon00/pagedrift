@@ -788,3 +788,80 @@ def test_api_watch_PUT_update(client, live_server, measure_memory_usage, datasto
     delete_all_watches(client)
 
 
+def test_api_import_large_background(client, live_server, measure_memory_usage, datastore_path):
+    """Test that large imports (>= threshold) are processed in background thread"""
+    from changedetectionio.api.Import import IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD
+    import time
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Use local test endpoint to avoid network delays
+    test_url_base = url_for('test_endpoint', _external=True)
+
+    # Create URLs: threshold + 10 to trigger background processing
+    num_urls = IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD + 10
+    urls = '\n'.join([f'{test_url_base}?id=bulk-{i}' for i in range(num_urls)])
+
+    # Import large batch
+    res = client.post(
+        url_for("import") + "?tag=bulk-test",
+        data=urls,
+        headers={'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    # Should return 202 Accepted (background processing)
+    assert res.status_code == 202, f"Should return 202 for large imports, got {res.status_code}"
+    assert b"background" in res.data.lower(), "Response should mention background processing"
+
+    # Extract expected count from response
+    response_json = res.json
+    assert 'count' in response_json, "Response should include count"
+    assert response_json['count'] == num_urls, f"Count should be {num_urls}, got {response_json['count']}"
+
+    # Wait for background thread to complete (with timeout)
+    max_wait = 10  # seconds
+    wait_interval = 0.5
+    elapsed = 0
+    watches_created = 0
+
+    while elapsed < max_wait:
+        time.sleep(wait_interval)
+        elapsed += wait_interval
+
+        # Count how many watches have been created
+        watches_created = len([
+            uuid for uuid, watch in live_server.app.config['DATASTORE'].data['watching'].items()
+            if 'id=bulk-' in watch['url']
+        ])
+
+        if watches_created == num_urls:
+            break
+
+    # Verify all watches were created
+    assert watches_created == num_urls, \
+        f"Expected {num_urls} watches to be created, but found {watches_created} after {elapsed}s"
+
+    # Verify watches have correct configuration
+    bulk_watches = [
+        watch for watch in live_server.app.config['DATASTORE'].data['watching'].values()
+        if 'id=bulk-' in watch['url']
+    ]
+
+    assert len(bulk_watches) == num_urls, "All bulk watches should exist"
+
+    # Check that they have the correct tag
+    datastore = live_server.app.config['DATASTORE']
+    # Get UUIDs of bulk watches by filtering the datastore keys
+    bulk_watch_uuids = [
+        uuid for uuid, watch in live_server.app.config['DATASTORE'].data['watching'].items()
+        if 'id=bulk-' in watch['url']
+    ]
+    for watch_uuid in bulk_watch_uuids:
+        tags = datastore.get_all_tags_for_watch(uuid=watch_uuid)
+        tag_names = [t['title'] for t in tags.values()]
+        assert 'bulk-test' in tag_names, f"Watch {watch_uuid} should have 'bulk-test' tag"
+
+    print(f"\n✓ Successfully created {num_urls} watches in background (took {elapsed}s)")
+
+
