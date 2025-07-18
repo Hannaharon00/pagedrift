@@ -2308,6 +2308,63 @@ msgid "— idle"
 msgstr " — 閒置"
 
 #: changedetectionio/blueprint/ui/templates/queue.html
+msgid "running"
+msgstr "執行中"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "idle"
+msgstr "閒置"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "done"
+msgstr "完成"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "cancel"
+msgstr "取消"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured and queue is empty"
+msgstr "未設定工作程序且排程佇列為空"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Watch no longer exists"
+msgstr "監測任務已不存在"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Nothing running"
+msgstr "無執行中的項目"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Check queue"
+msgstr "檢查佇列"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Live view of what the workers are doing right now and what is waiting in line."
+msgstr "即時查看工作程序目前正在執行的操作以及正在排隊等候的項目。"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers"
+msgstr "工作程序"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Running now"
+msgstr "正在執行"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Queued"
+msgstr "已排程"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue?"
+msgstr "是否清除佇列？"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "<p>This will remove every pending check from the queue.</p><p>Running checks will continue.</p>"
+msgstr "<p>這將會移除佇列中所有待處理的檢查。</p><p>正在執行的檢查將會繼續。</p>"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
 msgid "Clear"
 msgstr "清除"
 
