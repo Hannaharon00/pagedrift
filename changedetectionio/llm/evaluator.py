@@ -605,3 +605,35 @@ def run_setup(watch, datastore, snapshot_text: str) -> None:
         watch['llm_prefilter'] = None
 
 
+# ---------------------------------------------------------------------------
+# AI Change Summary — human-readable description of what changed
+# ---------------------------------------------------------------------------
+
+def _first_tag_with_field(watch, datastore, field: str):
+    """Return (value, tag) for the first linked tag with a non-empty `field`, else ('', None).
+
+    Same first-match-wins order as resolve_llm_field() (so only groups opted in via
+    tag_llm_applies_to_watches() count); this variant also hands back the tag itself so
+    the caller can read sibling keys such as the prompt mode.
+    """
+    for tag in _tags_applying_llm(watch, datastore):
+        value = (tag.get(field) or '').strip()
+        if value:
+            return value, tag
+    return '', None
+
+
+def _apply_prompt_layer(inherited: str, value: str, mode: str) -> str:
+    """Fold one cascade level's prompt onto what it inherited.
+
+    'append' keeps the inherited prompt and adds `value` after it, so a watch can add a
+    sentence or two without pinning a private copy of the prompt above it (see #4251).
+    Anything else replaces, which is the historical behaviour and stays the default.
+    """
+    if not value:
+        return inherited
+    if mode == LLM_PROMPT_MODE_APPEND and inherited:
+        return f"{inherited}\n\n{value}"
+    return value
+
+
