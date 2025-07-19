@@ -3668,3 +3668,70 @@ msgstr "Identyfikator UUID obserwacji."
 msgid "The page title of the watch, uses <title> if not set, falls back to URL"
 msgstr "Tytuł strony obserwacji; jeśli nie ustawiono go ręcznie, używany jest tag <title>, a następnie adres URL"
 
+#: changedetectionio/templates/base.html
+msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
+msgstr ""
+"Funkcja tworzenia streszczeń z wykorzystaniem LLM nie jest jeszcze włączona. Aby rozpocząć korzystanie z tej funkcji,"
+" skonfiguruj dostawcę usług AI w sekcji „Ustawienia”."
+
+#: changedetectionio/templates/base.html
+msgid "Go to AI / LLM Settings"
+msgstr "Przejdź do ustawień AI / LLM"
+
+#: changedetectionio/templates/base.html changedetectionio/templates/sidebar-nav.html
+msgid "Search"
+msgstr "Wyszukiwanie"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "URL or Title in '%(title)s'"
+msgstr "Adres URL lub tytuł w „%(title)s”"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "Adres URL lub tytuł"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "Wpisz szukane hasło..."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"<strong>On</strong> &ndash; every watch in this group uses the AI settings below, unless it fills in its own. "
+"<strong>Off</strong> &ndash; no AI for any watch in this group. <strong>Leave it to each watch</strong> &ndash; this "
+"group has no say; each watch uses its own AI settings."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is ON for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is OFF for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Describe what you care about. The AI evaluates every detected change against this and only notifies you when it "
+"matches."
+msgstr ""
+"Opisz, na czym Ci zależy. Sztuczna inteligencja porównuje każdą wykrytą zmianę z tym opisem i powiadamia Cię tylko "
+"wtedy, gdy wystąpi zbieżność."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
+msgstr "Ustaw zamiar zmiany dla wszystkich obserwacji w tym tagu/grupie. Każda obserwacja może nadpisać ten zamiar własnym."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "From group '%(name)s': %(value)s"
+msgstr "Z grupy „%(name)s”: %(value)s"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr ""
+"np. Powiadom mnie, gdy cena spadnie poniżej 300 dolarów lub pojawi się nowy produkt. Zignoruj zmiany w stopce i "
+"nawigacji."
+
