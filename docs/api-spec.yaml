@@ -173,6 +173,24 @@ tags:
 
       ---
 
+      ### Built-in plugin: `restock_diff`
+
+      The `restock_diff` processor is always shipped with changedetection.io. It monitors product
+      availability and price changes using structured data (JSON-LD / schema.org microdata) and
+      text heuristics. It is activated by setting `"processor": "restock_diff"` on a watch.
+
+      It adds the `processor_config_restock_diff` block to the Watch schema with these fields:
+
+      | Field | Type | Default | Description |
+      |---|---|---|---|
+      | `in_stock_processing` | string | `in_stock_only` | `in_stock_only` — only alert Out-of-Stock→In-Stock · `all_changes` — alert any availability change · `off` — disable stock tracking |
+      | `follow_price_changes` | boolean | `true` | Monitor and alert on price changes |
+      | `price_change_min` | number\|null | — | Alert when price drops **below** this value |
+      | `price_change_max` | number\|null | — | Alert when price rises **above** this value |
+      | `price_change_threshold_percent` | number\|null | — | Minimum % change since the original price to trigger an alert |
+
+      #### CREATE — Add a restock/price monitor
+
       ```bash
       curl -X POST "http://localhost:5000/api/v1/watch" \
         -H "x-api-key: YOUR_API_KEY" \
