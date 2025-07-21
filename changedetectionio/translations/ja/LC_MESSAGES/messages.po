@@ -3357,6 +3357,62 @@ msgstr "無効なテンプレート構文: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "\"%(header)s\" ヘッダーのテンプレート構文が無効です: %(error)s"
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "名前"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "プロキシURL"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "プロキシURLはhttp://、https://、またはsocks5://で始まる必要があります"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "ブラウザ接続URL"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "ブラウザURLはwss://またはws://で始まる必要があります"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "プレーンテキストリクエスト"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Chromeリクエスト"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "デフォルトプロキシ"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "ランダムジッター秒数 ± チェック"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "フェッチワーカーの数"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "1から50の間で指定してください"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "リクエストのタイムアウト（秒）"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "1から999の間で指定してください"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "デフォルトUser-Agentの上書き"
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "0から100の間で指定してください"
