@@ -788,6 +788,40 @@ def test_api_watch_PUT_update(client, live_server, measure_memory_usage, datasto
     delete_all_watches(client)
 
 
+def test_api_import_small_synchronous(client, live_server, measure_memory_usage, datastore_path):
+    """Test that small imports (< threshold) are processed synchronously"""
+    from changedetectionio.api.Import import IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Use local test endpoint to avoid network delays
+    test_url_base = url_for('test_endpoint', _external=True)
+
+    # Create URLs: threshold - 1 to stay under limit
+    num_urls = min(5, IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD - 1)  # Use small number for faster test
+    urls = '\n'.join([f'{test_url_base}?id=small-{i}' for i in range(num_urls)])
+
+    # Import small batch
+    res = client.post(
+        url_for("import") + "?tag=small-test",
+        data=urls,
+        headers={'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    # Should return 200 OK with UUID list (synchronous)
+    assert res.status_code == 200, f"Should return 200 for small imports, got {res.status_code}"
+    assert isinstance(res.json, list), "Response should be a list of UUIDs"
+    assert len(res.json) == num_urls, f"Should return {num_urls} UUIDs, got {len(res.json)}"
+
+    # Verify all watches were created immediately
+    for uuid in res.json:
+        assert uuid in live_server.app.config['DATASTORE'].data['watching'], \
+            f"Watch {uuid} should exist immediately after synchronous import"
+
+    print(f"\n✓ Successfully created {num_urls} watches synchronously")
+
+
 def test_api_import_large_background(client, live_server, measure_memory_usage, datastore_path):
     """Test that large imports (>= threshold) are processed in background thread"""
     from changedetectionio.api.Import import IMPORT_SWITCH_TO_BACKGROUND_THRESHOLD
