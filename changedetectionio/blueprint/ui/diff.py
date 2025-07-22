@@ -298,6 +298,102 @@ def construct_blueprint(datastore: ChangeDetectionStore):
             datastore.set_last_viewed(uuid, int(time.time()))
             return jsonify({'summary': cached, 'error': None, 'cached': True})
 
+        # Check global monthly token budget before making an LLM call
+        if is_global_token_budget_exceeded(datastore):
+            budget = get_global_token_budget_month(datastore)
+            llm_cfg = datastore.data.get('settings', {}).get('application', {}).get('llm', {})
+            used = llm_cfg.get('tokens_this_month', 0)
+            return jsonify({
+                'summary': None,
+                'error': gettext(
+                    'Monthly AI token budget of %(budget)s tokens reached (%(used)s used). Resets next month.',
+                    budget=f'{budget:,}',
+                    used=f'{used:,}',
+                ),
+                'budget_exceeded': True,
+            }), 429
+
+        try:
+            summary = summarise_change(watch, datastore, diff=diff_text, current_snapshot=to_text)
+        except LLMInputTooLargeError as e:
+            return jsonify({'summary': None, 'error': str(e)}), 400
+        except Exception as e:
+            logger.error(f"LLM summary generation failed for {uuid}: {e}")
+            return jsonify({'summary': None, 'error': _clean_litellm_error(e)}), 500
+
+        if not summary:
+            return jsonify({'summary': None, 'error': 'LLM returned empty summary'})
+
+        try:
+            watch.save_llm_diff_summary(summary, from_version, to_version, prompt=cache_prompt)
+        except Exception as e:
+            logger.warning(f"Could not cache llm summary for {uuid}: {e}")
+
+        import time
+        datastore.set_last_viewed(uuid, int(time.time()))
+        return jsonify({'summary': summary, 'error': None, 'cached': False})
+
+    @diff_blueprint.route("/diff/<uuid_str:uuid>/processor-data", methods=['GET'])
+    @login_optionally_required
+    def diff_history_page_processor_data(uuid):
+        """
+        Return processor-specific JSON data for the history/diff page (e.g. the restock
+        price/stock timeline that the graph JS fetches).
+
+        Processor-aware: delegates to processors/{type}/difference.py::get_data(), so the
+        heavy data stays out of the rendered HTML (same rationale as the preview asset route).
+        Works for built-in and plugin processors via get_processor_submodule(). Returns 404
+        if the watch's processor doesn't implement get_data().
+        """
+        from flask import jsonify, abort
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        try:
+            watch = datastore.data['watching'][uuid]
+        except KeyError:
+            return jsonify({'error': 'Watch not found'}), 404
+
+        processor_name = watch.get('processor', 'text_json_diff')
+        from changedetectionio.processors import get_processor_submodule
+        processor_module = get_processor_submodule(processor_name, 'difference')
+
+        if processor_module and hasattr(processor_module, 'get_data'):
+            return jsonify(processor_module.get_data(watch=watch, datastore=datastore, request=request))
+
+        abort(404, description=f"Processor '{processor_name}' does not provide difference data")
+
+    @diff_blueprint.route("/diff/<uuid_str:uuid>/processor-export.xlsx", methods=['GET'])
+    @login_optionally_required
+    def diff_history_page_processor_export(uuid):
+        """
+        Download the processor's history as an .xlsx (e.g. the restock price/stock timeline).
+        Processor-aware: delegates to processors/{type}/difference.py::export_xlsx(), which
+        returns (bytes, filename). 404 if the processor doesn't implement it.
+        """
+        from flask import make_response, abort
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        try:
+            watch = datastore.data['watching'][uuid]
+        except KeyError:
+            flash(gettext("No history found for the specified link, bad link?"), "error")
+            return redirect(url_for('watchlist.index'))
+
+        processor_name = watch.get('processor', 'text_json_diff')
+        from changedetectionio.processors import get_processor_submodule
+        processor_module = get_processor_submodule(processor_name, 'difference')
+
+        if processor_module and hasattr(processor_module, 'export_xlsx'):
+            data, filename = processor_module.export_xlsx(watch=watch, datastore=datastore)
+            resp = make_response(data)
+            resp.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            resp.headers['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return resp
+
+        abort(404, description=f"Processor '{processor_name}' does not support xlsx export")
+
         try:
             watch = datastore.data['watching'][uuid]
         except KeyError:
