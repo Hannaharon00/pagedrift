@@ -3608,3 +3608,65 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+"Texto pelo qual esperar antes de disparar uma mudança/notificação; todo texto e regex são testados sem distinção de "
+"maiúsculas/minúsculas."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "O texto disparador é processado a partir do texto resultante de quaisquer filtros CSS/JSON para este monitoramento"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Cada linha é processada separadamente (pense em cada linha como \"OU\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Nota: Envolva em barras / para usar regex, ex:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "Você também pode usar"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "condições"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "\"Texto da página\" - com Contém, Começa com, Não contém e muitos outros"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Bloquear detecção de mudança enquanto este texto estiver na página; todo texto e regex são testados sem distinção de "
+"maiúsculas/minúsculas. Útil para esperar um produto ficar disponível."
+
