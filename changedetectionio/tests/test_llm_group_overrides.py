@@ -331,6 +331,61 @@ def test_watch_edit_llm_intent_shows_own_value_not_group_placeholder(
     delete_all_watches(client)
 
 
+# ---------------------------------------------------------------------------
+# Both fields overridden independently
+# ---------------------------------------------------------------------------
+
+def test_watch_edit_independent_field_overrides(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    llm_intent can be inherited from an opted-in group while llm_change_summary
+    is the watch's own value.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(
+        ds, 'Mixed Group',
+        llm_intent='Group intent here',
+        llm_change_summary='Group summary here',
+        ai=True,
+    )
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    # Watch overrides only llm_change_summary
+    ds.data['watching'][watch_uuid]['llm_change_summary'] = 'My own summary'
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    # llm_intent: group placeholder visible (watch has no own value)
+    assert _from_group_text('Mixed Group', 'Group intent here') in text
+    intent_pos = text.find('name="llm_intent"')
+    assert intent_pos != -1
+    intent_snippet = text[max(0, intent_pos - 50): intent_pos + 300]
+    assert 'readonly' not in intent_snippet, \
+        f"llm_intent must be editable even when group sets it; snippet: {intent_snippet!r}"
+
+    # llm_change_summary: watch own value shown in body, no group placeholder for it
+    assert 'My own summary' in text
+    assert _from_group_text('Mixed Group', 'Group summary here') not in text
+    summary_pos = text.find('name="llm_change_summary"')
+    assert summary_pos != -1
+    summary_snippet = text[max(0, summary_pos - 50): summary_pos + 300]
+    assert 'readonly' not in summary_snippet, \
+        f"llm_change_summary should be editable; snippet: {summary_snippet!r}"
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Tag edit page — AI section is always visible regardless of processor
+# ---------------------------------------------------------------------------
+
 def test_tag_append_mode_ignored_when_group_overrides_disabled(
         client, live_server, measure_memory_usage, datastore_path):
     """Without the opt-in the group's appended text never reaches the effective prompt."""
