@@ -499,3 +499,139 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
                     except OSError as e:
                         logger.warning(f"Failed to delete checksum file for {uuid}: {e}")
 
+                tag_uuid = self.add_tag(tag_name)
+                # add_tag() returns False for a title it won't create - never let that into the list,
+                # a falsy entry blows up every lookup of watch['tags']
+                if tag_uuid:
+                    apply_extras['tags'].append(tag_uuid)
+
+        # Or if UUIDs given directly
+        if tag_uuids:
+            for t in tag_uuids:
+                apply_extras['tags'] = list(set(apply_extras['tags'] + [t.strip()]))
+
+        # Make any uuids unique
+        if apply_extras.get('tags'):
+            apply_extras['tags'] = list(set(apply_extras.get('tags')))
+
+        # 'processor' reaches here from callers that do NOT enum-validate it the way the API does:
+        # /imports/import passes request.values through verbatim, and the share-link path above
+        # takes it straight out of remote JSON. It later becomes a config filename
+        # (f'{processor}.json'), so an unknown value is both a data-integrity problem and how
+        # GHSA-mh42-m7cg-49fr escaped the watch directory. Drop it rather than store it; the
+        # write paths are contained too, this stops it being persisted at all.
+        if apply_extras.get('processor'):
+            known_processors = [name for _module, name in find_processors()]
+            if apply_extras['processor'] not in known_processors:
+                logger.error(f"Ignoring unknown processor {apply_extras['processor']!r} when adding "
+                             f"'{url}' - falling back to the default. Known: {known_processors}")
+                del apply_extras['processor']
+
+        # If the processor also has its own Watch implementation
+        watch_class = get_custom_watch_obj_for_processor(apply_extras.get('processor'))
+        new_watch = watch_class(datastore_path=self.datastore_path, __datastore=self.__data, url=url)
+
+        new_uuid = new_watch.get('uuid')
+
+        logger.debug(f"Adding URL '{url}' - {new_uuid}")
+
+        for k in ['uuid', 'history', 'last_checked', 'last_changed', 'newest_history_key', 'previous_md5', 'viewed']:
+            if k in apply_extras:
+                del apply_extras[k]
+
+        if not apply_extras.get('date_created'):
+            apply_extras['date_created'] = int(time.time())
+
+        new_watch.update(apply_extras)
+
+        # Promote a pre-seeded directory into this watch's data_dir via a single rename()
+        # (cheap: same filesystem, no copy). The seed must already be in final on-disk format.
+        if seed_data_dir and os.path.isdir(seed_data_dir):
+            target_dir = os.path.join(self.datastore_path, new_uuid)
+            try:
+                shutil.move(seed_data_dir, target_dir)
+                logger.debug(f"Seeded watch {new_uuid} data_dir from {seed_data_dir}")
+            except Exception as e:
+                logger.error(f"Could not seed watch {new_uuid} from {seed_data_dir}: {e}")
+
+        new_watch.ensure_data_dir_exists()
+        self.__data['watching'][new_uuid] = new_watch
+
+        if save_immediately:
+            # Save immediately using commit
+            new_watch.commit()
+            logger.debug(f"Saved new watch {new_uuid}")
+
+        logger.debug(f"Added '{url}'")
+
+        return new_uuid
+
+    # Where add-watch-ui parks freshly-fetched (but not-yet-saved) snapshots.
+    TEMPORARY_WATCH_DIR = "temporary"
+
+    def get_temporary_watch_dir(self, temp_uuid):
+        """Resolve datastore_path/temporary/{temp_uuid}, rejecting anything that would
+        escape the temporary/ directory (the temp_uuid arrives from a client POST field)."""
+        if not temp_uuid or not re.match(r'^[0-9a-fA-F-]{36}$', str(temp_uuid)):
+            return None
+        base = os.path.realpath(os.path.join(self.datastore_path, self.TEMPORARY_WATCH_DIR))
+        target = os.path.realpath(os.path.join(base, str(temp_uuid)))
+        if os.path.dirname(target) != base:
+            logger.warning(f"Rejected temporary watch path outside {base}: {temp_uuid}")
+            return None
+        return target
+
+    def make_temporary_watch_active_watch(self, temp_uuid, url, tag='', extras=None):
+        """Promote a temporary add-watch snapshot into a real watch.
+
+        The snapshot directory (datastore_path/temporary/{temp_uuid}, already holding
+        last-screenshot.png + elements.deflate in final on-disk format) is renamed into
+        place as the new watch's data_dir - no re-fetch, no copy. If the temp_uuid is
+        missing/expired/invalid we fall back to a normal add_watch() so the UI still works.
+
+        Settings the snapshot recorded for itself in its own watch.json (currently just
+        fetch_backend - the browser that rendered the preview) win over the posted form,
+        because they describe what actually fetched. add_watch() -> commit() rewrites that
+        file in full once the directory has been promoted.
+        """
+        seed_dir = self.get_temporary_watch_dir(temp_uuid)
+        if not (seed_dir and os.path.isdir(seed_dir)):
+            seed_dir = None
+
+        extras = dict(extras or {})
+        seed_watch_json = os.path.join(seed_dir, "watch.json") if seed_dir else None
+        # isfile() first - a snapshot parked before this file existed is normal, not an error
+        if seed_watch_json and os.path.isfile(seed_watch_json):
+            seed_watch = load_watch_from_file(seed_watch_json, temp_uuid, self.rehydrate_entity)
+            if seed_watch and seed_watch.get('fetch_backend'):
+                extras['fetch_backend'] = seed_watch.get('fetch_backend')
+                logger.debug(f"Promoting temporary watch {temp_uuid} with its recorded "
+                             f"fetch_backend '{extras['fetch_backend']}'")
+
+        return self.add_watch(url=url, tag=tag, extras=extras, seed_data_dir=seed_dir)
+
+    def cleanup_temporary_watches(self, ttl_seconds=3600):
+        """Remove orphaned snapshot dirs (user clicked Go but never submitted)."""
+        base = os.path.join(self.datastore_path, self.TEMPORARY_WATCH_DIR)
+        if not os.path.isdir(base):
+            return
+        now = time.time()
+        for name in os.listdir(base):
+            d = os.path.join(base, name)
+            try:
+                if os.path.isdir(d) and (now - os.path.getmtime(d)) > ttl_seconds:
+                    shutil.rmtree(d, ignore_errors=True)
+                    logger.debug(f"Cleaned orphaned temporary watch {name}")
+            except Exception as e:
+                logger.error(f"Failed cleaning temporary watch {d}: {e}")
+
+    def _watch_resource_exists(self, watch_uuid, resource_name):
+        """
+        Check if a watch-related resource exists.
+
+        File backend implementation: checks if file exists in watch directory.
+
+        Args:
+            watch_uuid: Watch UUID
+            resource_name: Name of resource (e.g., "last-screenshot.png")
+
