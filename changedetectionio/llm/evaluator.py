@@ -637,3 +637,165 @@ def _apply_prompt_layer(inherited: str, value: str, mode: str) -> str:
     return value
 
 
+def build_summary_cache_prompt(effective_prompt: str, max_summary_tokens: int,
+                                prefs: DiffPrefs = None, model: str = '') -> str:
+    """
+    Compose the full cache-key string passed to save/get_llm_diff_summary.
+
+    Default prefs are DiffPrefs() — must match the UI's query-arg defaults so a
+    worker-side pre-cache is hit by an unmodified UI request. Same helper must
+    be used by both the worker pre-cache write and the UI diff route read,
+    otherwise the prompt hashes diverge and the cache file isn't found.
+
+    The active model name is folded into the key so switching models
+    (e.g. qwen3 → gpt-4o) invalidates stale summaries that were generated
+    by a different model with potentially different phrasing/quality.
+    """
+    if prefs is None:
+        prefs = DiffPrefs()
+    return (
+        effective_prompt
+        + prefs.cache_key_suffix()
+        + f'\x00sys:{build_change_summary_system_prompt()}'
+        + f'\x00max_tokens:{max_summary_tokens}'
+        + f'\x00model:{model}'
+    )
+
+
+def summarise_change(watch, datastore, diff: str, current_snapshot: str = '') -> str:
+    """
+    Generate a plain-language summary of the change using the watch's
+    llm_change_summary prompt (cascades from tag if not set on watch).
+
+    Returns the summary string, or '' on failure.
+    The result replaces {{ diff }} in notifications so the user gets a
+    readable description instead of raw +/- diff lines.
+    """
+    cfg = _runtime_llm_config(datastore)
+    if not cfg:
+        return ''
+
+    if is_global_token_budget_exceeded(datastore):
+        budget = get_global_token_budget_month(datastore)
+        llm_cfg = datastore.data['settings']['application'].get('llm') or {}
+        used = llm_cfg.get('tokens_this_month', 0)
+        logger.warning(
+            f"LLM summarise_change skipped: monthly budget {budget:,} reached "
+            f"({used:,} used this month)"
+        )
+        return ''
+
+    custom_prompt = get_effective_summary_prompt(watch, datastore)
+    if not diff.strip():
+        return ''
+
+    _check_input_size(diff, _get_max_input_chars(datastore))
+    url = watch.get('url', '')
+    title = watch.get('page_title') or watch.get('title') or ''
+
+    system_prompt = build_change_summary_system_prompt()
+    user_prompt = build_change_summary_prompt(
+        diff=diff,
+        custom_prompt=custom_prompt,
+        current_snapshot=current_snapshot,
+        url=url,
+        title=title,
+    )
+
+    settings = get_llm_settings(datastore)
+    _extra_body = _thinking_extra_body(cfg['model'], settings.thinking_budget)
+
+    try:
+        _resp = llm_client.completion(
+            model=cfg['model'],
+            messages=[
+                _cached_system(system_prompt, model=cfg['model']),
+                {'role': 'user', 'content': user_prompt},
+            ],
+            api_key=cfg.get('api_key'),
+            api_base=cfg.get('api_base'),
+            timeout=resolve_llm_timeout(cfg),
+            max_tokens=apply_local_token_multiplier(
+                _summary_max_tokens(diff, max_cap=settings.max_summary_tokens),
+                cfg,
+            ),
+            extra_body=_extra_body,
+            debug=settings.debug,
+        )
+        raw, tokens = _resp[0], _resp[1]
+        input_tokens  = _resp[2] if len(_resp) > 2 else 0
+        output_tokens = _resp[3] if len(_resp) > 3 else 0
+        summary = raw.strip()
+        _check_token_budget(watch, cfg, tokens)
+        watch['llm_last_tokens_used'] = tokens
+        watch['llm_tokens_used_cumulative'] = (watch.get('llm_tokens_used_cumulative') or 0) + tokens
+        accumulate_global_tokens(datastore, tokens,
+                                 input_tokens=input_tokens,
+                                 output_tokens=output_tokens,
+                                 model=cfg['model'])
+        logger.debug(
+            f"LLM change summary {watch.get('uuid')}: tokens={tokens} "
+            f"summary={summary[:80]}"
+        )
+        return summary
+    except Exception as e:
+        raise
+
+
+# ---------------------------------------------------------------------------
+# Live-preview extraction (current content, no diff)
+# ---------------------------------------------------------------------------
+
+def preview_extract(watch, datastore, content: str) -> dict | None:
+    """
+    For the live-preview endpoint: extract relevant information from the
+    *current* page content according to the watch's intent.
+
+    Unlike evaluate_change (which compares a diff), this asks the LLM to
+    directly answer the intent against the current snapshot — giving the user
+    immediate feedback like "30 articles listed" or "Price: $149, 25% off".
+
+    Returns {'found': bool, 'answer': str} or None if LLM not configured / no intent.
+    """
+    cfg = _runtime_llm_config(datastore)
+    if not cfg:
+        return None
+
+    intent, _ = resolve_intent(watch, datastore)
+    if not intent or not content.strip():
+        return None
+
+    _check_input_size(content, _get_max_input_chars(datastore))
+    url = watch.get('url', '')
+    title = watch.get('page_title') or watch.get('title') or ''
+
+    system_prompt = build_preview_system_prompt()
+    user_prompt = build_preview_prompt(intent, content, url=url, title=title)
+    settings = get_llm_settings(datastore)
+
+    try:
+        raw, tokens, *_ = llm_client.completion(
+            model=cfg['model'],
+            messages=[
+                _cached_system(system_prompt, model=cfg['model']),
+                {'role': 'user', 'content': user_prompt},
+            ],
+            api_key=cfg.get('api_key'),
+            api_base=cfg.get('api_base'),
+            timeout=resolve_llm_timeout(cfg),
+            max_tokens=apply_local_token_multiplier(JSON_RESPONSE_MAX_TOKENS, cfg),
+            extra_body=_thinking_extra_body(cfg['model'], settings.thinking_budget),
+            debug=settings.debug,
+        )
+        accumulate_global_tokens(datastore, tokens, model=cfg['model'])
+        result = parse_preview_response(raw)
+        logger.debug(
+            f"LLM preview {watch.get('uuid')}: found={result['found']} "
+            f"tokens={tokens} answer={result['answer'][:80]}"
+        )
+        return result
+    except Exception as e:
+        logger.warning(f"LLM preview extraction failed for {watch.get('uuid')}: {e}")
+        return None
+
+
