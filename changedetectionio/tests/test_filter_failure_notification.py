@@ -197,3 +197,9 @@ def test_check_xpath_filter_failure_notification(client, live_server, measure_me
 
 # Test that notification is never sent
 
+def test_basic_markup_from_text(client, live_server, measure_memory_usage, datastore_path):
+    # Test the notification error templates convert to HTML if needed (link activate)
+    from ..notification.handler import markup_text_links_to_html
+    x = markup_text_links_to_html("hello https://google.com")
+    assert 'a href' in x
+    delete_all_watches(client)

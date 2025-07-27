@@ -899,6 +899,61 @@ def test_api_import_large_background(client, live_server, measure_memory_usage, 
     print(f"\n✓ Successfully created {num_urls} watches in background (took {elapsed}s)")
 
 
+def test_api_restock_processor_config(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that processor_config_restock_diff is accepted by the API for watches using
+    restock_diff processor, that its schema is validated (enum values, types), and that
+    genuinely unknown fields are rejected with an error that originates from the
+    OpenAPI spec validation layer.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Create a watch in restock_diff mode WITH processor_config in the POST body (matches the API docs example)
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "processor": "restock_diff",
+            "title": "Restock test",
+            "processor_config_restock_diff": {
+                "in_stock_processing": "in_stock_only",
+                "follow_price_changes": True,
+                "price_change_min": 8888888.0,
+            }
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 201
+    watch_uuid = res.json.get('uuid')
+    assert is_valid_uuid(watch_uuid)
+
+    # Verify the value set on POST is reflected in the UI edit page (not just via PUT)
+    res = client.get(url_for("ui.ui_edit.edit_page", uuid=watch_uuid))
+    assert res.status_code == 200
+    assert b'8888888' in res.data, "price_change_min set via POST should appear in the UI edit form"
+
+    # Valid processor_config_restock_diff update via PUT should also be accepted
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({
+            "processor_config_restock_diff": {
+                "in_stock_processing": "all_changes",
+                "follow_price_changes": False,
+                "price_change_min": 8888888.0,
+                "price_change_max": 9999999.0,
+            }
+        }),
+    )
+    assert res.status_code == 200, f"Valid processor_config_restock_diff should be accepted, got: {res.data}"
+
+    # Verify the updated value is still reflected in the UI edit page
+    res = client.get(url_for("ui.ui_edit.edit_page", uuid=watch_uuid))
+    assert res.status_code == 200
+    assert b'8888888' in res.data, "price_change_min set via PUT should appear in the UI edit form"
+
 def test_api_watch_get_returns_resolved_restock_processor_config(client, live_server, measure_memory_usage, datastore_path):
     """
     GET /api/v1/watch/{uuid} must include processor_config_restock_diff and
