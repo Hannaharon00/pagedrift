@@ -213,6 +213,15 @@ tags:
       GET /api/v1/full-spec
       ```
 
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: |
+        API key for authentication. You can find your API key in the changedetection.io dashboard under Settings > API.
+        
         Enter your API key in the "Authorize" button above to automatically populate all code examples.
 
   schemas:
