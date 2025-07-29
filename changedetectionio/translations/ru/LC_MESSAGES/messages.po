@@ -3934,6 +3934,61 @@ msgstr ""
 msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
 msgstr "<i>Пожалуйста, прочитайте здесь вики-сайт служб уведомлений, где вы найдете важные примечания по настройке</i>"
 
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "Показать расширенную справку и советы"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "(или"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "поддерживает только максимум"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2000 символов"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "текста уведомления, включая заголовок."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr ""
+"боты не могут отправлять сообщения другим ботам, поэтому вам следует указать идентификатор чата пользователя, не "
+"являющегося ботом."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "поддерживает только очень ограниченный HTML и может привести к сбою при отправке дополнительных тегов,"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "(или используйте формат открытого текста/уценки)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "для прямых вызовов API (или опустите"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "для не-SSL, т.е."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "больше помощи здесь"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "Принимает заполнители <code>%(token)s</code>, перечисленные ниже."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Failed to generate image: %(error)s"
