@@ -2178,6 +2178,69 @@ msgid "using conditional web page changes here"
 msgstr "menggunakan perubahan halaman web bersyarat di sini"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Activate preview"
+msgstr "Aktifkan pratinjau"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Pro-tips:"
+msgstr "Kiat pro:"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the preview page to see your filters and triggers highlighted."
+msgstr "Gunakan halaman pratinjau untuk melihat filter dan pemicu Anda disorot."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Limit trigger/ignore/block/extract to;"
+msgstr "Batasi pemicu/abaikan/blokir/ekstrak ke;"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Note: Depending on the length and similarity of the text on each line, the algorithm may consider an "
+"<strong>addition</strong> instead of <strong>replacement</strong> for example."
+msgstr ""
+"Catatan: Bergantung pada panjang dan kemiripan teks pada setiap baris, algoritme mungkin menganggapnya sebagai "
+"<strong>penambahan</strong> alih-alih <strong>penggantian</strong>, misalnya."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "So it's always better to select"
+msgstr "Jadi selalu lebih baik memilih"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "when you're interested in new content."
+msgstr "saat Anda tertarik pada konten baru."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "When content is merely moved in a list, it will also trigger an"
+msgstr "Saat konten hanya dipindahkan dalam daftar, hal itu juga akan memicu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "addition"
+msgstr "penambahan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "consider enabling"
+msgstr "pertimbangkan untuk mengaktifkan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Only trigger when unique lines appear"
+msgstr "Hanya picu saat baris unik muncul"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Good for websites that just move the content around, and you want to know when NEW content is added, compares new "
+"lines against all history for this watch."
+msgstr ""
+"Cocok untuk situs web yang hanya memindahkan konten, dan Anda ingin tahu saat konten BARU ditambahkan; membandingkan "
+"baris baru dengan seluruh riwayat monitor ini."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Helps reduce changes detected caused by sites shuffling lines around, combine with <i>check unique lines</i> below."
+msgstr ""
+"Membantu mengurangi perubahan terdeteksi yang disebabkan situs mengacak urutan baris, kombinasikan dengan <i>periksa "
+"baris unik</i> di bawah."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Remove any whitespace before and after each line of text"
 msgstr "Hapus spasi apa pun sebelum dan sesudah setiap baris teks"
 
