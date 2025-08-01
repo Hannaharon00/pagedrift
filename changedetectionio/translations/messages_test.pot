@@ -168,6 +168,62 @@ msgstr ""
 msgid "Edit > Watch"
 msgstr ""
 
+#: changedetectionio/forms.py:747 changedetectionio/forms.py:995
+msgid "Fetch Method"
+msgstr ""
+
+#: changedetectionio/forms.py:748
+msgid "Notification Body"
+msgstr ""
+
+#: changedetectionio/forms.py:749
+msgid "Notification format"
+msgstr ""
+
+#: changedetectionio/forms.py:750
+msgid "Notification Title"
+msgstr ""
+
+#: changedetectionio/forms.py:751
+msgid "Notification URL List"
+msgstr ""
+
+#: changedetectionio/forms.py:752
+msgid "Processor - What do you want to achieve?"
+msgstr ""
+
+#: changedetectionio/forms.py:753
+msgid "Default timezone for watch check scheduler"
+msgstr ""
+
+#: changedetectionio/forms.py:754
+msgid "Wait seconds before extracting text"
+msgstr ""
+
+#: changedetectionio/forms.py:754
+msgid "Should contain one or more seconds"
+msgstr ""
+
+#: changedetectionio/forms.py:767
+msgid "URLs"
+msgstr ""
+
+#: changedetectionio/forms.py:768
+msgid "Upload .xlsx file"
+msgstr ""
+
+#: changedetectionio/forms.py:768
+msgid "Must be .xlsx file!"
+msgstr ""
+
+#: changedetectionio/forms.py:769
+msgid "File mapping"
+msgstr ""
+
+#: changedetectionio/forms.py:773
+msgid "Operation"
+msgstr ""
+
 #: changedetectionio/forms.py:776
 msgid "Selector"
 msgstr ""
