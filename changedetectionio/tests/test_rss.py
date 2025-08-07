@@ -135,6 +135,55 @@ def test_basic_cdata_rss_markup(client, live_server, measure_memory_usage, datas
     assert b'The days of Terminator' in res.data
     delete_all_watches(client)
 
+def test_rss_xpath_filtering(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    set_original_cdata_xml(datastore_path)
+
+    test_url = url_for('test_endpoint', content_type="application/atom+xml; charset=UTF-8", _external=True)
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": '', 'edit_and_watch_submit_button': 'Edit > Watch'},
+        follow_redirects=True
+    )
+    assert b"Watch added in Paused state, saving will unpause" in res.data
+
+    uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid, unpause_on_save=1),
+        data={
+                "include_filters": "//item/title",
+                "fetch_backend": "html_requests",
+                "headers": "",
+                "proxy": "no-proxy",
+                "tags": "",
+                "url": test_url,
+                "time_between_check_use_default": "y",
+              },
+        follow_redirects=True
+    )
+    assert b"unpaused" in res.data
+
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+    assert b'CDATA' not in res.data
+    assert b'<![' not in res.data
+    # #1874  All but the first <title was getting selected
+    # Convert any HTML with just a top level <title> to <h1> to be sure title renders
+
+    assert b'Hackers can access your computer' in res.data # Should ONLY be selected by the xpath
+    assert b'Some other title' in res.data  # Should ONLY be selected by the xpath
+    assert b'The days of Terminator' not in res.data # Should NOT be selected by the xpath
+    assert b'Some other description' not in res.data  # Should NOT be selected by the xpath
+
+    delete_all_watches(client)
+
+
 def test_rss_bad_chars_breaking(client, live_server, measure_memory_usage, datastore_path):
     """This should absolutely trigger the RSS builder to go into worst state mode
 
