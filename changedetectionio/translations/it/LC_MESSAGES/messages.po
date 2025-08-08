@@ -2778,6 +2778,58 @@ msgstr ""
 msgid "Text Starts With"
 msgstr ""
 
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Ends With"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length minimum"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length maximum"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Matches Regex"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Does NOT Match Regex"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Extracted number after 'Filters & Triggers'"
+msgstr ""
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Page text after 'Filters & Triggers'"
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "Field"
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "Operator"
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "A value"
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "Operator is required."
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "Field is required."
+msgstr ""
+
+#: changedetectionio/conditions/form.py
+msgid "Value is required."
+msgstr ""
+
 #: changedetectionio/conditions/plugins/wordcount_plugin.py
 msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
 msgstr ""
