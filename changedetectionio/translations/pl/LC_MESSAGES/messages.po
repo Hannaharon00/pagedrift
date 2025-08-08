@@ -3061,6 +3061,64 @@ msgid "Unknown fetch method."
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "W przypadku korzystania z adresu URL powiadomienia należy podać treść i tytuł powiadomienia"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "„%s” nie jest prawidłowym adresem URL serwisu AppRise."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "Wyrażenie regularne „%s” nie jest prawidłowym wyrażeniem regularnym."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "„%(expression)s” nie jest prawidłowym wyrażeniem XPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "„%(expression)s” nie jest prawidłowym wyrażeniem JSONPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "„%(expression)s” nie jest poprawnym wyrażeniem w jq. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Nie wolno podawać pustej wartości."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Nieprawidłowa wartość."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Etykieta grupy"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "Obserwacja"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "Procesor"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr "Przeglądarka"
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Edycja > Obserwuj"
+
+#: changedetectionio/forms.py
 msgid "Upload .xlsx file"
 msgstr "Prześlij plik .xlsx"
 
