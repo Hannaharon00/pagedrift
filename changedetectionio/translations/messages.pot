@@ -2380,6 +2380,68 @@ msgstr ""
 msgid "Waiting for new pages to check…"
 msgstr ""
 
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr ""
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnMute notification"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Goto web page"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Create a link to share watch config with others"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Detecting restock and price"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Not in stock"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "In stock"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price"
+msgstr ""
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 #, python-format
 msgid "Price change since previous price (%(prev)s)"
