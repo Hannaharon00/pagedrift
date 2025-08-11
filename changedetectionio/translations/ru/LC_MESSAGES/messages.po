@@ -4113,3 +4113,55 @@ msgstr ""
 msgid "From group '%(name)s': %(value)s"
 msgstr "Из группы «%(name)s»: %(value)s"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "Одна строка на совпадение регулярного выражения/строки"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "Авторизоваться"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "Возобновить автоматическое планирование"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "Приостановить автоматическое планирование часов в очереди"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "Включить уведомления"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "Уведомления отключены — нажмите, чтобы включить звук"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr ""
+

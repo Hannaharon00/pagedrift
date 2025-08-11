@@ -3124,6 +3124,59 @@ msgid "Use global settings for time between check and scheduler."
 msgstr "检查间隔与调度时间使用全局设置。"
 
 #: changedetectionio/forms.py
+msgid "AI Change Intent - Notify me when.."
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/forms.py
+msgid "AI Change Summary"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Change Summary prompt - Append or Replace the default?"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Replace the inherited prompt"
+msgstr ""
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Append to the inherited prompt"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "CSS/JSONPath/JQ/XPath 过滤器"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "移除元素"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "提取文本"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "标题"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "忽略包含以下内容的行"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "请求正文"
+
+#: changedetectionio/forms.py
 msgid "Request method"
 msgstr "请求方法"
 
