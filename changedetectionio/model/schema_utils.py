@@ -97,3 +97,25 @@ def _resolve_readonly_fields(schema_name):
     return frozenset(readonly_fields)
 
 
+@functools.cache
+def get_readonly_watch_fields():
+    """
+    Extract readOnly field names from Watch schema in OpenAPI spec.
+
+    Returns readOnly fields from WatchBase (uuid, date_created) + Watch-specific readOnly fields.
+
+    Used by:
+    - model/watch_base.py: Track when writable fields are edited
+    - api/Watch.py: Filter readonly fields from PUT requests
+    """
+    return _resolve_readonly_fields('Watch')
+
+
+@functools.cache
+def get_readonly_tag_fields():
+    """
+    Extract readOnly field names from Tag schema in OpenAPI spec.
+
+    Returns readOnly fields from WatchBase (uuid, date_created) + Tag-specific readOnly fields.
+    """
+    return _resolve_readonly_fields('Tag')
