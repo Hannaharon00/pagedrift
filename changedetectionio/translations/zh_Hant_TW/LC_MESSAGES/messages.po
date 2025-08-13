@@ -2610,6 +2610,63 @@ msgstr "取消靜音"
 msgid "Tag"
 msgstr "標籤"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Set browser / fetch method for selected"
+msgstr "為所選項目設定瀏覽器 / 抓取方式"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Apply"
+msgstr "套用"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Set proxy for selected"
+msgstr "為所選項目設定代理伺服器"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mark viewed"
+msgstr "標記為已讀"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Use default notification"
+msgstr "使用預設通知"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear errors"
+msgstr "清除錯誤"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear Histories"
+msgstr "清除歷史記錄"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p>Are you sure you want to clear history for the selected items?</p><p>This action cannot be undone.</p>"
+msgstr "<p>您確定要清除所選項目的歷史記錄嗎？</p><p>此動作無法復原。</p>"
+
+#. Universally recognized; typically left as-is. dennis-ignore: W302
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "OK"
+msgstr "確定"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear/reset history"
+msgstr "清除 / 重置歷史記錄"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Delete Watches?"
+msgstr "刪除監測任務？"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p><strong>Are you sure you want to delete the selected watches?</strong></p><p>This action cannot be undone.</p>"
+msgstr "<p><strong>您確定要刪除所選的監測任務嗎？</strong></p><p>此動作無法復原。</p>"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Close"
+msgstr "關閉"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Web page"
+msgstr "網頁"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Ends With"
 msgstr "文字結尾為"
