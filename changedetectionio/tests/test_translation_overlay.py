@@ -162,3 +162,20 @@ def test_overlay_overrides_a_string_in_a_rendered_page(client, live_server, tmp_
     assert OVERRIDDEN_MSGID.encode() in restored.data, 'base wording did not come back'
 
 
+# ---------------------------------------------------------------------------
+# 3. flask_app.py wires the directory up, and stays a no-op when there isn't one
+# ---------------------------------------------------------------------------
+
+
+def test_overlay_dir_from_env_var_is_used(tmp_path):
+    overlay = tmp_path / 'my-overlay'
+    overlay.mkdir()
+    dirs = _import_app_with(str(overlay))
+    assert dirs[-1] == str(overlay), f"TRANSLATION_OVERLAY_DIR not appended, got {dirs}"
+    assert dirs[0] == BASE_DIR, 'base catalog must stay first so the overlay wins on conflicts'
+
+
+def test_missing_overlay_dir_is_a_noop(tmp_path):
+    """No overlay directory means the config is exactly what it was before the feature existed."""
+    dirs = _import_app_with(str(tmp_path / 'does-not-exist'))
+    assert dirs == [BASE_DIR], f"expected only the base catalog, got {dirs}"
