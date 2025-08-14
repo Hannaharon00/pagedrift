@@ -3077,6 +3077,64 @@ msgid "Wednesday"
 msgstr "Mittwoch"
 
 #: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Donnerstag"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "Freitag"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Samstag"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Sonntag"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Wochen"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Sollte null oder mehr Sekunden enthalten"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Tage"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Stunden"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Minuten"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Sekunden"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Benachrichtigungstext und Titel sind erforderlich, wenn eine Benachrichtigungs-URL verwendet wird"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "„%s“ ist keine gültige AppRise-URL."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "RegEx „%s“ ist kein gültiger regulärer Ausdruck."
+
+#: changedetectionio/forms.py
 #, python-format
 msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
 msgstr "„%(expression)s“ ist kein gültiger XPath-Ausdruck. (%(error)s)"
