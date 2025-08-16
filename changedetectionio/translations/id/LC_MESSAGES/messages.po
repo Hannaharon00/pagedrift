@@ -2114,6 +2114,70 @@ msgid "Not supported by Selenium browser"
 msgstr "Tidak didukung oleh browser Selenium"
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Turn on text finder"
+msgstr "Aktifkan pencari teks"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please wait, first browser step can take a little time to load.."
+msgstr "Harap tunggu, langkah browser pertama mungkin perlu sedikit waktu untuk dimuat.."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Click here to Start"
+msgstr "Klik di sini untuk Mulai"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Please allow 10-15 seconds for the browser to connect."
+msgstr "Harap tunggu 10-15 detik agar browser terhubung."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Press \"Play\" to start."
+msgstr "Tekan \"Play\" untuk memulai."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Visual Selector data is not ready, watch needs to be checked atleast once."
+msgstr "Data Selektor Visual belum siap, monitor harus diperiksa setidaknya sekali."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sorry, this functionality only works with fetchers that support interactive Javascript (so far only Playwright based "
+"fetchers)"
+msgstr ""
+"Maaf, fungsi ini hanya bekerja dengan pengambil yang mendukung Javascript interaktif (sejauh ini hanya pengambil "
+"berbasis Playwright)"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports interactive Javascript."
+msgstr "ke pengambil yang mendukung Javascript interaktif."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "You need to"
+msgstr "Anda perlu"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Set the fetch method"
+msgstr "Atur metode pengambilan"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid ""
+"Sends a notification when the filter can no longer be seen on the page, good for knowing when the page changed and "
+"your filter will not work anymore."
+msgstr ""
+"Mengirim notifikasi saat filter tidak lagi terlihat di halaman, berguna untuk mengetahui saat halaman berubah dan "
+"filter Anda tidak dapat digunakan lagi."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Use the verify (✓) button to test if a condition passes against the current snapshot."
+msgstr "Gunakan tombol verifikasi (✓) untuk menguji apakah suatu kondisi terpenuhi terhadap snapshot saat ini."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Read a quick tutorial about"
+msgstr "Baca tutorial singkat tentang"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "using conditional web page changes here"
+msgstr "menggunakan perubahan halaman web bersyarat di sini"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Remove any whitespace before and after each line of text"
 msgstr "Hapus spasi apa pun sebelum dan sesudah setiap baris teks"
 
