@@ -2922,6 +2922,63 @@ msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Wait seconds before extracting text"
 msgstr ""
 
