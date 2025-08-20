@@ -3756,6 +3756,64 @@ msgid "Above price to trigger notification"
 msgstr "通知をトリガーする上限価格"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "通知デバッグログ"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "処理中.."
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr "<a target=\"newwindow\" href=\"%(url)s\">AppRise 通知URL</a> を使えば、ほぼすべてのサービスへの通知に対応できます！"
+
+# 訳注: 日本語を斜体にすると字形が崩れるため、強調表示は<strong>に置き換える。
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr "<strong>重要な設定に関するメモについては、通知サービスのWikiをこちらでお読みください</strong>"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "詳細なヘルプとヒントを表示"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "（または"
+
+# 訳注: "[service] only supports a maximum [2,000 characters] of notification text, including the title."
+# → 「[service] がサポートする通知テキストは最大 [2,000文字] です（タイトルを含む）。」
+# 助詞を補い、目的語と述語の訳を入れ替えた
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "がサポートする通知テキストは最大"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2,000文字"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "です（タイトルを含む）。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr "ボットは他のボットにメッセージを送信できないため、ボット以外のユーザーのチャットIDを指定してください。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "非常に限られたHTMLのみをサポートしており、追加タグが送信されると失敗する場合があります。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "（またはプレーンテキスト/マークダウン形式を使用）"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "直接APIコールの場合（または省略："
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "非SSLの場合、例："
 
