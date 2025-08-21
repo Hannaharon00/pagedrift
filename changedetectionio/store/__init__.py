@@ -505,6 +505,182 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
                     except OSError as e:
                         logger.warning(f"Failed to delete checksum file for {uuid}: {e}")
 
+                # Mainly used for testing to allow all items to flush before running next test
+                time.sleep(1)
+
+            else:
+                # Delete single watch from storage using polymorphic method
+                try:
+                    self._delete_watch(uuid)
+                except Exception as e:
+                    logger.error(f"Failed to delete watch {uuid} from storage: {e}")
+
+                # Remove from watching dict
+                del self.data['watching'][uuid]
+
+                # Send delete signal
+                watch_delete_signal = signal('watch_deleted')
+                if watch_delete_signal:
+                    watch_delete_signal.send(watch_uuid=uuid)
+
+    # Clone a watch by UUID
+    def clone(self, uuid):
+        url = self.data['watching'][uuid].get('url')
+        # No need to deepcopy here - add_watch() will deepcopy extras anyway (line 569)
+        # Just pass a dict copy (with lock for thread safety)
+        # NOTE: dict() is shallow copy but safe since add_watch() deepcopies it
+        with self.lock:
+            extras = dict(self.data['watching'][uuid])
+        # None when add_watch() refused it (e.g. PAGE_WATCH_LIMIT), having already flashed why
+        return self.add_watch(url=url, extras=extras)
+
+    def url_exists(self, url):
+
+        # Probably their should be dict...
+        for watch in self.data['watching'].values():
+            if watch['url'].lower() == url.lower():
+                return True
+
+        return False
+
+    # Remove a watchs data but keep the entry (URL etc)
+    def clear_watch_history(self, uuid):
+        self.__data['watching'][uuid].clear_watch()
+        self.__data['watching'][uuid].commit()
+
+    @property
+    def watch_limit(self):
+        """Total watches allowed by PAGE_WATCH_LIMIT, or None when there is no limit.
+
+        None means "unlimited" and is the normal case - the env var being absent, empty or
+        unparseable all leave the limit switched off entirely. There is no default.
+        """
+        limit = os.getenv('PAGE_WATCH_LIMIT')
+        if not limit:
+            return None
+        try:
+            return int(limit)
+        except ValueError:
+            logger.warning(f"Invalid PAGE_WATCH_LIMIT value: {limit}, ignoring limit check")
+            return None
+
+    def watch_limit_reached(self):
+        """True when the limit is set and leaves no room for another watch.
+
+        add_watch() enforces this on its own, but it can only return None. Callers that can
+        report something better - a 429 in the API, one flash instead of one per row in the
+        importers - should check this first.
+        """
+        limit = self.watch_limit
+        return limit is not None and len(self.__data['watching']) >= limit
+
+    def watch_limit_message(self):
+        """The single wording for a blocked add, so every UI surface says the same thing."""
+        return gettext("Watch limit reached ({current}/{limit} watches). Cannot add more watches.").format(
+            current=len(self.__data['watching']), limit=self.watch_limit
+        )
+
+    def add_watch(self, url, tag='', extras=None, tag_uuids=None, save_immediately=True, seed_data_dir=None):
+        """
+        seed_data_dir: optional path to an existing directory (already in the watch's
+        on-disk format, e.g. last-screenshot.png + elements.deflate) that becomes this
+        watch's data_dir via a single rename(). Used to "promote" a temporary add-watch
+        snapshot into a real watch without re-fetching. See make_temporary_watch_active_watch().
+        """
+
+        if extras is None:
+            extras = {}
+
+        # Incase these are copied across, assume it's a reference and deepcopy()
+        apply_extras = deepcopy(extras)
+        apply_extras['tags'] = [] if not apply_extras.get('tags') else apply_extras.get('tags')
+
+        # Was it a share link? try to fetch the data
+        if (url.startswith("https://changedetection.io/share/")):
+            import requests
+
+            try:
+                r = requests.request(method="GET",
+                                     url=url,
+                                     # So we know to return the JSON instead of the human-friendly "help" page
+                                     headers={'App-Guid': self.__data['app_guid']},
+                                     timeout=5.0)  # 5 second timeout to prevent blocking
+                res = r.json()
+
+                # List of permissible attributes we accept from the wild internet
+                for k in [
+                    'body',
+                    'browser_steps',
+                    'css_filter',
+                    'extract_text',
+                    'headers',
+                    'ignore_text',
+                    'include_filters',
+                    'method',
+                    'paused',
+                    'previous_md5',
+                    'processor',
+                    'subtractive_selectors',
+                    'tag',
+                    'tags',
+                    'text_should_not_be_present',
+                    'title',
+                    'trigger_text',
+                    'url',
+                    'use_page_title_in_list',
+                    'webdriver_js_execute_code',
+                ]:
+                    if res.get(k):
+                        if k != 'css_filter':
+                            apply_extras[k] = res[k]
+                        else:
+                            # We renamed the field and made it a list
+                            apply_extras['include_filters'] = [res['css_filter']]
+
+            except Exception as e:
+                logger.error(f"Error fetching metadata for shared watch link {url} {str(e)}")
+                flash(gettext("Error fetching metadata for {}").format(url), 'error')
+                return False
+
+        if not is_safe_valid_url(url):
+            if has_request_context():
+                flash(gettext('Watch protocol is not permitted or invalid URL format'), 'error')
+            else:
+                logger.error(f"add_watch: URL '{url}' is not permitted or invalid, skipping.")
+            return None
+
+        # Backstop for PAGE_WATCH_LIMIT - every add path funnels through here, so nothing can
+        # get past the limit even if a caller forgets to pre-check watch_limit_reached().
+        if self.watch_limit_reached():
+            logger.error(f"Watch limit reached: {len(self.__data['watching'])}/{self.watch_limit} watches. Cannot add {url}")
+            # The CLI (-u) and the API's background import thread have no request context,
+            # where flash() raises instead of reporting anything
+            if has_request_context():
+                flash(self.watch_limit_message(), 'error')
+            return None
+
+        if tag and type(tag) == str:
+            # A comma separated string of tag *titles*, created when they don't exist yet.
+            # An existing tag's UUID is accepted here too: the API documented this field as taking
+            # a UUID for years, and honouring that beats creating a tag *titled* with the UUID.
+            existing_tag_uuids = self.__data['settings']['application'].get('tags', {})
+
+            for tag_name in tag.split(','):
+                tag_name = tag_name.strip()
+                if not tag_name:
+                    continue
+
+                if _TAG_UUID_RE.match(tag_name):
+                    if tag_name in existing_tag_uuids:
+                        apply_extras['tags'].append(tag_name)
+                        continue
+                    # UUID-shaped but no such tag, and no tag literally titled that either -
+                    # a stale or foreign ID. Skip it rather than leave behind a group named
+                    # after a UUID, which is never what the caller wanted.
+                    if not self.tag_uuid_for_title(tag_name):
+                        logger.warning(f"Tag '{tag_name}' looks like a UUID but no such tag exists, skipping")
+                        continue
+
                 tag_uuid = self.add_tag(tag_name)
                 # add_tag() returns False for a title it won't create - never let that into the list,
                 # a falsy entry blows up every lookup of watch['tags']
