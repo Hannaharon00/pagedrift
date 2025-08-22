@@ -2881,6 +2881,68 @@ msgid "Hours"
 msgstr "Hodiny"
 
 #: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Minuty"
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr "Sekundy"
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr "Při použití adresy URL oznámení je vyžadováno tělo a název oznámení"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr "'%s' není platná URL AppRise."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr "RegEx '%s' není platný regulární výraz."
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr "'%(expression)s' není platný výraz XPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr "'%(expression)s' není platný výraz JSONPath. (%(error)s)"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr "'%(expression)s' není platný výraz jq. (%(error)s)"
+
+#: changedetectionio/forms.py
+msgid "Empty value not allowed."
+msgstr "Prázdná hodnota není povolena."
+
+#: changedetectionio/forms.py
+msgid "Invalid value."
+msgstr "Neplatná hodnota."
+
+#: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Skupina / Značka"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "Monitorovat"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "Procesor"
+
+#: changedetectionio/forms.py
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
 
