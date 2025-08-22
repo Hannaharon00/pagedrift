@@ -2949,6 +2949,58 @@ msgid "Run duration"
 msgstr "运行时长"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "使用时间调度"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "运行时使用的可选时区"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "周一"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "周二"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "周三"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "周四"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "周五"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "周六"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "周日"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "周"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "应为 0 或更多秒"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "天"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "小时"
+
+#: changedetectionio/forms.py
 msgid "Minutes"
 msgstr "分钟"
 
