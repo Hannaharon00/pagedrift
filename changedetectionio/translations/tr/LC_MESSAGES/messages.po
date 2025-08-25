@@ -3112,6 +3112,68 @@ msgstr ""
 msgid "in 1m"
 msgstr ""
 
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr ""
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr "Tüm izleme geçmişi o RegEx için taranırken hiçbir eşleşme bulunamadı."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "Karşılaştıracak kadar geçmiş yok. En az 2 anlık görüntüye ihtiyaç var."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to load screenshots: {}"
+msgstr "Ekran görüntüleri yüklenemedi: {}"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to calculate diff: {}"
+msgstr "Fark hesaplanamadı: {}"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box value is too long"
+msgstr "Sınırlayıcı kutu değeri çok uzun"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box must be in format: x,y,width,height (integers only)"
+msgstr "Sınırlayıcı kutu şu biçimde olmalıdır: x,y,genişlik,yükseklik (yalnızca tam sayılar)"
+
 #: changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Bounding box values must be non-negative"
 msgstr "Sınırlayıcı kutu değerleri negatif olmamalıdır"
