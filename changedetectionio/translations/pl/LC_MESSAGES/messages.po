@@ -3119,6 +3119,59 @@ msgid "Edit > Watch"
 msgstr "Edycja > Obserwuj"
 
 #: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Metoda pobierania"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Treść powiadomienia"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Format powiadomienia"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Tytuł powiadomienia"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Lista adresów URL powiadomień"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Procesor – co chcesz osiągnąć?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Domyślna strefa czasowa dla harmonogramu sprawdzania obserwacji"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Liczba sekund oczekiwania przed wyodrębnieniem tekstu"
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Powinna zawierać jedną lub więcej sekund"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Zastąpienie podstawowego adresu URL powiadomień"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "Nie ustalono"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Zapisz"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "Adresy URL"
+
+#: changedetectionio/forms.py
 msgid "Upload .xlsx file"
 msgstr "Prześlij plik .xlsx"
 
