@@ -718,3 +718,78 @@ footer {
   }
 }
 
+#chrome-extension-link {
+  img {
+    height: 21px;
+    padding: 2px;
+    vertical-align: middle;
+  }
+
+  padding: 9px;
+  border: 1px solid var(--color-grey-800);
+  border-radius: 10px;
+  vertical-align: middle;
+}
+
+#realtime-conn-error {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: var(--color-warning);
+  padding: 10px;
+  font-size: 0.8rem;
+  color: #fff;
+  opacity: 0.8;
+  z-index: 100;
+}
+
+#bottom-horizontal-offscreen {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-height: 50px;
+  max-height: 50vh; // Don't take more than 50% of viewport height
+  background: #ffffffb8;
+  border-top: 1px solid var(--color-border-table-cell);
+  padding: 10px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  overflow-y: auto; // Allow scrolling if content exceeds max-height
+
+  // Smooth transition when shown/hidden
+  transition: opacity 0.3s ease-in-out;
+
+  // When JavaScript removes display:none, ensure it scrolls into view
+  scroll-margin-bottom: 10px;
+
+  // Center contents horizontally
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul#highlightSnippetActions {
+  list-style: none;
+  li {
+    display: inline-block;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .box {
+    padding: 0.25rem !important;
+  }
+}
+
+.box {
+  color: var(--color-white);
+  border-width: 1px;
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.25);
+  border-image: initial;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--common-round-border);
+  padding: $common-gap*2;
+}
+
