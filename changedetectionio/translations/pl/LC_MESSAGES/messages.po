@@ -3721,6 +3721,63 @@ msgstr "Identyfikator UUID obserwacji."
 msgid "The page title of the watch, uses <title> if not set, falls back to URL"
 msgstr "Tytuł strony obserwacji; jeśli nie ustawiono go ręcznie, używany jest tag <title>, a następnie adres URL"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "obsługuje maksymalnie"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2 000 znaków"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "tekstu powiadomienia, w tym tytułu."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr ""
+"Boty nie mogą wysyłać wiadomości do innych botów, dlatego należy podać identyfikator czatu użytkownika, który nie "
+"jest botem."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr ""
+"obsługuje jedynie bardzo ograniczony zakres kodu HTML i może nie działać poprawnie w przypadku przesłania dodatkowych"
+" tagów,"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "(lub użyj formatu zwykłego tekstu/Markdown)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "w przypadku bezpośrednich wywołań API (lub pomijając"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "dla połączeń bez SSL, tj."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "więcej pomocy znajdziesz tutaj"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "Akceptuje poniższe symbole zastępcze <code>%(token)s</code>"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr "Dostosuj powiadomienia"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Tytuł dla wszystkich powiadomień"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "W przypadku danych JSON należy użyć"
+
 #: changedetectionio/templates/base.html
 msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
 msgstr ""
