@@ -143,3 +143,111 @@ def test_ticker_survives_a_watch_with_a_broken_timezone(client, live_server, mea
     )
 
 
+def test_api_rejects_invalid_timezone_on_update(client, live_server, measure_memory_usage, datastore_path):
+    """
+    The edit form runs validateTimeZoneName, but the API did not - the OpenAPI
+    schema for time_schedule_limit declares no `timezone` property and does not
+    set additionalProperties:false, so any string was accepted and stored.
+    A bogus zone makes arrow.now(tz) raise inside the scheduler.
+    """
+    import json
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+    api_key = datastore.data['settings']['application'].get('api_access_token')
+
+    uuid = datastore.add_watch(url=test_url)
+    wait_for_all_checks(client)
+
+    res = client.put(
+        url_for("watch", uuid=uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({'time_schedule_limit': _full_schedule(timezone='Not/ARealZone')}),
+    )
+    assert res.status_code == 400, f"expected 400, got {res.status_code}: {res.data}"
+    assert b'not a valid timezone' in res.data.lower()
+
+    stored = datastore.data['watching'][uuid]['time_schedule_limit']
+    assert stored.get('timezone') != 'Not/ARealZone', "invalid timezone was persisted anyway"
+
+
+def test_api_accepts_valid_timezone_on_update(client, live_server, measure_memory_usage, datastore_path):
+    """The validation must not block legitimate zones."""
+    import json
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+    api_key = datastore.data['settings']['application'].get('api_access_token')
+
+    uuid = datastore.add_watch(url=test_url)
+    wait_for_all_checks(client)
+
+    for tz in ('Europe/Berlin', 'UTC', 'Pacific/Kiritimati'):
+        res = client.put(
+            url_for("watch", uuid=uuid),
+            headers={'x-api-key': api_key, 'content-type': 'application/json'},
+            data=json.dumps({'time_schedule_limit': _full_schedule(timezone=tz)}),
+        )
+        assert res.status_code == 200, f"{tz} rejected: {res.data}"
+        assert datastore.data['watching'][uuid]['time_schedule_limit']['timezone'] == tz
+
+    # omitting the timezone entirely stays valid
+    res = client.put(
+        url_for("watch", uuid=uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({'time_schedule_limit': _full_schedule()}),
+    )
+    assert res.status_code == 200, res.data
+
+
+def test_api_rejects_invalid_timezone_on_create(client, live_server, measure_memory_usage, datastore_path):
+    """Same guard on POST /watch, otherwise it is just a different door."""
+    import json
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+    api_key = datastore.data['settings']['application'].get('api_access_token')
+
+    res = client.post(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({'url': test_url,
+                         'time_schedule_limit': _full_schedule(timezone='Bogus/Zone')}),
+    )
+    assert res.status_code == 400, f"expected 400, got {res.status_code}: {res.data}"
+    assert b'not a valid timezone' in res.data.lower()
+
+
+def test_ignore_text_via_selection_marks_watch_edited(client, live_server, measure_memory_usage, datastore_path):
+    """
+    The selection UI appended to ignore_text in place. That bypasses
+    watch_base.__setitem__, so was_edited stayed False and the
+    'content unchanged since last check' skip stayed active - the new
+    ignore_text would not take effect until the page changed on its own.
+    """
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+
+    uuid = datastore.add_watch(url=test_url)
+    wait_for_all_checks(client)
+
+    watch = datastore.data['watching'][uuid]
+    watch.reset_watch_edited_flag()
+    assert watch.was_edited is False, "precondition: flag should start clear"
+
+    res = client.post(
+        url_for("ui.ui_edit.highlight_submit_ignore_url", uuid=uuid),
+        data={'mode': 'exact', 'selection': 'Which is across multiple lines'},
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+
+    watch = datastore.data['watching'][uuid]
+    assert 'Which is across multiple lines' in watch['ignore_text'], "the text was not stored"
+    assert watch.was_edited is True, (
+        "watch was not flagged as edited - the new ignore_text will not be applied "
+        "until the page content changes on its own"
+    )
+
+
