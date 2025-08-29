@@ -340,6 +340,134 @@ class DatastoreUpdatesMixin:
                 continue
         return
 
+    def update_9(self):
+        """Convert old static notification tokens to jinja2 tokens."""
+        # Each watch
+        # only { } not {{ or }}
+        r = r'(?<!{){(?!{)(\w+)(?<!})}(?!})'
+        for uuid, watch in self.data['watching'].items():
+            try:
+                n_body = watch.get('notification_body', '')
+                if n_body:
+                    watch['notification_body'] = re.sub(r, r'{{\1}}', n_body)
+
+                n_title = watch.get('notification_title')
+                if n_title:
+                    watch['notification_title'] = re.sub(r, r'{{\1}}', n_title)
+
+                n_urls = watch.get('notification_urls')
+                if n_urls:
+                    for i, url in enumerate(n_urls):
+                        watch['notification_urls'][i] = re.sub(r, r'{{\1}}', url)
+
+            except:
+                continue
+
+        # System wide
+        n_body = self.data['settings']['application'].get('notification_body')
+        if n_body:
+            self.data['settings']['application']['notification_body'] = re.sub(r, r'{{\1}}', n_body)
+
+        n_title = self.data['settings']['application'].get('notification_title')
+        if n_body:
+            self.data['settings']['application']['notification_title'] = re.sub(r, r'{{\1}}', n_title)
+
+        n_urls = self.data['settings']['application'].get('notification_urls')
+        if n_urls:
+            for i, url in enumerate(n_urls):
+                self.data['settings']['application']['notification_urls'][i] = re.sub(r, r'{{\1}}', url)
+
+        return
+
+    def update_10(self):
+        """Some setups may have missed the correct default, so it shows the wrong config in the UI, although it will default to system-wide."""
+        for uuid, watch in self.data['watching'].items():
+            try:
+                if not watch.get('fetch_backend', ''):
+                    watch['fetch_backend'] = 'system'
+            except:
+                continue
+        return
+
+    def update_12(self):
+        """Create tag objects and their references from existing tag text."""
+        i = 0
+        for uuid, watch in self.data['watching'].items():
+            # Split out and convert old tag string
+            tag = watch.get('tag')
+            if tag:
+                tag_uuids = []
+                for t in tag.split(','):
+                    tag_uuids.append(self.add_tag(title=t))
+
+                self.data['watching'][uuid]['tags'] = tag_uuids
+
+    def update_13(self):
+        """#1775 - Update 11 did not update the records correctly when adding 'date_created' values for sorting."""
+        i = 0
+        for uuid, watch in self.data['watching'].items():
+            if not watch.get('date_created'):
+                self.data['watching'][uuid]['date_created'] = i
+            i += 1
+        return
+
+    def update_14(self):
+        """#1774 - protect xpath1 against migration."""
+        for awatch in self.data["watching"]:
+            if self.data["watching"][awatch]['include_filters']:
+                for num, selector in enumerate(self.data["watching"][awatch]['include_filters']):
+                    if selector.startswith('/'):
+                        self.data["watching"][awatch]['include_filters'][num] = 'xpath1:' + selector
+                    if selector.startswith('xpath:'):
+                        self.data["watching"][awatch]['include_filters'][num] = selector.replace('xpath:', 'xpath1:', 1)
+
+    def update_15(self):
+        """Use more obvious default time setting."""
+        for uuid in self.data["watching"]:
+            if self.data["watching"][uuid]['time_between_check'] == self.data['settings']['requests']['time_between_check']:
+                # What the old logic was, which was pretty confusing
+                self.data["watching"][uuid]['time_between_check_use_default'] = True
+            elif all(value is None or value == 0 for value in self.data["watching"][uuid]['time_between_check'].values()):
+                self.data["watching"][uuid]['time_between_check_use_default'] = True
+            else:
+                # Something custom here
+                self.data["watching"][uuid]['time_between_check_use_default'] = False
+
+    def update_16(self):
+        """Correctly set datatype for older installs where 'tag' was string and update_12 did not catch it."""
+        for uuid, watch in self.data['watching'].items():
+            if isinstance(watch.get('tags'), str):
+                self.data['watching'][uuid]['tags'] = []
+
+    def update_17(self):
+        """Migrate old 'in_stock' values to the new Restock."""
+        for uuid, watch in self.data['watching'].items():
+            if 'in_stock' in watch:
+                watch['restock'] = Restock({'in_stock': watch.get('in_stock')})
+                del watch['in_stock']
+
+    def update_18(self):
+        """Migrate old restock settings."""
+        for uuid, watch in self.data['watching'].items():
+            if not watch.get('restock_settings'):
+                # So we enable price following by default
+                self.data['watching'][uuid]['restock_settings'] = {'follow_price_changes': True}
+
+            # Migrate and cleanoff old value
+            self.data['watching'][uuid]['restock_settings']['in_stock_processing'] = 'in_stock_only' if watch.get(
+                'in_stock_only') else 'all_changes'
+
+            if self.data['watching'][uuid].get('in_stock_only'):
+                del (self.data['watching'][uuid]['in_stock_only'])
+
+    def update_19(self):
+        """Compress old elements.json to elements.deflate, saving disk, this compression is pretty fast."""
+        import zlib
+
+        for uuid, watch in self.data['watching'].items():
+            json_path = os.path.join(self.datastore_path, uuid, "elements.json")
+            deflate_path = os.path.join(self.datastore_path, uuid, "elements.deflate")
+
             if os.path.exists(json_path):
                 with open(json_path, "rb") as f_j:
                     with open(deflate_path, "wb") as f_d:
