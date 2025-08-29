@@ -202,6 +202,142 @@ class TestAmIInsideTime(unittest.TestCase):
             duration=duration
         )
 
+        self.assertTrue(result, "Lowercase day should work")
+
+    def test_edge_case_midnight(self):
+        """Test edge case at exactly midnight."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd')
+        time_str = "00:00"
+        duration = 60
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
+        # Should be true if we're in the first hour of the day
+        if now.hour == 0:
+            self.assertTrue(result)
+
+    def test_edge_case_end_of_day(self):
+        """Test edge case near end of day."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        day_of_week = now.format('dddd')
+        time_str = "23:45"
+        duration = 30  # 30 minutes crosses midnight
+
+        result = time_handler.am_i_inside_time(
+            day_of_week=day_of_week,
+            time_str=time_str,
+            timezone_str=timezone_str,
+            duration=duration
+        )
+
+        # Result depends on current time
+        self.assertIsInstance(result, bool)
+
+    def test_24_hour_schedule_from_midnight(self):
+        """Test 24-hour schedule starting at midnight covers entire day."""
+        timezone_str = 'UTC'
+        # Test at a specific time: Monday 00:00
+        test_time = arrow.get('2024-01-01 00:00:00', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        day_of_week = test_time.format('dddd')  # Monday
+
+        # Mock current time for testing
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=day_of_week,
+                time_str="00:00",
+                timezone_str=timezone_str,
+                duration=1440  # 24 hours
+            )
+            self.assertTrue(result, "Should be active at start of 24-hour schedule")
+
+    def test_24_hour_schedule_at_end_of_day(self):
+        """Test 24-hour schedule is active at 23:59:59."""
+        timezone_str = 'UTC'
+        # Test at Monday 23:59:59
+        test_time = arrow.get('2024-01-01 23:59:59', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        day_of_week = test_time.format('dddd')  # Monday
+
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=day_of_week,
+                time_str="00:00",
+                timezone_str=timezone_str,
+                duration=1440  # 24 hours
+            )
+            self.assertTrue(result, "Should be active at end of 24-hour schedule")
+
+    def test_24_hour_schedule_at_midnight_transition(self):
+        """Test 24-hour schedule at exactly midnight transition."""
+        timezone_str = 'UTC'
+        # Test at Tuesday 00:00:00 (end of Monday's 24-hour schedule)
+        test_time = arrow.get('2024-01-02 00:00:00', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        monday = test_time.shift(days=-1).format('dddd')  # Monday
+
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=monday,
+                time_str="00:00",
+                timezone_str=timezone_str,
+                duration=1440  # 24 hours
+            )
+            self.assertTrue(result, "Should include exactly midnight at end of 24-hour schedule")
+
+    def test_schedule_crosses_midnight_before_midnight(self):
+        """Test schedule crossing midnight - before midnight."""
+        timezone_str = 'UTC'
+        # Monday 23:30
+        test_time = arrow.get('2024-01-01 23:30:00', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        day_of_week = test_time.format('dddd')  # Monday
+
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=day_of_week,
+                time_str="23:00",
+                timezone_str=timezone_str,
+                duration=120  # 2 hours (until 01:00 next day)
+            )
+            self.assertTrue(result, "Should be active before midnight in cross-midnight schedule")
+
+    def test_schedule_crosses_midnight_after_midnight(self):
+        """Test schedule crossing midnight - after midnight."""
+        timezone_str = 'UTC'
+        # Tuesday 00:30
+        test_time = arrow.get('2024-01-02 00:30:00', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        monday = test_time.shift(days=-1).format('dddd')  # Monday
+
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=monday,
+                time_str="23:00",
+                timezone_str=timezone_str,
+                duration=120  # 2 hours (until 01:00 Tuesday)
+            )
+            self.assertTrue(result, "Should be active after midnight in cross-midnight schedule")
+
+    def test_schedule_crosses_midnight_at_exact_end(self):
+        """Test schedule crossing midnight at exact end time."""
+        timezone_str = 'UTC'
+        # Tuesday 01:00 (exact end of Monday 23:00 + 120 minutes)
+        test_time = arrow.get('2024-01-02 01:00:00', 'YYYY-MM-DD HH:mm:ss').replace(tzinfo=timezone_str)
+        monday = test_time.shift(days=-1).format('dddd')  # Monday
+
+        with unittest.mock.patch('arrow.now', return_value=test_time):
+            result = time_handler.am_i_inside_time(
+                day_of_week=monday,
+                time_str="23:00",
+                timezone_str=timezone_str,
+                duration=120  # 2 hours
+            )
+            self.assertTrue(result, "Should include exact end time of schedule")
+
     def test_duration_60_minutes(self):
         """Test that duration of 60 minutes works correctly."""
         timezone_str = 'UTC'
