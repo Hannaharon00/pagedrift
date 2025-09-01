@@ -174,3 +174,66 @@ async def acquire_browser_for_fetcher(fetcher_name, proxy=None, keepalive_ms=Non
     return browser, playwright_context
 
 
+def cleanup_expired_sessions():
+    """Remove expired browsersteps sessions and cleanup their resources"""
+    global browsersteps_sessions, browsersteps_watch_to_session
+
+    expired_session_ids = []
+
+    # Find expired sessions
+    for session_id, session_data in browsersteps_sessions.items():
+        browserstepper = session_data.get('browserstepper')
+        if browserstepper and browserstepper.has_expired:
+            expired_session_ids.append(session_id)
+
+    # Cleanup expired sessions
+    for session_id in expired_session_ids:
+        logger.debug(f"Cleaning up expired browsersteps session {session_id}")
+        session_data = browsersteps_sessions[session_id]
+
+        try:
+            run_async_in_browser_loop(_close_session_resources(session_data, label=f" for session {session_id}"))
+        except Exception as e:
+            logger.error(f"Error cleaning up session {session_id}: {e}")
+
+        # Remove from sessions dict
+        del browsersteps_sessions[session_id]
+
+        # Remove from watch mapping
+        for watch_uuid, mapped_session_id in list(browsersteps_watch_to_session.items()):
+            if mapped_session_id == session_id:
+                del browsersteps_watch_to_session[watch_uuid]
+                break
+
+    if expired_session_ids:
+        logger.info(f"Cleaned up {len(expired_session_ids)} expired browsersteps session(s)")
+
+def cleanup_session_for_watch(watch_uuid):
+    """Cleanup a specific browsersteps session for a watch UUID"""
+    global browsersteps_sessions, browsersteps_watch_to_session
+
+    session_id = browsersteps_watch_to_session.get(watch_uuid)
+    if not session_id:
+        logger.debug(f"No browsersteps session found for watch {watch_uuid}")
+        return
+
+    logger.debug(f"Cleaning up browsersteps session {session_id} for watch {watch_uuid}")
+
+    session_data = browsersteps_sessions.get(session_id)
+    if session_data:
+        try:
+            run_async_in_browser_loop(_close_session_resources(session_data, label=f" for watch {watch_uuid}"))
+        except Exception as e:
+            logger.error(f"Error cleaning up session {session_id} for watch {watch_uuid}: {e}")
+
+        # Remove from sessions dict
+        del browsersteps_sessions[session_id]
+
+    # Remove from watch mapping
+    del browsersteps_watch_to_session[watch_uuid]
+
+    logger.debug(f"Cleaned up session for watch {watch_uuid}")
+
+    # Opportunistically cleanup any other expired sessions
+    cleanup_expired_sessions()
+
