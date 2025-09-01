@@ -3231,6 +3231,62 @@ msgstr "Nastavit mezi 1 a 999"
 msgid "Default User-Agent overrides"
 msgstr "Změna výchozího nastavení hodnoty User-Agent"
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Je vyžadován název i adresa URL proxy."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Otevřete stránku „Historie“ na nové kartě"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Aktualizace UI v reálném čase"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Povolit favikony"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Použijte stránku <title> v přehledu sledování"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Kontrola zabezpečení přístupového tokenu API povolena"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Považovat prázdné stránky za změnu?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ignorovat text"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ignorujte mezery"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "Screenshot: minimální procento změny"
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "Musí být mezi 0 a 100"
