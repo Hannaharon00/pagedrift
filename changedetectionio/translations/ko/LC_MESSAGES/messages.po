@@ -3461,6 +3461,58 @@ msgstr "공백 무시"
 msgid "Screenshot: Minimum Change Percentage"
 msgstr "스크린샷: 최소 변경 비율"
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "0에서 100 사이여야 합니다."
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "비밀번호"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "페이지당 항목 수"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "0 이상이어야 합니다. (0은 비활성화)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSS 콘텐츠 형식"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> 본문 생성 기준"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS \"System default\" 템플릿 재정의"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "비밀번호 제거"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "앵커 태그 콘텐츠 렌더링"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "비밀번호 사용 시 모니터링 기록 페이지 익명 접근 허용"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "음소거된 모니터링을 RSS 피드에서 숨기기"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "RSS 리더 모드 활성화"
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "모니터링 RSS 피드에 표시할 변경 사항 개수"
+
 #: changedetectionio/forms.py
 msgid "Should contain zero or more attempts"
 msgstr "0회 이상이어야 합니다."

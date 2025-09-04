@@ -210,3 +210,24 @@ html[data-darkmode="true"] {
   }
 }
 
+// Mobile adjustments
+@media only screen and (max-width: 768px) {
+  .login-form {
+    min-height: auto;
+    padding: 1rem 0.5rem;
+    padding-top: 5rem; // Space for error message
+
+    .inner {
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+    }
+  }
+
+  .content-main > ul.messages {
+    top: 70px; // Higher up on mobile to avoid overlap
+    left: 10px;
+    right: 10px;
+    transform: none;
+    min-width: auto;
+  }
+}
