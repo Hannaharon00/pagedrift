@@ -371,6 +371,27 @@ def _jinja2_filter_regex_search(value, pattern):
     return re.search(pattern, str(value)) is not None
 
 
+@app.template_global('get_current_worker_count')
+def _get_current_worker_count():
+    """Get the current number of operational workers"""
+    return worker_pool.get_worker_count()
+
+
+@app.template_global('get_worker_status_info')
+def _get_worker_status_info():
+    """Get detailed worker status information for display"""
+    status = worker_pool.get_worker_status()
+    running_uuids = worker_pool.get_running_uuids()
+
+    return {
+        'count': status['worker_count'],
+        'type': status['worker_type'],
+        'active_workers': len(running_uuids),
+        'processing_watches': running_uuids,
+        'loop_running': status.get('async_loop_running', None),
+    }
+
+
 # We use the whole watch object from the store/JSON so we can see if there's some related status in terms of a thread
 # running or something similar.
 @app.template_filter('format_last_checked_time')
