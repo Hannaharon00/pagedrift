@@ -2220,6 +2220,62 @@ msgid "One moment, fetching screenshot and element information.."
 msgstr "Хвилинку, отримання скріншота та інформації про елементи..."
 
 #: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Sorry, this functionality only works with fetchers that support Javascript and screenshots (such as playwright etc)."
+msgstr "Вибачте, ця функція працює лише із завантажувачами, що підтримують Javascript і скріншоти (наприклад, playwright)."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "to one that supports Javascript and screenshots."
+msgstr "на підтримуючий Javascript і скріншоти."
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Check count"
+msgstr "Кількість перевірок"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Consecutive filter failures"
+msgstr "Послідовні помилки фільтра"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "History length"
+msgstr "Довжина історії"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Last fetch duration"
+msgstr "Тривалість останнього завантаження"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Notification alert count"
+msgstr "Кількість надісланих сповіщень"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Server type reply"
+msgstr "Відповідь типу сервера"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr "Так"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/widgets/ternary_boolean.py
+msgid "No"
+msgstr "Ні"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (last check)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "AI tokens (total)"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download latest HTML snapshot"
+msgstr "Завантажити останній знімок HTML"
+
+#: changedetectionio/blueprint/ui/templates/edit.html
+msgid "Download watch data package"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html
 msgid "Delete Watch?"
 msgstr "Видалити завдання?"
 
@@ -3092,6 +3148,62 @@ msgstr "Час між перевірками"
 #: changedetectionio/forms.py
 msgid "Use global settings for time between check and scheduler."
 msgstr "Використовувати глобальні налаштування для часу між перевірками та планувальника."
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Метод запиту"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ігнорувати коди статусу (обробляти коди не-2xx як звичайно)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Спрацьовувати лише при появі унікальних рядків у всій історії"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr "Видалити дублікати рядків тексту"
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Сортувати текст за алфавітом"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Прибирати проігноровані рядки"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Обрізати пробіли до та після тексту"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Додані рядки"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Замінені/змінені рядки"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Видалені рядки"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Ключові слова-тригери - Спрацювати/чекати текст"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Блокувати виявлення змін, поки текст збігається"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Виконати JavaScript перед виявленням змін"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Проксі"
 
 #: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
