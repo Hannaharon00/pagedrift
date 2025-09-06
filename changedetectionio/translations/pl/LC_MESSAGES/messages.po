@@ -2842,6 +2842,59 @@ msgstr "Użyj domyślnego powiadomienia"
 msgid "Clear errors"
 msgstr "Wyraźne błędy"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear Histories"
+msgstr "Wyczyść historię"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p>Are you sure you want to clear history for the selected items?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Czy na pewno chcesz wyczyścić historię dla wybranych pozycji?</p><p>Tej czynności nie można cofnąć.</p>"
+
+#. Universally recognized; typically left as-is. dennis-ignore: W302
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "OK"
+msgstr "OK"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Clear/reset history"
+msgstr "Wyczyść/zresetuj historię"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Delete Watches?"
+msgstr "Usunąć obserwacje?"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "<p><strong>Are you sure you want to delete the selected watches?</strong></p><p>This action cannot be undone.</p>"
+msgstr "<p><strong>Czy na pewno chcesz usunąć wybrane obserwacje?</strong></p><p>Tej czynności nie można cofnąć.</p>"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Close"
+msgstr "Zamknij"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Web page"
+msgstr "Strona internetowa"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "Uzupełnienie zapasów i cena"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "Nie skonfigurowano żadnych obserwacji stron internetowych. Dodaj adres URL w polu powyżej lub"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "zaimportuj listę"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr "Wybierz jedną opcję – Operator"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr "Większy niż"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Does NOT Match Regex"
 msgstr "Tekst NIE pasuje do wyrażenia regularnego"
