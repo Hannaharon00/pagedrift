@@ -46,6 +46,12 @@ BASE_URL_NOT_SET_TEXT = '("Base URL" not set - see settings - notifications)'
 dictfilt = lambda x, y: dict([(i, x[i]) for i in x if i in set(y)])
 
 
+# Is there an existing library to ensure some data store (JSON etc) is in sync with CRUD methods?
+# Open a github issue if you know something :)
+# https://stackoverflow.com/questions/6190468/how-to-trigger-function-on-value-change
+_TAG_UUID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', re.IGNORECASE)
+
+
 class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
     __version_check = True
 
