@@ -332,6 +332,69 @@ def test_watch_edit_llm_intent_shows_own_value_not_group_placeholder(
 
 
 # ---------------------------------------------------------------------------
+# Watch edit page — llm_change_summary group override, gated on the checkbox
+# ---------------------------------------------------------------------------
+
+def test_watch_edit_shows_llm_change_summary_placeholder_when_group_overrides_enabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Group override ON → the group summary prompt shows as placeholder (editable)."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(
+        ds, 'Summary Group',
+        llm_change_summary='List new items as bullet points. Translate to English.',
+        ai=True,
+    )
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert _from_group_text('Summary Group',
+                            'List new items as bullet points. Translate to English.') in text
+
+    # Field must be editable
+    summary_pos = text.find('name="llm_change_summary"')
+    assert summary_pos != -1
+    snippet = text[max(0, summary_pos - 50): summary_pos + 300]
+    assert 'readonly' not in snippet, \
+        f"llm_change_summary must be editable; snippet: {snippet!r}"
+
+    delete_all_watches(client)
+
+
+def test_watch_edit_hides_llm_change_summary_placeholder_when_group_overrides_disabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Group override OFF → no "From group ..." for the summary prompt either."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(
+        ds, 'Summary Group',
+        llm_change_summary='List new items as bullet points. Translate to English.',
+        ai=False,
+    )
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert 'From group' not in text
+    assert 'List new items as bullet points' not in text
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
 # Both fields overridden independently
 # ---------------------------------------------------------------------------
 
