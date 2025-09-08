@@ -573,6 +573,62 @@ window.initVisualSelector = function (opts) {
             drawnBox.x = Math.max(0, Math.min(drawnBox.x, c.width - drawnBox.width));
             drawnBox.y = Math.max(0, Math.min(drawnBox.y, c.height - drawnBox.height));
 
+            // Save to form field (convert from scaled to natural coordinates)
+            const naturalX = Math.round(drawnBox.x / xScale);
+            const naturalY = Math.round(drawnBox.y / yScale);
+            const naturalWidth = Math.round(drawnBox.width / xScale);
+            const naturalHeight = Math.round(drawnBox.height / yScale);
+
+            $('#bounding_box').val(`${naturalX},${naturalY},${naturalWidth},${naturalHeight}`);
+
+            drawBox();
+        }
+    }
+
+    function drawBox() {
+        if (!drawnBox) return;
+
+        // Clear and redraw
+        ctx.clearRect(0, 0, c.width, c.height);
+        xctx.clearRect(0, 0, c.width, c.height);
+
+        // Draw box
+        ctx.strokeStyle = STROKE_STYLE_REDLINE;
+        ctx.fillStyle = FILL_STYLE_REDLINE;
+        ctx.lineWidth = 3;
+
+        const drawX = drawnBox.width >= 0 ? drawnBox.x : drawnBox.x + drawnBox.width;
+        const drawY = drawnBox.height >= 0 ? drawnBox.y : drawnBox.y + drawnBox.height;
+        const drawW = Math.abs(drawnBox.width);
+        const drawH = Math.abs(drawnBox.height);
+
+        ctx.strokeRect(drawX, drawY, drawW, drawH);
+        ctx.fillRect(drawX, drawY, drawW, drawH);
+
+        // Draw resize handles
+        if (!isDrawing) {
+            drawResizeHandles(drawX, drawY, drawW, drawH);
+        }
+    }
+
+    function drawResizeHandles(x, y, w, h) {
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+
+        const handles = [
+            { x: x, y: y },                    // top-left
+            { x: x + w, y: y },                // top-right
+            { x: x, y: y + h },                // bottom-left
+            { x: x + w, y: y + h }             // bottom-right
+        ];
+
+        handles.forEach(handle => {
+            ctx.fillRect(handle.x - HANDLE_SIZE/2, handle.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE);
+            ctx.strokeRect(handle.x - HANDLE_SIZE/2, handle.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE);
+        });
+    }
+
     function isInsideBox(x, y) {
         if (!drawnBox) return false;
 
