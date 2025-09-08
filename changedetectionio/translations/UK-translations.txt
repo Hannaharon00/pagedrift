@@ -2070,6 +2070,65 @@ msgid "Attach screenshot to notification (where possible)"
 msgstr "Прикріпити скріншот до сповіщення (де можливо)"
 
 #: changedetectionio/forms.py
+msgid "Match"
+msgstr "Збіг"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Збіг усіх наступних умов"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Збіг будь-якої з наступних умов"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Використовувати <title> сторінки у списку"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Кількість збережених записів історії для кожного завдання"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Тіло має бути порожнім, якщо метод запиту встановлено на GET"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Невірний синтаксис конфігурації шаблону: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Невірний синтаксис шаблону: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Невірний синтаксис шаблону в заголовку \"%(header)s\": %(error)s"
+
+#: changedetectionio/forms.py
+msgid "Name"
+msgstr "Ім'я"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL проксі"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "URL проксі повинні починатися з http://, https:// або socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL підключення браузера"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "URL браузера повинні починатися з wss:// або ws://"
+
+#: changedetectionio/forms.py
 msgid "Hide muted watches from RSS feed"
 msgstr "Приховати заглушені завдання з RSS-стрічки"
 
