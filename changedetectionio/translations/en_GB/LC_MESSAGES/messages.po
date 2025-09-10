@@ -2943,6 +2943,62 @@ msgstr ""
 msgid "hours"
 msgstr ""
 
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr ""
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr ""
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr ""
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr ""
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr ""
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr ""
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr ""
+
 #: changedetectionio/forms.py
 msgid "Use time scheduler"
 msgstr ""
