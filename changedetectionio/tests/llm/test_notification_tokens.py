@@ -120,3 +120,7 @@ class TestHandlerLlmTokenPopulation:
         assert result['llm_summary'] == 'Only a copyright year changed'
 
 
+# ---------------------------------------------------------------------------
+# notification_service.py — _llm_result / _llm_intent wired from watch
+# ---------------------------------------------------------------------------
+
