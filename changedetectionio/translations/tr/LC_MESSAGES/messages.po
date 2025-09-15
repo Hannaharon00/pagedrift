@@ -3520,6 +3520,62 @@ msgstr "Fark çıktısı - yalnızca değişiklikler, eklemeler ve kaldırmalar 
 msgid "Without (added) prefix or colors"
 msgstr "(Eklenmiş) önek veya renkler olmadan"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "Uyarı: Şunun içerikleri"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "ve"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "fark algoritmasının değişikliği nasıl algıladığına bağlıdır."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "Örneğin, bazı durumlarda bir ekleme veya çıkarma bir değişiklik olarak algılanabilir."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "Daha Fazlası Burada"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "Bir e-posta adresi ekle"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "Test bildirimi gönder"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "Bildirim hata ayıklama günlükleri"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "İşleniyor.."
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 #, python-format
 msgid "From group '%(name)s': %(value)s"
