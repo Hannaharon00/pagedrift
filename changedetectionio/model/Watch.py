@@ -894,3 +894,68 @@ class model(EntityPersistenceMixin, watch_base):
         if not extension:
             extension = 'ico'
 
+        return False
+
+
+    def _prune_last_fetched_html_snapshots(self):
+
+        dates = list(self.history.keys())
+        dates.reverse()
+
+        for index, timestamp in enumerate(dates):
+            snapshot_fname = f"{timestamp}.html.br"
+            filepath = os.path.join(self.data_dir, snapshot_fname)
+
+            # Keep only the first 2
+            if index > 1 and os.path.isfile(filepath):
+                os.remove(filepath)
+
+
+    @property
+    def get_browsersteps_available_screenshots(self):
+        "For knowing which screenshots are available to show the user in BrowserSteps UI"
+        available = []
+        for f in Path(self.data_dir).glob('step_before-*.jpeg'):
+            step_n=re.search(r'step_before-(\d+)', f.name)
+            if step_n:
+                available.append(step_n.group(1))
+        return available
+
+    def compile_error_texts(self, has_proxies=None):
+        """Compile error texts for this watch.
+        Accepts has_proxies parameter to ensure it works even outside app context"""
+        from flask import url_for, has_request_context
+        from markupsafe import Markup
+
+        output = []  # Initialize as list since we're using append
+        last_error = self.get('last_error','')
+
+        has_app_context = has_request_context()
+
+        # has app+request context, we can use url_for()
+        if has_app_context:
+            if last_error:
+                last_error = safe_jinja.render_fully_escaped(last_error)
+                if '403' in last_error:
+                    if has_proxies:
+                        output.append(str(Markup(f"{last_error} - <a href=\"{url_for('settings.settings_page', uuid=self.get('uuid'))}\">Try other proxies/location</a>&nbsp;'")))
+                    else:
+                        output.append(str(Markup(f"{last_error} - <a href=\"{url_for('settings.settings_page', uuid=self.get('uuid'))}\">Try adding external proxies/locations</a>&nbsp;'")))
+                else:
+                    output.append(str(Markup(last_error)))
+
+            if self.get('last_notification_error'):
+                txt = safe_jinja.render_fully_escaped(self.get('last_notification_error'))
+                result = f'<div class="notification-error"><a href="{url_for("settings.notification_logs")}">{txt}</a></div>'
+                output.append(result)
+
+        else:
+            # Lo_Fi version - no app context, cant rely on Jinja2 Markup
+            if last_error:
+                output.append(safe_jinja.render_fully_escaped(last_error))
+            if self.get('last_notification_error'):
+                output.append(safe_jinja.render_fully_escaped(self.get('last_notification_error')))
+
+        res = "\n".join(output)
+        return res
+
