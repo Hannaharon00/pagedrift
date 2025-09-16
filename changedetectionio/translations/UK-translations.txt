@@ -1713,6 +1713,67 @@ msgid "Last"
 msgstr "Останній"
 
 #: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Changed"
+msgstr "Змінено"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "Немає налаштованих завдань для відстеження змін, будь ласка, додайте URL у поле вище або"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "імпортуйте список"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Detecting restock and price"
+msgstr "Визначення наявності та ціни"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "In stock"
+msgstr "В наявності"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Not in stock"
+msgstr "Немає в наявності"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Price"
+msgstr "Ціна"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No information"
+msgstr "Немає інформації"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/templates/base.html
+msgid "Checking now"
+msgstr "Перевірка..."
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Queued"
+msgstr "В черзі"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "History"
+msgstr "Історія"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Preview"
+msgstr "Прев'ю"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "With errors"
+msgstr "З помилками"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Mark all viewed"
+msgstr "Позначити все як переглянуте"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#, python-format
+msgid "Mark all viewed in '%(title)s'"
+msgstr "Позначити все як переглянуте в '%(title)s'"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
 msgid "Unread"
 msgstr "Непрочитане"
 
