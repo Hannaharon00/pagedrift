@@ -3276,6 +3276,69 @@ msgstr "za chvíli"
 msgid "%ss ago"
 msgstr "před %ss"
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "za %ss"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "před 1m"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "za 1m"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "před %sm"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "za %sm"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "před 1h"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "za 1h"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "před %sh"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "za %sh"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "před 1d"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "za 1d"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "před %sd"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "za %sd"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "před 1týd"
+
 #: changedetectionio/processors/image_ssim_diff/preview.py
 msgid "Preview unavailable - No snapshots captured yet"
 msgstr "Náhled nedostupný - Zatím nebyly pořízeny žádné snapshoty"
