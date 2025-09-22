@@ -3264,6 +3264,58 @@ msgstr "Prompt Ringkasan Perubahan AI default"
 msgid "Max tokens per watch per period"
 msgstr "Token maks. per monitor per periode"
 
+#: changedetectionio/forms.py
+msgid "Monthly token budget"
+msgstr "Anggaran token bulanan"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max input characters"
+msgstr "Karakter input maks."
+
+#: changedetectionio/forms.py
+msgid "Enable AI / LLM features"
+msgstr "Aktifkan fitur AI / LLM"
+
+#: changedetectionio/forms.py
+msgid "Replace {{diff}} notification token with AI summary"
+msgstr "Ganti token notifikasi {{diff}} dengan ringkasan AI"
+
+#: changedetectionio/forms.py
+msgid "Use LLM as a fallback for extracting price and restock info"
+msgstr "Gunakan LLM sebagai fallback untuk mengekstrak info harga dan stok kembali"
+
+#: changedetectionio/forms.py
+msgid "Enable LLM debug logging"
+msgstr "Aktifkan logging debug LLM"
+
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr "Anggaran thinking AI (token)"
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr "Nonaktif (tanpa thinking)"
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr "Panjang ringkasan AI maks. (token)"
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr "Saat anggaran token bulanan tercapai"
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr "Lewati hanya ringkasan AI (monitor tetap diperiksa)"
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr "Lewati seluruh pemeriksaan monitor"
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr "Tautan \"Ringkasan\" daftar monitor membandingkan"
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "%sh ago"
