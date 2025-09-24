@@ -718,6 +718,72 @@ footer {
   }
 }
 
+.pure-table {
+  border-color: var(--color-border-table-cell);
+
+  thead {
+    background-color: var(--color-background-table-thead);
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-background-table-thead);
+  }
+
+  td,
+  th {
+    border-left-color: var(--color-border-table-cell);
+  }
+}
+
+// Temporarily disabled: zebra striping on odd rows. Row distinction now comes
+// from the :hover highlight (see .watch-table tr:hover in parts/_watch_table.scss).
+//.pure-table-striped {
+//  tr:nth-child(2n-1) {
+//    td {
+//      background-color: var(--color-table-stripe);
+//    }
+//  }
+//}
+
+.pure-form input[type=color],
+.pure-form input[type=date],
+.pure-form input[type=datetime-local],
+.pure-form input[type=datetime],
+.pure-form input[type=email],
+.pure-form input[type=month],
+.pure-form input[type=number],
+.pure-form input[type=password],
+.pure-form input[type=search],
+.pure-form input[type=tel],
+.pure-form input[type=text],
+.pure-form input[type=time],
+.pure-form input[type=url],
+.pure-form input[type=week],
+.pure-form select,
+.pure-form textarea {
+  border: var(--color-border-input);
+  box-shadow: inset 0 1px 3px var(--color-shadow-input);
+  background-color: var(--color-background-input);
+  color: var(--color-text-input);
+
+  &:active {
+    background-color: var(--color-background-input);
+  }
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-input-placeholder);
+}
+
+
+/** Desktop vs mobile input field strategy
+- We dont use 'size' with <input> because `size` is too unreliable to override, and will often push-out
+- Rely always on width in CSS
+*/
+/** Set max width for input field */
+.m-d {
+  min-width: 100%;
+}
+
 #chrome-extension-link {
   img {
     height: 21px;
