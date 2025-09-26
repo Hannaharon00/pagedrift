@@ -3174,6 +3174,62 @@ msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Sono richiesti sia un nome che un URL proxy."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Apri pagina 'Cronologia' in una nuova scheda"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Aggiornamenti UI in tempo reale attivi"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Favicon attive"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Usa <title> pagina nell'elenco osservati"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Controllo sicurezza token API attivo"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Tratta pagine vuote come modifica?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ignora testo"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ignora spazi"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "AI thinking budget (tokens)"
 msgstr ""
 
