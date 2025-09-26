@@ -250,3 +250,168 @@ def _suppress_werkzeug_ws_abrupt_disconnect_noise():
         pass
 
 
+def init_socketio(app, datastore):
+    """Initialize SocketIO with the main Flask app"""
+    _suppress_werkzeug_ws_abrupt_disconnect_noise()
+
+    import platform
+    import sys
+
+    # Platform-specific async_mode selection for better stability
+    system = platform.system().lower()
+    python_version = sys.version_info
+
+    # Check for SocketIO mode configuration via environment variable
+    # Default is 'threading' for best cross-platform compatibility
+    socketio_mode = os.getenv('SOCKETIO_MODE', 'threading').lower()
+
+    if socketio_mode == 'gevent':
+        # Use gevent mode (higher concurrency but platform limitations)
+        try:
+            import gevent
+            async_mode = 'gevent'
+            logger.info(f"SOCKETIO_MODE=gevent: Using {async_mode} mode for Socket.IO")
+        except ImportError:
+            async_mode = 'threading'
+            logger.warning(f"SOCKETIO_MODE=gevent but gevent not available, falling back to {async_mode} mode")
+    elif socketio_mode == 'threading':
+        # Use threading mode (default - best compatibility)
+        async_mode = 'threading'
+        logger.info(f"SOCKETIO_MODE=threading: Using {async_mode} mode for Socket.IO")
+    else:
+        # Invalid mode specified, use default
+        async_mode = 'threading'
+        logger.warning(f"Invalid SOCKETIO_MODE='{socketio_mode}', using default {async_mode} mode for Socket.IO")
+
+    # Log platform info for debugging
+    logger.info(f"Platform: {system}, Python: {python_version.major}.{python_version.minor}, Socket.IO mode: {async_mode}")
+
+    # Restrict SocketIO CORS to same origin by default, can be overridden with env var
+    cors_origins = os.environ.get('SOCKETIO_CORS_ORIGINS', None)
+
+    socketio = SocketIO(app,
+                        async_mode=async_mode,
+                        cors_allowed_origins=cors_origins,  # None means same-origin only
+                        logger=strtobool(os.getenv('SOCKETIO_LOGGING', 'False')),
+                        engineio_logger=strtobool(os.getenv('SOCKETIO_LOGGING', 'False')),
+                        # Disable WebSocket compression to prevent memory accumulation
+                        # Flask-Compress already handles HTTP response compression
+                        engineio_options={'http_compression': False, 'compression_threshold': 0})
+
+    # Set up event handlers
+    logger.info("Socket.IO: Registering connect event handler")
+
+    @socketio.on('checkbox-operation')
+    def event_checkbox_operations(data):
+        from changedetectionio.blueprint.ui import _handle_operations
+        from changedetectionio import queuedWatchMetaData
+        from changedetectionio import worker_pool
+        from changedetectionio.flask_app import update_q, watch_check_update
+        import threading
+
+        logger.trace(f"Got checkbox operations event: {data}")
+
+        datastore = socketio.datastore
+        # Capture the requesting client's session id now (request context is gone inside the thread)
+        # so we can send the feedback toast only back to them, not broadcast to everyone.
+        from flask import request
+        sid = getattr(request, 'sid', None)
+
+        def run_operation():
+            """Run the operation in a background thread to avoid blocking the socket.io event loop"""
+            try:
+                result = _handle_operations(
+                    op=data.get('op'),
+                    uuids=data.get('uuids'),
+                    datastore=datastore,
+                    extra_data=data.get('extra_data'),
+                    worker_pool=worker_pool,
+                    update_q=update_q,
+                    queuedWatchMetaData=queuedWatchMetaData,
+                    watch_check_update=watch_check_update,
+                    emit_flash=False
+                )
+                # Server-driven feedback: tell the requesting client what happened (real count / errors)
+                if result and result.get('message') and sid:
+                    socketio.emit('toast', {'message': result['message'], 'type': result.get('type', 'success')}, to=sid)
+            except Exception as e:
+                logger.error(f"Error in checkbox operation thread: {e}")
+
+        # Start operation in a disposable daemon thread
+        thread = threading.Thread(target=run_operation, daemon=True, name=f"checkbox-op-{data.get('op')}")
+        thread.start()
+
+    @socketio.on('connect')
+    def handle_connect():
+        """Handle client connection"""
+        #        logger.info("Socket.IO: CONNECT HANDLER CALLED - Starting connection process")
+        from flask import request
+        from flask_login import current_user
+        from changedetectionio.flask_app import update_q
+        from changedetectionio import worker_pool
+
+        # Access datastore from socketio
+        datastore = socketio.datastore
+        #        logger.info(f"Socket.IO: Current user authenticated: {current_user.is_authenticated if hasattr(current_user, 'is_authenticated') else 'No current_user'}")
+
+        # Check if authentication is required and user is not authenticated
+        has_password_enabled = datastore.data['settings']['application'].get('password') or os.getenv("SALTED_PASS", False)
+        #        logger.info(f"Socket.IO: Password enabled: {has_password_enabled}")
+        if has_password_enabled and not current_user.is_authenticated:
+            logger.warning("Socket.IO: Rejecting unauthenticated connection")
+            return False  # Reject the connection
+
+        # Send the current queue size to the newly connected client
+        try:
+            queue_size = update_q.qsize()
+            socketio.emit("queue_size", {
+                "q_length": queue_size,
+                "event_timestamp": time.time()
+            }, room=request.sid)  # Send only to this client
+            logger.debug(f"Socket.IO: Sent initial queue size {queue_size} to new client")
+
+            # Send the current "checking now" count (how many watches workers are processing right now)
+            checking_now = len(worker_pool.get_running_uuids())
+            socketio.emit("checking_now", {
+                "count": checking_now,
+                "event_timestamp": time.time()
+            }, room=request.sid)  # Send only to this client
+            logger.debug(f"Socket.IO: Sent initial checking_now {checking_now} to new client")
+        except Exception as e:
+            logger.error(f"Socket.IO error sending initial queue size: {str(e)}")
+
+        logger.info("Socket.IO: Client connected")
+
+    #    logger.info("Socket.IO: Registering disconnect event handler")
+    @socketio.on('disconnect')
+    def handle_disconnect():
+        """Handle client disconnection"""
+        logger.info("Socket.IO: Client disconnected")
+
+    # Create a dedicated signal handler that will receive signals and emit them to clients
+    signal_handler = SignalHandler(socketio, datastore)
+
+    # Register watch operation event handlers
+    from .events import register_watch_operation_handlers
+    register_watch_operation_handlers(socketio, datastore)
+
+    # Store the datastore reference on the socketio object for later use
+    socketio.datastore = datastore
+
+    # No stop event needed for threading mode - threads check app.config.exit directly
+
+    # Add a shutdown method to the socketio object
+    def shutdown():
+        """Shutdown the SocketIO server fast and aggressively"""
+        try:
+            logger.info("Socket.IO: Fast shutdown initiated...")
+            logger.info("Socket.IO: Fast shutdown complete")
+        except Exception as e:
+            logger.error(f"Socket.IO error during shutdown: {str(e)}")
+
+    # Attach the shutdown method to the socketio object
+    socketio.shutdown = shutdown
+
+    logger.info("Socket.IO initialized and attached to main Flask app")
+    logger.info(f"Socket.IO: Registered event handlers: {socketio.handlers if hasattr(socketio, 'handlers') else 'No handlers found'}")
+    return socketio
