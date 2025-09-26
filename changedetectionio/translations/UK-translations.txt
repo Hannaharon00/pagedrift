@@ -2533,3 +2533,34 @@ msgstr "Використовуйте групи для вилучення тіл
 msgid "returns a list of years only"
 msgstr "повертає тільки список років"
 
+#: changedetectionio/templates/menu.html
+msgid "Website Change Detection and Notification."
+msgstr "Виявлення змін веб-сайтів та сповіщення."
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle Light/Dark Mode"
+msgstr "Переключити Світлий/Темний режим"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle light/dark mode"
+msgstr "Переключити світлий/темний режим"
+
+#: changedetectionio/templates/menu.html
+msgid "Change Language"
+msgstr "Змінити мову"
+
+#: changedetectionio/templates/menu.html
+msgid "Change language"
+msgstr "Змінити мову"
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "Yes"
+msgstr "Так"
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "No"
+msgstr "Ні"
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "Main settings"
+msgstr "Головні налаштування"
