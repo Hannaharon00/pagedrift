@@ -3345,6 +3345,69 @@ msgid "%ss ago"
 msgstr "%s 秒前"
 
 #: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "%s 秒後"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "1 分鐘前"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "1 分鐘後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "%s 分鐘前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "%s 分鐘後"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "1 小時前"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "1 小時後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "%s 小時前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "%s 小時後"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "1 天前"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "1 天後"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "%s 天前"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "%s 天後"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "1 週前"
+
+#: changedetectionio/languages.py
 msgid "in 1w"
 msgstr "1 週後"
 
