@@ -193,3 +193,176 @@ def _remove_chrome(html_content: str) -> str:
         return html_content
 
 
+def _strip_html(html_content: str, max_chars: int = _MAX_CONTENT_CHARS) -> str:
+    """HTML-to-text for LLM consumption.
+
+    1. Extracts JSON-LD (structured product data) to prepend.
+    2. Strips nav/header/footer/recommendation blocks via BS4.
+    3. Removes all remaining tags and collapses whitespace.
+    JSON-LD is prepended so reliable price/availability data is always visible
+    to the LLM regardless of how deep it sits in the page.
+
+    `max_chars` caps the total returned length — callers pass the app's
+    configured `max_input_chars` setting so the prompt size obeys the UI.
+    """
+    jsonld = _extract_jsonld(html_content)
+
+    # Remove site-chrome before generic tag stripping
+    cleaned = _remove_chrome(html_content)
+
+    # Drop HTML comments (can contain large disabled markup blocks)
+    text = re.sub(r'<!--.*?-->', ' ', cleaned, flags=re.DOTALL)
+    # Drop all <script> and <style> blocks
+    text = re.sub(r'<(script|style)[^>]*>.*?</(script|style)>', ' ', text, flags=re.DOTALL | re.IGNORECASE)
+    # Strip remaining tags
+    text = re.sub(r'<[^>]+>', ' ', text)
+    # Decode common entities
+    text = (text
+            .replace('&nbsp;', ' ')
+            .replace('&amp;', '&')
+            .replace('&lt;', '<')
+            .replace('&gt;', '>')
+            .replace('&quot;', '"')
+            .replace('&#39;', "'"))
+    text = re.sub(r'\s+', ' ', text).strip()
+
+    if jsonld:
+        # The structured metadata is extra CONTEXT, not a replacement for the page text — the
+        # real/visible price often isn't in JSON-LD (e.g. JSON-LD price "0" placeholder). So cap
+        # the metadata to at most half the budget and always leave room for the visible text.
+        jsonld = jsonld[: max(1, max_chars // 2)]
+        budget = max_chars - len(jsonld) - 1
+        return (jsonld + ' ' + text[:budget]).strip()
+    return text[:max_chars]
+
+
+@hookimpl
+def get_itemprop_availability_override(content, fetcher_name, fetcher_instance, url, llm_intent=None):
+    """Use an LLM as a last-resort fallback for price and restock extraction."""
+    global datastore
+
+    if datastore is None:
+        logger.debug("LLM restock fallback: no datastore injected yet, skipping")
+        return None
+
+    try:
+        from changedetectionio.llm.evaluator import _runtime_llm_config, accumulate_global_tokens, get_llm_settings, _get_max_input_chars, _thinking_extra_body, resolve_llm_timeout
+        from changedetectionio.llm import client as llm_client
+    except ImportError as e:
+        logger.debug(f"LLM restock fallback: LLM libraries not available ({e})")
+        return None
+
+    # Gate on the user setting (default True — enabled out of the box)
+    settings = get_llm_settings(datastore)
+    if not settings.restock_use_fallback_extract:
+        logger.debug("LLM restock fallback: disabled in settings")
+        return None
+
+    # _runtime_llm_config returns None (with a debug log) when the master 'llm_enabled'
+    # toggle is off, so this path is gated for free.
+    llm_cfg = _runtime_llm_config(datastore)
+    if not llm_cfg or not llm_cfg.get('model'):
+        logger.debug("LLM restock fallback: no LLM model configured or LLM disabled, skipping")
+        return None
+
+    # Prompt size obeys the app's "Max input characters" setting (env → datastore → 100k)
+    max_input_chars = _get_max_input_chars(datastore)
+    text_content = _strip_html(content, max_chars=max_input_chars) if content else ''
+    logger.debug(f"LLM restock fallback: stripped HTML to {len(text_content)} chars for {url}")
+    if not text_content.strip():
+        logger.debug("LLM restock fallback: no text content after stripping HTML")
+        return None
+
+    logger.info(f"LLM restock fallback: using LLM ({llm_cfg['model']}) for price/stock extraction - {url}")
+
+    user_prompt = f'URL: {url or "unknown"}\n\nPage content:\n{text_content}'
+    if llm_intent:
+        user_prompt += f'\n\nUser notification intent: {llm_intent}'
+
+    # Skip the (billed) LLM call entirely if we've already extracted this exact input — the page
+    # content that matters hasn't changed since last time, only noisy raw HTML around it.
+    cache_key = hashlib.md5(((llm_cfg.get('model') or '') + '\n' + user_prompt).encode('utf-8')).hexdigest()
+    cached = _llm_cache_get(cache_key)
+    if cached is not None:
+        logger.info(f"LLM restock fallback: content unchanged since last LLM call, reusing cached result - {url}")
+        return {**cached, '_tokens': 0, '_input_tokens': 0, '_output_tokens': 0, '_model': llm_cfg['model']}
+
+    logger.debug(f"LLM System Prompt: {SYSTEM_PROMPT}")
+    logger.debug(f"LLM Prompt: {user_prompt}")
+    try:
+        raw, tokens, input_tokens, output_tokens = llm_client.completion(
+            model=llm_cfg['model'],
+            messages=[
+                {'role': 'system', 'content': SYSTEM_PROMPT},
+                {'role': 'user', 'content': user_prompt},
+            ],
+            api_key=llm_cfg.get('api_key'),
+            api_base=llm_cfg.get('api_base'),
+            timeout=resolve_llm_timeout(llm_cfg),
+            # Output budget must cover the model's THINKING tokens (Gemini reasoning models count
+            # them against max_tokens) PLUS the JSON answer — otherwise it truncates mid-object
+            # (finish_reason='length') and the price is lost. Tokens are cheap, so we keep this
+            # generous: respect the app's thinking_budget (default 0 = off; the user can turn
+            # reasoning on for accuracy) and add plenty of headroom for the answer and any
+            # provider-default reasoning we don't explicitly control.
+            max_tokens=apply_local_token_multiplier(max(1000, settings.thinking_budget + 800), llm_cfg),
+            extra_body=_thinking_extra_body(llm_cfg['model'], settings.thinking_budget),
+        )
+
+        accumulate_global_tokens(
+            datastore, tokens,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            model=llm_cfg['model'],
+        )
+
+        # Strip optional markdown fences the model might add
+        raw = raw.strip()
+        if raw.startswith('```'):
+            raw = re.sub(r'^```[a-z]*\n?', '', raw)
+            raw = raw.rstrip('`').strip()
+
+        logger.debug(f"LLM restock fallback raw response: {raw!r}")
+
+        result = json.loads(raw)
+
+        price = result.get('price')
+        currency = result.get('currency') or None
+        availability = result.get('availability') or None
+
+        # Normalise price to float
+        if price is not None:
+            try:
+                if isinstance(price, str):
+                    price = float(re.sub(r'[^\d.]', '', price))
+                else:
+                    price = float(price)
+            except (ValueError, TypeError):
+                logger.warning(f"LLM restock fallback: could not convert price {price!r} to float, ignoring")
+                price = None
+
+        if price is None and not availability:
+            logger.info(f"LLM restock fallback: LLM returned no usable price or availability for {url} (raw: {raw!r})")
+            return None
+
+        logger.info(
+            f"LLM restock fallback result: price={price} currency={currency} "
+            f"availability={availability!r} url={url}"
+        )
+        result_clean = {'price': price, 'currency': currency, 'availability': availability}
+        # Remember this result so an identical next check doesn't re-bill the LLM.
+        _llm_cache_put(cache_key, result_clean)
+        return {
+            **result_clean,
+            '_tokens': tokens,
+            '_input_tokens': input_tokens,
+            '_output_tokens': output_tokens,
+            '_model': llm_cfg['model'],
+        }
+
+    except json.JSONDecodeError as e:
+        logger.warning(f"LLM restock fallback: JSON parse failed ({e}) - raw response was: {raw!r}")
+        return None
+    except Exception as e:
+        logger.warning(f"LLM restock fallback: extraction failed for {url}: {e}")
+        return None
