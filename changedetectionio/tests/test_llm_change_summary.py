@@ -199,3 +199,52 @@ def test_llm_summary_ajax_surfaces_rate_limit_error(
     delete_all_watches(client)
 
 
+def test_llm_summary_ajax_error_displayed_not_silenced(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Any non-success response from /llm-summary that has an 'error' key
+    should be surfaced — verify the JSON contract (error present, summary absent).
+    Auth errors, timeout errors, etc. should follow the same shape.
+    """
+    from unittest.mock import patch
+
+    _configure_llm(client)
+    ds = client.application.config.get('DATASTORE')
+
+    test_url = url_for('test_endpoint', content_type='text/html', content='v1', _external=True)
+    uuid = ds.add_watch(url=test_url)
+    watch = ds.data['watching'][uuid]
+
+    watch.save_history_blob('old content\n', '3000000000', 'snap-a')
+    watch.save_history_blob('new content\n', '3000000001', 'snap-b')
+
+    import litellm as _real_litellm
+    exc = _real_litellm.AuthenticationError(
+        'litellm.AuthenticationError: Invalid API key.',
+        llm_provider='openai', model='gpt-4o-mini'
+    )
+    with patch('litellm.completion', side_effect=exc):
+        res = client.get(
+            url_for('ui.ui_diff.diff_llm_summary', uuid=uuid,
+                    from_version='3000000000', to_version='3000000001'),
+        )
+
+    assert res.status_code == 500
+    data = res.get_json()
+    assert data['summary'] is None
+    assert data['error']
+    assert 'LLM returned empty summary' not in data['error']
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Global default prompt cascade
+# ---------------------------------------------------------------------------
+
+def _set_global_default(ds, prompt):
+    llm = ds.data['settings']['application'].get('llm') or {}
+    llm['change_summary_default'] = prompt
+    ds.data['settings']['application']['llm'] = llm
+
+
