@@ -3778,3 +3778,65 @@ msgstr "Текстовий вміст поточного знімка, кори�
 msgid "Text that tripped the trigger from filters"
 msgstr "Текст, що викликав спрацювання фільтрів"
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr "Текст для очікування перед спрацьовуванням зміни/сповіщення, весь текст і regex перевіряються без урахування регістру."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr ""
+"Тригерний текст обробляється з результуючого тексту, отриманого після застосування CSS/JSON фільтрів для цього "
+"завдання"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Кожен рядок обробляється окремо (сприймайте кожен рядок як \"АБО\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Примітка: Обгорніть у скісну риску / для використання regex, приклад:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Блокувати виявлення змін, поки цей текст є на сторінці. Весь текст і regex без урахування регістру. Корисно для "
+"очікування, коли товар знову з'явиться в наявності"
+
