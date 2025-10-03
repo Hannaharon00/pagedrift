@@ -775,3 +775,28 @@ components:
         '404':
           description: Web page change monitor (watch) not found
 
+  /watch/{uuid}/difference/{from_timestamp}/{to_timestamp}:
+    get:
+      operationId: getWatchHistoryDiff
+      tags: [Watch History]
+      summary: Get the difference between two snapshots
+      description: |
+        Generate a difference (comparison) between two historical snapshots of a web page change monitor (watch).
+
+        This endpoint compares content between two points in time and returns the differences in your chosen format.
+        Perfect for reviewing what changed between specific versions or comparing recent changes.
+
+        **Timestamp Keywords:**
+        - Use `'latest'` for the most recent snapshot (to_timestamp)
+        - Use `'previous'` for the second-most-recent snapshot (from_timestamp)
+        - Or use specific Unix timestamps from the watch history
+
+        **Format Options:**
+        - `text` (default): Plain text with (removed) and (added) prefixes
+        - `html`: HTML format with (removed) and (added) text
+        - `htmlcolor`: Rich HTML with colored highlights (green for additions, red for deletions)
+
+        **Word-Level Diffing:**
+        - Enable word-level granularity with `word_diff=true` for detailed inline comparisons
+        - Disable with `word_diff=false` for line-level comparisons only (default false/off, line-level mode by default)
+
