@@ -24,6 +24,164 @@ MAX_DIFF_HEIGHT = int(os.getenv('MAX_DIFF_HEIGHT', '8000'))
 MAX_DIFF_WIDTH = int(os.getenv('MAX_DIFF_WIDTH', '900'))
 
 
+def get_asset(asset_name, watch, datastore, request):
+    """
+    Get processor-specific binary assets for streaming.
+
+    Uses ImageDiffHandler for all image operations - no more multiprocessing needed
+    as LibVIPS handles threading/memory internally.
+
+    Supported assets:
+    - 'before': The previous/from screenshot
+    - 'after': The current/to screenshot
+    - 'rendered_diff': The generated diff visualization with red highlights
+
+    Args:
+        asset_name: Name of the asset to retrieve ('before', 'after', 'rendered_diff')
+        watch: Watch object
+        datastore: Datastore object
+        request: Flask request (for from_version/to_version query params)
+
+    Returns:
+        tuple: (binary_data, content_type, cache_control_header) or None if not found
+    """
+    # Get version parameters from query string
+    versions = list(watch.history.keys())
+
+    if len(versions) < 2:
+        return None
+
+    from_version = request.args.get('from_version', versions[-2] if len(versions) >= 2 else versions[0])
+    to_version = request.args.get('to_version', versions[-1])
+
+    # Validate versions exist
+    if from_version not in versions:
+        from_version = versions[-2] if len(versions) >= 2 else versions[0]
+    if to_version not in versions:
+        to_version = versions[-1]
+
+    try:
+        if asset_name == 'before':
+            # Return the 'from' screenshot with bounding box if configured
+            img_bytes = watch.get_history_snapshot(timestamp=from_version)
+            img_bytes = _draw_bounding_box_if_configured(img_bytes, watch, datastore)
+            mime_type = _detect_mime_type(img_bytes)
+            return (img_bytes, mime_type, 'public, max-age=3600')
+
+        elif asset_name == 'after':
+            # Return the 'to' screenshot with bounding box if configured
+            img_bytes = watch.get_history_snapshot(timestamp=to_version)
+            img_bytes = _draw_bounding_box_if_configured(img_bytes, watch, datastore)
+            mime_type = _detect_mime_type(img_bytes)
+            return (img_bytes, mime_type, 'public, max-age=3600')
+
+        elif asset_name == 'rendered_diff':
+            # Generate diff in isolated subprocess to prevent memory leaks
+            # Subprocess provides complete memory isolation
+            from .image_handler import isolated_opencv as process_screenshot_handler
+
+            img_bytes_from = watch.get_history_snapshot(timestamp=from_version)
+            img_bytes_to = watch.get_history_snapshot(timestamp=to_version)
+
+            # Get pixel difference threshold sensitivity (per-watch > global)
+            # This controls how different a pixel must be (0-255 scale) to count as "changed"
+            from changedetectionio import processors
+            processor_instance = processors.difference_detection_processor(datastore, watch.get('uuid'))
+            processor_config = processor_instance.get_extra_watch_config(PROCESSOR_CONFIG_NAME)
+
+            pixel_difference_threshold_sensitivity = processor_config.get('pixel_difference_threshold_sensitivity')
+            if not pixel_difference_threshold_sensitivity:
+                pixel_difference_threshold_sensitivity = datastore.data['settings']['application'].get(
+                    'pixel_difference_threshold_sensitivity', SCREENSHOT_COMPARISON_THRESHOLD_OPTIONS_DEFAULT)
+            try:
+                pixel_difference_threshold_sensitivity = int(pixel_difference_threshold_sensitivity)
+            except (ValueError, TypeError):
+                logger.warning(
+                    f"Invalid pixel_difference_threshold_sensitivity value '{pixel_difference_threshold_sensitivity}', using default")
+                pixel_difference_threshold_sensitivity = SCREENSHOT_COMPARISON_THRESHOLD_OPTIONS_DEFAULT
+
+            logger.debug(f"Pixel difference threshold sensitivity is {pixel_difference_threshold_sensitivity}")
+
+
+            # Generate diff in isolated subprocess (async-safe)
+            import asyncio
+            import threading
+
+            # Async-safe wrapper: runs coroutine in new thread with its own event loop
+            def run_async_in_thread():
+                return asyncio.run(
+                    process_screenshot_handler.generate_diff_isolated(
+                        img_bytes_from,
+                        img_bytes_to,
+                        pixel_difference_threshold=int(pixel_difference_threshold_sensitivity),
+                        blur_sigma=OPENCV_BLUR_SIGMA,
+                        max_width=MAX_DIFF_WIDTH,
+                        max_height=MAX_DIFF_HEIGHT
+                    )
+                )
+
+            # Run in thread to avoid blocking event loop if called from async context
+            result_container = [None]
+            exception_container = [None]
+
+            def thread_target():
+                try:
+                    result_container[0] = run_async_in_thread()
+                except Exception as e:
+                    exception_container[0] = e
+
+            thread = threading.Thread(target=thread_target, daemon=True, name="ImageDiff-Asset")
+            thread.start()
+            thread.join(timeout=60)
+
+            if exception_container[0]:
+                raise exception_container[0]
+
+            diff_image_bytes = result_container[0]
+
+            if diff_image_bytes:
+                # Note: Bounding box drawing on diff not yet implemented
+                return (diff_image_bytes, 'image/jpeg', 'public, max-age=300')
+            else:
+                logger.error("Failed to generate diff in subprocess")
+                return None
+
+        else:
+            # Unknown asset
+            return None
+
+    except Exception as e:
+        logger.error(f"Failed to get asset '{asset_name}': {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        return None
+
+
+def _detect_mime_type(img_bytes):
+    """
+    Detect MIME type using puremagic (same as Watch.py).
+
+    Args:
+        img_bytes: Image bytes
+
+    Returns:
+        str: MIME type (e.g., 'image/png', 'image/jpeg')
+    """
+    try:
+        import puremagic
+        detections = puremagic.magic_string(img_bytes[:2048])
+        if detections:
+            mime_type = detections[0].mime_type
+            logger.trace(f"Detected MIME type: {mime_type}")
+            return mime_type
+        else:
+            logger.trace("No MIME type detected, using 'image/png' fallback")
+            return 'image/png'
+    except Exception as e:
+        logger.warning(f"puremagic detection failed: {e}, using 'image/png' fallback")
+        return 'image/png'
+
+
 def _draw_bounding_box_if_configured(img_bytes, watch, datastore):
     """
     Draw blue bounding box on image if configured in processor settings.
