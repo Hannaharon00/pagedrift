@@ -3,6 +3,9 @@
 
 """Unit tests for html_tools.html_to_text function."""
 
+from changedetectionio.html_tools import html_to_text
+
+
 class TestHtmlToText(unittest.TestCase):
     """Test html_to_text function for correctness and thread-safety."""
 
