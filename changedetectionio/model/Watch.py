@@ -719,3 +719,178 @@ class model(EntityPersistenceMixin, watch_base):
             self._write_atomic(dest, contents)
             logger.trace(f"Saved binary snapshot as {snapshot_fname} ({len(contents)} bytes)")
 
+        # Text data - use brotli compression if enabled and above threshold
+        else:
+            if not skip_brotli and len(contents) > BROTLI_COMPRESS_SIZE_THRESHOLD:
+                # Compressed text
+                import brotli
+                snapshot_fname = f"{snapshot_id}.txt.br"
+                dest = os.path.join(self.data_dir, snapshot_fname)
+
+                if not os.path.exists(dest):
+                    try:
+                        actual_dest = _brotli_save(contents, dest, mode=brotli.MODE_TEXT, fallback_uncompressed=True)
+                        if actual_dest != dest:
+                            snapshot_fname = os.path.basename(actual_dest)
+                    except Exception as e:
+                        logger.error(f"{self.get('uuid')} - Brotli compression failed: {e}")
+                        # Fallback to uncompressed
+                        snapshot_fname = f"{snapshot_id}.txt"
+                        dest = os.path.join(self.data_dir, snapshot_fname)
+                        self._write_atomic(dest, contents.encode('utf-8'))
+            else:
+                # Plain text
+                snapshot_fname = f"{snapshot_id}.txt"
+                dest = os.path.join(self.data_dir, snapshot_fname)
+                self._write_atomic(dest, contents.encode('utf-8'))
+
+        # Append to history.txt atomically
+        index_fname = os.path.join(self.data_dir, self.history_index_filename)
+        index_line = f"{timestamp},{snapshot_fname}\n"
+
+        with open(index_fname, 'a', encoding='utf-8') as f:
+            f.write(index_line)
+            f.flush()
+            os.fsync(f.fileno())
+
+        # Update internal state
+        self.__newest_history_key = timestamp
+        self.__history_n += 1
+
+        # MANUAL CHAIN RESOLUTION: Watch → Global
+        # With Pydantic, this would become: maxlen = watch.resolved_history_snapshot_max_length
+        # @computed_field def resolved_history_snapshot_max_length(self) -> Optional[int]:
+        #     if self.history_snapshot_max_length: return self.history_snapshot_max_length
+        #     if tag := self._get_override_tag(): return tag.history_snapshot_max_length
+        #     return self._datastore.settings.history_snapshot_max_length
+        maxlen = self.get('history_snapshot_max_length') or self.get_global_setting('application', 'history_snapshot_max_length')
+
+        if maxlen and self.__history_n and self.__history_n > maxlen:
+            self.history_trim(newest_n_items=maxlen)
+
+        # @todo bump static cache of the last timestamp so we dont need to examine the file to set a proper ''viewed'' status
+        return snapshot_fname
+
+    @property
+    def has_empty_checktime(self):
+        # using all() + dictionary comprehension
+        # Check if all values are 0 in dictionary
+        res = all(x == None or x == False or x==0 for x in self.get('time_between_check', {}).values())
+        return res
+
+    def threshold_seconds(self):
+        seconds = 0
+        for m, n in mtable.items():
+            x = self.get('time_between_check', {}).get(m, None)
+            if x:
+                seconds += x * n
+        return seconds
+
+    # Iterate over all history texts and see if something new exists
+    # Always applying .strip() to start/end but optionally replace any other whitespace
+    def lines_contain_something_unique_compared_to_history(self, lines: list, ignore_whitespace=False):
+        local_lines = set([])
+        if lines:
+            if ignore_whitespace:
+                if isinstance(lines[0], str): # Can be either str or bytes depending on what was on the disk
+                    local_lines = set([l.translate(TRANSLATE_WHITESPACE_TABLE).lower() for l in lines])
+                else:
+                    local_lines = set([l.decode('utf-8').translate(TRANSLATE_WHITESPACE_TABLE).lower() for l in lines])
+            else:
+                if isinstance(lines[0], str): # Can be either str or bytes depending on what was on the disk
+                    local_lines = set([l.strip().lower() for l in lines])
+                else:
+                    local_lines = set([l.decode('utf-8').strip().lower() for l in lines])
+
+
+        # Compare each lines (set) against each history text file (set) looking for something new..
+        existing_history = set({})
+        for k, v in self.history.items():
+            content = self.get_history_snapshot(filepath=v)
+
+            if ignore_whitespace:
+                alist = set([line.translate(TRANSLATE_WHITESPACE_TABLE).lower() for line in content.splitlines()])
+            else:
+                alist = set([line.strip().lower() for line in content.splitlines()])
+
+            existing_history = existing_history.union(alist)
+
+        # Check that everything in local_lines(new stuff) already exists in existing_history - it should
+        # if not, something new happened
+        return not local_lines.issubset(existing_history)
+
+    def get_screenshot(self):
+        fname = os.path.join(self.data_dir, "last-screenshot.png")
+        if os.path.isfile(fname):
+            return fname
+
+        # False is not an option for AppRise, must be type None
+        return None
+
+    def favicon_is_expired(self):
+        favicon_fname = self.get_favicon_filename()
+        import glob
+        import time
+
+        if not favicon_fname:
+            return True
+        try:
+            fname = next(iter(glob.glob(os.path.join(self.data_dir, "favicon.*"))), None)
+            logger.trace(f"Favicon file maybe found at {fname}")
+            if os.path.isfile(fname):
+                file_age = int(time.time() - os.path.getmtime(fname))
+                logger.trace(f"Favicon file age is {file_age}s")
+                if file_age < FAVICON_RESAVE_THRESHOLD_SECONDS:
+                    return False
+        except Exception as e:
+            logger.critical(f"Exception checking Favicon age {str(e)}")
+            return True
+
+        # Also in the case that the file didnt exist
+        return True
+
+    def bump_favicon(self, url, favicon_base_64: str, mime_type: str = None) -> None:
+        from urllib.parse import urlparse
+        import base64
+        import binascii
+        import re
+
+        MAX_FAVICON_BYTES = 1 * 1024 * 1024  # 1 MB
+
+        MIME_TO_EXT = {
+            'image/png': 'png',
+            'image/x-icon': 'ico',
+            'image/vnd.microsoft.icon': 'ico',
+            'image/jpeg': 'jpg',
+            'image/gif': 'gif',
+            'image/svg+xml': 'svg',
+            'image/webp': 'webp',
+            'image/bmp': 'bmp',
+        }
+
+        extension = None
+
+        # If the caller already resolved the MIME type (e.g. from blob.type or a data URI),
+        # use that directly — it's more reliable than guessing from a URL path.
+        if mime_type:
+            extension = MIME_TO_EXT.get(mime_type.lower().split(';')[0].strip(), None)
+
+        # Fall back to extracting extension from URL path, unless it's a data URI.
+        if not extension and url and not url.startswith('data:'):
+            try:
+                parsed = urlparse(url)
+                filename = os.path.basename(parsed.path)
+                (_base, ext) = filename.lower().strip().rsplit('.', 1)
+                extension = ext
+            except ValueError:
+                logger.warning(f"UUID: {self.get('uuid')} Cant work out file extension from '{url}', defaulting to ico")
+
+        # Handle data URIs: extract MIME type from the URI itself when not already known
+        if not extension and url and url.startswith('data:'):
+            m = re.match(r'^data:([^;]+);base64,', url)
+            if m:
+                extension = MIME_TO_EXT.get(m.group(1).lower(), None)
+
+        if not extension:
+            extension = 'ico'
+
