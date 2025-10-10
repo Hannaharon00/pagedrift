@@ -3431,6 +3431,62 @@ msgid "Browser connection URL"
 msgstr "URL de conexión del navegador"
 
 #: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "Las URL del navegador deben comenzar con wss:// o ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Solicitudes de texto sin formato"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Solicitudes de Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Proxy predeterminado"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Segundos de fluctuación aleatoria ± verificación"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Número de trabajadores de búsqueda"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Debe estar entre 1 y 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Solicita tiempo de espera en segundos"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Debe estar entre 1 y 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Anulaciones de agente de usuario predeterminado"
+
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Se requieren tanto un nombre como una URL de proxy."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Abra la página 'Historial' en una nueva pestaña"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Actualizaciones de UI en tiempo real habilitadas"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Favicones habilitados"
+
+#: changedetectionio/forms.py
 msgid "Use page <title> in watch overview list"
 msgstr "Usar <title> de la página en la lista general de monitores"
 
