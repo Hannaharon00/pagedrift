@@ -76,3 +76,147 @@ Supported Offset Parameters:
     - hours, minutes, seconds, microseconds
     - weekday (0=Monday through 6=Sunday, must be integer)
 
+Note:
+    This extension uses the Arrow library for timezone-aware datetime handling.
+    All timezone names should be valid IANA timezone identifiers (e.g., 'America/New_York').
+"""
+
+from jinja2 import nodes
+from jinja2.ext import Extension
+import os
+
+class TimeExtension(Extension):
+    """
+    Jinja2 Extension providing the {% now %} tag for timezone-aware date/time rendering.
+
+    This extension adds two attributes to the Jinja2 environment:
+    - datetime_format: Default strftime format string (default: '%a, %d %b %Y %H:%M:%S')
+    - default_timezone: Default timezone for rendering (default: TZ env var or 'UTC')
+
+    Both can be overridden after environment creation by setting the attributes directly.
+    """
+
+    tags = {'now'}
+
+    def __init__(self, environment):
+        """Jinja2 Extension constructor."""
+        super().__init__(environment)
+
+        environment.extend(
+            datetime_format='%a, %d %b %Y %H:%M:%S',
+            default_timezone=os.getenv('TZ', 'UTC').strip()
+        )
+
+    def _datetime(self, timezone, operator, offset, datetime_format):
+        """
+        Get current datetime with time offset applied.
+
+        Args:
+            timezone: IANA timezone identifier (e.g., 'UTC', 'America/New_York') or empty string for default
+            operator: '+' for addition or '-' for subtraction
+            offset: Comma-separated offset parameters (e.g., 'hours=2,minutes=30')
+            datetime_format: strftime format string or None to use environment default
+
+        Returns:
+            Formatted datetime string with offset applied
+
+        Example:
+            _datetime('UTC', '+', 'hours=2,minutes=30', '%Y-%m-%d %H:%M:%S')
+            # Returns current time + 2.5 hours
+        """
+        import arrow
+        # Use default timezone if none specified
+        if not timezone or timezone == '':
+            timezone = self.environment.default_timezone
+
+        d = arrow.now(timezone)
+
+        # parse shift params from offset and include operator
+        shift_params = {}
+        for param in offset.split(','):
+            interval, value = param.split('=')
+            shift_params[interval.strip()] = float(operator + value.strip())
+
+        # Fix weekday parameter can not be float
+        if 'weekday' in shift_params:
+            shift_params['weekday'] = int(shift_params['weekday'])
+
+        d = d.shift(**shift_params)
+
+        if datetime_format is None:
+            datetime_format = self.environment.datetime_format
+        return d.strftime(datetime_format)
+
+    def _now(self, timezone, datetime_format):
+        """
+        Get current datetime without any offset.
+
+        Args:
+            timezone: IANA timezone identifier (e.g., 'UTC', 'America/New_York') or empty string for default
+            datetime_format: strftime format string or None to use environment default
+
+        Returns:
+            Formatted datetime string for current time
+
+        Example:
+            _now('America/New_York', '%Y-%m-%d %H:%M:%S')
+            # Returns current time in New York timezone
+        """
+        import arrow
+        # Use default timezone if none specified
+        if not timezone or timezone == '':
+            timezone = self.environment.default_timezone
+
+        if datetime_format is None:
+            datetime_format = self.environment.datetime_format
+        return arrow.now(timezone).strftime(datetime_format)
+
+    def parse(self, parser):
+        """
+        Parse the {% now %} tag and generate appropriate AST nodes.
+
+        This method is called by Jinja2 when it encounters a {% now %} tag.
+        It parses the tag syntax and determines whether to call _now() or _datetime()
+        based on whether offset operations (+ or -) are present.
+
+        Supported syntax:
+            {% now 'timezone' %}                              -> calls _now()
+            {% now 'timezone', 'format' %}                    -> calls _now()
+            {% now 'timezone' + 'offset' %}                   -> calls _datetime()
+            {% now 'timezone' + 'offset', 'format' %}         -> calls _datetime()
+            {% now 'timezone' - 'offset', 'format' %}         -> calls _datetime()
+
+        Args:
+            parser: Jinja2 parser instance
+
+        Returns:
+            nodes.Output: AST output node containing the formatted datetime string
+        """
+        lineno = next(parser.stream).lineno
+
+        node = parser.parse_expression()
+
+        if parser.stream.skip_if('comma'):
+            datetime_format = parser.parse_expression()
+        else:
+            datetime_format = nodes.Const(None)
+
+        if isinstance(node, nodes.Add):
+            call_method = self.call_method(
+                '_datetime',
+                [node.left, nodes.Const('+'), node.right, datetime_format],
+                lineno=lineno,
+            )
+        elif isinstance(node, nodes.Sub):
+            call_method = self.call_method(
+                '_datetime',
+                [node.left, nodes.Const('-'), node.right, datetime_format],
+                lineno=lineno,
+            )
+        else:
+            call_method = self.call_method(
+                '_now',
+                [node, datetime_format],
+                lineno=lineno,
+            )
+        return nodes.Output([call_method], lineno=lineno)
