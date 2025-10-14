@@ -3465,6 +3465,63 @@ msgstr "掃描此 RegEx 的所有監測歷史記錄時找不到相符項目。"
 msgid "Not enough history to compare. Need at least 2 snapshots."
 msgstr "歷史記錄不足以進行比較。至少需要 2 個快照。"
 
+#: changedetectionio/processors/image_ssim_diff/preview.py
+msgid "Preview unavailable - No snapshots captured yet"
+msgstr "無法預覽 - 尚未擷取快照"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Visual / Image screenshot change detection"
+msgstr "視覺 / 圖片截圖變更檢測"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
+msgstr "使用快速 OpenCV 演算法比對截圖，比 SSIM 快 10-100 倍"
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Date"
+msgstr "日期"
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Stock status"
+msgstr "庫存狀態"
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Currency"
+msgstr "貨幣"
+
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr "價格歷史記錄"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "補貨檢測"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "僅有庫存（缺貨 -> 僅有庫存）"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "任何可用性變更"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "關閉，不追蹤可用性 / 補貨"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "低於此價格觸發通知"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "無限制"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "高於此價格觸發通知"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Threshold (%) for price changes since the previous check"
 msgstr "自上次檢查以來價格變化的閾值（%）"
