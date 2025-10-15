@@ -784,6 +784,46 @@ textarea::placeholder {
   min-width: 100%;
 }
 
+@media only screen and (max-width: 760px) {
+  .time-check-widget {
+    tbody {
+      display: grid;
+      grid-template-columns: auto 1fr auto 1fr;
+      gap: 0.625em 0.3125em;
+      align-items: center;
+    }    
+    tr {
+      display: contents; 
+      th {
+        text-align: right;
+        padding-right: 5px;
+      }
+      input[type="number"] {
+        width: 100%;
+        max-width: 5em;
+      }
+    }
+  }
+}
+
+#webdriver_delay {
+    width: 5em;
+}
+
+#api-key {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#api-key-copy {
+  color: var(--color-api-key);
+}
+
+.button-green {
+  background-color: var(--color-background-button-green);
+}
+
 #chrome-extension-link {
   img {
     height: 21px;
