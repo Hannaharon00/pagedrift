@@ -3213,6 +3213,62 @@ msgid "Random jitter seconds ± check"
 msgstr "Detik jitter acak ± pemeriksaan"
 
 #: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr "Sidebar navigasi"
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Pemeriksaan keamanan token akses API diaktifkan"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Anggap halaman kosong sebagai perubahan?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Abaikan Teks"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Abaikan spasi"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "Tangkapan layar: Persentase Perubahan Minimum"
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Harus antara 0 dan 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Kata sandi"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Ukuran halaman"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Harus setidaknya nol (dinonaktifkan)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Format Konten RSS"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "Isi <description> RSS dibuat dari"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "Penimpaan template \"Default sistem\" RSS"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Hapus kata sandi"
+
+#: changedetectionio/forms.py
 msgid "Render anchor tag content"
 msgstr "Render konten tag anchor"
 
