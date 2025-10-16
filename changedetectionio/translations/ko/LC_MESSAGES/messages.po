@@ -3405,6 +3405,62 @@ msgstr "잘못된 템플릿 구문: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "\"%(header)s\" 헤더의 템플릿 구문이 올바르지 않습니다: %(error)s"
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "이름"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "프록시 URL"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "프록시 URL은 http://, https:// 또는 socks5://로 시작해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "브라우저 연결 URL"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "브라우저 URL은 wss:// 또는 ws://로 시작해야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "일반 텍스트 요청"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Chrome 요청"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "기본 프록시"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "확인 시간 무작위 지연(초)"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "가져오기 작업자 수"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "1에서 50 사이여야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "요청 시간 초과(초)"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "1에서 999 사이여야 합니다."
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "기본 사용자 에이전트 재정의"
+
 #: changedetectionio/forms.py
 msgid "Both a name, and a Proxy URL is required."
 msgstr "이름과 프록시 URL이 모두 필요합니다."
