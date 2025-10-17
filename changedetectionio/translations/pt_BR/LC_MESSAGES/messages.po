@@ -3604,6 +3604,64 @@ msgid "Above price to trigger notification"
 msgstr "Preço acima deste valor para disparar notificação"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "Aviso: O conteúdo de"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "e"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "dependem de como o algoritmo de diferença percebe a mudança."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "Por exemplo, uma adição ou remoção pode ser percebida como uma mudança em alguns casos."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "Mais Aqui"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "Adicionar um endereço de e-mail"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "Enviar notificação de teste"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "para não-SSL, ex:"
 
