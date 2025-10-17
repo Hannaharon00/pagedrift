@@ -799,3 +799,106 @@ def preview_extract(watch, datastore, content: str) -> dict | None:
         return None
 
 
+# ---------------------------------------------------------------------------
+# Per-change evaluation
+# ---------------------------------------------------------------------------
+
+def evaluate_change(watch, datastore, diff: str, current_snapshot: str = '') -> dict | None:
+    """
+    Evaluate whether `diff` matches the watch's intent.
+    Returns {'important': bool, 'summary': str} or None if LLM not configured / no intent.
+
+    Results are cached by (intent, diff) hash — each unique diff is evaluated exactly once.
+    """
+    cfg = _runtime_llm_config(datastore)
+    if not cfg:
+        return None
+
+    intent, source = resolve_intent(watch, datastore)
+    if not intent:
+        return None
+
+    if not diff or not diff.strip():
+        return {'important': False, 'summary': ''}
+
+    _check_input_size(diff, _get_max_input_chars(datastore))
+
+    # Cache lookup — evaluations are deterministic once cached
+    cache_key = hashlib.sha256(f"{intent}||{diff}".encode()).hexdigest()
+    cache = watch.get('llm_evaluation_cache') or {}
+    if cache_key in cache:
+        logger.debug(f"LLM cache hit for {watch.get('uuid')} key={cache_key[:8]}")
+        return cache[cache_key]
+
+    # Check global monthly budget before making the call
+    if is_global_token_budget_exceeded(datastore):
+        budget = get_global_token_budget_month(datastore)
+        llm_cfg = datastore.data['settings']['application'].get('llm') or {}
+        used = llm_cfg.get('tokens_this_month', 0)
+        logger.warning(
+            f"LLM evaluate_change skipped for {watch.get('uuid')}: monthly budget {budget:,} reached "
+            f"({used:,} used this month) — passing change through as important"
+        )
+        # Fail open: don't suppress notifications when budget is exhausted
+        return {'important': True, 'summary': ''}
+
+    # Check per-watch cumulative budget before making the call
+    if not _check_token_budget(watch, cfg):
+        # Already over budget — fail open (don't suppress notification)
+        return {'important': True, 'summary': ''}
+
+    url = watch.get('url', '')
+    title = watch.get('page_title') or watch.get('title') or ''
+
+    system_prompt = build_eval_system_prompt()
+    user_prompt = build_eval_prompt(
+        intent=intent,
+        diff=diff,
+        current_snapshot=current_snapshot,
+        url=url,
+        title=title,
+    )
+
+    settings = get_llm_settings(datastore)
+    try:
+        _resp = llm_client.completion(
+            model=cfg['model'],
+            messages=[
+                _cached_system(system_prompt, model=cfg['model']),
+                {'role': 'user', 'content': user_prompt},
+            ],
+            api_key=cfg.get('api_key'),
+            api_base=cfg.get('api_base'),
+            timeout=resolve_llm_timeout(cfg),
+            max_tokens=apply_local_token_multiplier(JSON_RESPONSE_MAX_TOKENS, cfg),
+            extra_body=_thinking_extra_body(cfg['model'], settings.thinking_budget),
+            debug=settings.debug,
+        )
+        raw, tokens = _resp[0], _resp[1]
+        input_tokens  = _resp[2] if len(_resp) > 2 else 0
+        output_tokens = _resp[3] if len(_resp) > 3 else 0
+        result = parse_eval_response(raw)
+    except Exception as e:
+        logger.warning(f"LLM evaluation failed for {watch.get('uuid')}: {e}")
+        # On failure: don't suppress the notification — pass through as important
+        watch['llm_last_tokens_used'] = 0
+        return {'important': True, 'summary': ''}
+
+    # Accumulate token usage: per-watch limit and global monthly budget
+    _check_token_budget(watch, cfg, tokens)
+    watch['llm_last_tokens_used'] = tokens
+    accumulate_global_tokens(datastore, tokens,
+                             input_tokens=input_tokens,
+                             output_tokens=output_tokens,
+                             model=cfg['model'])
+
+    # Store in cache
+    if 'llm_evaluation_cache' not in watch or watch['llm_evaluation_cache'] is None:
+        watch['llm_evaluation_cache'] = {}
+    watch['llm_evaluation_cache'][cache_key] = result
+
+    logger.debug(
+        f"LLM eval {watch.get('uuid')} (intent from {source}): "
+        f"important={result['important']} tokens={tokens} summary={result['summary'][:80]}"
+    )
+    return result
