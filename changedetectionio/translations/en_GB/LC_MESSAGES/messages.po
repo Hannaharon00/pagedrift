@@ -3280,6 +3280,62 @@ msgid "Request body"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr ""
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr ""
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr ""
 
