@@ -3878,6 +3878,66 @@ msgstr "Пополнение запасов и определение цен д�
 msgid "Detects if the product goes back to in-stock"
 msgstr "Определяет, возвращается ли товар на склад"
 
+#: changedetectionio/processors/templates/extract.html
+msgid "will be in its own column, the first column value is always the date."
+msgstr "будет в отдельном столбце, первое значение столбца всегда является датой."
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Webpage Text/HTML, JSON and PDF changes"
+msgstr "Изменения текста веб-страницы/HTML, JSON и PDF"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Detects all text changes where possible"
+msgstr "Обнаруживает все изменения текста, где это возможно."
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "Достигнут лимит отслеживаний ({current}/{limit}). Больше добавить нельзя."
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "Ошибка при получении метаданных для {}."
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "Протокол просмотра не разрешен или неверный формат URL."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "Текст для всех уведомлений — вы можете использовать"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "шаблоны в заголовке, теле и URL-адресе уведомления, а также токены снизу."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Show token/placeholders"
+msgstr "Показать токен/заполнители"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Token"
+msgstr "Токен"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Description"
+msgstr "Описание"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL of the changedetection.io instance you are running."
+msgstr "URL-адрес запущенного вами экземпляраchangetection.io."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL being watched."
+msgstr "URL-адрес, который просматривается."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"The Open Link Override set on the watch, otherwise the same as watch_url. Use this when the watched URL is an API "
+"endpoint or RSS feed but you want to link to the real page."
+msgstr ""
+
 #: changedetectionio/templates/_common_fields.html
 msgid "Warning: Contents of"
 msgstr "Внимание: Содержание"
