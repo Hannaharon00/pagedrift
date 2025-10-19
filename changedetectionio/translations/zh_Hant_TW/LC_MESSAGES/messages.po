@@ -3749,6 +3749,63 @@ msgid "Text that tripped the trigger from filters"
 msgstr "來自過濾器並觸發變更的文字"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "用於非 SSL 即"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "更多幫助和範例請見此處"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "接受下方列出的 <code>%(token)s</code> 預留位置"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr "自訂通知"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "所有通知的標題"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "對於 JSON 承載資料（Payloads），使用"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "且不加引號以進行自動逸出，例如 -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "URL 編碼，使用"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "例如 -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "正規表示式替換，使用"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "如需所有 Jinja2 內建過濾器的完整參考，使用者可以參閱"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "所有通知的格式"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord 不會渲染 HTML — 請切換至"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "純文字"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "format to avoid"
 msgstr "格式，以避免"
 
