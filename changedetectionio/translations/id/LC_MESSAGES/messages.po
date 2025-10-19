@@ -2466,6 +2466,63 @@ msgstr ""
 msgid "Clear"
 msgstr "Bersihkan"
 
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Clear Queue"
+msgstr "Bersihkan Antrean"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Workers & queue"
+msgstr "Worker & antrean"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Elapsed"
+msgstr "Waktu berlalu"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Status"
+msgstr "Status"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "No workers configured (FETCH_WORKERS=0) and queue is empty"
+msgstr "Tidak ada worker yang dikonfigurasi (FETCH_WORKERS=0) dan antrean kosong"
+
+#: changedetectionio/blueprint/ui/templates/queue.html
+msgid "Waiting for new pages to check…"
+msgstr "Menunggu halaman baru untuk diperiksa…"
+
+#: changedetectionio/blueprint/ui/views.py
+#, python-brace-format
+msgid "Warning, URL {} already exists"
+msgstr "Peringatan, URL {} sudah ada"
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added in Paused state, saving will unpause."
+msgstr "Monitor ditambahkan dalam keadaan Dijeda, menyimpan akan melanjutkannya."
+
+#: changedetectionio/blueprint/ui/views.py
+msgid "Watch added."
+msgstr "Monitor ditambahkan."
+
+#: changedetectionio/blueprint/watchlist/__init__.py
+msgid "records"
+msgstr "rekaman"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Pause checks"
+msgstr "Jeda pemeriksaan"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnPause checks"
+msgstr "Lanjutkan pemeriksaan"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "Mute notification"
+msgstr "Bisukan notifikasi"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
+msgid "UnMute notification"
+msgstr "Aktifkan kembali notifikasi"
+
 #: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html
 msgid "Goto web page"
 msgstr "Buka halaman web"
