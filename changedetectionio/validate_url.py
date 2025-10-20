@@ -200,3 +200,14 @@ def extract_url_hostnames(url):
     return hostnames
 
 
+def validate_fetch_url(url):
+    """is_fetch_url_allowed() as an assertion - raises ValueError with the reason.
+
+    Use at fetch entry points that should abort loudly (the message surfaces to the user as a
+    watch error or an HTTP 400). Blocks on DNS; from async code use validate_fetch_url_async().
+    """
+    ok, reason = is_fetch_url_allowed(url)
+    if not ok:
+        raise ValueError(reason)
+
+
