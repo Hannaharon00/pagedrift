@@ -40,3 +40,77 @@ def _make_watch_with_three_snapshots(client):
     return uuid, watch
 
 
+# ---------------------------------------------------------------------------
+# Multi-segment diff content reaches the LLM
+# ---------------------------------------------------------------------------
+
+def test_all_changes_sends_multi_segment_diff_to_llm(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    With all_changes=1 the diff passed to summarise_change must contain
+    two pairwise segments (TS1→TS2 and TS2→TS3), not just a single diff.
+    """
+    _configure_llm(client)
+    uuid, _ = _make_watch_with_three_snapshots(client)
+
+    captured_diff = {}
+
+    def fake_summarise(watch, datastore, diff, current_snapshot=None):
+        captured_diff['diff'] = diff
+        return 'Multi-step summary.'
+
+    with patch('changedetectionio.llm.evaluator.summarise_change', side_effect=fake_summarise):
+        res = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=1,
+        ))
+
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['summary'] == 'Multi-step summary.'
+    assert data['error'] is None
+
+    diff_sent = captured_diff.get('diff', '')
+    # Both segment headers must be present
+    assert f'{TS1} \u2192 {TS2}' in diff_sent, f"Missing TS1→TS2 header in: {diff_sent!r}"
+    assert f'{TS2} \u2192 {TS3}' in diff_sent, f"Missing TS2→TS3 header in: {diff_sent!r}"
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Single-range diff (all_changes=0, the default)
+# ---------------------------------------------------------------------------
+
+def test_default_mode_sends_single_diff_to_llm(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    With all_changes=0 (or omitted) summarise_change receives a plain
+    unified diff between from_version and to_version only — no segment headers.
+    """
+    _configure_llm(client)
+    uuid, _ = _make_watch_with_three_snapshots(client)
+
+    captured_diff = {}
+
+    def fake_summarise(watch, datastore, diff, current_snapshot=None):
+        captured_diff['diff'] = diff
+        return 'Single-range summary.'
+
+    with patch('changedetectionio.llm.evaluator.summarise_change', side_effect=fake_summarise):
+        res = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=0,
+        ))
+
+    assert res.status_code == 200
+    diff_sent = captured_diff.get('diff', '')
+    assert '\u2192' not in diff_sent, "Segment headers should not appear in single-range mode"
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Cache key separation: all_changes=1 and all_changes=0 don't share cache
+# ---------------------------------------------------------------------------
+
