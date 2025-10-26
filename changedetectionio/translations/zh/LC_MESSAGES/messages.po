@@ -3344,6 +3344,62 @@ msgstr "模板语法无效：%(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr "“%(header)s”请求头中的模板语法无效：%(error)s"
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "名称"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "代理 URL"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "代理 URL 必须以 http://、https:// 或 socks5:// 开头"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "浏览器连接 URL"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "浏览器 URL 必须以 wss:// 或 ws:// 开头"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "纯文本请求"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Chrome 请求"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "默认代理"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "检查间隔随机抖动秒数 ±"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "抓取工作线程数"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "应介于 1 到 50 之间"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "请求超时（秒）"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "应介于 1 到 999 之间"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "默认 User-Agent 覆盖"
+
 #: changedetectionio/languages.py
 msgid "in 1w"
 msgstr "1周后"
