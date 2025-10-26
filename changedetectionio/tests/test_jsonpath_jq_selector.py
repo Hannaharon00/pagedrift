@@ -332,6 +332,51 @@ def test_check_json_without_filter(client, live_server, measure_memory_usage, da
 
     delete_all_watches(client)
 
+def check_json_filter(json_filter, client, live_server, datastore_path):
+    set_original_response(datastore_path=datastore_path)
+
+
+    delete_all_watches(client)
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type="application/json", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={"include_filters": json_filter.splitlines()})
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # Check it saved
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+    )
+    assert bytes(escape(json_filter).encode('utf-8')) in res.data
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+    #  Make a change
+    set_modified_response(datastore_path=datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # It should have 'has-unread-changes' still
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' in res.data
+
+    # Should not see this, because its not in the JSONPath we entered
+    res = client.get(url_for("ui.ui_diff.diff_history_page", uuid=uuid))
+
+    # But the change should be there, tho its hard to test the change was detected because it will show old and new versions
+    # And #462 - check we see the proper utf-8 string there
+    assert "Örnsköldsvik".encode('utf-8') in res.data
+
+    delete_all_watches(client)
+
+def test_check_jsonpath_filter(client, live_server, measure_memory_usage, datastore_path):
+    check_json_filter('json:boss.name', client, live_server, datastore_path=datastore_path)
+
 def test_check_jq_filter(client, live_server, measure_memory_usage, datastore_path):
     if jq_support:
         check_json_filter('jq:.boss.name', client, live_server, datastore_path=datastore_path)
