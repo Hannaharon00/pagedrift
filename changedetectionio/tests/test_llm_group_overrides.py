@@ -498,3 +498,149 @@ def test_watch_edit_has_ai_enabled_checkbox(
     delete_all_watches(client)
 
 
+def test_group_edit_can_switch_ai_off_for_the_whole_group(
+        client, live_server, measure_memory_usage, datastore_path):
+    """The group's control has an explicit "Off for every watch" state — the #4204 ask."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    tag_uuid = ds.add_tag('AI Toggle Group')
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    assert 'Off for every watch' in _page_text(res), \
+        "group edit page cannot switch AI off for all of its watches (#4204)"
+
+    delete_all_watches(client)
+
+
+def test_group_edit_greys_out_the_prompts_unless_ai_is_on(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Same cue as the restock group override (#overrides_watch + toggleOpacity): the prompts
+    only mean something in the "On" state, so they are greyed out otherwise. The state
+    changes without a reload, so this pins the JS wiring rather than the opacity value.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    tag_uuid = ds.add_tag('Dimmed Group')
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    body = res.data.decode('utf-8', errors='replace')
+
+    assert "toggleOpacityByRadioValue('llm_backend_profile', 'true'" in body, \
+        "group edit page lost the wiring that greys out the AI prompts"
+    # ..and the elements it drives are all present
+    for element_id in ('llm_backend_profile_true', 'change-intent-notify-me-when', 'change-summary'):
+        assert f'id="{element_id}"' in body, f"#{element_id} missing — opacity toggle would be a no-op"
+
+    delete_all_watches(client)
+
+
+def test_watch_edit_shows_which_group_decided_the_ai_switch(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A group that has taken the decision decides for its watches, so the watch edit page says
+    which group is in charge and what it decided — and that explanation must stay readable
+    (only the checkbox it describes is dimmed).
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    watch_uuid = _create_watch(client, url_for('test_endpoint', _external=True), api_token)
+
+    tag_uuid = _add_tag_with_llm(ds, 'Tech news', ai=False)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    text = _page_text(res)
+    assert 'decides this: AI is OFF for every watch in that group.' in text
+
+    # The group name links to that group's edit page, straight to its AI tab
+    tag_edit_url = url_for('tags.form_tag_edit', uuid=tag_uuid)
+    assert f'<a href="{tag_edit_url}#ai-llm">Tech news</a>' in text, \
+        "the group name in the note must link to the group's edit page"
+
+    # The note itself is not inside the dimmed wrapper
+    note_pos = text.find('decides this: AI is OFF')
+    dimmed_pos = text.find('style="opacity: 0.6;"', text.find('id="llm-ai-enabled-row"'))
+    assert dimmed_pos != -1, "the overridden checkbox should be dimmed"
+    assert text.find('</div>', dimmed_pos) < note_pos, \
+        "the 'Group X decides this' note must not be greyed out with the checkbox"
+
+    # Group switched to On → the note reflects that, still linked
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = True
+    text = _page_text(client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid)))
+    assert 'decides this: AI is ON for every watch in that group.' in text
+    assert f'<a href="{tag_edit_url}#ai-llm">Tech news</a>' in text
+
+    # ..and the watch's own checkbox is disabled, showing what the group decided
+    body = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid)).data.decode('utf-8', errors='replace')
+    checkbox = _input_tags(body, 'llm_backend_profile')[0]
+    assert 'disabled' in checkbox, "the group decides, so the watch's own checkbox must be disabled"
+    assert 'checked' in checkbox, "disabled checkbox must show the state the group decided (ON)"
+
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = False
+    body = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid)).data.decode('utf-8', errors='replace')
+    checkbox = _input_tags(body, 'llm_backend_profile')[0]
+    assert 'disabled' in checkbox and 'checked' not in checkbox, \
+        "disabled checkbox must show the state the group decided (OFF)"
+
+    # ..and with the group leaving it to each watch, the watch is on its own again
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = None
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert 'decides this' not in _page_text(res)
+
+    delete_all_watches(client)
+
+
+def test_watch_own_ai_switch_survives_being_overridden_by_a_group(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    While a group decides, the watch's checkbox is disabled — and a disabled checkbox is not
+    POSTed, which for a checkbox reads as "off". Saving the watch must therefore NOT quietly
+    rewrite its own preference: it has to come back unchanged once the group stops deciding.
+    """
+    from changedetectionio.llm.evaluator import llm_enabled_for_watch
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    # Watch says AI on (the default); the group overrules it with "off"
+    tag_uuid = _add_tag_with_llm(ds, 'Deciding Group', ai=False)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+    assert ds.data['watching'][watch_uuid].get('llm_backend_profile') is True
+    assert llm_enabled_for_watch(ds.data['watching'][watch_uuid], ds) == (False, 'Deciding Group')
+
+    # Save the page exactly as the browser would: the disabled checkbox sends nothing at all
+    res = client.post(
+        url_for('ui.ui_edit.edit_page', uuid=watch_uuid),
+        data={'url': test_url, 'fetch_backend': 'html_requests',
+              'time_between_check_use_default': 'y'},
+        follow_redirects=True,
+    )
+    assert b'Updated watch' in res.data
+
+    watch = ds.data['watching'][watch_uuid]
+    assert watch.get('llm_backend_profile') is True, \
+        "saving while a group decides must not overwrite the watch's own AI preference"
+    # Not even a hand-crafted POST can write it while it isn't user-editable
+    res = client.post(
+        url_for('ui.ui_edit.edit_page', uuid=watch_uuid),
+        data={'url': test_url, 'fetch_backend': 'html_requests',
+              'time_between_check_use_default': 'y', 'llm_backend_profile': ''},
+        follow_redirects=True,
+    )
+    assert b'Updated watch' in res.data
+    watch = ds.data['watching'][watch_uuid]
+    assert watch.get('llm_backend_profile') is True
+    # The group still wins for now...
+    assert llm_enabled_for_watch(watch, ds) == (False, 'Deciding Group')
+    # ..and when the group stops deciding, the watch's untouched preference applies again
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = None
+    assert llm_enabled_for_watch(watch, ds) == (True, 'watch')
+
+    delete_all_watches(client)
+
+
