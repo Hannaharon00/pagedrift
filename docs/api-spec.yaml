@@ -800,3 +800,155 @@ components:
         - Enable word-level granularity with `word_diff=true` for detailed inline comparisons
         - Disable with `word_diff=false` for line-level comparisons only (default false/off, line-level mode by default)
 
+            This parameter is an alternative to `word_diff` for better alignment with the UI.
+            If both are specified, `type=diffWords` will enable word-level diffing.
+          schema:
+            type: string
+            enum: [diffLines, diffWords]
+            default: diffLines
+        - name: changesOnly
+          in: query
+          description: |
+            When enabled, only show lines/content that changed (no surrounding context).
+            When disabled, include unchanged lines for context around changes.
+            Accepts: true, false, 1, 0, yes, no, on, off
+          schema:
+            type: string
+            enum: ["true", "false", "1", "0", "yes", "no", "on", "off"]
+            default: "true"
+        - name: ignoreWhitespace
+          in: query
+          description: |
+            When enabled, ignore whitespace-only changes (spaces, tabs, newlines).
+            Useful for focusing on content changes and ignoring formatting differences.
+            Accepts: true, false, 1, 0, yes, no, on, off
+          schema:
+            type: string
+            enum: ["true", "false", "1", "0", "yes", "no", "on", "off"]
+            default: "false"
+        - name: removed
+          in: query
+          description: |
+            Include removed/deleted content in the diff output.
+            When disabled, content that was deleted will not appear in the diff.
+            Accepts: true, false, 1, 0, yes, no, on, off
+          schema:
+            type: string
+            enum: ["true", "false", "1", "0", "yes", "no", "on", "off"]
+            default: "true"
+        - name: added
+          in: query
+          description: |
+            Include added/new content in the diff output.
+            When disabled, content that was added will not appear in the diff.
+            Accepts: true, false, 1, 0, yes, no, on, off
+          schema:
+            type: string
+            enum: ["true", "false", "1", "0", "yes", "no", "on", "off"]
+            default: "true"
+        - name: replaced
+          in: query
+          description: |
+            Include replaced/modified content in the diff output.
+            When disabled, content that was modified (changed from one value to another) will not appear in the diff.
+            Accepts: true, false, 1, 0, yes, no, on, off
+          schema:
+            type: string
+            enum: ["true", "false", "1", "0", "yes", "no", "on", "off"]
+            default: "true"
+      responses:
+        '200':
+          description: Formatted diff between the two snapshots
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Plain text diff with change markers
+            text/html:
+              schema:
+                type: string
+                description: HTML formatted diff with styling
+        '400':
+          description: Invalid format parameter or invalid request
+        '404':
+          description: Watch not found, timestamps not found, or insufficient history
+
+  /watch/{uuid}/favicon:
+    get:
+      operationId: getWatchFavicon
+      tags: [Favicon]
+      summary: Get watch favicon
+      description: Get the favicon for a web page change monitor (watch) as displayed in the watch overview list.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/favicon" \
+              -H "x-api-key: YOUR_API_KEY" \
+              --output favicon.ico
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            response = requests.get(f'http://localhost:5000/api/v1/watch/{uuid}/favicon', headers=headers)
+            with open('favicon.ico', 'wb') as f:
+                f.write(response.content)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Favicon binary data
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Favicon not found
+
+  /tags:
+    get:
+      operationId: listTags
+      tags: [Group / Tag Management]
+      summary: List all tags
+      description: Return list of available tags/groups
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/tags" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            response = requests.get('http://localhost:5000/api/v1/tags', headers=headers)
+            print(response.json())
+      responses:
+        '200':
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Tag'
+              example:
+                "550e8400-e29b-41d4-a716-446655440000":
+                  uuid: "550e8400-e29b-41d4-a716-446655440000"
+                  title: "Production Sites"
+                  notification_urls: ["mailto:admin@example.com"]
+                  notification_muted: false
+                "330e8400-e29b-41d4-a716-446655440001":
+                  uuid: "330e8400-e29b-41d4-a716-446655440001"
+                  title: "News Sources"
+                  notification_urls: ["discord://webhook_id/webhook_token"]
+                  notification_muted: false
+
