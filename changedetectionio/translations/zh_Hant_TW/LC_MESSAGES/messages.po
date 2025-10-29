@@ -3748,3 +3748,66 @@ msgstr "警告，您設定的一個或多個「天」持續時間將延伸至隔
 msgid "This could have unintended consequences."
 msgstr "這可能會產生非預期的後果。"
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "List each new item added with its name and price. Translate to English."
+msgstr "列出每個新新增項目的名稱與價格。翻譯成英文。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Summarise what events were added or cancelled. Two sentences maximum."
+msgstr "摘要新增或取消了哪些活動。最多兩句話。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe the price change: old price, new price, percentage difference."
+msgstr "描述價格變化：舊價格、新價格、百分比差異。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "AI"
+msgstr "AI"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI Change Intent and AI "
+"Change Summary."
+msgstr "請在 <a href=\"%(url)s\">設定 → AI / LLM</a> 中設定 AI / LLM 供應商，以啟用 AI 變更意圖與 AI 變更摘要功能。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI features for this group."
+msgstr "請在 <a href=\"%(url)s\">設定 → AI / LLM</a> 中設定 AI / LLM 供應商，以啟用此群組的 AI 功能。"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Note!: //text() function does not work where the <element> contains <![CDATA[]]>"
+msgstr "注意！：若 <element> 包含 <![CDATA[]]>，則 //text() 函數將無法運作"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "One CSS, xPath 1 & 2, JSON Path/JQ selector per line, <i>any</i> rules that matches will be used."
+msgstr "每行一個 CSS、xPath 1 與 2、JSON Path / JQ 選擇器，將使用<i>任何</i>相符的規則。"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Limit text to this CSS rule, only text matching this CSS rule is included."
+msgstr "將文字限制在此 CSS 規則中，僅包含符合此 CSS 規則的文字。"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix with <code>json:</code>, use <code>json:$</code> to force re-formatting if required,"
+msgstr "字首加上 <code>json:</code>，如果需要，使用 <code>json:$</code> 強制重新格式化，"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your JSONPath here"
+msgstr "在此處測試您的 JSONPath"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix <code>jqraw:</code> outputs the results as text instead of a JSON list."
+msgstr "字首 <code>jqraw:</code> 將結果輸出為純文字，而非 JSON 列表。"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "jq support not installed"
+msgstr "未安裝 jq 支援"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid ""
+"Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
+" rule starts with an XPath function: Prefix with <code>xpath:</code>"
+msgstr "將文字限制在此 XPath 規則中，只需以正斜線開頭即可。若要明確指定要使用的 XPath，或 XPath 規則以 XPath 函數開頭：字首加上 <code>xpath:</code>"
+
