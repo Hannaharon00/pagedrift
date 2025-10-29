@@ -316,6 +316,61 @@ jobs:
           docker network create changedet-network
           docker run --network changedet-network -d -p 11025:11025 -p 11080:11080 --hostname mailserver test-changedetectionio bash -c 'pip3 install aiosmtpd && python changedetectionio/tests/smtp/smtp-test-server.py'
 
+          # Extract the watch UUID from response
+          WATCH_UUID=$(echo "$BODY" | grep -o '"uuid": *"[^"]*"' | cut -d'"' -f4)
+          echo "✓ Watch UUID: $WATCH_UUID"
+
+          # Update the watch via PUT through nginx proxy subpath
+          echo "Updating watch via PUT to /changedet-sub/api/v1/watch/${WATCH_UUID}"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "http://localhost:8080/changedet-sub/api/v1/watch/${WATCH_UUID}" \
+            -H "x-api-key: ${API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "paused": true
+            }')
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "ERROR: Expected HTTP 200, got $HTTP_CODE"
+            echo "Response: $BODY"
+            exit 1
+          fi
+
+          if echo "$BODY" | grep -q 'OK'; then
+            echo "✓ Watch updated successfully (HTTP 200, response: OK)"
+          else
+            echo "ERROR: Expected response 'OK', got: $BODY"
+            echo "Response: $BODY"
+            exit 1
+          fi
+
+          # Verify the watch is paused via GET
+          echo "Verifying watch is paused via GET"
+          RESPONSE=$(curl -s "http://localhost:8080/changedet-sub/api/v1/watch/${WATCH_UUID}" \
+            -H "x-api-key: ${API_KEY}")
+
+          if echo "$RESPONSE" | grep -q '"paused": *true'; then
+            echo "✓ Watch is paused as expected"
+          else
+            echo "ERROR: Watch paused state not confirmed"
+            echo "Response: $RESPONSE"
+            exit 1
+          fi
+
+          echo "✓ API tests through nginx subpath completed successfully"
+
+      - name: Cleanup nginx test
+        if: always()
+        run: |
+          docker logs nginx-proxy || true
+          docker logs changedet-app || true
+          docker stop nginx-proxy changedet-app || true
+          docker rm nginx-proxy changedet-app || true
+
+
+
   # Proxy tests
   proxy-tests:
     runs-on: ubuntu-latest
