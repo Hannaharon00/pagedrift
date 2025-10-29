@@ -2951,6 +2951,63 @@ msgstr "Migawka jest zbyt duża, aby obliczyć statystyki edycji — pomijam."
 msgid "Unable to calculate Levenshtein metrics"
 msgstr "Nie można obliczyć metryk Levenshteina"
 
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Levenshtein Text Similarity Details"
+msgstr "Szczegóły podobieństwa tekstu metodą Levenshteina"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Raw distance (edits needed)"
+msgstr "Surowa odległość (wymagane edycje)"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Similarity ratio"
+msgstr "Współczynnik podobieństwa"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Percent similar"
+msgstr "Procent podobieństwa"
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid ""
+"Levenshtein metrics compare the last two snapshots, measuring how many character edits are needed to transform one "
+"into the other."
+msgstr ""
+"Metryki Levenshteina porównują dwie ostatnie migawki, określając liczbę zmian znaków potrzebnych do przekształcenia "
+"jednej w drugą."
+
+#: changedetectionio/conditions/plugins/levenshtein_plugin.py
+msgid "Error calculating Levenshtein metrics"
+msgstr "Błąd podczas obliczania metryk Levenshteina"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count of content"
+msgstr "Liczba słów w treści"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Content Analysis"
+msgstr "Analiza treści"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count (latest snapshot)"
+msgstr "Liczba słów (najnowsza migawka)"
+
+#: changedetectionio/conditions/plugins/wordcount_plugin.py
+msgid "Word count is a simple measure of content length, calculated by splitting text on whitespace."
+msgstr "Liczba słów to prosta miara długości treści, obliczana przez podzielenie tekstu według białych znaków."
+
+#: changedetectionio/content_fetchers/requests.py
+msgid "Basic fast Plaintext/HTTP Client"
+msgstr "Prosty klient tekstu jawnego/HTTP"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview-single-row.html changedetectionio/flask_app.py
+#: changedetectionio/realtime/socket_server.py
+msgid "Not yet"
+msgstr "Jeszcze nie"
+
+#: changedetectionio/flask_app.py
+msgid "0 seconds"
+msgstr "0 sekund"
+
 #: changedetectionio/flask_app.py
 msgid "year"
 msgstr "rok"
