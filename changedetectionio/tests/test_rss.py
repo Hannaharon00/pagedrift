@@ -365,3 +365,45 @@ def test_rss_single_watch_feed(client, live_server, measure_memory_usage, datast
             f"pubDate {item.findtext('pubDate')} does not match snapshot timestamp {guid_timestamp}"
 
 
+@pytest.mark.skipif(not hasattr(time, 'tzset'), reason="Changing TZ at runtime needs a POSIX platform")
+@pytest.mark.parametrize("tz_name", ['UTC', 'Europe/Athens', 'America/New_York', 'Australia/Sydney'])
+def test_rss_pubdate_is_utc_regardless_of_local_timezone(tz_name):
+    """#4309 - datetime.fromtimestamp() without tz= returns local wall-clock time, and relabelling
+    that as UTC shifts every pubDate by the local offset (items appear in the future on TZ=Europe/Athens).
+
+    No live server needed - this drives populate_feed_entry() directly under several timezones."""
+    import xml.etree.ElementTree as ET
+    from feedgen.feed import FeedGenerator
+    from ..blueprint.rss._util import populate_feed_entry
+
+    timestamp = 1700000000  # Tue, 14 Nov 2023 22:13:20 UTC
+
+    original_tz = os.environ.get('TZ')
+    try:
+        os.environ['TZ'] = tz_name
+        time.tzset()
+
+        fg = FeedGenerator()
+        fg.title('test')
+        fg.link(href='https://example.com', rel='self')
+        fg.description('test')
+        fe = fg.add_entry()
+
+        populate_feed_entry(fe=fe,
+                            watch={'uuid': 'fake-uuid', 'url': 'https://example.com'},
+                            content='some content',
+                            guid=f'fake-uuid/{timestamp}',
+                            timestamp=timestamp)
+
+        pub_date = ET.fromstring(fg.rss_str()).findtext('.//item/pubDate')
+    finally:
+        if original_tz is None:
+            os.environ.pop('TZ', None)
+        else:
+            os.environ['TZ'] = original_tz
+        time.tzset()
+
+    # parsedate_to_datetime() honours the offset in the header, so this compares real instants
+    assert email.utils.parsedate_to_datetime(pub_date).timestamp() == timestamp, \
+        f"With TZ={tz_name} the feed said {pub_date}, expected the instant {timestamp}"
+
