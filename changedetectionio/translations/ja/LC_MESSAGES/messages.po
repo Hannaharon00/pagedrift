@@ -3930,3 +3930,34 @@ msgstr "警告：1つ以上の「曜日」の期間が翌日まで延長され�
 msgid "This could have unintended consequences."
 msgstr "これは意図しない結果を引き起こす可能性があります。"
 
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Search, or Use Alt+S Key"
+msgstr "検索、またはAlt+Sキーを使用"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Queue"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Live activity"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "A new version is available"
+msgstr "新しいバージョンが利用可能です"
+
+#: changedetectionio/validate_url.py
+msgid "API Base URL is not a valid http(s) URL."
+msgstr ""
+
+#: changedetectionio/validate_url.py
+msgid ""
+"API Base URL resolves to a private, loopback, link-local or reserved IP address and was blocked to prevent SSRF. To "
+"allow LLM endpoints on private networks (e.g. a local Ollama server) set the environment variable "
+"ALLOW_IANA_RESTRICTED_ADDRESSES=true and restart."
+msgstr ""
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "Main settings"
+msgstr "メイン設定"
+
