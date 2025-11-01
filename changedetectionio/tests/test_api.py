@@ -954,6 +954,33 @@ def test_api_restock_processor_config(client, live_server, measure_memory_usage,
     assert res.status_code == 200
     assert b'8888888' in res.data, "price_change_min set via PUT should appear in the UI edit form"
 
+    # An invalid enum value inside processor_config_restock_diff should be rejected by the spec
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({
+            "processor_config_restock_diff": {
+                "in_stock_processing": "not_a_valid_enum_value"
+            }
+        }),
+    )
+    assert res.status_code == 400, "Invalid enum value in processor config should be rejected"
+    assert b'Validation failed' in res.data, "Rejection should come from OpenAPI spec validation layer"
+
+    # A completely unknown field should be rejected (either by OpenAPI spec validation or
+    # the application-level field filter — both are acceptable gatekeepers)
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"field_that_is_not_in_the_spec_at_all": "some value"}),
+    )
+    assert res.status_code == 400, "Unknown fields should be rejected"
+    assert (b'Validation failed' in res.data or b'Unknown field' in res.data), \
+        "Rejection should come from either the OpenAPI spec validation layer or application field filter"
+
+    delete_all_watches(client)
+
+
 def test_api_watch_get_returns_resolved_restock_processor_config(client, live_server, measure_memory_usage, datastore_path):
     """
     GET /api/v1/watch/{uuid} must include processor_config_restock_diff and
