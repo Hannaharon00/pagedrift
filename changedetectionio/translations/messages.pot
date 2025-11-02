@@ -3714,3 +3714,60 @@ msgstr ""
 msgid "only supports very limited HTML and can fail when extra tags are sent,"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr ""
+

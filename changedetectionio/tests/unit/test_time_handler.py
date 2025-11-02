@@ -627,3 +627,5 @@ class TestWeekdayEnum(unittest.TestCase):
         self.assertEqual(time_handler.Weekday['Sunday'], 6)
 
 
+if __name__ == '__main__':
+    unittest.main()
