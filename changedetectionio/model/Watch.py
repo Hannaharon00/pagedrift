@@ -894,6 +894,122 @@ class model(EntityPersistenceMixin, watch_base):
         if not extension:
             extension = 'ico'
 
+        fname = os.path.join(self.data_dir, f"favicon.{extension}")
+
+        try:
+            # validate=True makes sure the string only contains valid base64 chars
+            decoded = base64.b64decode(favicon_base_64, validate=True)
+        except (binascii.Error, ValueError) as e:
+            logger.warning(f"UUID: {self.get('uuid')} FavIcon save data (Base64) corrupt? {str(e)}")
+            return None
+
+        if len(decoded) > MAX_FAVICON_BYTES:
+            logger.warning(f"UUID: {self.get('uuid')} Favicon too large ({len(decoded)} bytes), skipping")
+            return None
+
+        try:
+            with open(fname, 'wb') as f:
+                f.write(decoded)
+
+            # Invalidate module-level favicon filename cache for this watch
+            _FAVICON_FILENAME_CACHE.pop(self.data_dir, None)
+
+            # A signal that could trigger the socket server to update the browser also
+            watch_check_update = signal('watch_favicon_bump')
+            if watch_check_update:
+                watch_check_update.send(watch_uuid=self.get('uuid'))
+
+        except Exception as e:
+            logger.warning(f"UUID: {self.get('uuid')} error saving FavIcon to {fname} - {str(e)}")
+            return None
+
+        # @todo - Store some checksum and only write when its different
+        logger.debug(f"UUID: {self.get('uuid')} updated favicon to at {fname}")
+
+    def get_favicon_filename(self) -> str | None:
+        """
+        Find any favicon.* file in the watch data directory.
+
+        Uses a module-level cache keyed by data_dir to survive Watch object recreation,
+        deepcopy (which drops instance attrs), and concurrent request races.
+        Invalidated when a favicon is saved or the watch history is cleared.
+
+        Returns:
+            str: Basename of the favicon file, or None if not found.
+        """
+        if self.data_dir in _FAVICON_FILENAME_CACHE:
+            return _FAVICON_FILENAME_CACHE[self.data_dir]
+
+        import glob
+        files = glob.glob(os.path.join(self.data_dir, "favicon.*"))
+        fname = os.path.basename(files[0]) if files else None
+        _FAVICON_FILENAME_CACHE[self.data_dir] = fname
+        return fname
+
+    def get_screenshot_as_thumbnail(self, max_age=3200):
+        """Return path to a square thumbnail of the most recent screenshot.
+
+        Creates a 150x150 pixel thumbnail from the top portion of the screenshot.
+
+        Args:
+            max_age: Maximum age in seconds before recreating thumbnail
+
+        Returns:
+            Path to thumbnail or None if no screenshot exists
+        """
+        import os
+        import time
+
+        thumbnail_path = os.path.join(self.data_dir, "thumbnail.jpeg")
+        top_trim = 500  # Pixels from top of screenshot to use
+
+        screenshot_path = self.get_screenshot()
+        if not screenshot_path:
+            return None
+
+        # Reuse thumbnail if it's fresh and screenshot hasn't changed
+        if os.path.isfile(thumbnail_path):
+            thumbnail_mtime = os.path.getmtime(thumbnail_path)
+            screenshot_mtime = os.path.getmtime(screenshot_path)
+
+            if screenshot_mtime <= thumbnail_mtime and time.time() - thumbnail_mtime < max_age:
+                return thumbnail_path
+
+        try:
+            from PIL import Image
+
+            with Image.open(screenshot_path) as img:
+                # Crop top portion first (full width, top_trim height)
+                top_crop_height = min(top_trim, img.height)
+                img = img.crop((0, 0, img.width, top_crop_height))
+
+                # Create a smaller intermediate image (to reduce memory usage)
+                aspect = img.width / img.height
+                interim_width = min(top_trim, img.width)
+                interim_height = int(interim_width / aspect) if aspect > 0 else top_trim
+                img = img.resize((interim_width, interim_height), Image.NEAREST)
+
+                # Convert to RGB if needed
+                if img.mode != 'RGB':
+                    img = img.convert('RGB')
+
+                # Crop to square from top center
+                square_size = min(img.width, img.height)
+                left = (img.width - square_size) // 2
+                img = img.crop((left, 0, left + square_size, square_size))
+
+                # Final resize to exact thumbnail size with better filter
+                img = img.resize((350, 350), Image.BILINEAR)
+
+                # Save with optimized settings
+                img.save(thumbnail_path, "JPEG", quality=75, optimize=True)
+
+            return thumbnail_path
+
+        except Exception as e:
+            logger.error(f"Error creating thumbnail for {self.get('uuid')}: {str(e)}")
+            return None
+
         return False
 
 
