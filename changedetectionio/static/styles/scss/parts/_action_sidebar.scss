@@ -315,6 +315,31 @@ body.actionside-bar-on {
     }
   }
 
+}
+
+.action-icon {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.action-badge {
+  flex: 0 0 auto;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+}
+
 // Dark-mode overrides handled via CSS vars in parts/_variables.scss
 
 // Mobile drawer reuses the markup but renders labels inline (full rows)
