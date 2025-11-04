@@ -3650,6 +3650,60 @@ msgstr ""
 msgid "When monthly token budget is reached"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx para extraer"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Extraer como CSV"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr ""
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Restock & Price Detection"
 msgstr "Reabastecimiento y detección de precios"
