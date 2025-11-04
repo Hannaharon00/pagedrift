@@ -363,3 +363,114 @@ def test_extract_lines_containing_multiple_terms(client, live_server, measure_me
     delete_all_watches(client)
 
 
+def test_extract_lines_containing_with_extract_text_regex(client, live_server, measure_memory_usage, datastore_path):
+    """
+    extract_lines_containing first narrows to relevant lines, then extract_text regex
+    pulls specific tokens from those lines — verifying correct pipeline ordering.
+    """
+    test_return_data = """<html><body>
+      <p>Widget price: $49.99 each</p>
+      <p>Gadget price: $129.00 each</p>
+      <p>Latest news: price index up 2%</p>
+      <p>Stock count: 150 units</p>
+      <p>Shipping cost: $5.99</p>
+    </body></html>"""
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            # Step 1: keep lines containing "price" (excludes Stock count and Shipping cost)
+            'extract_lines_containing': 'price',
+            # Step 2: from those lines extract only dollar amounts
+            'extract_text': r'/\$[\d.]+/',
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid), follow_redirects=True)
+
+    # Dollar amounts from price lines should be extracted
+    assert b'$49.99' in res.data
+    assert b'$129.00' in res.data
+    # "price index up 2%" has no dollar amount — nothing extracted from that line
+    # "Shipping cost" line was excluded by extract_lines_containing before regex ran
+    assert b'$5.99' not in res.data
+    # Raw line text should not appear — regex replaced it with just the match
+    assert b'Widget' not in res.data
+    assert b'Stock count' not in res.data
+
+    delete_all_watches(client)
+
+
+def test_extract_lines_containing_with_include_filters_css(client, live_server, measure_memory_usage, datastore_path):
+    """
+    CSS include_filters narrows the HTML first; extract_lines_containing then filters
+    within that already-reduced text — verifying correct pipeline ordering.
+    """
+    test_return_data = """<html><body>
+      <div class="weather">
+        <p>Temperature: 21 celsius</p>
+        <p>Humidity: 60%</p>
+        <p>Wind: 15 km/h</p>
+      </div>
+      <div class="news">
+        <p>Local forecast: warm celsius weather ahead</p>
+        <p>Markets closed early</p>
+      </div>
+    </body></html>"""
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            # CSS filter: only look inside the weather div
+            'include_filters': 'div.weather',
+            # Then keep only celsius lines from that section
+            'extract_lines_containing': 'celsius',
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid), follow_redirects=True)
+
+    # Only the celsius line from the weather div should survive both filters
+    assert b'celsius' in res.data
+    # Other weather lines excluded by extract_lines_containing
+    assert b'Humidity' not in res.data
+    assert b'Wind' not in res.data
+    # News div content excluded entirely by CSS filter (even though it contains "celsius")
+    assert b'Markets' not in res.data
+    assert b'forecast' not in res.data
+
+    delete_all_watches(client)
+
+
