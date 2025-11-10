@@ -2731,6 +2731,62 @@ msgstr "關閉"
 msgid "Web page"
 msgstr "網頁"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "Restock & Price"
+msgstr "補貨與價格"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "No web page change detection watches configured, please add a URL in the box above, or"
+msgstr "未設定網站監測任務，請在上方欄位新增 URL，或"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html
+msgid "import a list"
+msgstr "匯入列表"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Operator"
+msgstr "選擇一個 - 運算子"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than"
+msgstr "大於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr "小於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than or Equal To"
+msgstr "大於或等於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than or Equal To"
+msgstr "小於或等於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Equals"
+msgstr "等於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Not Equals"
+msgstr "不等於"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Contains"
+msgstr "包含"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Field"
+msgstr "選擇一個 - 欄位"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Does NOT Contain"
+msgstr "不包含"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Starts With"
+msgstr "文字開頭為"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Ends With"
 msgstr "文字結尾為"
