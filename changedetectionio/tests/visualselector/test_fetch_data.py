@@ -86,6 +86,70 @@ def test_visual_selector_content_ready(client, live_server, measure_memory_usage
         follow_redirects=True
     )
 
+def test_basic_browserstep(client, live_server, measure_memory_usage, datastore_path):
+
+
+    test_url = url_for('test_interactive_html_endpoint', _external=True)
+    test_url = test_url.replace('localhost.localdomain', 'cdio')
+    test_url = test_url.replace('localhost', 'cdio')
+
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": '', 'edit_and_watch_submit_button': 'Edit > Watch'},
+        follow_redirects=True
+    )
+
+    assert b"Watch added in Paused state, saving will unpause" in res.data
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first", unpause_on_save=1),
+        data={
+            "url": test_url,
+            "tags": "",
+            'fetch_backend': "html_webdriver",
+            'browser_steps-5-operation': 'Enter text in field',
+            'browser_steps-5-selector': '#test-input-text',
+            # Should get set to the actual text (jinja2 rendered)
+            'browser_steps-5-optional_value': "Hello-Jinja2-{% now  'Europe/Berlin', '%Y-%m-%d' %}",
+            'browser_steps-8-operation': 'Click element',
+            'browser_steps-8-selector': 'button[name=test-button]',
+            'browser_steps-8-optional_value': '',
+            # For now, cookies doesnt work in headers because it must be a full cookiejar object
+            'headers': "testheader: yes\buser-agent: MyCustomAgent",
+            "time_between_check_use_default": "y",
+        },
+        follow_redirects=True
+    )
+    assert b"unpaused" in res.data
+
+    wait_for_all_checks(client)
+    uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+
+    # 3874 - should have tidied up any blanks
+    watch = live_server.app.config['DATASTORE'].data['watching'][uuid]
+    assert watch['browser_steps'][0].get('operation') == 'Enter text in field'
+    assert watch['browser_steps'][1].get('selector') == 'button[name=test-button]'
+
+
+    # This part actually needs the browser, before this we are just testing data
+    assert os.getenv('PLAYWRIGHT_DRIVER_URL'), "Needs PLAYWRIGHT_DRIVER_URL set for this test"
+    assert live_server.app.config['DATASTORE'].data['watching'][uuid].history_n >= 1, "Watch history had atleast 1 (everything fetched OK)"
+
+    assert b"This text should be removed" not in res.data
+
+    # Check HTML conversion detected and workd
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid=uuid),
+        follow_redirects=True
+    )
+    assert b"This text should be removed" not in res.data
+    assert b"I smell JavaScript because the button was pressed" in res.data
+
+    assert b'Hello-Jinja2-20' in res.data
+
+    assert b"testheader: yes" in res.data
+    assert b"user-agent: mycustomagent" in res.data
+
 def test_non_200_errors_report_browsersteps(client, live_server, measure_memory_usage, datastore_path):
 
     four_o_four_url =  url_for('test_endpoint', status_code=404, _external=True)

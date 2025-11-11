@@ -3408,6 +3408,62 @@ msgstr "Syntaxe de modèle non valide : %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Un nom et une URL de proxy sont requis."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Ouvrir la page \"Historique\" dans un nouvel onglet"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Mises à jour en temps réel hors ligne"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Favicons Activés"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Utiliser la page <title> dans la liste de présentation des moniteurs"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Contrôle de sécurité du jeton d'accès à l'API activé"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Considérer les pages vides comme un changement ?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ignorer le texte"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ignorer les espaces"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "Doit être compris entre 0 et 100"
