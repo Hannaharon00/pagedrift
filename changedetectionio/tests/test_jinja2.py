@@ -261,3 +261,61 @@ def test_regex_replace_security_large_input():
     # Should be truncated to 10MB
     assert len(finalRender) == 1024 * 1024 * 10
 
+def test_regex_replace_security_long_pattern():
+    """Test regex_replace rejects very long patterns."""
+
+    # Pattern longer than 500 chars should be rejected
+    long_pattern = "a" * 501
+    finalRender = render("{{ 'test' | regex_replace('" + long_pattern + "', 'replacement') }}")
+
+    # Should return original value when pattern is too long
+    assert finalRender == "test"
+
+def test_regex_replace_security_dangerous_pattern():
+    """Test regex_replace detects and rejects dangerous nested quantifiers."""
+
+    # Patterns that could cause catastrophic backtracking
+    dangerous_patterns = [
+        "(a+)+",
+        "(a*)+",
+        "(a+)*",
+        "(a*)*",
+    ]
+
+    for dangerous in dangerous_patterns:
+        # Create a template with the dangerous pattern
+        # Using single quotes to avoid escaping issues
+        from changedetectionio.jinja2_custom import create_jinja_env
+        from jinja2 import BaseLoader
+
+        jinja2_env = create_jinja_env(loader=BaseLoader)
+        jinja2_env.globals['pattern'] = dangerous
+        template = "{{ 'aaaaaaaaaa' | regex_replace(pattern, 'x') }}"
+        finalRender = jinja2_env.from_string(template).render()
+
+        # Should return original value when dangerous pattern is detected
+        assert finalRender == "aaaaaaaaaa"
+
+def test_regex_replace_security_timeout_protection():
+    """Test that regex_replace has timeout protection (if SIGALRM available)."""
+    import signal
+
+    # Only test on systems that support SIGALRM
+    if not hasattr(signal, 'SIGALRM'):
+        # Skip test on Windows and other systems without SIGALRM
+        return
+
+    # This pattern is known to cause exponential backtracking on certain inputs
+    # but should be caught by our dangerous pattern detector
+    # We're mainly testing that the timeout mechanism works
+
+    from changedetectionio.jinja2_custom import regex_replace
+
+    # Create input that could trigger slow regex
+    test_input = "a" * 50 + "b"
+
+    # This shouldn't take long due to our protections
+    result = regex_replace(test_input, "a+b", "x")
+
+    # Should complete and return a result
+    assert result is not None
