@@ -3431,6 +3431,62 @@ msgstr "Має бути між 1 та 999"
 msgid "Default User-Agent overrides"
 msgstr "Перевизначення User-Agent за замовчуванням"
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Потрібно вказати і ім'я, і URL проксі."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Відкривати сторінку 'Історія' у новій вкладці"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Оновлення UI в реальному часі увімкнено"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Фавіконки увімкнено"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Використовувати <title> сторінки у списку огляду завдань"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Перевірку безпеки токена доступу API увімкнено"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Вважати порожні сторінки зміною?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ігнорувати текст"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ігнорувати пробіли"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "Має бути між 0 та 100"
