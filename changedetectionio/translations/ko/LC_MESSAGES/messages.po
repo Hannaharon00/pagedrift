@@ -3740,6 +3740,64 @@ msgstr "해당 정규식으로 모든 모니터링 기록을 검사했지만 일
 msgid "Not enough history to compare. Need at least 2 snapshots."
 msgstr "비교할 기록이 충분하지 않습니다. 스냅샷이 최소 2개 필요합니다."
 
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to load screenshots: {}"
+msgstr "스크린샷을 불러오지 못했습니다: {}"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to calculate diff: {}"
+msgstr "비교를 계산하지 못했습니다: {}"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box value is too long"
+msgstr "경계 상자 값이 너무 깁니다."
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box must be in format: x,y,width,height (integers only)"
+msgstr "경계 상자는 x,y,너비,높이 형식이어야 합니다. (정수만)"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values must be non-negative"
+msgstr "경계 상자 값은 음수가 아니어야 합니다."
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values are too large"
+msgstr "경계 상자 값이 너무 큽니다."
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection mode must be either \"element\" or \"draw\""
+msgstr "선택 모드는 \"element\" 또는 \"draw\"여야 합니다."
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Minimum Change Percentage"
+msgstr "최소 변경 비율"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Pixel Difference Sensitivity"
+msgstr "픽셀 차이 감도"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Use global default"
+msgstr "전역 기본값 사용"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding Box"
+msgstr "경계 상자"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection Mode"
+msgstr "선택 모드"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection mode value is too long"
+msgstr "선택 모드 값이 너무 깁니다."
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Screenshot Comparison"
+msgstr "스크린샷 비교"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Threshold (%) for price changes since the previous check"
 msgstr "이전 확인 대비 가격 변동 기준(%)"
