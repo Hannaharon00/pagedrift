@@ -204,3 +204,5 @@ class TestTemporaryWatchSeed(unittest.TestCase):
         self.assertTrue(os.path.exists(fresh_dir))
 
 
+if __name__ == '__main__':
+    unittest.main()
