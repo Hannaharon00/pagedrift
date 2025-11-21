@@ -45,6 +45,101 @@
       align-items: center;
       justify-content: flex-start;
 
+      .pure-button {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // Watch-table-ish aesthetic but text stays white in both light and dark modes
+  // (table sits over the colorful gradient page bg).
+  table.pure-table {
+    width: 100%;
+    background: transparent;
+    color: var(--color-white);
+    font-size: 80%;
+
+    thead th {
+      background: transparent;
+      color: var(--color-white);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    td {
+      color: var(--color-white);
+      border-color: rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
+    td.title-col,
+    td.watch-cell {
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    td.time-cell {
+      font-variant-numeric: tabular-nums;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.95em;
+    }
+
+    code,
+    small,
+    em,
+    strong {
+      color: var(--color-white);
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    small {
+      opacity: 0.7;
+    }
+  }
+
+  table.pure-table-striped tr:nth-child(2n-1) td {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  // Rows that just completed — kept visible for a short grace period so the
+  // user can see what finished without rows disappearing under their cursor.
+  tr.is-completed td {
+    opacity: 0.45;
+    transition: opacity 0.4s ease;
+  }
+
+  // Visually separate the worker-slot section from the queue section.
+  tbody[data-section="workers"] {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  tr.worker-slot td {
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+  tr.worker-idle td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  // Status pills inside cells
+  .inline-tag {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--color-white);
+  }
+  .inline-tag--running {
+    background: rgba(28, 184, 65, 0.45);
+  }
+  .inline-tag--idle {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .inline-tag--done {
+    background: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
   a.queue-cancel {
     display: inline-block;
     margin-left: 8px;
