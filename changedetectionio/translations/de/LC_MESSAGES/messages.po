@@ -3415,6 +3415,61 @@ msgid "Attach screenshot to notification (where possible)"
 msgstr "Screenshot an Benachrichtigung anhängen (sofern möglich)"
 
 #: changedetectionio/forms.py
+msgid "Match"
+msgstr "Übereinstimmung"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Passen Sie alle folgenden Punkte an"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Entspricht einer der folgenden Bedingungen"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Verwenden Sie Seite <title> in der Liste"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "Der Textkörper muss leer sein, wenn die Anforderungsmethode auf GET gesetzt ist"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Ungültige Vorlagensyntaxkonfiguration: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Ungültige Vorlagensyntax: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Ungültige Vorlagensyntax im Header „%(header)s“: %(error)s"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Name"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "Proxy-URL"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Proxy-URLs müssen mit http://, https:// oder sock5:// beginnen."
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "Browser-Verbindungs-URL"
+
+#: changedetectionio/forms.py
 msgid "Browser URLs must start with wss:// or ws://"
 msgstr "Browser-URLs müssen mit wss:// oder ws:// beginnen."
 
