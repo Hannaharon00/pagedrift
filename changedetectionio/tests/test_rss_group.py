@@ -21,3 +21,18 @@ def set_original_response(datastore_path):
     return None
 
 
+def set_modified_response(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Watch 1 content MODIFIED</p>
+     <p>Watch 2 content CHANGED</p>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
+
