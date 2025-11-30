@@ -3720,6 +3720,69 @@ msgid "1d ago"
 msgstr "1 dzień temu"
 
 #: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "w 1d"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "%sd temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "w %sd"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "1 tydzień temu"
+
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "w ciągu 1 tygodnia"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%sw temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "w %sw"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1 miesiąc temu"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "za miesiąc"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%smo temu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "w %smo"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1 rok temu"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "za rok"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%syr temu"
+
+#: changedetectionio/languages.py
 #, python-format
 msgid "in %syr"
 msgstr "w %syr"
