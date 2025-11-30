@@ -165,3 +165,53 @@ class TestDoesNotRestartDuringShutdown(unittest.TestCase):
         self.assertEqual(len(calls), 2, "should still have restarted once")
 
 
+class TestStartSupervisedThread(unittest.TestCase):
+
+    def test_returns_a_real_thread_object(self):
+        """Thread(...).start() returns None - that is why ticker_thread was
+        always None and nothing could check is_alive()."""
+        exit_event = threading.Event()
+        started = threading.Event()
+
+        def target():
+            started.set()
+            exit_event.wait(5)
+
+        t = start_supervised_thread(target, 'TestThread', exit_event)
+        self.addCleanup(exit_event.set)
+
+        self.assertIsInstance(t, threading.Thread)
+        self.assertTrue(started.wait(5), "target did not run")
+        self.assertTrue(t.is_alive())
+        self.assertTrue(t.daemon)
+        self.assertEqual(t.name, 'TestThread')
+
+        exit_event.set()
+        t.join(timeout=5)
+        self.assertFalse(t.is_alive(), "thread did not exit on shutdown")
+
+    def test_thread_survives_a_dying_target(self):
+        """End to end: the thread outlives a target that keeps returning."""
+        exit_event = threading.Event()
+        calls = []
+        done = threading.Event()
+
+        def target():
+            calls.append(1)
+            if len(calls) >= 3:
+                done.set()
+                exit_event.wait(5)
+            return
+
+        t = start_supervised_thread(target, 'Dying', exit_event, max_backoff=0.01,
+                                    healthy_after=9999)
+        self.addCleanup(exit_event.set)
+
+        self.assertTrue(done.wait(10), f"target was not restarted (calls={len(calls)})")
+        self.assertTrue(t.is_alive(), "thread died despite supervision")
+        exit_event.set()
+        t.join(timeout=5)
+
+
+if __name__ == '__main__':
+    unittest.main()
