@@ -3038,6 +3038,60 @@ msgstr "Ya has iniciado sesión"
 msgid "You must be logged in, please log in."
 msgstr "Debes iniciar sesión, por favor inicia sesión."
 
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Contraseña incorrecta"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Se debe especificar al menos un intervalo de tiempo (semanas, días, horas, minutos o segundos)."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+"Se debe especificar al menos un intervalo de tiempo (semanas, días, horas, minutos o segundos) cuando no se utilice "
+"la configuración global."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Formato de hora no válido. Utilice HH:MM."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "No es un nombre de zona horaria válido"
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "no establecido"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "Empezar en"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "Duración de la ejecución"
+
+#: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Usar programador de tiempo"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Zona horaria opcional para ejecutar"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "Lunes"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "Martes"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Miércoles"
+
 #: changedetectionio/forms.py
 msgid "Thursday"
 msgstr "Jueves"
