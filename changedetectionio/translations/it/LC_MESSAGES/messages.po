@@ -3114,6 +3114,62 @@ msgid "Use global settings for time between check and scheduler."
 msgstr "Usa impostazioni globali per intervallo controlli e pianificazione."
 
 #: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Metodo richiesta"
+
+#: changedetectionio/forms.py
+msgid "Ignore status codes (process non-2xx status codes as normal)"
+msgstr "Ignora codici stato (elabora codici non-2xx come normali)"
+
+#: changedetectionio/forms.py
+msgid "Only trigger when unique lines appear in all history"
+msgstr "Attiva solo quando appaiono righe uniche in tutta la cronologia"
+
+#: changedetectionio/blueprint/ui/templates/edit.html changedetectionio/forms.py
+msgid "Remove duplicate lines of text"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Sort text alphabetically"
+msgstr "Ordina testo alfabeticamente"
+
+#: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Rimuovi righe ignorate"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Rimuovi spazi prima e dopo il testo"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Righe aggiunte"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Righe sostituite/modificate"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Righe rimosse"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Trigger parole chiave - Attiva/attendi testo"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Blocca rilevamento modifiche quando il testo corrisponde"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Esegui JavaScript prima del rilevamento"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
 msgid "Send a notification when the filter can no longer be found on the page"
 msgstr "Invia notifica quando il filtro non viene più trovato nella pagina"
 
