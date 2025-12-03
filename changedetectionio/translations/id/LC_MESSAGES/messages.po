@@ -3658,3 +3658,75 @@ msgstr "Keluaran diff - hanya perubahan dan penambahan"
 msgid "The diff output - only changes and additions —"
 msgstr "Keluaran diff - hanya perubahan dan penambahan —"
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr ""
+"mis. Beri tahu saya saat harga turun di bawah $300, atau produk baru diluncurkan. Abaikan perubahan footer dan "
+"navigasi."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr "mis. Tandai perubahan harga atau peluncuran produk baru di seluruh monitor dalam grup ini"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr "Contoh:"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr "Beri notifikasi hanya jika harga turun di bawah $200, atau promo waktu terbatas ditambahkan"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr "Beri peringatan saat penarikan produk, pemberitahuan keselamatan, atau penghentian produk baru dipublikasikan"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr "Beri notifikasi saat putaran hibah baru dibuka atau tenggat pengajuan diumumkan"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr "Hanya penting jika versi paket berubah atau CVE disebutkan"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr "Pra-filter AI aktif: <code>%(filter)s</code> — mempersempit cakupan konten sebelum evaluasi"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr ""
+"Saat perubahan terdeteksi, AI menjelaskannya sesuai instruksi Anda dan mengganti <code>%(diff)s</code> dalam "
+"notifikasi. Gunakan <code>%(raw_diff)s</code> jika Anda tetap menginginkan diff asli."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr "Jelaskan bagaimana perubahan harus diringkas dalam notifikasi untuk semua monitor dalam grup ini."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+"Menambahkan mempertahankan prompt yang diwarisi dari grup atau pengaturan global lalu menambahkan teks Anda "
+"setelahnya, sehingga perubahan berikutnya pada prompt tersebut tetap diterapkan ke monitor ini."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+"Menambahkan mempertahankan prompt yang diwarisi dari pengaturan global lalu menambahkan teks Anda setelahnya, "
+"sehingga perubahan berikutnya pada prompt tersebut tetap diterapkan ke grup ini."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "List each new item added with its name and price. Translate to English."
+msgstr "Cantumkan setiap item baru yang ditambahkan beserta nama dan harganya. Terjemahkan ke bahasa Inggris."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Summarise what events were added or cancelled. Two sentences maximum."
+msgstr "Ringkas acara apa yang ditambahkan atau dibatalkan. Maksimal dua kalimat."
+
