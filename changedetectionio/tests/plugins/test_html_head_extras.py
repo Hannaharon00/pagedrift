@@ -37,3 +37,47 @@ def plugin_routes(live_server):
                         headers={'Cache-Control': 'max-age=3600'})
 
 
+@pytest.fixture
+def head_extras_plugin(plugin_routes):
+    """Register the hookimpl for one test then unregister it — function-scoped for clean isolation."""
+    plugin = _HeadExtrasPlugin()
+    plugin_manager.register(plugin, name="test_head_extras")
+    yield plugin
+    plugin_manager.unregister(name="test_head_extras")
+
+
+def test_plugin_html_injected_into_head(client, live_server, measure_memory_usage, datastore_path, head_extras_plugin):
+    """get_html_head_extras output must appear inside <head> in the rendered page."""
+    res = client.get(url_for("watchlist.index"), follow_redirects=True)
+    assert res.status_code == 200
+    assert b'id="test-head-extra-css"' in res.data, "Plugin <link> tag missing from rendered page"
+    assert b'id="test-head-extra-js"' in res.data,  "Plugin <script> tag missing from rendered page"
+
+    head_end = res.data.find(b'</head>')
+    assert head_end != -1
+    for marker in (b'id="test-head-extra-css"', b'id="test-head-extra-js"'):
+        pos = res.data.find(marker)
+        assert pos != -1 and pos < head_end, f"{marker} must appear before </head>"
+
+
+def test_plugin_js_route_returns_correct_content(client, live_server, measure_memory_usage, datastore_path, plugin_routes):
+    """The plugin-registered JS route must return JS with the right Content-Type."""
+    res = client.get(url_for('test_plugin_my_module_content_js'))
+    assert res.status_code == 200
+    assert 'javascript' in res.content_type
+    assert _MY_JS.encode() in res.data
+
+
+def test_plugin_css_route_returns_correct_content(client, live_server, measure_memory_usage, datastore_path, plugin_routes):
+    """The plugin-registered CSS route must return CSS with the right Content-Type."""
+    res = client.get(url_for('test_plugin_my_module_content_css'))
+    assert res.status_code == 200
+    assert 'css' in res.content_type
+    assert _MY_CSS.encode() in res.data
+
+
+def test_no_extras_without_plugin(client, live_server, measure_memory_usage, datastore_path):
+    """With no hookimpl registered the markers must not appear (isolation check)."""
+    res = client.get(url_for("watchlist.index"), follow_redirects=True)
+    assert b'id="test-head-extra-css"' not in res.data
+    assert b'id="test-head-extra-js"' not in res.data
