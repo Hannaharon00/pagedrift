@@ -3930,6 +3930,69 @@ msgstr "警告：1つ以上の「曜日」の期間が翌日まで延長され�
 msgid "This could have unintended consequences."
 msgstr "これは意図しない結果を引き起こす可能性があります。"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "ブロックテキストは、このモニターのCSS/JSONフィルタから出力される結果テキストから処理されます"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "ここのすべての行が存在しない必要があります（各行を「OR」として考えてください）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"celsius\n"
+"temperature\n"
+"price"
+msgstr ""
+"摂氏\n"
+"気温\n"
+"価格"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keep only lines that contain any of these words or phrases (plain text, case-insensitive)"
+msgstr "これらの単語やフレーズのいずれかを含む行のみを保持（プレーンテキスト、大文字小文字区別なし）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One entry per line — any line in the page text that contains a match is kept"
+msgstr "1行に1エントリ — ページテキスト内でマッチを含む行が保持されます"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Simpler alternative to regex — use this when you just want lines about a specific topic"
+msgstr "正規表現のより簡単な代替手段 — 特定のトピックに関する行だけが必要な場合に使用"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "enter <code>celsius</code> to keep only lines mentioning temperature readings"
+msgstr "<code>摂氏</code> と入力すると、気温に関する行のみが保持されます"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr "他のフィルタの後に正規表現または文字列マッチを使用して最終出力のテキストを行ごとに抽出します："
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "正規表現 - 例"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "行頭の空白を考慮することを忘れないでください"
+
+#: changedetectionio/templates/edit/text-options.html
+#, python-format
+msgid "Use <code>//(?aiLmsux))</code> type flags (more <a href=\"%(url)s\">information here</a>)"
+msgstr "<code>//(?aiLmsux))</code> タイプフラグを使用できます（詳細は <a href=\"%(url)s\">こちら</a>）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example: <code>Out of stock</code>"
+msgstr "キーワード例 - 例: <code>在庫切れ</code>"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "グループを使用してテキストのみを抽出する - 例"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "年のリストのみを返します"
+
 #: changedetectionio/templates/sidebar-nav.html
 msgid "Search, or Use Alt+S Key"
 msgstr "検索、またはAlt+Sキーを使用"
