@@ -192,3 +192,31 @@ def test_over_limit_instance_still_loads_and_edits(client, live_server, measure_
     delete_all_watches(client)
 
 
+def test_limit_shown_in_settings_info_tab(client, live_server, measure_memory_usage, datastore_path, monkeypatch):
+    """The Info tab names the limit only when one is configured."""
+    monkeypatch.delenv('PAGE_WATCH_LIMIT', raising=False)
+    res = client.get(url_for("settings.settings_page"))
+    assert b'Maximum number of page watches' not in res.data
+
+    monkeypatch.setenv('PAGE_WATCH_LIMIT', '42')
+    res = client.get(url_for("settings.settings_page"))
+    assert b'Maximum number of page watches' in res.data
+    assert b'42' in res.data
+
+
+def test_limit_reported_without_a_request_context(client, live_server, measure_memory_usage, datastore_path, monkeypatch, mocker):
+    """The CLI (-u) and the API's background import thread call add_watch() with no request
+    context, where flash() raises RuntimeError instead of reporting anything."""
+    datastore = live_server.app.config['DATASTORE']
+    test_url = url_for('test_endpoint', _external=True)
+
+    monkeypatch.setenv('PAGE_WATCH_LIMIT', '1')
+    assert datastore.add_watch(url=test_url)
+
+    # pytest-flask pushes a request context around every test, so take it away
+    mocker.patch('changedetectionio.store.has_request_context', return_value=False)
+
+    assert datastore.add_watch(url=f"{test_url}?second=1") is None
+    assert len(datastore.data['watching']) == 1
+
+    delete_all_watches(client)
