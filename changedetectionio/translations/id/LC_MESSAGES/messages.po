@@ -3605,6 +3605,66 @@ msgstr "Deteksi Stok Kembali & Harga untuk halaman dengan SATU produk"
 msgid "Detects if the product goes back to in-stock"
 msgstr "Mendeteksi jika produk kembali tersedia"
 
+#: changedetectionio/processors/templates/extract.html
+msgid "will be in its own column, the first column value is always the date."
+msgstr "akan berada di kolomnya sendiri, nilai kolom pertama selalu tanggal."
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Webpage Text/HTML, JSON and PDF changes"
+msgstr "Perubahan Teks/HTML Halaman Web, JSON, dan PDF"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Detects all text changes where possible"
+msgstr "Mendeteksi semua perubahan teks jika memungkinkan"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "Batas monitor tercapai ({current}/{limit} monitor). Tidak dapat menambahkan monitor lagi."
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "Kesalahan saat mengambil metadata untuk {}"
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "Protokol monitor tidak diizinkan atau format URL tidak valid"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "Isi untuk semua notifikasi — Anda dapat menggunakan"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "templating pada judul, isi, dan URL notifikasi, serta token dari bawah."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Show token/placeholders"
+msgstr "Tampilkan token/placeholder"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Token"
+msgstr "Token"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Description"
+msgstr "Deskripsi"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL of the changedetection.io instance you are running."
+msgstr "URL instance changedetection.io yang Anda jalankan."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The URL being watched."
+msgstr "URL yang dipantau."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"The Open Link Override set on the watch, otherwise the same as watch_url. Use this when the watched URL is an API "
+"endpoint or RSS feed but you want to link to the real page."
+msgstr ""
+
 #: changedetectionio/templates/_common_fields.html
 msgid "The UUID of the watch."
 msgstr "UUID monitor."
