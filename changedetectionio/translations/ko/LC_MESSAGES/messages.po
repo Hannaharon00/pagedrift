@@ -3798,6 +3798,63 @@ msgstr "선택 모드 값이 너무 깁니다."
 msgid "Screenshot Comparison"
 msgstr "스크린샷 비교"
 
+#: changedetectionio/processors/image_ssim_diff/preview.py
+msgid "Preview unavailable - No snapshots captured yet"
+msgstr "미리보기를 사용할 수 없습니다. 아직 캡처된 스냅샷이 없습니다."
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Visual / Image screenshot change detection"
+msgstr "시각적/이미지 스크린샷 변경 감지"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
+msgstr "빠른 OpenCV 알고리즘으로 스크린샷을 비교하며, SSIM보다 10~100배 빠릅니다."
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Date"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Stock status"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Currency"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "재입고 감지"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "재고 있음만 감지 (품절 -> 재고 있음)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "모든 재고 상태 변경"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "끄기, 재고 상태/재입고 추적 안 함"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "다음 가격 미만이면 알림 트리거"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "제한 없음"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "다음 가격 초과이면 알림 트리거"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Threshold (%) for price changes since the previous check"
 msgstr "이전 확인 대비 가격 변동 기준(%)"
