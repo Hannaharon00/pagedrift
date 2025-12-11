@@ -73,3 +73,4 @@ $(document).ready(function () {
         $('body').toggleClass('spinner-active', $.active > 0);
     }, 2000);
 
+});

@@ -3287,6 +3287,62 @@ msgstr "Sintassi template non valida: %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr ""
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Nome"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL Proxy"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Gli URL proxy devono iniziare con http://, https:// o socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL connessione browser"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "Gli URL browser devono iniziare con wss:// o ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Richieste in chiaro"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Richieste Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Proxy predefinito"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Jitter casuale secondi ± controllo"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Numero di worker di recupero"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Deve essere tra 1 e 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Timeout richieste in secondi"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Deve essere tra 1 e 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Override User-Agent predefiniti"
+
 #: changedetectionio/forms.py
 msgid "Both a name, and a Proxy URL is required."
 msgstr "Sono richiesti sia un nome che un URL proxy."
