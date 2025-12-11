@@ -427,3 +427,77 @@ def test_ui_edit_saves_processor_config_separately(client, live_server):
     assert watch_data['title'] == 'Test', "Original fields should still be there"
 
 
+def test_tag_delete_removes_from_watches(client, live_server):
+    """Test that deleting a tag removes it from all watches"""
+    datastore = client.application.config.get('DATASTORE')
+
+    # Create a tag
+    tag_uuid = datastore.add_tag('Test Tag')
+
+    # Create watches with this tag
+    uuid1 = datastore.add_watch(url='http://example1.com')
+    uuid2 = datastore.add_watch(url='http://example2.com')
+    uuid3 = datastore.add_watch(url='http://example3.com')
+
+    watch1 = datastore.data['watching'][uuid1]
+    watch2 = datastore.data['watching'][uuid2]
+    watch3 = datastore.data['watching'][uuid3]
+
+    watch1['tags'] = [tag_uuid]
+    watch1.commit()
+    watch2['tags'] = [tag_uuid, 'other-tag']
+    watch2.commit()
+    # watch3 has no tags
+
+    # Delete the tag
+    response = client.post(url_for("tags.delete", uuid=tag_uuid))
+    assert response.status_code == 302
+
+    # Wait for background thread to complete
+    time.sleep(1)
+
+    # Tag should be removed from settings
+    assert tag_uuid not in datastore.data['settings']['application']['tags']
+
+    # Tag should be removed from watches and persisted
+    def check_watch_tags(uuid):
+        watch = datastore.data['watching'][uuid]
+        watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+        with open(watch_json_path, 'r') as f:
+            return json.load(f)['tags']
+
+    assert tag_uuid not in check_watch_tags(uuid1), "Tag should be removed from watch1"
+    assert tag_uuid not in check_watch_tags(uuid2), "Tag should be removed from watch2"
+    assert 'other-tag' in check_watch_tags(uuid2), "Other tags should remain in watch2"
+    assert check_watch_tags(uuid3) == [], "Watch3 should still have empty tags"
+
+
+def test_watch_pause_unpause_persists(client, live_server):
+    """Test that pause/unpause operations commit and persist"""
+    datastore = client.application.config.get('DATASTORE')
+
+    # Get API key
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    uuid = datastore.add_watch(url='http://example.com')
+    watch = datastore.data['watching'][uuid]
+
+    # Pause via API
+    response = client.get(url_for("watch", uuid=uuid, paused='paused'), headers={'x-api-key': api_key})
+    assert response.status_code == 200
+
+    # Check persisted to disk
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+    assert data['paused'] == True, "Pause should be persisted"
+
+    # Unpause
+    response = client.get(url_for("watch", uuid=uuid, paused='unpaused'), headers={'x-api-key': api_key})
+    assert response.status_code == 200
+
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+    assert data['paused'] == False, "Unpause should be persisted"
+
+
