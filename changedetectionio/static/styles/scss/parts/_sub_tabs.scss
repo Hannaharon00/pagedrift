@@ -320,6 +320,57 @@
   }
 }
 
+// ── LLM Usage pane — stat cards ───────────────────────────────────────────────
+.llm-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.llm-stat-card {
+  padding: 1rem 1.1rem 0.85rem;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.025);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+
+  .llm-stat-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 0.4rem;
+  }
+
+  .llm-stat-value {
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .llm-stat-sub {
+    font-size: 0.79rem;
+    opacity: 0.5;
+  }
+
+  .llm-stat-budget-text {
+    font-size: 0.77rem;
+    opacity: 0.55;
+    margin-top: 0.3rem;
+  }
+}
+
+.llm-stat-bar-wrap {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 0.65rem;
+}
+
 .llm-field-hint {
   font-size: 0.8rem;
   opacity: 0.55;
