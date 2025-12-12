@@ -698,6 +698,20 @@ components:
               pattern: '^[0-9]+$'
               default: '00'
 
+    WatchHistory:
+      type: object
+      additionalProperties:
+        type: string
+        description: Path to snapshot file
+      description: Dictionary of timestamps and snapshot paths
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+
     delete:
       operationId: deleteWatch
       tags: [Watch Management]
