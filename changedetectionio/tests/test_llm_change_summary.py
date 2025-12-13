@@ -248,6 +248,80 @@ def _set_global_default(ds, prompt):
     ds.data['settings']['application']['llm'] = llm
 
 
+def test_global_default_used_when_watch_and_tag_have_none(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    get_effective_summary_prompt returns the global default when neither the
+    watch nor any of its tags have llm_change_summary set.
+    """
+    from changedetectionio.llm.evaluator import get_effective_summary_prompt
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(client)
+
+    uuid = ds.add_watch(url='https://example.com')
+    watch = ds.data['watching'][uuid]
+    watch['llm_change_summary'] = ''
+
+    _set_global_default(ds, 'Global: summarise as one sentence.')
+
+    assert get_effective_summary_prompt(watch, ds) == 'Global: summarise as one sentence.'
+
+    delete_all_watches(client)
+
+
+def test_tag_prompt_overrides_global_default(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A tag-level llm_change_summary takes precedence over the global default.
+    """
+    from changedetectionio.llm.evaluator import get_effective_summary_prompt
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(client)
+
+    tag_uuid = ds.add_tag('my-group')
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_change_summary'] = 'Tag: bullet points.'
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = True
+
+    uuid = ds.add_watch(url='https://example.com')
+    watch = ds.data['watching'][uuid]
+    watch['llm_change_summary'] = ''
+    watch['tags'] = [tag_uuid]
+
+    _set_global_default(ds, 'Global: one sentence.')
+
+    assert get_effective_summary_prompt(watch, ds) == 'Tag: bullet points.'
+
+    delete_all_watches(client)
+
+
+def test_watch_prompt_overrides_tag_and_global(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A watch-level llm_change_summary wins over both tag and global default.
+    """
+    from changedetectionio.llm.evaluator import get_effective_summary_prompt
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(client)
+
+    tag_uuid = ds.add_tag('my-group')
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_change_summary'] = 'Tag prompt.'
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = True
+
+    uuid = ds.add_watch(url='https://example.com')
+    watch = ds.data['watching'][uuid]
+    watch['llm_change_summary'] = 'Watch: my own prompt.'
+    watch['tags'] = [tag_uuid]
+
+    _set_global_default(ds, 'Global prompt.')
+
+    assert get_effective_summary_prompt(watch, ds) == 'Watch: my own prompt.'
+
+    delete_all_watches(client)
+
+
 def test_hardcoded_fallback_when_nothing_set(
         client, live_server, measure_memory_usage, datastore_path):
     """
