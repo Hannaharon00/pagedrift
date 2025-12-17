@@ -3704,6 +3704,70 @@ msgstr ""
 msgid "in 1m"
 msgstr ""
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr ""
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Restock & Price Detection"
 msgstr "Reabastecimiento y detección de precios"
