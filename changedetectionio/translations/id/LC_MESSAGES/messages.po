@@ -3211,6 +3211,63 @@ msgid "Wait seconds before extracting text"
 msgstr "Tunggu beberapa detik sebelum mengekstrak teks"
 
 #: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Harus berisi satu detik atau lebih"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Timpa URL dasar notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "Belum diatur"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Simpan"
+
+#: changedetectionio/forms.py
+msgid "URLs"
+msgstr "URL"
+
+#: changedetectionio/forms.py
+msgid "Upload .xlsx file"
+msgstr "Unggah file .xlsx"
+
+#: changedetectionio/forms.py
+msgid "Must be .xlsx file!"
+msgstr "Harus berupa file .xlsx!"
+
+#: changedetectionio/forms.py
+msgid "File mapping"
+msgstr "Pemetaan file"
+
+#: changedetectionio/forms.py
+msgid "Operation"
+msgstr "Operasi"
+
+#: changedetectionio/forms.py
+msgid "Selector"
+msgstr "Selektor"
+
+#: changedetectionio/forms.py
+msgid "CSS or xPath selector"
+msgstr "Selektor CSS atau xPath"
+
+#: changedetectionio/forms.py
+msgid "value"
+msgstr "nilai"
+
+#: changedetectionio/conditions/form.py changedetectionio/forms.py
+msgid "Value"
+msgstr "Nilai"
+
+#: changedetectionio/forms.py
+msgid "Web Page URL"
+msgstr "URL Halaman Web"
+
+#: changedetectionio/forms.py
 msgid "Open Link Override"
 msgstr ""
 
