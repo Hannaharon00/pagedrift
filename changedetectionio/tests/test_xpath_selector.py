@@ -41,6 +41,43 @@ def set_rss_atom_feed_response(datastore_path, header='', ):
 
 
 
+def set_original_response(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <div class="sametext">Some text thats the same</div>
+     <div class="changetext">Some text that will change</div>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+    return None
+
+
+def set_modified_response(datastore_path):
+    test_return_data = """<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  THIS CHANGES AND SHOULDNT TRIGGER A CHANGE<br>
+     <div class="sametext">Some text thats the same</div>
+     <div class="changetext">Some new text</div>
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    return None
+
+
 # Handle utf-8 charset replies https://github.com/dgtlmoon/changedetection.io/pull/613
 def test_check_xpath_filter_utf8(client, live_server, measure_memory_usage, datastore_path):
     filter = '//item/*[self::description]'
