@@ -4027,6 +4027,60 @@ msgid ""
 "raw diff when not configured."
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr ""
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "Erweiterte Hilfe und Tipps anzeigen"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "des Benachrichtigungstexts, einschließlich des Titels."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "weitere Hilfe hier"
+
 #: changedetectionio/templates/base.html
 msgid "Please select text within the diff content."
 msgstr ""
