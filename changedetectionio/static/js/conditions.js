@@ -122,3 +122,33 @@ $(document).ready(function () {
         });
     }
 
+    // Function to reindex form elements and re-setup event handlers
+    function reindexRules() {
+        // Unbind all button handlers first
+        $(".addRuleRow, .removeRuleRow, .verifyRuleRow").off("click");
+        
+        // Reindex all form elements
+        $("#rulesTable .fieldlist-row").each(function(index) {
+            $(this).find("select, input").each(function() {
+                let oldName = $(this).attr("name");
+                let oldId = $(this).attr("id");
+
+                if (oldName) {
+                    let newName = oldName.replace(/\d+/, index);
+                    $(this).attr("name", newName);
+                }
+
+                if (oldId) {
+                    let newId = oldId.replace(/\d+/, index);
+                    $(this).attr("id", newId);
+                }
+            });
+        });
+        
+        // Reattach event handlers after reindexing
+        setupButtonHandlers();
+    }
+
+    // Initial setup of button handlers
+    setupButtonHandlers();
+});
