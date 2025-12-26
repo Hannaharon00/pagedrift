@@ -3487,6 +3487,63 @@ msgstr "Ativar modo de leitor RSS"
 msgid "Number of changes to show in watch RSS feed"
 msgstr "Número de mudanças a exibir no feed RSS do monitoramento"
 
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx para extrair"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Extrair como CSV"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr ""
+
 #: changedetectionio/languages.py
 msgid "in 1w"
 msgstr ""
