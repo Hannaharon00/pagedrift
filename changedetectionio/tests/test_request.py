@@ -227,6 +227,24 @@ def test_method_in_request(client, live_server, measure_memory_usage, datastore_
     # The test call service will return the verb as the body
     assert b"PATCH" in res.data
 
+    wait_for_all_checks(client)
+
+    watches_with_method = 0
+
+    # Read individual watch.json files
+    for uuid in client.application.config.get('DATASTORE').data['watching'].keys():
+        watch_json_file = os.path.join(datastore_path, uuid, 'watch.json')
+        assert os.path.exists(watch_json_file), f"watch.json should exist at {watch_json_file}"
+        with open(watch_json_file, 'r', encoding='utf-8') as f:
+            watch_data = json.load(f)
+            if watch_data.get('method') == 'PATCH':
+                watches_with_method += 1
+
+    # Should be only one with method set to PATCH
+    assert watches_with_method == 1
+
+    delete_all_watches(client)
+
 # Re #2408 - user-agent override test, also should handle case-insensitive header deduplication
 def test_ua_global_override(client, live_server, measure_memory_usage, datastore_path):
     ##  live_server_setup(live_server) # Setup on conftest per function
