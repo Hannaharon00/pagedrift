@@ -198,3 +198,43 @@ def delete_all_watches(client=None):
             file.unlink()
 
 
+def wait_for_all_checks(client=None):
+    """
+    Waits until the queue is empty and workers are idle.
+    Delegates to worker_pool.wait_for_all_checks for shared logic.
+    """
+    from changedetectionio.flask_app import update_q as global_update_q
+    from changedetectionio import worker_pool
+    return worker_pool.wait_for_all_checks(global_update_q, timeout=150)
+
+
+def wait_for_watch_history(client, min_history_count=2, timeout=10):
+    """
+    Wait for watches to have sufficient history entries.
+    Useful after wait_for_all_checks() when you need to ensure history is populated.
+
+    Args:
+        client: Test client with access to datastore
+        min_history_count: Minimum number of history entries required
+        timeout: Maximum time to wait in seconds
+    """
+    datastore = client.application.config.get('DATASTORE')
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        all_have_history = True
+        for uuid, watch in datastore.data['watching'].items():
+            history_count = len(watch.history.keys())
+            if history_count < min_history_count:
+                all_have_history = False
+                break
+
+        if all_have_history:
+            return True
+
+        time.sleep(0.2)
+
+    # Timeout - return False
+    return False
+
+
