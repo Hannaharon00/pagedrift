@@ -324,6 +324,32 @@ function dataURLtoBlob(dataURL) {
 }
 
 /**
+ * Download the image
+ */
+function downloadImage(jpegDataUrl) {
+    const a = document.createElement("a");
+    a.href = jpegDataUrl;
+    a.download = "changedetection-diff-" + Date.now() + ".jpg";
+    a.click();
+}
+
+/**
+ * Copy image to clipboard
+ */
+async function copyImageToClipboard(jpegDataUrl) {
+    try {
+        const blob = dataURLtoBlob(jpegDataUrl);
+        await navigator.clipboard.write([
+            new ClipboardItem({ 'image/jpeg': blob })
+        ]);
+        alert(i18nT('imgCopied', 'Image copied to clipboard!'));
+    } catch (error) {
+        console.error('Failed to copy image:', error);
+        alert(i18nT('imgCopyFailed', 'Failed to copy image. Your browser may not support this feature.'));
+    }
+}
+
+/**
  * Share via Web Share API or fallback to platform-specific sharing
  */
 async function shareImage(platform, jpegDataUrl) {
