@@ -4203,6 +4203,71 @@ msgid ""
 "matches."
 msgstr ""
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "From group '%(name)s': %(value)s"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+
 #: changedetectionio/templates/menu.html
 msgid "EDIT"
 msgstr ""
