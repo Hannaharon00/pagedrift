@@ -712,6 +712,176 @@ components:
           type: string
           description: Error message
 
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'url': 'https://example.com',
+                'title': 'Example Site Monitor',
+                'time_between_check': {
+                    'hours': 1
+                }
+            }
+            response = requests.post('http://localhost:5000/api/v1/watch',
+                                   headers=headers, json=data)
+            print(response.text)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWatch'
+            example:
+              url: "https://example.com"
+              title: "Example Site Monitor"
+              time_between_check:
+                hours: 1
+      responses:
+        '200':
+          description: Web page change monitor (watch) created successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '429':
+          description: |
+            Watch limit reached (server has `PAGE_WATCH_LIMIT` set; unlimited by default).
+            No watch was created - delete one to make room.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Watch limit reached (50/50 watches). Cannot add more watches."
+        '500':
+          description: Server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /watch/{uuid}:
+    get:
+      operationId: getWatch
+      tags: [Watch Management]
+      summary: Get single watch
+      description: Retrieve web page change monitor (watch) information and set muted/paused status. Returns the FULL Watch JSON.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            response = requests.get(f'http://localhost:5000/api/v1/watch/{uuid}', headers=headers)
+            print(response.json())
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+        - name: recheck
+          in: query
+          description: Recheck this web page change monitor (watch)
+          schema:
+            type: string
+            enum: ["1", "true"]
+        - name: paused
+          in: query
+          description: Set pause state
+          schema:
+            type: string
+            enum: [paused, unpaused]
+        - name: muted
+          in: query
+          description: Set mute state
+          schema:
+            type: string
+            enum: [muted, unmuted]
+      responses:
+        '200':
+          description: Watch information or operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watch'
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '404':
+          description: Web page change monitor (watch) not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      operationId: updateWatch
+      tags: [Watch Management]
+      summary: Update watch
+      description: Update an existing web page change monitor (watch) using JSON. Accepts the same structure as returned in [get single watch information](#operation/getWatch).
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X PUT "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "url": "https://updated-example.com",
+                "title": "Updated Monitor",
+                "paused": false
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            data = {
+                'url': 'https://updated-example.com',
+                'title': 'Updated Monitor',
+                'paused': False
+            }
+            response = requests.put(f'http://localhost:5000/api/v1/watch/{uuid}', 
+                                  headers=headers, json=data)
+            print(response.text)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWatch'
+      responses:
+        '200':
+          description: Web page change monitor (watch) updated successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '500':
+          description: Server error
+
     delete:
       operationId: deleteWatch
       tags: [Watch Management]
