@@ -210,6 +210,95 @@ $(function () {
         };
     })();
 
+    const selCfg = window.watchListSelection || {};
+    const totalMatching = parseInt(selCfg.total, 10) || 0;
+
+    // Row checkbox values carry a trailing space in the template — always trim.
+    const cbUuid = (el) => (el.value || '').trim();
+    const $rowCbs = () => $('input[name="uuids"][type=checkbox]');
+    const fmtNum = (n) => new Intl.NumberFormat(navigator.language).format(n);
+
+    // Reflect the store onto this page's checkboxes (load + after bulk changes).
+    function applySelectionToDom() {
+        $rowCbs().each(function () { this.checked = sel.has(cbUuid(this)); });
+        const visible = $rowCbs().get();
+        $('#check-all').prop('checked', visible.length > 0 && visible.every((el) => el.checked));
+    }
+
+    function updateRecordsSelected() {
+        const $el = $('#records-selected');
+        if (!$el.length) return;
+        const n = sel.size();
+        if (n > 0) {
+            const tpl = $el.attr('data-template') || '%(count)s records selected';
+            // Only the count is emphasised; the number is locale-formatted digits.
+            $el.html(tpl.replace('%(count)s', '<strong>' + fmtNum(n) + '</strong>')).show();
+        } else {
+            $el.hide();
+        }
+    }
+
+    function updateSelectAllBanner() {
+        const $b = $('#select-all-banner');
+        if (!$b.length) return;
+        const visible = $rowCbs().map(function () { return cbUuid(this); }).get();
+        const allVisibleSelected = visible.length > 0 && visible.every((u) => sel.has(u));
+
+        if (allVisibleSelected && totalMatching > 0 && sel.size() >= totalMatching) {
+            const tpl = $b.attr('data-all-selected-tmpl') || 'All %(total)s matching are selected.';
+            $b.html(
+                tpl.replace('%(total)s', '<strong>' + fmtNum(totalMatching) + '</strong>') +
+                ' <button type="button" class="pure-button button-xsmall" id="select-all-clear">' +
+                ($b.attr('data-clear-action') || 'Clear selection') + '</button>'
+            ).show();
+        } else if (allVisibleSelected && totalMatching > visible.length) {
+            const tpl = $b.attr('data-select-all-tmpl') || 'All %(page)s on this page are selected.';
+            const action = ($b.attr('data-select-all-action') || 'Select all %(total)s matching')
+                .replace('%(total)s', fmtNum(totalMatching));
+            $b.html(
+                tpl.replace('%(page)s', '<strong>' + fmtNum(visible.length) + '</strong>') +
+                ' <button type="button" class="pure-button button-xsmall" id="select-all-matching">' + action + '</button>'
+            ).show();
+        } else {
+            $b.hide().empty();
+        }
+    }
+
+    function refreshSelectionUI() {
+        // Toggle a single body class - everything (operations bar visibility, hiding the whole-list
+        // buttons) is driven off body.watch-selection-active in CSS (see _watch_table.scss).
+        // No jQuery slideUp/slideDown.
+        // Base it on a checkbox actually being checked on THIS page, not sel.size(): the store is a
+        // cross-page set persisted in sessionStorage, so a leftover/off-page selection would
+        // otherwise light up the class with nothing visibly selected.
+        const anyVisibleChecked = $rowCbs().get().some((el) => el.checked);
+        $('body').toggleClass('watch-selection-active', anyVisibleChecked);
+        updateRecordsSelected();
+        updateSelectAllBanner();
+    }
+    // Exposed so realtime.js can refresh the UI after it mutates the selection
+    // (e.g. clearing it once a delete operation removes the rows).
+    sel.refreshUI = refreshSelectionUI;
+
+    // Shift-click to (de)select a contiguous range, anchored on the last checkbox
+    // clicked — the usual "select many at once" gesture. Runs on 'click' (which
+    // carries shiftKey) before the 'change' handler below.
+    let lastCheckedIndex = null;
+    $(document).on('click', 'input[name="uuids"][type=checkbox]', function (e) {
+        const boxes = $rowCbs().get();
+        const idx = boxes.indexOf(this);
+        if (e.shiftKey && lastCheckedIndex !== null && lastCheckedIndex < boxes.length) {
+            const lo = Math.min(idx, lastCheckedIndex);
+            const hi = Math.max(idx, lastCheckedIndex);
+            for (let i = lo; i <= hi; i++) {
+                boxes[i].checked = this.checked;
+                if (this.checked) { sel.add(cbUuid(boxes[i])); } else { sel.remove(cbUuid(boxes[i])); }
+            }
+            refreshSelectionUI();
+        }
+        lastCheckedIndex = idx;
+    });
+
     // Individual row checkbox toggled (direct click, or via the row-click handler).
     $(document).on('change', 'input[name="uuids"][type=checkbox]', function () {
         if (this.checked) { sel.add(cbUuid(this)); } else { sel.remove(cbUuid(this)); }
