@@ -3353,6 +3353,63 @@ msgid "Sort text alphabetically"
 msgstr "Metni alfabetik olarak sırala"
 
 #: changedetectionio/forms.py
+msgid "Strip ignored lines"
+msgstr "Yoksayılan satırları çıkar"
+
+#: changedetectionio/forms.py
+msgid "Trim whitespace before and after text"
+msgstr "Metinden önceki ve sonraki boşlukları kırp"
+
+#: changedetectionio/forms.py
+msgid "Added lines"
+msgstr "Eklenen satırlar"
+
+#: changedetectionio/forms.py
+msgid "Replaced/changed lines"
+msgstr "Değiştirilen satırlar"
+
+#: changedetectionio/forms.py
+msgid "Removed lines"
+msgstr "Kaldırılan satırlar"
+
+#: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Anahtar kelime tetikleyicileri - Metin için tetikle/bekle"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Metin eşleşirken değişiklik tespitini engelle"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Değişiklik tespitinden önce JavaScript'i çalıştır"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proxy"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Filtre artık sayfada bulunamadığında bir bildirim gönder"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Açık"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Sessize alındı"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Ekran görüntüsünü bildirime ekle (mümkün olan yerlerde)"
+
+#: changedetectionio/forms.py
 msgid "Match"
 msgstr "Eşleştir"
 
