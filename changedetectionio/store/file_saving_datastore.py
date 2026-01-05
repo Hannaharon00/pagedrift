@@ -455,3 +455,55 @@ def load_tag_from_file(tag_json, uuid, rehydrate_entity_func, missing_ok=False):
         return None
 
 
+def load_all_tags(datastore_path, rehydrate_entity_func):
+    """
+    Load all tags from individual tag.json files.
+
+    Tags are stored separately from settings in {uuid}/tag.json files.
+
+    Args:
+        datastore_path: Path to the datastore directory
+        rehydrate_entity_func: Function to convert dict to Tag object
+
+    Returns:
+        Dictionary of uuid -> Tag object
+    """
+    logger.info("Loading tags from individual tag.json files...")
+
+    tags = {}
+
+    if not os.path.exists(datastore_path):
+        return tags
+
+    # One scandir over the datastore; most subdirectories are watches, not tags.
+    loaded = 0
+    failed = 0
+
+    for uuid_dir, dir_path in iter_entity_dirs(datastore_path):
+        tag_json = os.path.join(dir_path, "tag.json")
+        tag = load_tag_from_file(tag_json, uuid_dir, rehydrate_entity_func, missing_ok=True)
+        if tag is ENTITY_FILE_MISSING:
+            continue
+        if tag:
+            tags[uuid_dir] = tag
+            loaded += 1
+        else:
+            # load_tag_from_file already logged the specific error
+            failed += 1
+
+    if loaded == 0 and failed == 0:
+        logger.debug("No tag.json files found")
+        return tags
+
+    if failed > 0:
+        logger.warning(f"Loaded {loaded} tags, {failed} tags FAILED to load")
+    else:
+        logger.info(f"Loaded {loaded} tags from disk")
+
+    return tags
+
+
+# ============================================================================
+# FileSavingDataStore Class
+# ============================================================================
+
