@@ -3337,6 +3337,59 @@ msgstr "W przypadku funkcji sprawdzania i harmonogramu należy stosować ustawie
 msgid "AI Change Intent - Notify me when.."
 msgstr ""
 
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/blueprint/ui/templates/diff.html
+#: changedetectionio/forms.py
+msgid "AI Change Summary"
+msgstr "Podsumowanie zmian AI"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Change Summary prompt - Append or Replace the default?"
+msgstr "Jak ten prompt łączy się z odziedziczonym"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Replace the inherited prompt"
+msgstr "Zastąp odziedziczony prompt"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Append to the inherited prompt"
+msgstr "Dołącz do odziedziczonego promptu"
+
+#: changedetectionio/forms.py
+msgid "AI enabled for this watch?"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "CSS/JSONPath/JQ/XPath Filters"
+msgstr "Filtry CSS/JSONPath/JQ/XPath"
+
+#: changedetectionio/forms.py
+msgid "Remove elements"
+msgstr "Usuń elementy"
+
+#: changedetectionio/forms.py
+msgid "Extract lines containing"
+msgstr "Wyodrębnij wiersze zawierające"
+
+#: changedetectionio/forms.py
+msgid "Extract text"
+msgstr "Wyodrębnij tekst"
+
+#: changedetectionio/blueprint/imports/templates/import.html changedetectionio/forms.py
+msgid "Title"
+msgstr "Tytuł"
+
+#: changedetectionio/forms.py
+msgid "Ignore lines containing"
+msgstr "Pomiń wiersze zawierające"
+
+#: changedetectionio/forms.py
+msgid "Request body"
+msgstr "Treść żądania"
+
+#: changedetectionio/forms.py
+msgid "Request method"
+msgstr "Metoda żądania"
+
 #: changedetectionio/forms.py
 msgid "Ignore status codes (process non-2xx status codes as normal)"
 msgstr "Ignoruj kody stanu (kody stanu inne niż 2xx należy przetwarzać w zwykły sposób)"
