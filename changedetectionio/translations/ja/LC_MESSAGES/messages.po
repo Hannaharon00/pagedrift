@@ -3811,6 +3811,60 @@ msgstr "制限なし"
 msgid "Above price to trigger notification"
 msgstr "通知をトリガーする上限価格"
 
+#: changedetectionio/processors/templates/extract.html
+msgid "For example, to extract only the numbers from text"
+msgstr "例えば、テキストから数値のみを抽出するには"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Raw text"
+msgstr "元のテキスト"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "RegEx to extract:"
+msgstr "抽出用の正規表現："
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Be sure to test your RegEx here."
+msgstr "ここで正規表現をテストしてください。"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Each RegEx group bracket"
+msgstr "正規表現の各グループ括弧"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "will be in its own column, the first column value is always the date."
+msgstr "は独立したカラムとなり、最初のカラムの値は常に日付です。"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Webpage Text/HTML, JSON and PDF changes"
+msgstr "ウェブページのテキスト/HTML、JSONおよびPDFの変更"
+
+#: changedetectionio/processors/text_json_diff/processor.py
+msgid "Detects all text changes where possible"
+msgstr "可能な限りすべてのテキスト変更を検知します"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Watch limit reached ({current}/{limit} watches). Cannot add more watches."
+msgstr "ウォッチの上限に達しました（{current}/{limit} ウォッチ）。これ以上ウォッチを追加できません。"
+
+#: changedetectionio/store/__init__.py
+#, python-brace-format
+msgid "Error fetching metadata for {}"
+msgstr "{} のメタデータ取得中にエラーが発生しました"
+
+#: changedetectionio/store/__init__.py
+msgid "Watch protocol is not permitted or invalid URL format"
+msgstr "ウォッチのプロトコルが許可されていないか、URL形式が無効です"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Body for all notifications — You can use"
+msgstr "すべての通知の本文 — 以下を使用できます："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "templating in the notification title, body and URL, and tokens from below."
+msgstr "通知のタイトル、本文、URLでテンプレートを使用し、以下のトークンも利用できます。"
+
 #: changedetectionio/templates/_common_fields.html
 msgid "Show token/placeholders"
 msgstr "トークン/プレースホルダーを表示"
