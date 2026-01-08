@@ -717,3 +717,42 @@ window.initVisualSelector = function (opts) {
 };
 
 
+// ---------------------------------------------------------------------------
+// Auto-init for the watch Edit page (edit.html), preserving previous behaviour.
+// Detected by the presence of the `screenshot_url` global that edit.html sets.
+// ---------------------------------------------------------------------------
+$(document).ready(() => {
+    if (typeof screenshot_url === 'undefined') {
+        return; // Not the edit page - the Add Watch UI inits the selector itself
+    }
+
+    const isImageProcessor = $('input[value="image_ssim_diff"]').is(':checked');
+
+    const vs = window.initVisualSelector({
+        $canvas: $('#selector-canvas'),
+        $includeFilters: $("#include_filters"),
+        $background: $("img#selector-background"),
+        $xpathDisplay: $("#selector-current-xpath span"),
+        $fetchingNotice: $('.fetching-update-notice'),
+        $wrapper: $("#selector-wrapper"),
+        $clearButton: $('#clear-selector'),
+        xpathDataUrl: watch_visual_selector_data_url,
+        enableSelection: true,
+        processorIsImage: isImageProcessor,
+    });
+
+    $('#visualselector-tab').click(() => {
+        vs.load({screenshotSrc: screenshot_url});
+    });
+
+    // So if they start switching between visualSelector and manual filters, stop it from rendering old filters
+    $('li.tab a').on('click', () => {
+        vs.markClearMode();
+    });
+
+    if (window.location.hash === '#visualselector') {
+        vs.load({screenshotSrc: screenshot_url});
+    } else {
+        $("img#selector-background").attr('src', '');
+    }
+});
