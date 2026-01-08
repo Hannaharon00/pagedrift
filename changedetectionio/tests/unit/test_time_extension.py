@@ -101,3 +101,38 @@ def test_offset_with_overridden_timezone(mocker):
     assert output == '2025-01-15 12:00:00'
 
 
+def test_weekday_parameter_converted_to_int(mocker):
+    """
+    Test that weekday parameter is properly converted from float to int.
+    This is important because arrow.shift() requires weekday as int, not float.
+    """
+    jinja2_env = ImmutableSandboxedEnvironment(extensions=[TimeExtension])
+
+    # Wednesday, Jan 15, 2025
+    fixed_time = arrow.Arrow(2025, 1, 15, 12, 0, 0, tzinfo='UTC')
+    mocker.patch("arrow.now", return_value=fixed_time)
+
+    # Add offset to next Monday (weekday=0)
+    template_str = "{% now 'UTC' + 'weekday=0', '%A' %}"
+    output = jinja2_env.from_string(template_str).render()
+
+    # Should be Monday
+    assert output == 'Monday'
+
+
+def test_multiple_offset_parameters(mocker):
+    """
+    Test that multiple offset parameters can be combined in one expression.
+    """
+    jinja2_env = ImmutableSandboxedEnvironment(extensions=[TimeExtension])
+
+    fixed_time = arrow.Arrow(2025, 1, 15, 10, 30, 45, tzinfo='UTC')
+    mocker.patch("arrow.now", return_value=fixed_time)
+
+    # Test multiple parameters: days, hours, minutes, seconds
+    template_str = "{% now 'UTC' + 'days=1,hours=2,minutes=15,seconds=10', '%Y-%m-%d %H:%M:%S' %}"
+    output = jinja2_env.from_string(template_str).render()
+
+    # 2025-01-15 10:30:45 + 1 day + 2 hours + 15 minutes + 10 seconds
+    # = 2025-01-16 12:45:55
+    assert output == '2025-01-16 12:45:55'

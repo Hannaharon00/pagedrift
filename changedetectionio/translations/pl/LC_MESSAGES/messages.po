@@ -2895,6 +2895,58 @@ msgstr "Wybierz jedną opcję – Operator"
 msgid "Greater Than"
 msgstr "Większy niż"
 
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than"
+msgstr "Mniej niż"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Greater Than or Equal To"
+msgstr "Większe lub równe"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Less Than or Equal To"
+msgstr "Mniejsze lub równe"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Equals"
+msgstr "Równa się"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Not Equals"
+msgstr "Nie równa się"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Contains"
+msgstr "Zawiera"
+
+#: changedetectionio/conditions/__init__.py
+msgid "Choose one - Field"
+msgstr "Wybierz jedną opcję – Pole"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Does NOT Contain"
+msgstr "NIE zawiera"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Starts With"
+msgstr "Tekst zaczyna się od"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Ends With"
+msgstr "Tekst kończy się słowami"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length minimum"
+msgstr "Minimalna długość"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Length maximum"
+msgstr "Maksymalna długość"
+
+#: changedetectionio/conditions/default_plugin.py
+msgid "Text Matches Regex"
+msgstr "Tekst pasuje do wyrażenia regularnego"
+
 #: changedetectionio/conditions/default_plugin.py
 msgid "Text Does NOT Match Regex"
 msgstr "Tekst NIE pasuje do wyrażenia regularnego"
