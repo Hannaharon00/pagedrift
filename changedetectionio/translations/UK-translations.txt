@@ -1832,6 +1832,62 @@ msgid "Run duration"
 msgstr "Тривалість виконання"
 
 #: changedetectionio/forms.py
+msgid "Use time scheduler"
+msgstr "Використовувати планувальник часу"
+
+#: changedetectionio/forms.py
+msgid "Optional timezone to run in"
+msgstr "Опціональний часовий пояс для запуску"
+
+#: changedetectionio/forms.py
+msgid "Monday"
+msgstr "Понеділок"
+
+#: changedetectionio/forms.py
+msgid "Tuesday"
+msgstr "Вівторок"
+
+#: changedetectionio/forms.py
+msgid "Wednesday"
+msgstr "Середа"
+
+#: changedetectionio/forms.py
+msgid "Thursday"
+msgstr "Четвер"
+
+#: changedetectionio/forms.py
+msgid "Friday"
+msgstr "П'ятниця"
+
+#: changedetectionio/forms.py
+msgid "Saturday"
+msgstr "Субота"
+
+#: changedetectionio/forms.py
+msgid "Sunday"
+msgstr "Неділя"
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr "Тижні"
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr "Має містити нуль або більше секунд"
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr "Дні"
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr "Години"
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr "Хвилини"
+
+#: changedetectionio/forms.py
 msgid "Seconds"
 msgstr "Секунди"
 
