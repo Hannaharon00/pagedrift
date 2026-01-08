@@ -698,6 +698,189 @@ components:
               pattern: '^[0-9]+$'
               default: '00'
 
+    Watch:
+      allOf:
+        - $ref: '#/components/schemas/WatchBase'
+        - type: object
+          properties:
+            last_checked:
+              type: integer
+              description: Unix timestamp of last check
+              readOnly: true
+            last_changed:
+              type: integer
+              description: Unix timestamp of last change
+              readOnly: true
+              x-computed: true
+            last_error:
+              type: [string, boolean, 'null']
+              description: Last error message (false when no error, string when error occurred, null if not checked yet)
+              readOnly: true
+            last_viewed:
+              type: integer
+              description: Unix timestamp in seconds of the last time the watch was viewed. Setting it to a value higher than `last_changed` in the "Update watch" endpoint marks the watch as viewed.
+              minimum: 0
+            link:
+              type: string
+              format: string
+              description: The watch URL rendered in case of any Jinja2 markup, always use this for listing.
+              readOnly: true
+              x-computed: true
+            open_link:
+              type: string
+              format: string
+              description: The URL a human should be sent to - `link_to_open` when set, otherwise the same as `link`.
+              readOnly: true
+              x-computed: true
+            page_title:
+              type: [string, 'null']
+              description: HTML <title> tag extracted from the page
+              readOnly: true
+            check_count:
+              type: integer
+              description: Total number of checks performed
+              readOnly: true
+            fetch_time:
+              type: number
+              description: Duration of last fetch in seconds
+              readOnly: true
+            previous_md5:
+              type: [string, boolean]
+              description: MD5 hash of previous content (false if not set)
+              readOnly: true
+            previous_md5_before_filters:
+              type: [string, boolean]
+              description: MD5 hash before filters applied (false if not set)
+              readOnly: true
+            consecutive_filter_failures:
+              type: integer
+              description: Counter for consecutive filter match failures
+              readOnly: true
+            last_notification_error:
+              type: [string, 'null']
+              description: Last notification error message
+              readOnly: true
+            notification_alert_count:
+              type: integer
+              description: Number of notifications sent
+              readOnly: true
+            content-type:
+              type: [string, 'null']
+              description: Content-Type from last fetch
+              readOnly: true
+            remote_server_reply:
+              type: [string, 'null']
+              description: Server header from last response
+              readOnly: true
+            browser_steps_last_error_step:
+              type: [integer, 'null']
+              description: Last browser step that caused an error
+              readOnly: true
+            viewed:
+              type: [integer, boolean]
+              description: Computed property - true if watch has been viewed, false otherwise (deprecated, use last_viewed instead)
+              readOnly: true
+              x-computed: true
+            history_n:
+              type: integer
+              description: Number of history snapshots available
+              readOnly: true
+              x-computed: true
+            processor_config_restock_diff:
+              type: object
+              readOnly: true
+              x-computed: true
+              description: |
+                Resolved restock/price processor config for this watch.
+                If a tag with `overrides_watch: true` is assigned to this watch, the tag's config is
+                returned here instead of the watch's own config. Use `processor_config_restock_diff_source`
+                to determine where the config originated.
+              properties:
+                in_stock_processing:
+                  type: string
+                  enum: [in_stock_only, all_changes, 'off']
+                follow_price_changes:
+                  type: boolean
+                price_change_min:
+                  type: [number, 'null']
+                price_change_max:
+                  type: [number, 'null']
+                price_change_threshold_percent:
+                  type: [number, 'null']
+                  minimum: 0
+                  maximum: 100
+            processor_config_restock_diff_source:
+              type: string
+              readOnly: true
+              x-computed: true
+              description: |
+                Indicates the origin of `processor_config_restock_diff`.
+                - `watch`: config comes from the watch itself
+                - `tag:<uuid>`: config is overridden by the tag with the given UUID
+
+    CreateWatch:
+      allOf:
+        - $ref: '#/components/schemas/WatchBase'
+        - type: 'object'
+          required:
+            - url
+
+    UpdateWatch:
+      allOf:
+        - $ref: '#/components/schemas/WatchBase'  # Extends WatchBase for user-settable fields
+        - type: object
+          properties:
+            last_viewed:
+              type: integer
+              description: Unix timestamp in seconds of the last time the watch was viewed. Setting it to a value higher than `last_changed` in the "Update watch" endpoint marks the watch as viewed.
+              minimum: 0
+      # Note: ReadOnly and @property fields are filtered out in the backend before update
+      # We don't use unevaluatedProperties:false here to allow roundtrip GET/PUT workflows
+      # where the response includes computed fields that should be silently ignored
+
+    Tag:
+      allOf:
+        - $ref: '#/components/schemas/WatchBase'
+        - type: object
+          properties:
+            overrides_watch:
+              type: [boolean, 'null']
+              description: |
+                Whether this tag's settings override watch settings for all watches in this tag/group.
+                - true: Tag settings override watch settings
+                - false: Tag settings do not override (watches use their own settings)
+                - null: Not decided yet / inherit default behavior
+            url_match_pattern:
+              type: string
+              description: |
+                Automatically apply this tag to any watch whose URL matches this pattern.
+                Supports fnmatch wildcards (* and ?): e.g. *://example.com/* or github.com/myorg.
+                Plain strings are matched as case-insensitive substrings.
+                Leave empty to disable auto-matching.
+            tag_colour:
+              type: string
+              pattern: '^(#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}))?$'
+              description: |
+                Background colour for this tag's badge, as a hex colour (#rgb or #rrggbb), e.g. #4f8ef7.
+                Only hex colours are accepted - the value is rendered into a CSS stylesheet.
+                Leave empty to use the colour auto-generated from the tag name.
+            # Future: Aggregated statistics from all watches with this tag
+            # check_count:
+            #   type: integer
+            #   description: Sum of check_count from all watches with this tag
+            #   readOnly: true
+            #   x-computed: true
+            # last_checked:
+            #   type: integer
+            #   description: Most recent last_checked timestamp from all watches with this tag
+            #   readOnly: true
+            #   x-computed: true
+            # last_changed:
+            #   type: integer
+            #   description: Most recent last_changed timestamp from all watches with this tag
+            #   readOnly: true
+            #   x-computed: true
+
     WatchHistory:
       type: object
       additionalProperties:
