@@ -4052,6 +4052,63 @@ msgid "for direct API calls (or omit the"
 msgstr "для прямих викликів API (або опустіть"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "для не-SSL, тобто"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "більше довідки тут"
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr "Приймає заповнювачі <code>%(token)s</code>, перелічені нижче"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Заголовок для всіх сповіщень"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "Для JSON навантажень використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "без лапок для автоматичного екранування, наприклад -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "URL кодування, використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "наприклад -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Заміна за регулярним виразом, використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Для повного довідника по всіх вбудованих фільтрах Jinja2 зверніться до"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Формат для всіх сповіщень"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
 msgid "format to avoid"
 msgstr ""
 
