@@ -1136,3 +1136,187 @@ components:
                   notification_urls: ["discord://webhook_id/webhook_token"]
                   notification_muted: false
 
+  /tag:
+    post:
+      operationId: createTag
+      tags: [Group / Tag Management]
+      summary: Create tag
+      description: Create a single tag/group
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X POST "http://localhost:5000/api/v1/tag" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "title": "Important Sites"
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            data = {'title': 'Important Sites'}
+            response = requests.post('http://localhost:5000/api/v1/tag',
+                                   headers=headers, json=data)
+            print(response.json())
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTag'
+            example:
+              title: "Important Sites"
+      responses:
+        '201':
+          description: Tag created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                    description: UUID of the created tag
+        '400':
+          description: Invalid or unsupported tag
+
+  /tag/{uuid}:
+    get:
+      operationId: getTag
+      tags: [Group / Tag Management]
+      summary: Get single tag
+      description: Retrieve tag information, set notification_muted status, recheck all web page change monitors (watches) in tag.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/tag/550e8400-e29b-41d4-a716-446655440000" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            tag_uuid = '550e8400-e29b-41d4-a716-446655440000'
+            response = requests.get(f'http://localhost:5000/api/v1/tag/{tag_uuid}', headers=headers)
+            print(response.json())
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Tag unique ID
+          schema:
+            type: string
+            format: uuid
+        - name: muted
+          in: query
+          description: Set mute state
+          schema:
+            type: string
+            enum: [muted, unmuted]
+        - name: recheck
+          in: query
+          description: Queue all web page change monitors (watches) with this tag for recheck
+          schema:
+            type: string
+            enum: ["true"]
+      responses:
+        '200':
+          description: Tag information or operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '404':
+          description: Tag not found
+
+
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [Notifications]
+      summary: Get notification URLs
+      description: Return the notification URL list from the configuration
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/notifications" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            response = requests.get('http://localhost:5000/api/v1/notifications', headers=headers)
+            print(response.json())
+      responses:
+        '200':
+          description: List of notification URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationUrls'
+
+    post:
+      operationId: addNotifications
+      tags: [Notifications]
+      summary: Add notification URLs
+      description: Add one or more notification URLs to the configuration
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X POST "http://localhost:5000/api/v1/notifications" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "notification_urls": [
+                  "mailto:admin@example.com",
+                  "discord://webhook_id/webhook_token"
+                ]
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'notification_urls': [
+                    'mailto:admin@example.com',
+                    'discord://webhook_id/webhook_token'
+                ]
+            }
+            response = requests.post('http://localhost:5000/api/v1/notifications', 
+                                   headers=headers, json=data)
+            print(response.json())
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUrls'
+            example:
+              notification_urls:
+                - "mailto:admin@example.com"
+                - "discord://webhook_id/webhook_token"
+      responses:
+        '201':
+          description: Notification URLs added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationUrls'
+        '400':
+          description: Invalid input
+
