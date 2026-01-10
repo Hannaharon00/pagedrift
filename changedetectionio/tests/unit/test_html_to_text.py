@@ -184,3 +184,110 @@ class TestHtmlToText(unittest.TestCase):
             except Exception as e:
                 errors.append(e)
 
+        The fix strips display:none and visibility:hidden styles from the body tag before
+        processing, allowing text extraction from client-side rendered applications.
+        """
+        # Test case 1: Basic display:none
+        html1 = '''<!DOCTYPE html>
+<html lang="en">
+<head><title>What's New – Fluxguard</title></head>
+<body style="display:none">
+    <h1>Important Heading</h1>
+    <p>This is actual content that should be extracted.</p>
+    <div>
+        <p>First paragraph with meaningful text.</p>
+        <p>Second paragraph with more content.</p>
+    </div>
+</body>
+</html>'''
+
+        text1 = html_to_text(html1)
+
+        # Before fix: would return ~33 newlines, len(text) ~= 33
+        # After fix: should extract actual content, len(text) > 100
+        assert len(text1) > 100, f"Expected substantial text output, got {len(text1)} chars"
+        assert 'Important Heading' in text1, "Failed to extract heading from display:none body"
+        assert 'actual content' in text1, "Failed to extract paragraph from display:none body"
+        assert 'First paragraph' in text1, "Failed to extract nested content"
+
+        # Should not be mostly newlines
+        newline_ratio = text1.count('\n') / len(text1)
+        assert newline_ratio < 0.5, f"Output is mostly newlines ({newline_ratio:.2%}), content not extracted"
+
+        # Test case 2: visibility:hidden (another hiding pattern)
+        html2 = '<html><body style="visibility:hidden"><h1>Hidden Content</h1><p>Test paragraph.</p></body></html>'
+        text2 = html_to_text(html2)
+
+        assert 'Hidden Content' in text2, "Failed to extract content from visibility:hidden body"
+        assert 'Test paragraph' in text2, "Failed to extract paragraph from visibility:hidden body"
+
+        # Test case 3: Mixed styles (display:none with other CSS)
+        html3 = '<html><body style="color: red; display:none; font-size: 12px"><p>Mixed style content</p></body></html>'
+        text3 = html_to_text(html3)
+
+        assert 'Mixed style content' in text3, "Failed to extract content from body with mixed styles"
+
+        # Test case 4: Case insensitivity (DISPLAY:NONE uppercase)
+        html4 = '<html><body style="DISPLAY:NONE"><p>Uppercase style</p></body></html>'
+        text4 = html_to_text(html4)
+
+        assert 'Uppercase style' in text4, "Failed to handle uppercase DISPLAY:NONE"
+
+        # Test case 5: Space variations (display: none vs display:none)
+        html5 = '<html><body style="display: none"><p>With spaces</p></body></html>'
+        text5 = html_to_text(html5)
+
+        assert 'With spaces' in text5, "Failed to handle 'display: none' with space"
+
+        # Test case 6: Body with other attributes (class, id)
+        html6 = '<html><body class="foo" style="display:none" id="bar"><p>With attributes</p></body></html>'
+        text6 = html_to_text(html6)
+
+        assert 'With attributes' in text6, "Failed to extract from body with multiple attributes"
+
+        # Test case 7: Should NOT affect opacity:0 (which doesn't hide from inscriptis)
+        html7 = '<html><body style="opacity:0"><p>Transparent content</p></body></html>'
+        text7 = html_to_text(html7)
+
+        # Opacity doesn't affect inscriptis text extraction, content should be there
+        assert 'Transparent content' in text7, "Incorrectly stripped opacity:0 style"
+
+        print("  ✓ All display:none body tag tests passed")
+
+    def test_style_tag_with_svg_data_uri(self):
+        """
+        Test that style tags containing SVG data URIs are properly stripped.
+
+        Some WordPress and modern sites embed SVG as data URIs in CSS, which contains
+        <svg> and </svg> tags within the style content. The regex must use backreferences
+        to ensure <style> matches </style> (not </svg> inside the CSS).
+
+        This was causing errors where the regex would match <style> and stop at the first
+        </svg> it encountered inside a CSS data URI, breaking the HTML structure.
+        """
+        # Real-world example from WordPress wp-block-image styles
+        html = '''<!DOCTYPE html>
+<html>
+<head>
+    <style id='wp-block-image-inline-css'>
+.wp-block-image>a,.wp-block-image>figure>a{display:inline-block}.wp-block-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom}@supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none){.wp-block-image.is-style-circle-mask img{border-radius:0;-webkit-mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-mode:alpha}}
+    </style>
+</head>
+<body>
+    <h1>Test Heading</h1>
+    <p>This is the actual content that should be extracted.</p>
+    <div class="wp-block-image">
+        <img src="test.jpg" alt="Test image">
+    </div>
+</body>
+</html>'''
+
+        # This should not crash and should extract the body content
+        text = html_to_text(html)
+
+        # Verify the actual body content was extracted
+        assert text is not None, "html_to_text returned None"
+        assert len(text) > 0, "html_to_text returned empty string"
+        assert 'Test Heading' in text, "Failed to extract heading"
+        assert 'actual content that should be extracted' in text, "Failed to extract paragraph"
+
