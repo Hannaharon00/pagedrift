@@ -427,6 +427,34 @@ def test_ui_edit_saves_processor_config_separately(client, live_server):
     assert watch_data['title'] == 'Test', "Original fields should still be there"
 
 
+def test_browser_steps_normalized_to_empty_list(client, live_server):
+    """Test that meaningless browser_steps are normalized to [] during commit"""
+    datastore = client.application.config.get('DATASTORE')
+
+    uuid = datastore.add_watch(url='http://example.com')
+    watch = datastore.data['watching'][uuid]
+
+    # Set browser_steps to meaningless values
+    watch['browser_steps'] = [
+        {'operation': 'Choose one', 'selector': ''},
+        {'operation': 'Goto site', 'selector': ''},
+        {'operation': '', 'selector': '#foo'}
+    ]
+    watch.commit()
+
+    # Read from disk
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+
+    # Should be normalized to empty list
+    assert data['browser_steps'] == [], "Meaningless browser_steps should be normalized to []"
+
+
+# ==============================================================================
+# 5. Data Loss Prevention Tests
+# ==============================================================================
+
 def test_tag_delete_removes_from_watches(client, live_server):
     """Test that deleting a tag removes it from all watches"""
     datastore = client.application.config.get('DATASTORE')
