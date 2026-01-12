@@ -3917,6 +3917,59 @@ msgstr "警告，您設定的一個或多個「天」持續時間將延伸至隔
 msgid "This could have unintended consequences."
 msgstr "這可能會產生非預期的後果。"
 
+#: changedetectionio/templates/base.html
+msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
+msgstr "請先使用滑鼠反白來選擇您想要捕捉的文字 / 行。"
+
+#: changedetectionio/templates/base.html
+msgid "Please select text within the diff content."
+msgstr "請在差異（Diff）內容中選擇文字。"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Failed to generate image: %(error)s"
+msgstr "產生圖片失敗：%(error)s"
+
+#: changedetectionio/templates/base.html
+msgid "Change Detection Diff"
+msgstr "變更檢測差異（Diff）"
+
+#: changedetectionio/templates/base.html
+msgid "Check out this change detected via changedetection.io"
+msgstr "查看透過 changedetection.io 檢測到的此變更"
+
+#: changedetectionio/templates/base.html
+msgid "Please fill in all fields (Field, Operator, and Value) before verifying."
+msgstr "請在驗證前填寫所有欄位（欄位、運算子和數值）。"
+
+#: changedetectionio/templates/base.html
+msgid "Error verifying condition."
+msgstr "驗證條件時發生錯誤。"
+
+#: changedetectionio/templates/base.html
+msgid "Destination email"
+msgstr "目的電子郵件"
+
+#: changedetectionio/templates/base.html
+msgid "Content after filters"
+msgstr "過濾後的內容"
+
+#: changedetectionio/templates/base.html
+msgid "Content raw/before filters"
+msgstr "過濾前的原始內容"
+
+#: changedetectionio/templates/base.html
+msgid "Main navigation"
+msgstr "主導覽列"
+
+#: changedetectionio/templates/base.html
+msgid "Share this link:"
+msgstr "分享此連結："
+
+#: changedetectionio/templates/base.html
+msgid "Real-time updates offline"
+msgstr "離線即時更新"
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "List each new item added with its name and price. Translate to English."
 msgstr "列出每個新新增項目的名稱與價格。翻譯成英文。"
