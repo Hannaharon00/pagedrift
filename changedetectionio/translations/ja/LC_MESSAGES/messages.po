@@ -3756,6 +3756,67 @@ msgid "Above price to trigger notification"
 msgstr "通知をトリガーする上限価格"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr ""
+
+# 訳注: "Warning: Contents of [token1] and [token2] depend on how the difference algorithm perceives the change."
+# → 「警告： [token1] および [token2] の内容は、差分アルゴリズムが変更をどのように認識するかによって異なります。」
+# 主語の訳を後半にまとめた
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "警告："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "および"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "の内容は、差分アルゴリズムが変更をどのように認識するかによって異なります。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "例えば、追加や削除が場合によっては変更として認識されることがあります。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "詳細はこちら"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "メールアドレスを追加"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "テスト通知を送信"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "Notification debug logs"
 msgstr "通知デバッグログ"
 
