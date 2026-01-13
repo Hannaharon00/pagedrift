@@ -3031,6 +3031,67 @@ msgid "Saturday"
 msgstr ""
 
 #: changedetectionio/forms.py
+msgid "Sunday"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Weeks"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Should contain zero or more seconds"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Days"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Hours"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Minutes"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Seconds"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Unknown fetch method."
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Notification Body and Title is required when a Notification URL is used"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%s' is not a valid AppRise URL."
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "RegEx '%s' is not a valid regular expression."
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid XPath expression. (%(error)s)"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid JSONPath expression. (%(error)s)"
+msgstr ""
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "'%(expression)s' is not a valid jq expression. (%(error)s)"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Empty value not allowed."
 msgstr ""
 
