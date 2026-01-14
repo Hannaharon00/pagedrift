@@ -3158,6 +3158,59 @@ msgid "Invalid value."
 msgstr "Nilai tidak valid."
 
 #: changedetectionio/forms.py
+msgid "Group tag"
+msgstr "Tag grup"
+
+#: changedetectionio/blueprint/ui/templates/queue.html changedetectionio/blueprint/watchlist/templates/watch-overview.html
+#: changedetectionio/forms.py
+msgid "Watch"
+msgstr "Monitor"
+
+#: changedetectionio/forms.py
+msgid "Processor"
+msgstr "Prosesor"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr "Browser"
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Edit > Monitor"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Metode Pengambilan"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Isi Notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Format notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Judul Notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Daftar URL Notifikasi"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Prosesor - Apa yang ingin Anda capai?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Zona waktu default untuk penjadwal pemeriksaan monitor"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "Tunggu beberapa detik sebelum mengekstrak teks"
+
+#: changedetectionio/forms.py
 msgid "Open Link Override"
 msgstr ""
 
