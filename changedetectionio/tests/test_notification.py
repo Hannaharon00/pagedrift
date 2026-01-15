@@ -297,6 +297,88 @@ def test_notification_urls_jinja2_apprise_integration(client, live_server, measu
 
 
 
+def test_notification_custom_endpoint_and_jinja2(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    # test_endpoint - that sends the contents of a file
+    # test_notification_endpoint - that takes a POST and writes it to file (test-datastore/notification.txt)
+
+    # CUSTOM JSON BODY CHECK for POST://
+    set_original_response(datastore_path=datastore_path)
+    # https://github.com/caronc/apprise/wiki/Notify_Custom_JSON#header-manipulation
+    test_notification_url = url_for('test_notification_endpoint', _external=True).replace('http://', 'post://')+"?status_code=204&watch_uuid={{ watch_uuid }}&xxx={{ watch_url }}&now={% now 'Europe/London', '%Y-%m-%d' %}&+custom-header=123&+second=hello+world%20%22space%22"
+
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={
+              "notification_body": '{ "url" : "{{ watch_url }}", "secret": 444, "somebug": "网站监测 内容更新了" }',
+              "notification_format": default_notification_format,
+              "notification_urls": test_notification_url,
+              # https://github.com/caronc/apprise/wiki/Notify_Custom_JSON#get-parameter-manipulation
+              "notification_title": "New ChangeDetection.io Notification - {{ watch_url }} ",
+              },
+        follow_redirects=True
+    )
+    assert b'Settings updated' in res.data
+
+    # Add a watch and trigger a HTTP POST
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, tag="nice one")
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+    set_modified_response(datastore_path=datastore_path)
+
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+
+
+    # Check no errors were recorded, because we asked for 204 which is slightly uncommon but is still OK
+    res = client.get(url_for("watchlist.index"))
+    assert b'notification-error' not in res.data
+
+    with open(os.path.join(datastore_path, "notification.txt"), 'r') as f:
+        x = f.read()
+        j = json.loads(x)
+        assert j['url'].startswith('http://localhost')
+        assert j['secret'] == 444
+        assert j['somebug'] == '网站监测 内容更新了'
+
+
+    # URL check, this will always be converted to lowercase
+    assert os.path.isfile(os.path.join(datastore_path, "notification-url.txt"))
+    with open(os.path.join(datastore_path, "notification-url.txt"), 'r') as f:
+        notification_url = f.read()
+        assert 'xxx=http' in notification_url
+        # apprise style headers should be stripped
+        assert 'custom-header' not in notification_url
+        # Check jinja2 custom arrow/jinja2-time replace worked
+        assert 'now=2' in notification_url
+        # Check our watch_uuid appeared
+        assert f'watch_uuid={watch_uuid}' in notification_url
+
+
+    with open(os.path.join(datastore_path, "notification-headers.txt"), 'r') as f:
+        notification_headers = f.read()
+        assert 'custom-header: 123' in notification_headers.lower()
+        assert 'second: hello world "space"' in notification_headers.lower()
+
+
+    # Should always be automatically detected as JSON content type even when we set it as 'Plain Text' (default)
+    assert os.path.isfile(os.path.join(datastore_path, "notification-content-type.txt"))
+    with open(os.path.join(datastore_path, "notification-content-type.txt"), 'r') as f:
+        assert 'application/json' in f.read()
+
+    os.unlink(os.path.join(datastore_path, "notification-url.txt"))
+
+    client.post(
+        url_for("ui.form_delete", uuid="all"),
+        follow_redirects=True
+    )
+
+
 #2510
 #@todo run it again as text, html, htmlcolor
 def test_global_send_test_notification(client, live_server, measure_memory_usage, datastore_path):
