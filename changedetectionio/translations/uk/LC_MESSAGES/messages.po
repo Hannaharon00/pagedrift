@@ -3995,6 +3995,62 @@ msgstr "Текстовий вміст поточного знімка, кори�
 msgid "Text that tripped the trigger from filters"
 msgstr "Текст, що викликав спрацювання фільтрів"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Запис"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Дії"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Додати рядок/правило після"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Видалити цей рядок/правило"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Перевірити це правило на поточному знімку"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Встановити розклад по годинах/днях тижня"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Обмеження часу розкладу"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Робочі години"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Вихідні"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Скидання"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Увага, один або кілька ваших 'днів' мають тривалість, що переходить на наступний день."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Це може призвести до непередбачених наслідків."
+
 #: changedetectionio/templates/base.html
 msgid "Select Language"
 msgstr "Обрати мову"
