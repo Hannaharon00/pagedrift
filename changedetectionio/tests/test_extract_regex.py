@@ -363,6 +363,93 @@ def test_extract_lines_containing_multiple_terms(client, live_server, measure_me
     delete_all_watches(client)
 
 
+def test_extract_lines_containing_with_ignore_text(client, live_server, measure_memory_usage, datastore_path):
+    """
+    extract_lines_containing narrows to matching lines; ignore_text then suppresses specific
+    lines from triggering change detection (they remain visible but don't affect the checksum).
+
+    Filters are set BEFORE the first check so the filtered+ignored checksum is the baseline
+    from the very start — no race between a forced-recheck and the next content write.
+    """
+    initial_data = """<html><body>
+      <p>Temperature: 21 celsius</p>
+      <p>Feels like: 19 celsius</p>
+      <p>Humidity: 55%</p>
+    </body></html>"""
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(initial_data)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={'paused': True})
+
+    # Set filters BEFORE the first check so the baseline is always filtered+ignored.
+    # (Setting them after an initial unfiltered check creates a race: the forced recheck
+    #  that updates previous_md5 must complete before the next content write, which is
+    #  timing-sensitive and fails intermittently on slower systems / Python 3.14.)
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid, unpause_on_save=1),
+        data={
+            'extract_lines_containing': 'celsius',
+            'ignore_text': 'Feels like',
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"
+        },
+        follow_redirects=True
+    )
+    assert b"unpaused" in res.data
+
+    # First check — establishes filtered+ignored baseline. previous_md5 was False so
+    # a change is always detected here; mark_all_viewed clears it before we assert.
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Sanity: preview should only show celsius lines
+    res = client.get(url_for("ui.ui_preview.preview_page", uuid=uuid), follow_redirects=True)
+    assert b'celsius' in res.data
+    assert b'Humidity' not in res.data
+
+    # Change ONLY the ignored "Feels like" line — should NOT trigger a change
+    changed_data = """<html><body>
+      <p>Temperature: 21 celsius</p>
+      <p>Feels like: 17 celsius</p>
+      <p>Humidity: 55%</p>
+    </body></html>"""
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(changed_data)
+
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' not in res.data, "Changing an ignored line should not trigger a change notification"
+
+    client.post(url_for("ui.mark_all_viewed"), follow_redirects=True)
+    time.sleep(1)
+
+    # Change the non-ignored celsius line — SHOULD trigger
+    triggered_data = """<html><body>
+      <p>Temperature: 30 celsius</p>
+      <p>Feels like: 17 celsius</p>
+      <p>Humidity: 55%</p>
+    </body></html>"""
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(triggered_data)
+
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' in res.data,  "Changing a non-ignored line should trigger a change notification"
+
+    delete_all_watches(client)
+
+
 def test_extract_lines_containing_with_extract_text_regex(client, live_server, measure_memory_usage, datastore_path):
     """
     extract_lines_containing first narrows to relevant lines, then extract_text regex
