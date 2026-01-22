@@ -3811,6 +3811,62 @@ msgstr "制限なし"
 msgid "Above price to trigger notification"
 msgstr "通知をトリガーする上限価格"
 
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "前回のチェックからの価格変動率のしきい値（%）"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "0から100の間で指定してください"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "価格変動を追跡"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Restock & Price Detection"
+msgstr "在庫補充＆価格検知"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Re-stock & Price detection for pages with a SINGLE product"
+msgstr "単一製品ページの在庫補充＆価格検知"
+
+#: changedetectionio/processors/restock_diff/processor.py
+msgid "Detects if the product goes back to in-stock"
+msgstr "製品が在庫ありに戻ったかどうかを検知します"
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price & stock history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Download as XLSX"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "When"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Stock"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Not enough price data points yet to draw a graph - keep monitoring and the price history will appear here."
+msgstr ""
+
+#: changedetectionio/processors/templates/extract.html
+msgid "Screenshot"
+msgstr "スクリーンショット"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "This tool will extract text data from all of the watch history."
+msgstr "このツールはすべてのウォッチ履歴からテキストデータを抽出します。"
+
+#: changedetectionio/processors/templates/extract.html
+msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part inside of the text that you want to extract."
+msgstr "<strong>正規表現</strong> は、抽出したいテキスト内の部分を正確に特定するためのパターンです。"
+
 #: changedetectionio/processors/templates/extract.html
 msgid "For example, to extract only the numbers from text"
 msgstr "例えば、テキストから数値のみを抽出するには"
