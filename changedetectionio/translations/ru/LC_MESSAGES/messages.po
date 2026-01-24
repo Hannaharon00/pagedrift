@@ -3708,6 +3708,66 @@ msgstr "Полностью пропустить проверку часов"
 msgid "Watchlist \"Summary\" link compares"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx для извлечения"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Извлечь в формате CSV"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr ""
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "%sh ago"
@@ -4283,6 +4343,71 @@ msgstr ""
 #, python-format
 msgid "From group '%(name)s': %(value)s"
 msgstr "Из группы «%(name)s»: %(value)s"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe the price change: old price, new price, percentage difference."
+msgstr "Опишите изменение цены: старая цена, новая цена, процентная разница."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "AI"
+msgstr "ИИ"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI Change Intent and AI "
+"Change Summary."
+msgstr ""
+"Настройте поставщика AI / LLM в <a href=\"%(url)s\">Settings → AI / LLM</a>, чтобы включить намерение изменения AI и "
+"сводку изменений AI."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI features for this group."
+msgstr ""
+"Настройте поставщика AI / LLM в <a href=\"%(url)s\">Settings → AI / LLM</a>, чтобы включить функции AI для этой "
+"группы."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Note!: //text() function does not work where the <element> contains <![CDATA[]]>"
+msgstr "Примечание!: функция //text() не работает, если <element> содержит <![CDATA[]]>."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "One CSS, xPath 1 & 2, JSON Path/JQ selector per line, <i>any</i> rules that matches will be used."
+msgstr "Будет использоваться один CSS, xPath 1 и 2, селектор JSON Path/JQ на строку, соответствующие правила <i>any</i>."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Limit text to this CSS rule, only text matching this CSS rule is included."
+msgstr "Ограничьте текст этим правилом CSS, включается только текст, соответствующий этому правилу CSS."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix with <code>json:</code>, use <code>json:$</code> to force re-formatting if required,"
+msgstr "Префикс <code>json:</code>, используйте <code>json:$</code> для принудительного переформатирования, если необходимо,"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your JSONPath here"
+msgstr "проверьте свой JSONPath здесь"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix <code>jqraw:</code> outputs the results as text instead of a JSON list."
+msgstr "Префикс <code>jqraw:</code> выводит результаты в виде текста, а не списка JSON."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "jq support not installed"
+msgstr "поддержка jq не установлена"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid ""
+"Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
+" rule starts with an XPath function: Prefix with <code>xpath:</code>"
+msgstr ""
+"Ограничьте текст этим правилом XPath, просто начните с косой черты. Чтобы явно указать XPath для использования или "
+"правило XPath начинается с функции XPath: используйте префикс <code>xpath:</code>."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr "проверьте свой XPath здесь"
 
 #: changedetectionio/templates/edit/text-options.html
 msgid "One line per regular-expression/string match"
