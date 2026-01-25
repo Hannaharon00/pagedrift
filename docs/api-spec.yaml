@@ -1320,3 +1320,67 @@ components:
         '400':
           description: Invalid input
 
+  /search:
+    get:
+      operationId: searchWatches
+      tags: [Search]
+      summary: Search watches
+      description: Search web page change monitors (watches) by URL or title text
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/search?q=example.com" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            params = {'q': 'example.com'}
+            response = requests.get('http://localhost:5000/api/v1/search', 
+                                  headers=headers, params=params)
+            print(response.json())
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query to match against watch URLs and titles
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: Tag name to limit results (name not UUID)
+          schema:
+            type: string
+        - name: partial
+          in: query
+          description: Allow partial matching of URL query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+              example:
+                watches:
+                  "095be615-a8ad-4c33-8e9c-c7612fbf6c9f":
+                    uuid: "095be615-a8ad-4c33-8e9c-c7612fbf6c9f"
+                    url: "http://example.com"
+                    title: "Example Website Monitor"
+                    tags: ["550e8400-e29b-41d4-a716-446655440000"]
+                    paused: false
+                    notification_muted: false
+
+  /import:
+    post:
+      operationId: importWatches
+      tags: [Import]
+      summary: Import watch URLs with configuration
+      description: |
+        Import a list of URLs to monitor with optional watch configuration. Accepts line-separated URLs in request body.
+
+        **Configuration via Query Parameters:**
+
