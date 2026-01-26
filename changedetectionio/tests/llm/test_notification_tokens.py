@@ -124,3 +124,139 @@ class TestHandlerLlmTokenPopulation:
 # notification_service.py — _llm_result / _llm_intent wired from watch
 # ---------------------------------------------------------------------------
 
+class TestNotificationServiceLlmAttachment:
+    """
+    send_content_changed_notification() reads _llm_result and _llm_intent
+    from the watch object and attaches them to n_object so the handler can render tokens.
+    """
+
+    def _make_watch(self, llm_result=None, llm_intent=''):
+        watch = MagicMock()
+        watch.get.side_effect = lambda key, default=None: {
+            '_llm_result': llm_result,
+            '_llm_intent': llm_intent,
+            'notification_urls': ['json://localhost/'],
+            'notification_title': '',
+            'notification_body': '',
+            'notification_format': 'text',
+            'notification_muted': False,
+            'notification_alert_count': 0,
+        }.get(key, default)
+        watch.history = {'1000': 'snap1', '2000': 'snap2'}
+        watch.get_history_snapshot = MagicMock(return_value='snapshot text')
+        watch.extra_notification_token_values = MagicMock(return_value={})
+        return watch
+
+    def test_llm_result_attached_to_n_object(self):
+        """_llm_result from watch ends up in n_object for the notification handler."""
+        from changedetectionio.notification_service import NotificationService
+
+        llm_result = {'important': True, 'summary': 'Price dropped'}
+        watch = self._make_watch(llm_result=llm_result, llm_intent='flag price drops')
+
+        datastore = MagicMock()
+        datastore.data = {
+            'settings': {
+                'application': {
+                    'active_base_url': 'http://localhost',
+                    'notification_urls': [],
+                    'notification_title': '',
+                    'notification_body': '',
+                    'notification_format': 'text',
+                    'notification_muted': False,
+                }
+            },
+            'watching': {'test-uuid': watch},
+        }
+        datastore.get_all_tags_for_watch = MagicMock(return_value={})
+
+        captured = {}
+
+        def fake_queue_notification(n_object, watch, **kwargs):
+            captured['n_object'] = dict(n_object)
+
+        svc = NotificationService(datastore, MagicMock())
+        svc.queue_notification_for_watch = fake_queue_notification
+
+        svc.send_content_changed_notification('test-uuid')
+
+        assert '_llm_result' in captured['n_object']
+        assert captured['n_object']['_llm_result'] == llm_result
+
+    def test_llm_intent_attached_to_n_object(self):
+        """_llm_intent from watch ends up in n_object."""
+        from changedetectionio.notification_service import NotificationService
+
+        watch = self._make_watch(
+            llm_result={'important': True, 'summary': 'test'},
+            llm_intent='flag price drops',
+        )
+
+        datastore = MagicMock()
+        datastore.data = {
+            'settings': {
+                'application': {
+                    'active_base_url': 'http://localhost',
+                    'notification_urls': [],
+                    'notification_title': '',
+                    'notification_body': '',
+                    'notification_format': 'text',
+                    'notification_muted': False,
+                }
+            },
+            'watching': {'test-uuid': watch},
+        }
+        datastore.get_all_tags_for_watch = MagicMock(return_value={})
+
+        captured = {}
+
+        def fake_queue_notification(n_object, watch, **kwargs):
+            captured['n_object'] = dict(n_object)
+
+        svc = NotificationService(datastore, MagicMock())
+        svc.queue_notification_for_watch = fake_queue_notification
+
+        svc.send_content_changed_notification('test-uuid')
+
+        assert captured['n_object']['_llm_intent'] == 'flag price drops'
+
+    def test_null_llm_result_when_no_evaluation(self):
+        """When LLM wasn't evaluated, _llm_result is None — tokens render as empty."""
+        from changedetectionio.notification_service import NotificationService
+
+        watch = self._make_watch(llm_result=None, llm_intent='')
+
+        datastore = MagicMock()
+        datastore.data = {
+            'settings': {
+                'application': {
+                    'active_base_url': 'http://localhost',
+                    'notification_urls': [],
+                    'notification_title': '',
+                    'notification_body': '',
+                    'notification_format': 'text',
+                    'notification_muted': False,
+                }
+            },
+            'watching': {'test-uuid': watch},
+        }
+        datastore.get_all_tags_for_watch = MagicMock(return_value={})
+
+        captured = {}
+
+        def fake_queue_notification(n_object, watch, **kwargs):
+            captured['n_object'] = dict(n_object)
+
+        svc = NotificationService(datastore, MagicMock())
+        svc.queue_notification_for_watch = fake_queue_notification
+
+        svc.send_content_changed_notification('test-uuid')
+
+        assert captured['n_object']['_llm_result'] is None
+        assert captured['n_object']['_llm_intent'] == ''
+
+
+# ---------------------------------------------------------------------------
+# End-to-end: Jinja2 template rendering with llm_summary / llm_intent
+# ---------------------------------------------------------------------------
+
