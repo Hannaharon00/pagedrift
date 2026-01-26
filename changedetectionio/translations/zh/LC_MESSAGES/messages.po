@@ -3911,6 +3911,62 @@ msgstr "警告：一个或多个“天”的时长会延续到次日。"
 msgid "This could have unintended consequences."
 msgstr "这可能导致意外结果。"
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "有关使用调度器的更多帮助"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "想要使用时间计划吗?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "请先确认/保存你的时区设置"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "触发文本"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "当该文本出现且文档发生变化时触发变更。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "忽略文本"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "计算变更时忽略，但仍会显示。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "阻止文本"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "此文本存在时将不会进行变更检测。"
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr ""
