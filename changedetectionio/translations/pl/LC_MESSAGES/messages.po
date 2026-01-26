@@ -4111,6 +4111,62 @@ msgstr "Tytuł dla wszystkich powiadomień"
 msgid "For JSON payloads, use"
 msgstr "W przypadku danych JSON należy użyć"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "bez cudzysłowów, aby zapewnić automatyczne zamienianie znaków, na przykład —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "Kodowanie adresów URL, zastosowanie"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "na przykład –"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Zastępowanie za pomocą wyrażeń regularnych, użycie"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Pełny spis wszystkich wbudowanych filtrów biblioteki Jinja2 można znaleźć w"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Format wszystkich powiadomień"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord nie wyświetla kodu HTML — przełącz się na"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "Zwykły tekst"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr "format, którego należy unikać"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr "oraz inne znaki HTML pojawiające się dosłownie w Twoich powiadomieniach."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Wpis"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Działania"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Dodaj wiersz/linię po"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Usuń ten wiersz/regułę"
+
 #: changedetectionio/templates/base.html
 msgid "Change Detection Diff"
 msgstr "Wykrywanie zmian – porównanie"
