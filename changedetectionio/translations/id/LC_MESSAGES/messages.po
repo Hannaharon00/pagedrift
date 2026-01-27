@@ -4044,6 +4044,58 @@ msgstr "Keluaran diff - hanya perubahan dan penambahan"
 msgid "The diff output - only changes and additions —"
 msgstr "Keluaran diff - hanya perubahan dan penambahan —"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Tambahkan baris/aturan setelah"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Hapus baris/aturan ini"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Verifikasi aturan ini terhadap snapshot saat ini"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Atur jadwal jam/hari dalam seminggu"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Batas waktu jadwal"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Jam kerja"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Akhir pekan"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Reset"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Peringatan, satu atau beberapa 'hari' Anda memiliki durasi yang akan berlanjut ke hari berikutnya."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Hal ini dapat menimbulkan konsekuensi yang tidak diinginkan."
+
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Bantuan dan contoh lainnya tentang penggunaan penjadwal"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Ingin menggunakan jadwal waktu?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Konfirmasi/simpan Pengaturan Zona Waktu Anda terlebih dahulu"
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
 msgstr ""
