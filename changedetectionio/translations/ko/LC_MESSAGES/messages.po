@@ -4426,6 +4426,71 @@ msgid "Real-time updates offline"
 msgstr "실시간 업데이트 오프라인"
 
 #: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
+msgstr "이 태그/그룹의 모든 모니터링에 판단 기준을 설정합니다. 각 모니터링에서 자체 설정으로 재정의할 수 있습니다."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "From group '%(name)s': %(value)s"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr "예: 가격이 $300 아래로 떨어지거나 새 제품이 출시되면 알려줘. 푸터와 내비게이션 변경은 무시."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr "예: 이 그룹의 모든 모니터링에서 가격 변경 또는 새 제품 출시 표시"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr "예시:"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr "가격이 $200 아래로 떨어지거나 기간 한정 할인이 추가된 경우에만 알림"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr "새 리콜, 안전 공지 또는 제품 회수 공지가 게시되면 알림"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr "새 지원금 신청 라운드가 열리거나 신청 마감일이 발표되면 알림"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr "패키지 버전이 변경되거나 CVE가 언급된 경우에만 중요"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr "AI 사전 필터 사용 중: <code>%(filter)s</code> - 평가 전에 콘텐츠 범위를 좁힙니다"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr "변경이 감지되면 AI가 지시에 따라 이를 설명하고 알림의 <code>%(diff)s</code>를 대체합니다. 원본 diff가 필요하면 <code>%(raw_diff)s</code>를 사용하세요."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr "이 그룹의 모든 모니터링 알림에서 변경 사항을 어떻게 요약할지 설명하세요."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
 msgid "List each new item added with its name and price. Translate to English."
 msgstr "추가된 각 새 항목을 이름과 가격과 함께 나열하세요. 영어로 번역하세요."
 
