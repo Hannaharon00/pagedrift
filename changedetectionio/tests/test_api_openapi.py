@@ -132,3 +132,64 @@ def test_openapi_validation_invalid_field_in_request_body(client, live_server, m
     delete_all_watches(client)
 
 
+def test_openapi_validation_import_wrong_content_type(client, live_server, measure_memory_usage, datastore_path):
+    """Test that import endpoint with wrong content-type triggers OpenAPI validation error."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Try to import URLs with JSON content-type instead of text/plain
+    res = client.post(
+        url_for("import") + "?tag=test-import",
+        data='https://website1.com\nhttps://website2.com',
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},  # Wrong content-type
+        follow_redirects=True
+    )
+
+    # Should get 400 error due to content-type mismatch
+    assert res.status_code == 400, f"Expected 400 but got {res.status_code}"
+    assert b"Validation failed" in res.data, "Should contain validation error message"
+    delete_all_watches(client)
+
+
+def test_openapi_validation_import_correct_content_type_succeeds(client, live_server, measure_memory_usage, datastore_path):
+    """Test that import endpoint with correct content-type succeeds (positive test)."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Import URLs with correct text/plain content-type
+    res = client.post(
+        url_for("import") + "?tag=test-import",
+        data='https://website1.com\nhttps://website2.com',
+        headers={'x-api-key': api_key, 'content-type': 'text/plain'},  # Correct content-type
+        follow_redirects=True
+    )
+
+    # Should succeed
+    assert res.status_code == 200, f"Expected 200 but got {res.status_code}"
+    assert len(res.json) == 2, "Should import 2 URLs"
+    delete_all_watches(client)
+
+
+def test_openapi_validation_get_requests_bypass_validation(client, live_server, measure_memory_usage, datastore_path):
+    """Test that GET requests bypass OpenAPI validation entirely."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Disable API token requirement first
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={
+            "requests-time_between_check-minutes": 180,
+            "application-fetch_backend": "html_requests",
+            "application-api_access_token_enabled": ""
+        },
+        follow_redirects=True
+    )
+    assert b"Settings updated." in res.data
+
+    # Make GET request to list watches - should succeed even without API key or content-type
+    res = client.get(url_for("createwatch"))  # No headers needed for GET
+    assert res.status_code == 200, f"GET requests should succeed without OpenAPI validation, got {res.status_code}"
+
+    # Should return JSON with watch list (empty in this case)
+    assert isinstance(res.json, dict), "Should return JSON dictionary for watch list"
+    delete_all_watches(client)
+
+
