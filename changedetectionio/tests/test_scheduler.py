@@ -172,3 +172,38 @@ def test_check_basic_global_scheduler_functionality(client, live_server, measure
     delete_all_watches(client)
 
 
+def test_validation_time_interval_field(client, live_server, measure_memory_usage, datastore_path):
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"trigger_text": 'The golden line',
+              "url": test_url,
+              'fetch_backend': "html_requests",
+              'filter_text_removed': 'y',
+              "time_between_check_use_default": ""
+              },
+        follow_redirects=True
+    )
+
+    assert REQUIRE_ATLEAST_ONE_TIME_PART_WHEN_NOT_GLOBAL_DEFAULT.encode('utf-8') in res.data
+
+    # Now set atleast something
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"trigger_text": 'The golden line',
+              "url": test_url,
+              'fetch_backend': "html_requests",
+              "time_between_check-minutes": 1,
+              "time_between_check_use_default": ""
+              },
+        follow_redirects=True
+    )
+
+    assert REQUIRE_ATLEAST_ONE_TIME_PART_WHEN_NOT_GLOBAL_DEFAULT.encode('utf-8') not in res.data
+
+
