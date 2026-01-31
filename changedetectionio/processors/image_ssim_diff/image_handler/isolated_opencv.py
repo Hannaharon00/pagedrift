@@ -390,6 +390,99 @@ def _worker_draw_bounding_box(conn, img_bytes, x, y, width, height, color, thick
         conn.close()
 
 
+async def draw_bounding_box_isolated(img_bytes, x, y, width, height, color=(255, 0, 0), thickness=3):
+    """
+    Draw bounding box on image in isolated subprocess (async-safe).
+
+    Args:
+        img_bytes: Image data as bytes
+        x: Left coordinate
+        y: Top coordinate
+        width: Box width
+        height: Box height
+        color: BGR color tuple (default: blue)
+        thickness: Line thickness in pixels
+
+    Returns:
+        bytes: PNG image with bounding box or None on failure
+    """
+    import time
+    import asyncio
+    print(f"[{time.time():.3f}] [Parent] Starting draw_bounding_box subprocess", flush=True)
+
+    ctx = multiprocessing.get_context('spawn')
+    parent_conn, child_conn = ctx.Pipe()
+
+    p = ctx.Process(
+        target=_worker_draw_bounding_box,
+        args=(child_conn, img_bytes, x, y, width, height, color, thickness)
+    )
+
+    print(f"[{time.time():.3f}] [Parent] Starting subprocess", flush=True)
+    p.start()
+    print(f"[{time.time():.3f}] [Parent] Subprocess started (pid={p.pid}), waiting for result ({POLL_TIMEOUT_ABSOLUTE}s timeout)", flush=True)
+
+    result = None
+    try:
+        # Async-friendly polling: check in small intervals without blocking event loop
+        deadline = time.time() + POLL_TIMEOUT_ABSOLUTE
+        while time.time() < deadline:
+            # Run poll() in thread to avoid blocking event loop
+            has_data = await asyncio.to_thread(parent_conn.poll, 0.1)
+            if has_data:
+                print(f"[{time.time():.3f}] [Parent] Result available, receiving", flush=True)
+                # Run recv() in thread too
+                result = await asyncio.to_thread(parent_conn.recv)
+                # Check if result is an error dict
+                if isinstance(result, dict) and 'error' in result:
+                    raise RuntimeError(f"Draw bounding box failed: {result['error']}")
+                print(f"[{time.time():.3f}] [Parent] Result received ({len(result) if result else 0} bytes)", flush=True)
+                break
+            # Yield control to event loop
+            await asyncio.sleep(0)
+        else:
+            from loguru import logger
+            logger.critical(f"[OpenCV subprocess] Timeout waiting for draw_bounding_box result after {POLL_TIMEOUT_ABSOLUTE}s (subprocess may be hung)")
+            print(f"[{time.time():.3f}] [Parent] Timeout waiting for result after {POLL_TIMEOUT_ABSOLUTE}s", flush=True)
+            raise TimeoutError(f"Draw bounding box subprocess timeout after {POLL_TIMEOUT_ABSOLUTE}s")
+    except Exception as e:
+        print(f"[{time.time():.3f}] [Parent] Error receiving result: {e}", flush=True)
+        raise
+    finally:
+        # Always close pipe first
+        try:
+            parent_conn.close()
+        except:
+            pass
+
+        # Try graceful shutdown (run join in thread to avoid blocking)
+        print(f"[{time.time():.3f}] [Parent] Waiting for subprocess to exit (3s timeout)", flush=True)
+        join_start = time.time()
+        await asyncio.to_thread(p.join, 3)
+        join_elapsed = time.time() - join_start
+        print(f"[{time.time():.3f}] [Parent] First join took {join_elapsed:.2f}s", flush=True)
+
+        if p.is_alive():
+            print(f"[{time.time():.3f}] [Parent] Process didn't exit gracefully, terminating", flush=True)
+            term_start = time.time()
+            p.terminate()
+            await asyncio.to_thread(p.join, 2)
+            term_elapsed = time.time() - term_start
+            print(f"[{time.time():.3f}] [Parent] Terminate+join took {term_elapsed:.2f}s", flush=True)
+
+        if p.is_alive():
+            print(f"[{time.time():.3f}] [Parent] Process didn't terminate, killing", flush=True)
+            kill_start = time.time()
+            p.kill()
+            await asyncio.to_thread(p.join, 1)
+            kill_elapsed = time.time() - kill_start
+            print(f"[{time.time():.3f}] [Parent] Kill+join took {kill_elapsed:.2f}s", flush=True)
+
+        print(f"[{time.time():.3f}] [Parent] Subprocess cleanup complete, returning result", flush=True)
+
+    return result
+
+
 def _worker_calculate_percentage(conn, img_bytes_from, img_bytes_to, pixel_difference_threshold, blur_sigma, max_width, max_height):
     """
     Worker function for calculating change percentage.
