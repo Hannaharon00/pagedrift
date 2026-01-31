@@ -446,3 +446,92 @@ class TestResolveLlmField:
 # summarise_change
 # ---------------------------------------------------------------------------
 
+class TestSummariseChange:
+    def test_returns_empty_when_llm_not_configured(self):
+        from changedetectionio.llm.evaluator import summarise_change
+        ds = _make_datastore(llm_cfg={})
+        watch = _make_watch(llm_change_summary='List what changed')
+        result = summarise_change(watch, ds, diff='- old\n+ new')
+        assert result == ''
+
+    def test_uses_default_prompt_when_no_summary_prompt(self):
+        """When llm_change_summary is empty, falls back to DEFAULT_CHANGE_SUMMARY_PROMPT."""
+        from changedetectionio.llm.evaluator import summarise_change, DEFAULT_CHANGE_SUMMARY_PROMPT
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini', 'api_key': 'sk-test'})
+        watch = _make_watch(llm_change_summary='')
+        with patch('changedetectionio.llm.client.completion',
+                   return_value=('A new item was added.', 40)) as mock_llm:
+            result = summarise_change(watch, ds, diff='- old\n+ new')
+        mock_llm.assert_called_once()
+        # Default prompt must appear in the user message
+        call_messages = mock_llm.call_args.kwargs['messages']
+        user_msg = next(m['content'] for m in call_messages if m['role'] == 'user')
+        assert DEFAULT_CHANGE_SUMMARY_PROMPT in user_msg
+        assert result == 'A new item was added.'
+
+    def test_returns_empty_when_diff_empty(self):
+        from changedetectionio.llm.evaluator import summarise_change
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini'})
+        watch = _make_watch(llm_change_summary='List what changed')
+        with patch('changedetectionio.llm.client.completion') as mock_llm:
+            result = summarise_change(watch, ds, diff='')
+            mock_llm.assert_not_called()
+        assert result == ''
+
+    def test_calls_llm_and_returns_plain_text(self):
+        from changedetectionio.llm.evaluator import summarise_change
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini', 'api_key': 'sk-test'})
+        watch = _make_watch(llm_change_summary='List new events in English')
+        with patch('changedetectionio.llm.client.completion',
+                   return_value=('3 new events added: Jazz Night, Art Show, Comedy Gig', 80)):
+            result = summarise_change(watch, ds, diff='+ Jazz Night\n+ Art Show\n+ Comedy Gig')
+        assert 'Jazz Night' in result
+        assert 'Art Show' in result
+
+    def test_cascades_from_tag(self):
+        """llm_change_summary on a tag propagates to watches in that tag."""
+        from changedetectionio.llm.evaluator import summarise_change
+        tag = _make_tag(title='events', llm_change_summary='Translate events to English')
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini'}, tags={'tag-1': tag})
+        watch = _make_watch(llm_change_summary='', tags=['tag-1'])
+        with patch('changedetectionio.llm.client.completion',
+                   return_value=('New concert added on Friday', 60)):
+            result = summarise_change(watch, ds, diff='+ Konzert am Freitag')
+        assert result == 'New concert added on Friday'
+
+    def test_llm_failure_raises(self):
+        """On LLM error, summarise_change re-raises so callers can surface the error."""
+        from changedetectionio.llm.evaluator import summarise_change
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini'})
+        watch = _make_watch(llm_change_summary='Describe the change')
+        with patch('changedetectionio.llm.client.completion', side_effect=Exception('timeout')):
+            with pytest.raises(Exception, match='timeout'):
+                summarise_change(watch, ds, diff='- old\n+ new')
+
+    def test_uses_higher_token_limit_than_eval(self):
+        """summarise_change passes a dynamic max_tokens larger than the eval default (200)."""
+        from changedetectionio.llm.evaluator import summarise_change, _summary_max_tokens
+        ds = _make_datastore(llm_cfg={'model': 'gpt-4o-mini'})
+        watch = _make_watch(llm_change_summary='Describe changes')
+        diff = '- old\n+ new'
+        with patch('changedetectionio.llm.client.completion',
+                   return_value=('Some summary', 100)) as mock_llm:
+            summarise_change(watch, ds, diff=diff)
+        call_kwargs = mock_llm.call_args
+        passed_max_tokens = call_kwargs.kwargs.get('max_tokens')
+        assert passed_max_tokens == _summary_max_tokens(diff)
+        assert passed_max_tokens >= 400  # always more generous than eval cap of 200
+
+    def test_dynamic_token_cap_scales_with_diff_size(self):
+        """Larger diffs produce a higher max_tokens cap, bounded at 3000."""
+        from changedetectionio.llm.evaluator import _summary_max_tokens
+        assert _summary_max_tokens('x' * 100)   == 400   # floor
+        assert _summary_max_tokens('x' * 4000)  == 1000
+        assert _summary_max_tokens('x' * 12000) == 3000  # ceiling
+        assert _summary_max_tokens('x' * 99999) == 3000  # never exceeds ceiling
+
+
+# ---------------------------------------------------------------------------
+# compute_summary_cache_key / get_effective_summary_prompt
+# ---------------------------------------------------------------------------
+
