@@ -77,3 +77,39 @@ function request_textpreview_update() {
 }
 
 
+$(document).ready(function () {
+
+    $('#notification-setting-reset-to-default').click(function (e) {
+        $('#notification_title').val('');
+        $('#notification_body').val('');
+        $('#notification_format').val('System default');
+        $('#notification_urls').val('');
+        $('#notification_muted_none').prop('checked', true); // in the case of a ternary field
+        e.preventDefault();
+    });
+    $("#notification-token-toggle").click(function (e) {
+        e.preventDefault();
+        $('#notification-tokens-info').toggle();
+    });
+
+    toggleOpacity('#time_between_check_use_default', '#time-check-widget-wrapper, #time-between-check-schedule', false);
+
+
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    $("#text-preview-inner").css('max-height', (vh - 300) + "px");
+    $("#text-preview-before-inner").css('max-height', (vh - 300) + "px");
+
+    $("#activate-text-preview").click(function (e) {
+        $('body').toggleClass('preview-text-enabled')
+        request_textpreview_update();
+        const method = $('body').hasClass('preview-text-enabled') ? 'on' : 'off';
+        $('#filters-and-triggers textarea')[method]('blur', request_textpreview_update.throttle(1000));
+        $('#filters-and-triggers input')[method]('change', request_textpreview_update.throttle(1000));
+        $("#filters-and-triggers-tab")[method]('click', request_textpreview_update.throttle(1000));
+    });
+    var _mt = {};
+    _mt[i18nT('tabContentAfter', 'Content after filters')] = "#text-preview-inner";
+    _mt[i18nT('tabContentBefore', 'Content raw/before filters')] = "#text-preview-before-inner";
+    $('.minitabs-wrapper').miniTabs(_mt);
+});
+
