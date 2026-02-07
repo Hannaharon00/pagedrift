@@ -148,3 +148,5 @@ $(document).ready(function () {
         //$('#jump-next-diff').click();
     }
 
+});
+
