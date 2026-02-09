@@ -3797,6 +3797,62 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "条目"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "操作"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "在后面添加一行/规则"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "移除此行/规则"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "使用当前快照验证此规则"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "设置按小时/工作日计划"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "计划时间限制"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "工作时间"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "周末"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "重置"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "警告：一个或多个“天”的时长会延续到次日。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "这可能导致意外结果。"
+
 #: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr ""
