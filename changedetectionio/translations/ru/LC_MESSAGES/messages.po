@@ -4220,6 +4220,62 @@ msgstr "Принимает заполнители <code>%(token)s</code>, пер
 msgid "Customise notifications"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Название для всех уведомлений"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "Для полезных данных JSON используйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "без кавычек для автоматического экранирования, например -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "Кодировка URL, используйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "например -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Замена регулярного выражения, использование"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Полную информацию обо всех встроенных фильтрах Jinja2 пользователи могут найти на странице"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Формат всех уведомлений"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord не отображает HTML — переключитесь на"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "Обычный текст"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr "формат, чтобы избежать"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr "и другие объекты HTML, которые буквально появляются в ваших уведомлениях."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Вход"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Действия"
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Failed to generate image: %(error)s"
