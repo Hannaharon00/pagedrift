@@ -3385,6 +3385,66 @@ msgstr "Executar JavaScript antes da detecção de mudanças"
 msgid "Proxy"
 msgstr "Proxy"
 
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Enviar uma notificação quando o filtro não puder mais ser encontrado na página"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Ligado"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Notificações"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Silenciado"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Anexar screenshot à notificação (quando possível)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Corresponder"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Corresponder a TODOS os seguintes"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Corresponder a QUALQUER um dos seguintes"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Usar <title> da página na lista"
+
+#: changedetectionio/forms.py
+msgid "Number of history items per watch to keep"
+msgstr "Número de itens de histórico a manter por monitoramento"
+
+#: changedetectionio/forms.py
+msgid "Body must be empty when Request Method is set to GET"
+msgstr "O corpo (Body) deve estar vazio quando o método de solicitação for GET"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax configuration: %(error)s"
+msgstr "Configuração de sintaxe de modelo inválida: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax: %(error)s"
+msgstr "Sintaxe de modelo inválida: %(error)s"
+
+#: changedetectionio/forms.py
+#, python-format
+msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
+msgstr "Sintaxe de modelo inválida no cabeçalho \"%(header)s\": %(error)s"
+
 #: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
 msgid "Name"
 msgstr "Nome"
