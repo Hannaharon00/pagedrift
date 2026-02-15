@@ -3947,6 +3947,62 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Mais ajuda e exemplos sobre como usar o agendador"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Quer usar um agendamento de tempo?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Primeiro confirme/salve suas Configurações de Fuso Horário"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Texto disparador"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Dispara uma mudança se este texto aparecer E algo mudar no documento."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Texto ignorado"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Ignorado para cálculo de mudanças, mas ainda exibido."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Texto bloqueado"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Nenhuma detecção de mudança ocorrerá porque este texto existe."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr ""
