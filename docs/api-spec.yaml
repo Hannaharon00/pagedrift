@@ -984,6 +984,30 @@ components:
         - Enable word-level granularity with `word_diff=true` for detailed inline comparisons
         - Disable with `word_diff=false` for line-level comparisons only (default false/off, line-level mode by default)
 
+        **Raw Diff Output:**
+        - Use `no_markup=true` to get raw diff content without any formatting applied
+        - Returns content with placeholders for opening/closing tags of changes
+        - Allows you to implement your own custom colorisation or formatting
+        - Skips all HTML color application and service tweaks (added text, html color tags, etc)
+
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            # Compare previous snapshot to latest with colored HTML
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/difference/previous/latest?format=htmlcolor" \
+              -H "x-api-key: YOUR_API_KEY"
+
+            # Compare two specific timestamps in plain text with word-level diff
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/difference/1640995200/1640998800?format=text&word_diff=true" \
+              -H "x-api-key: YOUR_API_KEY"
+
+            # Show only additions (hide removed/replaced content), ignore whitespace
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/difference/previous/latest?format=htmlcolor&removed=false&replaced=false&ignoreWhitespace=true" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+
             This parameter is an alternative to `word_diff` for better alignment with the UI.
             If both are specified, `type=diffWords` will enable word-level diffing.
           schema:
