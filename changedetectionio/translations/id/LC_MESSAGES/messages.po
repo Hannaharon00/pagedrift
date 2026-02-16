@@ -4150,6 +4150,63 @@ msgstr "Ingin menggunakan jadwal waktu?"
 msgid "First confirm/save your Time Zone Settings"
 msgstr "Konfirmasi/simpan Pengaturan Zona Waktu Anda terlebih dahulu"
 
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Failed to generate image: %(error)s"
+msgstr "Gagal membuat gambar: %(error)s"
+
+#: changedetectionio/templates/base.html
+msgid "Change Detection Diff"
+msgstr "Diff Deteksi Perubahan"
+
+#: changedetectionio/templates/base.html
+msgid "Check out this change detected via changedetection.io"
+msgstr "Lihat perubahan ini yang terdeteksi melalui changedetection.io"
+
+#: changedetectionio/templates/base.html
+msgid "Please fill in all fields (Field, Operator, and Value) before verifying."
+msgstr "Silakan isi semua bidang (Bidang, Operator, dan Nilai) sebelum memverifikasi."
+
+#: changedetectionio/templates/base.html
+msgid "Error verifying condition."
+msgstr "Kesalahan saat memverifikasi kondisi."
+
+#: changedetectionio/templates/base.html
+msgid "Destination email"
+msgstr "Email tujuan"
+
+#: changedetectionio/templates/base.html
+msgid "Content after filters"
+msgstr "Konten setelah filter"
+
+#: changedetectionio/templates/base.html
+msgid "Content raw/before filters"
+msgstr "Konten mentah/sebelum filter"
+
+#: changedetectionio/templates/base.html
+msgid "Main navigation"
+msgstr "Navigasi utama"
+
+#: changedetectionio/templates/base.html
+msgid "Share this link:"
+msgstr "Bagikan tautan ini:"
+
+#: changedetectionio/templates/base.html
+msgid "Real-time updates offline"
+msgstr "Pembaruan realtime offline"
+
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "Pilih Bahasa"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "Deteksi otomatis dari browser"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr "Dukungan bahasa masih beta, bantu kami meningkatkannya dengan membuka PR di GitHub untuk setiap pembaruan."
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
 msgstr ""

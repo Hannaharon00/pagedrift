@@ -4618,3 +4618,59 @@ msgstr "그룹을 사용해 해당 텍스트만 추출하는 예시"
 msgid "returns a list of years only"
 msgstr "연도 목록만 반환합니다"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "예시 - 키워드가 포함된 줄 일치"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "정규식/문자열 조건은 한 줄에 하나씩 입력하세요"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "로그인"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "자동 예약 다시 시작"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "모니터링 자동 예약 일시중지"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "알림 음소거 해제"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "알림이 음소거되어 있습니다. 클릭해 해제하세요."
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr ""
+
