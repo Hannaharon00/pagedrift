@@ -495,3 +495,41 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, queuedWatchMe
         '''For when viewing the "preview" of the rendered text from inside of Edit'''
         from flask import jsonify
 
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+        from changedetectionio.processors.text_json_diff import prepare_filter_prevew
+        result = prepare_filter_prevew(watch_uuid=uuid, form_data=request.form, datastore=datastore)
+        return jsonify(result)
+
+    @edit_blueprint.route("/highlight_submit_ignore_url", methods=['POST'])
+    @login_optionally_required
+    def highlight_submit_ignore_url():
+        import re
+        mode = request.form.get('mode')
+        selection = request.form.get('selection')
+
+        uuid = request.args.get('uuid','')
+        if datastore.data["watching"].get(uuid):
+            # Build the new list and REBIND it. Appending in place bypasses
+            # watch_base.__setitem__, so the watch is never flagged as edited and
+            # the "content unchanged since last check" skip stays active — the new
+            # ignore_text would then not take effect until the page changed on its
+            # own. Assigning the key marks the watch edited and forces reprocessing.
+            ignore_text = list(datastore.data["watching"][uuid]['ignore_text'])
+            if mode == 'exact':
+                for l in selection.splitlines():
+                    ignore_text.append(l.strip())
+            elif mode == 'digit-regex':
+                for l in selection.splitlines():
+                    # Replace any series of numbers with a regex
+                    s = re.escape(l.strip())
+                    s = re.sub(r'[0-9]+', r'\\d+', s)
+                    ignore_text.append('/' + s + '/')
+            datastore.data["watching"][uuid]['ignore_text'] = ignore_text
+
+            # Save the updated ignore_text
+            datastore.data["watching"][uuid].commit()
+
+        return f"<a href={url_for('ui.ui_preview.preview_page', uuid=uuid)}>Click to preview</a>"
+    
+    return edit_blueprint
