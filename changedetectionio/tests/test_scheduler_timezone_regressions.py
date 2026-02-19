@@ -251,3 +251,47 @@ def test_ignore_text_via_selection_marks_watch_edited(client, live_server, measu
     )
 
 
+def test_ignore_text_digit_regex_marks_watch_edited(client, live_server, measure_memory_usage, datastore_path):
+    """Same for the digit-regex branch."""
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+
+    uuid = datastore.add_watch(url=test_url)
+    wait_for_all_checks(client)
+
+    datastore.data['watching'][uuid].reset_watch_edited_flag()
+
+    res = client.post(
+        url_for("ui.ui_edit.highlight_submit_ignore_url", uuid=uuid),
+        data={'mode': 'digit-regex', 'selection': 'Updated 1234 times'},
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+
+    watch = datastore.data['watching'][uuid]
+    assert any(t.startswith('/') and t.endswith('/') for t in watch['ignore_text']), \
+        f"expected a regex entry, got {watch['ignore_text']}"
+    assert watch.was_edited is True
+
+
+def test_ignore_text_appends_to_existing(client, live_server, measure_memory_usage, datastore_path):
+    """Rebinding must preserve entries already there, not replace them."""
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    datastore = live_server.app.config['DATASTORE']
+
+    uuid = datastore.add_watch(url=test_url)
+    wait_for_all_checks(client)
+    datastore.data['watching'][uuid]['ignore_text'] = ['already here']
+
+    client.post(
+        url_for("ui.ui_edit.highlight_submit_ignore_url", uuid=uuid),
+        data={'mode': 'exact', 'selection': 'line one\nline two'},
+        follow_redirects=True,
+    )
+
+    ignore_text = datastore.data['watching'][uuid]['ignore_text']
+    assert 'already here' in ignore_text, "existing entries were lost"
+    assert 'line one' in ignore_text
+    assert 'line two' in ignore_text

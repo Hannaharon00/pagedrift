@@ -3492,6 +3492,58 @@ msgid "Random jitter seconds ± check"
 msgstr "Detik jitter acak ± pemeriksaan"
 
 #: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Jumlah worker pengambilan"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Harus antara 1 dan 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Timeout permintaan dalam detik"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Harus antara 1 dan 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Penimpaan User-Agent default"
+
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "Nama dan URL Proksi wajib diisi."
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "Buka halaman 'Riwayat' di tab baru"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "Pembaruan UI Realtime Diaktifkan"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "Favicon Diaktifkan"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "Gunakan <title> halaman dalam daftar ringkasan monitor"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr "Format waktu relatif"
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr "Panjang (1 menit yang lalu)"
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr "Pendek (1m lalu)"
+
+#: changedetectionio/forms.py
 msgid "Navigation sidebar"
 msgstr "Sidebar navigasi"
 
