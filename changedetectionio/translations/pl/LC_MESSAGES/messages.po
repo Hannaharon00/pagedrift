@@ -4055,6 +4055,64 @@ msgid "The page title of the watch, uses <title> if not set, falls back to URL"
 msgstr "Tytuł strony obserwacji; jeśli nie ustawiono go ręcznie, używany jest tag <title>, a następnie adres URL"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "zależy od tego, jak algorytm różnicowy interpretuje tę zmianę."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "Na przykład w niektórych przypadkach dodanie lub usunięcie może być postrzegane jako zmiana."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "Więcej tutaj"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr "Dodaj powiadomienie e-mailowe:"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr "Dodaj do listy"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "Dodaj adres e-mail"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "Wyślij powiadomienie testowe"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "Dzienniki debugowania powiadomień"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "Przetwarzanie..."
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr ""
+"Skorzystaj z <a target=\"newwindow\" href=\"%(url)s\">adresów URL powiadomień AppRise</a>, aby wysyłać powiadomienia "
+"do niemal każdej usługi!"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr ""
+"<i>Prosimy o zapoznanie się z wiki poświęconą usługom powiadomień, gdzie znajdują się ważne uwagi dotyczące "
+"konfiguracji</i>"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "Pokaż zaawansowaną pomoc i wskazówki"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "(lub"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "only supports a maximum"
 msgstr "obsługuje maksymalnie"
 
