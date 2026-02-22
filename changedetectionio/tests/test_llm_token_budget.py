@@ -315,6 +315,40 @@ def test_settings_form_cannot_inject_fake_token_counts(
     delete_all_watches(client)
 
 
+# ---------------------------------------------------------------------------
+# accumulate_global_tokens unit tests
+# ---------------------------------------------------------------------------
+
+def test_accumulate_global_tokens_month_rollover(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    When tokens_month_key is stale (different month), tokens_this_month
+    must reset to zero before accumulating, and the key must update.
+    """
+    from changedetectionio.llm.evaluator import accumulate_global_tokens, _get_month_key
+    from unittest.mock import patch
+
+    ds = client.application.config.get('DATASTORE')
+    ds.data['settings']['application']['llm'] = {
+        'model': 'gpt-4o-mini',
+        'tokens_this_month': 500,
+        'tokens_total_cumulative': 1000,
+        'tokens_month_key': '2024-01',  # stale — previous month
+    }
+
+    # accumulate_global_tokens must detect the rollover and reset the monthly counter
+    accumulate_global_tokens(ds, 100)
+
+    llm_cfg = ds.data['settings']['application']['llm']
+    assert llm_cfg['tokens_month_key'] == _get_month_key(), "Month key must be current"
+    assert llm_cfg['tokens_this_month'] == 100, \
+        "Monthly counter must reset on rollover, then add new tokens"
+    assert llm_cfg['tokens_total_cumulative'] == 1100, \
+        "All-time counter must never reset"
+
+    delete_all_watches(client)
+
+
 def test_accumulate_global_tokens_same_month(
         client, live_server, measure_memory_usage, datastore_path):
     """Within the same month, both counters accumulate additively."""
