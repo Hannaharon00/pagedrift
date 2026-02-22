@@ -637,6 +637,68 @@ def _apply_prompt_layer(inherited: str, value: str, mode: str) -> str:
     return value
 
 
+def get_effective_summary_prompt(watch, datastore) -> str:
+    """Return the prompt that summarise_change will use.
+
+    Cascade: hardcoded fallback → global settings default → tag → watch. Each level with a
+    value either replaces what it inherited or appends to it, per its own
+    `llm_change_summary_mode`. With every level left on the default 'replace' this reduces
+    to the original watch → tag → global → hardcoded first-non-empty-wins behaviour.
+    """
+    prompt = get_llm_settings(datastore).change_summary_default.strip() or DEFAULT_CHANGE_SUMMARY_PROMPT
+
+    tag_value, tag = _first_tag_with_field(watch, datastore, 'llm_change_summary')
+    if tag_value:
+        prompt = _apply_prompt_layer(prompt, tag_value, tag.get('llm_change_summary_mode'))
+
+    watch_value = (watch.get('llm_change_summary') or '').strip()
+    if watch_value:
+        prompt = _apply_prompt_layer(prompt, watch_value, watch.get('llm_change_summary_mode'))
+
+    return prompt
+
+
+def compute_summary_cache_key(diff_text: str, prompt: str) -> str:
+    """Stable 16-char hex key for a (diff, prompt) pair.  Stored alongside the summary file."""
+    h = hashlib.md5()
+    h.update(diff_text.encode('utf-8', errors='replace'))
+    h.update(b'\x00')
+    h.update(prompt.encode('utf-8', errors='replace'))
+    return h.hexdigest()[:16]
+
+
+@dataclass(frozen=True)
+class DiffPrefs:
+    """
+    User-facing diff display preferences. Part of the LLM summary cache key so
+    that toggling a preference produces a fresh summary.
+
+    Field defaults are the single source of truth — the UI query-arg defaults in
+    diff.py's from_request_args() and the worker pre-cache's bare DiffPrefs()
+    both rely on these.
+    """
+    all_changes:       bool = False
+    ignore_whitespace: bool = False
+    show_removed:      bool = True
+    show_added:        bool = True
+
+    @classmethod
+    def from_request_args(cls, args) -> 'DiffPrefs':
+        """Parse from a Flask request.args (or any .get(key, default)-shaped mapping)."""
+        return cls(
+            all_changes       = args.get('all_changes', '0') == '1',
+            ignore_whitespace = args.get('ignore_whitespace', '0') == '1',
+            show_removed      = args.get('removed', '1') == '1',
+            show_added        = args.get('added', '1') == '1',
+        )
+
+    def cache_key_suffix(self) -> str:
+        return (
+            f'\x00prefs:all={int(self.all_changes)},ws={int(self.ignore_whitespace)}'
+            f',rm={int(self.show_removed)},add={int(self.show_added)}'
+        )
+
+
 def build_summary_cache_prompt(effective_prompt: str, max_summary_tokens: int,
                                 prefs: DiffPrefs = None, model: str = '') -> str:
     """
