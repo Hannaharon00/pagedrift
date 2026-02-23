@@ -3766,6 +3766,58 @@ msgstr "Włącz funkcje AI / LLM"
 msgid "Replace {{diff}} notification token with AI summary"
 msgstr "Zastąp token powiadomienia {{diff}} podsumowaniem wygenerowanym przez sztuczną inteligencję"
 
+#: changedetectionio/forms.py
+msgid "Use LLM as a fallback for extracting price and restock info"
+msgstr "Wykorzystaj model LLM jako rozwiązanie awaryjne do pozyskiwania informacji o cenach i uzupełnianiu zapasów"
+
+#: changedetectionio/forms.py
+msgid "Enable LLM debug logging"
+msgstr "Włącz rejestrowanie błędów w LLM"
+
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr "Budżet tokenów na rozumowanie AI"
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr "Wyłączone (bez myślenia)"
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr "Maksymalna długość streszczenia generowanego przez AI (tokenów)"
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr "Gdy zostanie osiągnięty miesięczny limit tokenów"
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr "Pomiń tylko tworzenie podsumowania przez AI (obserwacja nadal będzie sprawdzana)"
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr "Całkowicie pomiń sprawdzanie obserwacji"
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr "Link „Podsumowanie” na liście obserwacji porównuje"
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr "Poprzednia wersja (przedostatnia a najnowsza)"
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr "Zmiany od czasu ostatniego wyświetlenia obserwacji"
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "Wyrażenie regularne do wyodrębniania"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Wyeksportuj jako plik CSV"
+
 #: changedetectionio/languages.py
 msgid "just now"
 msgstr "właśnie teraz"
