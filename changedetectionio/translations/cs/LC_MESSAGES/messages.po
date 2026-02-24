@@ -2949,6 +2949,64 @@ msgstr "hodina"
 msgid "hours"
 msgstr "hodiny"
 
+#: changedetectionio/flask_app.py
+msgid "minute"
+msgstr "minuta"
+
+#: changedetectionio/flask_app.py
+msgid "minutes"
+msgstr "minut"
+
+#: changedetectionio/flask_app.py
+msgid "second"
+msgstr "sekunda"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/flask_app.py
+msgid "seconds"
+msgstr "sekundy"
+
+#: changedetectionio/flask_app.py
+msgid "Already logged in"
+msgstr "Již přihlášen(a)"
+
+#: changedetectionio/flask_app.py
+msgid "You must be logged in, please log in."
+msgstr "Je třeba být přihlášen(a), přihlas se."
+
+#: changedetectionio/flask_app.py
+msgid "Incorrect password"
+msgstr "Nesprávné heslo"
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified."
+msgstr "Je třeba zadat alespoň jeden časový interval (týdny, dny, hodiny, minuty nebo sekundy)."
+
+#: changedetectionio/forms.py
+msgid "At least one time interval (weeks, days, hours, minutes, or seconds) must be specified when not using global settings."
+msgstr ""
+"Je třeba zadat alespoň jeden časový interval (týdny, dny, hodiny, minuty nebo sekundy) pokud nejsou použita globální "
+"nastavení."
+
+#: changedetectionio/forms.py
+msgid "Invalid time format. Use HH:MM."
+msgstr "Neplatný formát času. Použijte HH:MM."
+
+#: changedetectionio/forms.py
+msgid "Not a valid timezone name"
+msgstr "Neplatný název časového pásma"
+
+#: changedetectionio/forms.py
+msgid "not set"
+msgstr "nenastaveno"
+
+#: changedetectionio/forms.py
+msgid "Start At"
+msgstr "Spustit v"
+
+#: changedetectionio/forms.py
+msgid "Run duration"
+msgstr "Doba běhu"
+
 #: changedetectionio/forms.py
 msgid "Use time scheduler"
 msgstr "Použijte časový plánovač"
