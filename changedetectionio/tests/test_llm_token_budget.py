@@ -499,3 +499,75 @@ def test_accumulate_global_tokens_cost_rollover(
     delete_all_watches(client)
 
 
+def test_accumulate_global_tokens_no_cost_for_unknown_model(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    When model is unknown (e.g. custom endpoint) or no input/output split
+    is provided, cost stays at 0.0 — no error raised.
+    """
+    from changedetectionio.llm.evaluator import accumulate_global_tokens, _get_month_key
+
+    ds = client.application.config.get('DATASTORE')
+    ds.data['settings']['application']['llm'] = {
+        'tokens_this_month': 0,
+        'tokens_total_cumulative': 0,
+        'tokens_month_key': _get_month_key(),
+        'cost_usd_this_month': 0.0,
+        'cost_usd_total_cumulative': 0.0,
+    }
+
+    # No model, no input/output split → no cost
+    accumulate_global_tokens(ds, tokens=200)
+
+    llm_cfg = ds.data['settings']['application']['llm']
+    assert llm_cfg['tokens_this_month'] == 200
+    assert llm_cfg['cost_usd_this_month'] == 0.0
+    assert llm_cfg['cost_usd_total_cumulative'] == 0.0
+
+    delete_all_watches(client)
+
+
+def test_cost_fields_are_tamper_proof_via_settings_form(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Submitting the settings form must not be able to set cost_usd_this_month
+    or cost_usd_total_cumulative — those are operator-controlled counters.
+    """
+    from flask import url_for
+
+    ds = client.application.config.get('DATASTORE')
+    ds.data['settings']['application']['llm'] = {
+        'model': 'gpt-4o-mini',
+        'api_key': 'sk-test',
+        'cost_usd_this_month': 1.23,
+        'cost_usd_total_cumulative': 9.99,
+    }
+
+    client.post(
+        url_for('settings.settings_page'),
+        data={
+            'llm-model': 'gpt-4o',
+            'llm-api_key': 'sk-test',
+            'llm-api_base': '',
+            'llm-cost_usd_this_month': '0',       # injection attempt
+            'llm-cost_usd_total_cumulative': '0',  # injection attempt
+            'application-pager_size': '50',
+            'application-notification_format': 'System default',
+            'requests-time_between_check-days': '0',
+            'requests-time_between_check-hours': '0',
+            'requests-time_between_check-minutes': '5',
+            'requests-time_between_check-seconds': '0',
+            'requests-time_between_check-weeks': '0',
+            'requests-workers': '10',
+            'requests-timeout': '60',
+        },
+        follow_redirects=True,
+    )
+
+    llm_cfg = ds.data['settings']['application'].get('llm', {})
+    assert llm_cfg.get('cost_usd_this_month') == 1.23, \
+        "cost_usd_this_month must be tamper-proof"
+    assert llm_cfg.get('cost_usd_total_cumulative') == 9.99, \
+        "cost_usd_total_cumulative must be tamper-proof"
+
+    delete_all_watches(client)
