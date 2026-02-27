@@ -4206,6 +4206,60 @@ msgid "Send test notification"
 msgstr "테스트 알림 보내기"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "알림 디버그 로그"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "처리 중..."
+
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Use <a target=\"newwindow\" href=\"%(url)s\">AppRise Notification URLs</a> for notification to just about any service!"
+msgstr "거의 모든 서비스에 알림을 보내려면 <a target=\"newwindow\" href=\"%(url)s\">AppRise 알림 URL</a>을 사용하세요."
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/_common_fields.html
+msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
+msgstr "<i>중요한 설정 참고 사항은 여기의 알림 서비스 위키를 읽어 주세요</i>"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/include_subtract.html
+msgid "Show advanced help and tips"
+msgstr "고급 도움말 표시"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "(또는"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "최대"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2,000자"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "까지의 알림 텍스트만 지원합니다. 제목도 포함됩니다."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr "봇은 다른 봇에게 메시지를 보낼 수 없으므로, 봇이 아닌 사용자의 채팅 ID를 지정해야 합니다."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "매우 제한된 HTML만 지원하므로 추가 태그를 보내면 실패할 수 있습니다,"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "(또는 일반 텍스트/마크다운 형식 사용)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "직접 API 호출용입니다. (비SSL의 경우 "
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "를 생략하세요. 예:"
 
