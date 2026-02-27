@@ -3121,6 +3121,63 @@ msgstr "Monitorovat"
 msgid "Processor"
 msgstr "Procesor"
 
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Browser"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Edit > Watch"
+msgstr "Upravit > Monitorovat"
+
+#: changedetectionio/forms.py
+msgid "Fetch Method"
+msgstr "Nastavte metodu načítání"
+
+#: changedetectionio/forms.py
+msgid "Notification Body"
+msgstr "Text oznámení"
+
+#: changedetectionio/forms.py
+msgid "Notification format"
+msgstr "Formát oznámení"
+
+#: changedetectionio/forms.py
+msgid "Notification Title"
+msgstr "Název oznámení"
+
+#: changedetectionio/forms.py
+msgid "Notification URL List"
+msgstr "Seznam URL oznámení"
+
+#: changedetectionio/forms.py
+msgid "Processor - What do you want to achieve?"
+msgstr "Procesor – Čeho chcete dosáhnout?"
+
+#: changedetectionio/forms.py
+msgid "Default timezone for watch check scheduler"
+msgstr "Výchozí časové pásmo pro plánovač kontroly monitorů"
+
+#: changedetectionio/forms.py
+msgid "Wait seconds before extracting text"
+msgstr "sekund před extrahováním textu."
+
+#: changedetectionio/forms.py
+msgid "Should contain one or more seconds"
+msgstr "Měl by obsahovat jednu nebo více sekund"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Základní URL pro upozornění"
+
+#: changedetectionio/forms.py
+msgid "Not set"
+msgstr "Nenastaveno"
+
+#: changedetectionio/blueprint/tags/form.py changedetectionio/blueprint/tags/templates/groups-overview.html
+#: changedetectionio/forms.py
+msgid "Save"
+msgstr "Uložit"
+
 #: changedetectionio/forms.py
 msgid "URLs"
 msgstr "URL"
