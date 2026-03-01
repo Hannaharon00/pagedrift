@@ -361,3 +361,87 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, worker_pool, 
                 queued_uuids = set(update_q.get_queued_uuids())
                 running_uuids = set(worker_pool.get_running_uuids())
 
+                def queue_watches_background():
+                    """Background thread to queue watches - discarded after completion."""
+                    try:
+                        queued_count = 0
+                        skipped_count = 0
+                        for watch_uuid in watches_to_queue:
+                            # Check if already queued or running (state captured at start)
+                            if watch_uuid not in queued_uuids and watch_uuid not in running_uuids:
+                                worker_pool.queue_item_async_safe(update_q, queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': watch_uuid}))
+                                queued_count += 1
+                            else:
+                                skipped_count += 1
+
+                        logger.info(f"Background queueing complete: {queued_count} watches queued, {skipped_count} skipped (already queued/running)")
+                    except Exception as e:
+                        logger.error(f"Error in background queueing: {e}")
+
+                # Start background thread and return immediately
+                thread = threading.Thread(target=queue_watches_background, daemon=True, name="QueueWatches-Background")
+                thread.start()
+
+                # Return immediately with approximate message
+                flash(gettext("Queueing watches for rechecking in background..."))
+
+        return redirect(url_for('watchlist.index', **wl_filters.filter_query_args(request.args)))
+
+    @ui_blueprint.route("/form/checkbox-operations", methods=['POST'])
+    @login_optionally_required
+    def form_watch_list_checkbox_operations():
+        op = request.form['op']
+        uuids = [u.strip() for u in request.form.getlist('uuids') if u]
+        extra_data = request.form.get('op_extradata', '').strip()
+        _handle_operations(
+            datastore=datastore,
+            extra_data=extra_data,
+            queuedWatchMetaData=queuedWatchMetaData,
+            uuids=uuids,
+            worker_pool=worker_pool,
+            update_q=update_q,
+            watch_check_update=watch_check_update,
+            op=op,
+        )
+
+        return redirect(url_for('watchlist.index'))
+
+
+    @ui_blueprint.route("/share-url/<uuid_str:uuid>", methods=['POST'])
+    @login_optionally_required
+    def form_share_put_watch(uuid):
+        """Given a watch UUID, upload the info and return a share-link
+           the share-link can be imported/added"""
+        import requests
+        import json
+        from copy import deepcopy
+
+
+        # copy it to memory as trim off what we dont need (history)
+        watch = deepcopy(datastore.data['watching'].get(uuid))
+        # For older versions that are not a @property
+        if (watch.get('history')):
+            del (watch['history'])
+
+        # for safety/privacy
+        for k in list(watch.keys()):
+            if k.startswith('notification_'):
+                del watch[k]
+
+        for r in['uuid', 'last_checked', 'last_changed']:
+            if watch.get(r):
+                del (watch[r])
+
+        # Add the global stuff which may have an impact
+        watch['ignore_text'] += datastore.data['settings']['application']['global_ignore_text']
+        watch['subtractive_selectors'] += datastore.data['settings']['application']['global_subtractive_selectors']
+
+        watch_json = json.dumps(watch)
+
+        try:
+            r = requests.request(method="POST",
+                                 data={'watch': watch_json},
+                                 url="https://changedetection.io/share/share",
+                                 headers={'App-Guid': datastore.data['app_guid']})
+            res = r.json()
+
