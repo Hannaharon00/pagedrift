@@ -560,6 +560,95 @@ def save_plugin_settings(datastore_path, plugin_id, settings):
         return False
 
 
+def get_plugin_template_paths():
+    """Get list of plugin template directories for Jinja2 loader.
+
+    Scans both external pluggy plugins and built-in processor plugins.
+
+    Returns:
+        list: List of absolute paths to plugin template directories
+    """
+    template_paths = []
+
+    # Add the base processors/templates directory (as absolute path)
+    processors_templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'processors', 'templates')
+    if os.path.isdir(processors_templates_dir):
+        template_paths.append(processors_templates_dir)
+        logger.debug(f"Added base processors template path: {processors_templates_dir}")
+
+    # Scan built-in processor plugins
+    from changedetectionio.processors import find_processors
+    processor_list = find_processors()
+    for processor_module, processor_name in processor_list:
+        # Each processor is a module, check if it has a templates directory
+        if hasattr(processor_module, '__file__'):
+            processor_file = processor_module.__file__
+            if processor_file:
+                # Get the processor directory (e.g., processors/image_ssim_diff/)
+                processor_dir = os.path.dirname(os.path.abspath(processor_file))
+                templates_dir = os.path.join(processor_dir, 'templates')
+                if os.path.isdir(templates_dir):
+                    template_paths.append(templates_dir)
+                    logger.debug(f"Added processor template path: {templates_dir}")
+
+    # Get all registered external pluggy plugins
+    for plugin_name, plugin_obj in plugin_manager.list_name_plugin():
+        # Check if plugin has a templates directory
+        if hasattr(plugin_obj, '__file__'):
+            plugin_file = plugin_obj.__file__
+        elif hasattr(plugin_obj, '__module__'):
+            # Get the module file
+            module = sys.modules.get(plugin_obj.__module__)
+            if module and hasattr(module, '__file__'):
+                plugin_file = module.__file__
+            else:
+                continue
+        else:
+            continue
+
+        if plugin_file:
+            plugin_dir = os.path.dirname(os.path.abspath(plugin_file))
+            templates_dir = os.path.join(plugin_dir, 'templates')
+            if os.path.isdir(templates_dir):
+                template_paths.append(templates_dir)
+                logger.debug(f"Added plugin template path: {templates_dir}")
+
+    return template_paths
+
+
+def apply_update_handler_alter(update_handler, watch, datastore):
+    """Apply update_handler_alter hooks from all plugins.
+
+    Allows plugins to wrap or modify the update_handler before it processes a watch.
+    Multiple plugins can chain modifications - each plugin receives the result from
+    the previous plugin.
+
+    Args:
+        update_handler: The perform_site_check instance to potentially modify
+        watch: The watch dict being processed
+        datastore: The application datastore
+
+    Returns:
+        object: The (potentially modified/wrapped) update_handler
+    """
+    # Get all plugins that implement the update_handler_alter hook
+    results = plugin_manager.hook.update_handler_alter(
+        update_handler=update_handler,
+        watch=watch,
+        datastore=datastore
+    )
+
+    # Chain results - each plugin gets the result from the previous one
+    current_handler = update_handler
+    if results:
+        for result in results:
+            if result is not None:
+                logger.debug(f"Plugin modified update_handler for watch {watch.get('uuid')}")
+                current_handler = result
+
+    return current_handler
+
+
 def apply_update_finalize(update_handler, watch, datastore, processing_exception):
     """Apply update_finalize hooks from all plugins.
 
