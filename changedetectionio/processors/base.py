@@ -368,3 +368,52 @@ class difference_detection_processor():
         watch = self.datastore.data['watching'].get(self.watch_uuid)
         data_dir = watch.data_dir
 
+        if not data_dir:
+            logger.warning(f"Cannot save extra watch config {filename}: no data_dir")
+            return
+
+        # Ensure directory exists
+        watch.ensure_data_dir_exists()
+
+        filepath = self._resolve_watch_config_path(data_dir, filename)
+        if not filepath:
+            return
+
+        try:
+            # If merge is enabled, read existing data first
+            existing_data = {}
+            if merge and os.path.isfile(filepath):
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        existing_data = json.load(f)
+                except (json.JSONDecodeError, IOError) as e:
+                    logger.warning(f"Failed to read existing config for merge: {e}")
+
+            # Merge new data with existing
+            if merge:
+                existing_data.update(data)
+                data_to_save = existing_data
+            else:
+                data_to_save = data
+
+            # Write the data
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(data_to_save, f, indent=2)
+        except IOError as e:
+            logger.error(f"Failed to write extra watch config {filename}: {e}")
+
+    def get_raw_document_checksum(self):
+        checksum = None
+
+        if self.fetcher.content:
+            checksum = hashlib.md5(self.fetcher.content.encode('utf-8')).hexdigest()
+
+        return checksum
+
+    @abstractmethod
+    def run_changedetection(self, watch, force_reprocess=False):
+        update_obj = {'last_notification_error': False, 'last_error': False}
+        some_data = 'xxxxx'
+        update_obj["previous_md5"] = hashlib.md5(some_data.encode('utf-8')).hexdigest()
+        changed_detected = False
+        return changed_detected, update_obj, ''.encode('utf-8')
