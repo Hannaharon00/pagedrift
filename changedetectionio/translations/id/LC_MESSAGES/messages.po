@@ -4150,6 +4150,62 @@ msgstr "Gunakan <a target=\"newwindow\" href=\"%(url)s\">URL Notifikasi AppRise<
 msgid "<i>Please read the notification services wiki here for important configuration notes</i>"
 msgstr "<i>Harap baca wiki layanan notifikasi di sini untuk catatan konfigurasi penting</i>"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Judul untuk semua notifikasi"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "Untuk payload JSON, gunakan"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "tanpa tanda kutip untuk escaping otomatis, misalnya -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "Encoding URL, gunakan"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "misalnya -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Penggantian regular-expression, gunakan"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Untuk referensi lengkap semua filter bawaan Jinja2, pengguna dapat melihat"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Format untuk semua notifikasi"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr "Discord tidak merender HTML — beralih ke"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr "Teks Biasa"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr "format untuk menghindari"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr "dan entitas HTML lainnya muncul secara literal dalam notifikasi Anda."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Entri"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Tindakan"
+
 #: changedetectionio/templates/_helpers.html
 msgid "Add a row/rule after"
 msgstr "Tambahkan baris/aturan setelah"
