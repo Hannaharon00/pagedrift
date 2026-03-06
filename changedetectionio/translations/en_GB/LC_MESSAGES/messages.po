@@ -4020,6 +4020,64 @@ msgstr ""
 msgid "Text that tripped the trigger from filters"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr ""
+
 #: changedetectionio/templates/_helpers.html
 msgid "More help and examples about using the scheduler"
 msgstr ""
