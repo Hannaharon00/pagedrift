@@ -439,3 +439,78 @@ class browsersteps_live_ui(steppable_browser_interface):
         if not self.page or self._is_cleaned_up:
             return True
         
+        # Check if session has expired based on age
+        max_age_seconds = int(os.getenv("BROWSER_STEPS_MAX_AGE_SECONDS", 60 * 10))  # Default 10 minutes
+        if (time.time() - self.age_start) > max_age_seconds:
+            logger.debug(f"Browser steps session expired after {max_age_seconds} seconds")
+            return True
+            
+        return False
+
+    async def get_current_state(self):
+        """Return the screenshot and interactive elements mapping, generally always called after action_()"""
+        import importlib.resources
+        import json
+        # because we for now only run browser steps in playwright mode (not puppeteer mode)
+        from changedetectionio.content_fetchers.playwright import capture_full_page_async
+
+        # Safety check - don't proceed if resources are cleaned up
+        if self._is_cleaned_up or self.page is None:
+            logger.warning("Attempted to get current state after cleanup")
+            return (None, None)
+
+        xpath_element_js = importlib.resources.files("changedetectionio.content_fetchers.res").joinpath('xpath_element_scraper.js').read_text(encoding="utf-8")
+
+        now = time.time()
+        await self.page.wait_for_timeout(1 * 1000)
+
+        screenshot = None
+        xpath_data = None
+        
+        try:
+            # Get screenshot first
+            screenshot = await capture_full_page_async(page=self.page)
+            if not screenshot:
+                logger.error("No screenshot was retrieved :((")
+
+            logger.debug(f"Time to get screenshot from browser {time.time() - now:.2f}s")
+
+            # Then get interactive elements
+            now = time.time()
+            await self.page.evaluate("var include_filters=''")
+            await self.page.request_gc()
+
+            scan_elements = 'a,button,input,select,textarea,i,th,td,p,li,h1,h2,h3,h4,div,span'
+
+            MAX_TOTAL_HEIGHT = int(os.getenv("SCREENSHOT_MAX_HEIGHT", SCREENSHOT_MAX_HEIGHT_DEFAULT))
+            xpath_data = json.loads(await self.page.evaluate(xpath_element_js, {
+                "visualselector_xpath_selectors": scan_elements,
+                "max_height": MAX_TOTAL_HEIGHT
+            }))
+            await self.page.request_gc()
+
+            # Sort elements by size
+            xpath_data['size_pos'] = sorted(xpath_data['size_pos'], key=lambda k: k['width'] * k['height'], reverse=True)
+            logger.debug(f"Time to scrape xPath element data in browser {time.time()-now:.2f}s")
+            
+        except Exception as e:
+            logger.error(f"Error getting current state: {str(e)}")
+            # If the page has navigated (common with logins) then the context is destroyed on navigation, continue
+            # I'm not sure that this is required anymore because we have the "expect navigation wrapper" at the top
+            if "Execution context was destroyed" in str(e):
+                logger.debug("Execution context was destroyed, most likely because of navigation, continuing...")
+            pass
+
+            # Attempt recovery - force garbage collection
+            try:
+                await self.page.request_gc()
+            except:
+                pass
+        
+        # Request garbage collection one final time
+        try:
+            await self.page.request_gc()
+        except:
+            pass
+            
+        return (screenshot, xpath_data)
