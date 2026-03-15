@@ -130,3 +130,44 @@
         document.addEventListener('mousemove', onMove);
         document.addEventListener('mouseup', onEnd);
 
+        // Touch events
+        slider.addEventListener('touchstart', onStart, { passive: false });
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+
+        // Click anywhere on container to move slider
+        container.addEventListener('click', onClick);
+
+        // Track mouse position over container for handle following
+        container.addEventListener('mouseenter', onMouseEnter);
+        container.addEventListener('mouseleave', onMouseLeave);
+        container.addEventListener('mousemove', onMouseMoveContainer, { passive: true });
+
+        // Update handle position on scroll and resize
+        window.addEventListener('scroll', updateHandlePosition, { passive: true });
+        window.addEventListener('resize', updateHandlePosition, { passive: true });
+
+        // Initial position
+        updateHandlePosition();
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onEnd);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onEnd);
+            container.removeEventListener('mouseenter', onMouseEnter);
+            container.removeEventListener('mouseleave', onMouseLeave);
+            container.removeEventListener('mousemove', onMouseMoveContainer);
+            window.removeEventListener('scroll', updateHandlePosition);
+            window.removeEventListener('resize', updateHandlePosition);
+        });
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initComparisonSlider);
+    } else {
+        initComparisonSlider();
+    }
+})();
