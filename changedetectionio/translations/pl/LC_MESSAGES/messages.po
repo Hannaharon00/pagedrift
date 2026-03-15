@@ -4277,6 +4277,58 @@ msgstr "Dodaj wiersz/linię po"
 msgid "Remove this row/rule"
 msgstr "Usuń ten wiersz/regułę"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Sprawdź zgodność tej reguły z aktualnym migawką"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Ustaw harmonogram godzinowy/dzienny"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Terminy"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Godziny pracy"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Weekendy"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Resetuj"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Uwaga: jeden lub więcej z Twoich „dni” ma czas trwania, który wykraczałby na następny dzień."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Może to mieć niezamierzone konsekwencje."
+
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Więcej wskazówek i przykładów dotyczących korzystania z harmonogramu"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Chcesz skorzystać z harmonogramu?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Najpierw sprawdź i zapisz ustawienia strefy czasowej"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Tekst wywołany"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Wywołuje zmianę, jeśli pojawi się ten tekst ORAZ nastąpiła jakaś zmiana w dokumencie."
+
 #: changedetectionio/templates/base.html
 msgid "Change Detection Diff"
 msgstr "Wykrywanie zmian – porównanie"
