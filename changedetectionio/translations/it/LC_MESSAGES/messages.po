@@ -3623,6 +3623,69 @@ msgid "%ss ago"
 msgstr "%ss fa"
 
 #: changedetectionio/languages.py
+#, python-format
+msgid "in %ss"
+msgstr "tra %ss"
+
+#: changedetectionio/languages.py
+msgid "1m ago"
+msgstr "1min fa"
+
+#: changedetectionio/languages.py
+msgid "in 1m"
+msgstr "tra 1min"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr "%smin fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr "tra %smin"
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr "1h fa"
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr "tra 1h"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr "%sh fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr "tra %sh"
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr "1g fa"
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr "tra 1g"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr "%sg fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr "tra %sg"
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr "1sett fa"
+
+#: changedetectionio/languages.py
 msgid "in 1w"
 msgstr "tra 1sett"
 
