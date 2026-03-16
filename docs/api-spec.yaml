@@ -881,6 +881,50 @@ components:
             #   readOnly: true
             #   x-computed: true
 
+    CreateTag:
+      allOf:
+        - $ref: '#/components/schemas/Tag'
+        - type: object
+          required:
+            - title
+
+    NotificationUrls:
+      type: object
+      properties:
+        notification_urls:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: List of notification URLs
+      required:
+        - notification_urls
+
+    SystemInfo:
+      type: object
+      properties:
+        watch_count:
+          type: integer
+          description: Total number of web page change monitors (watches)
+        tag_count:
+          type: integer
+          description: Total number of tags
+        uptime:
+          type: string
+          description: System uptime
+        version:
+          type: string
+          description: Application version
+
+    SearchResult:
+      type: object
+      properties:
+        watches:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Watch'
+          description: Dictionary of matching web page change monitors (watches) keyed by UUID
+
     WatchHistory:
       type: object
       additionalProperties:
