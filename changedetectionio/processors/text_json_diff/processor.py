@@ -263,3 +263,153 @@ class RuleEngine:
         return not conditions_result.get('result')
 
 
+class ContentProcessor:
+    """Handles content preprocessing, filtering, and extraction."""
+
+    def __init__(self, fetcher, watch, filter_config, datastore):
+        self.fetcher = fetcher
+        self.watch = watch
+        self.filter_config = filter_config
+        self.datastore = datastore
+
+    def preprocess_rss(self, content):
+        """
+        Convert CDATA/comments in RSS to usable text.
+
+        Supports two RSS processing modes:
+        - 'default': Inline CDATA replacement (original behavior)
+        - 'formatted': Format RSS items with title, link, guid, pubDate, and description (CDATA unmarked)
+        """
+        from changedetectionio import rss_tools
+        rss_mode = self.datastore.data["settings"]["application"].get("rss_reader_mode")
+        if rss_mode:
+            # Format RSS items nicely with CDATA content unmarked and converted to text
+            return rss_tools.format_rss_items(content)
+        else:
+            # Default: Original inline CDATA replacement
+            return cdata_in_document_to_text(html_content=content)
+
+    def preprocess_pdf(self, raw_content):
+        """Convert PDF to HTML using external tool."""
+        from shutil import which
+        tool = os.getenv("PDF_TO_HTML_TOOL", "pdftohtml")
+        if not which(tool):
+            raise PDFToHTMLToolNotFound(
+                f"Command-line `{tool}` tool was not found in system PATH, was it installed?"
+            )
+
+        import subprocess
+        proc = subprocess.Popen(
+            [tool, '-stdout', '-', '-s', 'out.pdf', '-i'],
+            stdout=subprocess.PIPE,
+            stdin=subprocess.PIPE
+        )
+        proc.stdin.write(raw_content)
+        proc.stdin.close()
+        html_content = proc.stdout.read().decode('utf-8')
+        proc.wait(timeout=60)
+
+        # Add metadata for change detection
+        metadata = (
+            f"<p>Added by changedetection.io: Document checksum - "
+            f"{hashlib.md5(raw_content).hexdigest().upper()} "
+            f"Original file size - {len(raw_content)} bytes</p>"
+        )
+        return html_content.replace('</body>', metadata + '</body>')
+
+    def preprocess_json(self, raw_content):
+        """Format and sort JSON content."""
+        # Then we re-format it, else it does have filters (later on) which will reformat it anyway
+        try:
+            content = html_tools.extract_json_as_string(content=raw_content, json_filter="json:$")
+        except html_tools.JSONNotFound:
+            # The Content-Type header indicated JSON, but no parsable JSON was found in the body
+            # (e.g. GWT-RPC or other formats that some servers mislabel as application/json).
+            # Don't error the whole watch - keep the raw content so it can still be shown/diffed.
+            # Re https://github.com/dgtlmoon/changedetection.io/issues/3827
+            logger.warning("Content-Type indicated JSON but no parsable JSON was found, keeping raw content")
+            return raw_content
+
+        # Sort JSON to avoid false alerts from reordering
+        try:
+            content = json.dumps(json.loads(content), sort_keys=True, indent=2, ensure_ascii=False)
+        except Exception:
+            # Might be malformed JSON, continue anyway
+            pass
+
+        return content
+
+    def apply_include_filters(self, content, stream_content_type):
+        """Apply CSS, XPath, or JSON filters to extract specific content."""
+        filtered_content = ""
+
+        for filter_rule in self.filter_config.include_filters:
+            # XPath filters
+            if filter_rule[0] == '/' or filter_rule.startswith('xpath:'):
+                filtered_content += html_tools.xpath_filter(
+                    xpath_filter=filter_rule.replace('xpath:', ''),
+                    html_content=content,
+                    append_pretty_line_formatting=not self.watch.is_source_type_url,
+                    is_xml=stream_content_type.is_rss or stream_content_type.is_xml
+                )
+
+            # XPath1 filters (first match only)
+            elif filter_rule.startswith('xpath1:'):
+                filtered_content += html_tools.xpath1_filter(
+                    xpath_filter=filter_rule.replace('xpath1:', ''),
+                    html_content=content,
+                    append_pretty_line_formatting=not self.watch.is_source_type_url,
+                    is_xml=stream_content_type.is_rss or stream_content_type.is_xml
+                )
+
+            # JSON filters
+            elif any(filter_rule.startswith(prefix) for prefix in JSON_FILTER_PREFIXES):
+                filtered_content += html_tools.extract_json_as_string(
+                    content=content,
+                    json_filter=filter_rule
+                )
+
+            # CSS selectors, default fallback
+            else:
+                filtered_content += html_tools.include_filters(
+                    include_filters=filter_rule,
+                    html_content=content,
+                    append_pretty_line_formatting=not self.watch.is_source_type_url
+                )
+
+        # Raise error if filter returned nothing
+        if not filtered_content.strip():
+            raise FilterNotFoundInResponse(
+                msg=self.filter_config.include_filters,
+                screenshot=self.fetcher.screenshot,
+                xpath_data=self.fetcher.xpath_data
+            )
+
+        return filtered_content
+
+    def apply_subtractive_selectors(self, content):
+        """Remove elements matching subtractive selectors."""
+        return html_tools.element_removal(self.filter_config.subtractive_selectors, content)
+
+    def extract_text_from_html(self, html_content, stream_content_type):
+        """Convert HTML to plain text."""
+        do_anchor = self.datastore.data["settings"]["application"].get("render_anchor_tag_content", False)
+
+        return html_tools.html_to_text(
+            html_content=html_content,
+            render_anchor_tag_content=do_anchor,
+            is_rss=stream_content_type.is_rss
+        )
+
+
+class ChecksumCalculator:
+    """Calculates checksums with various options."""
+
+    @staticmethod
+    def calculate(text, ignore_whitespace=False):
+        """Calculate MD5 checksum of text content."""
+        if ignore_whitespace:
+            text = text.translate(TRANSLATE_WHITESPACE_TABLE)
+        return hashlib.md5(text.encode('utf-8')).hexdigest()
+
+
