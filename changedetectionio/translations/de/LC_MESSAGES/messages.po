@@ -3807,6 +3807,70 @@ msgstr "vor %sWo"
 msgid "in %sw"
 msgstr "in %sWo"
 
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "vor 1Mon"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "in 1Mon"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "vor %sMon"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "in %sMon"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "vor 1J"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "in 1J"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "vor %sJ"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "in %sJ"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr ""
+"Beim Durchsuchen des gesamten Überwachungsverlaufs nach diesem regulären Ausdruck wurden keine Übereinstimmungen "
+"gefunden."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "Nicht genügend Daten für einen Vergleich. Mindestens 2 snapshots erforderlich."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to load screenshots: {}"
+msgstr "Screenshots konnten nicht geladen werden: {}"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to calculate diff: {}"
+msgstr "Berechnung der Differenz fehlgeschlagen: {}"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box value is too long"
+msgstr "Der Wert des Begrenzungsrahmens ist zu lang"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box must be in format: x,y,width,height (integers only)"
+msgstr "Der Begrenzungsrahmen muss folgendes Format haben: x, y, Breite, Höhe (nur Ganzzahlen)"
+
 #: changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Bounding box values must be non-negative"
 msgstr "Begrenzungsrahmenwerte dürfen nicht negativ sein"
