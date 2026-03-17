@@ -3509,6 +3509,58 @@ msgstr "Ignora spazi"
 msgid "Screenshot: Minimum Change Percentage"
 msgstr ""
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Deve essere tra 0 e 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Password"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Dimensione paginatore"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Deve essere almeno zero (disabilitato)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Formato contenuto RSS"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "Corpo <description> RSS costruito da"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Rimuovi password"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Renderizza contenuto tag anchor"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Consenti accesso anonimo alla cronologia quando la password è attiva"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "Nascondi osservazioni silenziate dal feed RSS"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "Abilita modalità lettore RSS "
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "Numero di modifiche da mostrare nel feed RSS"
+
 #: changedetectionio/forms.py
 msgid "Should contain zero or more attempts"
 msgstr "Deve contenere zero o più tentativi"
