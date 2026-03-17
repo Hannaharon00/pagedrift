@@ -2241,6 +2241,66 @@ msgid "Use page <title> in watch overview list"
 msgstr "Використовувати <title> сторінки у списку огляду завдань"
 
 #: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "Перевірку безпеки токена доступу API увімкнено"
+
+#: changedetectionio/forms.py
+msgid "Notification base URL override"
+msgstr "Перевизначення базового URL сповіщень"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "Вважати порожні сторінки зміною?"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "Ігнорувати текст"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "Ігнорувати пробіли"
+
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "Має бути між 0 та 100"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "Пароль"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "Розмір сторінки (пагінація)"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "Має бути як мінімум нуль (вимкнено)"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "Формат контенту RSS"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "Тіло <description> RSS будується з"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "Перевизначення шаблону RSS \"Системний за замовчуванням\""
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "Видалити пароль"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "Рендерити контент тегу anchor"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "Дозволити анонімний доступ до історії завдань при увімкненому паролі"
+
+#: changedetectionio/forms.py
 msgid "Hide muted watches from RSS feed"
 msgstr "Приховати заглушені завдання з RSS-стрічки"
 
