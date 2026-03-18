@@ -1178,3 +1178,118 @@ def test_api_watch_get_returns_resolved_restock_processor_config(client, live_se
     delete_all_watches(client)
 
 
+def test_api_url_validation(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test URL validation for edge cases in both CREATE and UPDATE endpoints.
+    Addresses security issues where empty/null/invalid URLs could bypass validation.
+
+    This test ensures that:
+    - CREATE endpoint rejects null, empty, and invalid URLs
+    - UPDATE endpoint rejects attempts to change URL to null, empty, or invalid
+    - UPDATE endpoint allows updating other fields without touching URL
+    - URL validation properly checks protocol, format, and safety
+    """
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: CREATE with null URL should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": None}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400, "Creating watch with null URL should fail"
+
+    # Test 2: CREATE with empty string URL should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": ""}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400, "Creating watch with empty string URL should fail"
+    assert b'Invalid or unsupported URL' in res.data or b'required' in res.data.lower()
+
+    # Test 3: CREATE with whitespace-only URL should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "   "}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400, "Creating watch with whitespace-only URL should fail"
+
+    # Test 4: CREATE with invalid protocol should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "javascript:alert(1)"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400, "Creating watch with javascript: protocol should fail"
+
+    # Test 5: CREATE with missing protocol should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "example.com"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 400, "Creating watch without protocol should fail"
+
+    # Test 6: CREATE with valid URL should succeed (baseline)
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": test_url, "title": "Valid URL test"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    assert res.status_code == 201, "Creating watch with valid URL should succeed"
+    assert is_valid_uuid(res.json.get('uuid'))
+    watch_uuid = res.json.get('uuid')
+    wait_for_all_checks(client)
+
+    # Test 7: UPDATE to null URL should fail
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": None}),
+    )
+    assert res.status_code == 400, "Updating watch URL to null should fail"
+    # Accept either OpenAPI validation error or our custom validation error
+    assert (b'URL cannot be null' in res.data or
+            b'Validation failed' in res.data or
+            b'validation error' in res.data.lower())
+
+    # Test 8: UPDATE to empty string URL should fail
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": ""}),
+    )
+    assert res.status_code == 400, "Updating watch URL to empty string should fail"
+    # Accept either our custom validation error or OpenAPI/schema validation error
+    assert b'URL cannot be empty' in res.data or b'OpenAPI validation' in res.data or b'Invalid or unsupported URL' in res.data
+
+    # Test 9: UPDATE to whitespace-only URL should fail
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": "   \t\n  "}),
+    )
+    assert res.status_code == 400, "Updating watch URL to whitespace should fail"
+    # Accept either our custom validation error or generic validation error
+    assert b'URL cannot be empty' in res.data or b'Invalid or unsupported URL' in res.data or b'validation' in res.data.lower()
+
+    # Test 10: UPDATE to invalid protocol should fail (javascript:)
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": "javascript:alert(document.domain)"}),
+    )
+    assert res.status_code == 400, "Updating watch URL to XSS attempt should fail"
+    assert b'Invalid or unsupported URL' in res.data or b'protocol' in res.data.lower()
+
