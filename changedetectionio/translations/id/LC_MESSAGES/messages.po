@@ -3433,6 +3433,59 @@ msgid "Removed lines"
 msgstr "Baris yang dihapus"
 
 #: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Pemicu kata kunci - Picu/tunggu teks"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Blokir deteksi perubahan selama teks cocok"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Jalankan JavaScript sebelum deteksi perubahan"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Proksi"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Kirim notifikasi saat filter tidak lagi ditemukan di halaman"
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "Aktif"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Notifikasi"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Dibisukan"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Lampirkan tangkapan layar ke notifikasi (jika memungkinkan)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Pencocokan"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Cocok dengan semua berikut"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Cocok dengan salah satu berikut"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Gunakan <title> halaman dalam daftar"
+
+#: changedetectionio/forms.py
 msgid "Number of history items per watch to keep"
 msgstr "Jumlah item riwayat per monitor yang disimpan"
 
