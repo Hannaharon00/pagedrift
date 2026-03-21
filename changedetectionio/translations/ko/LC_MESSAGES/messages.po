@@ -4425,6 +4425,70 @@ msgstr "이 링크를 공유하세요:"
 msgid "Real-time updates offline"
 msgstr "실시간 업데이트 오프라인"
 
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "언어 선택"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "브라우저에서 자동 감지"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr "언어 지원은 베타입니다. 수정 사항이 있으면 GitHub PR로 개선에 참여해 주세요."
+
+#: changedetectionio/templates/base.html
+msgid "AI / LLM not configured"
+msgstr "AI / LLM이 설정되지 않음"
+
+#: changedetectionio/templates/base.html
+msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
+msgstr "LLM 기반 요약이 아직 활성화되지 않았습니다. 시작하려면 설정에서 AI 프로바이더를 설정하세요."
+
+#: changedetectionio/templates/base.html
+msgid "Go to AI / LLM Settings"
+msgstr "AI / LLM 설정으로 이동"
+
+#: changedetectionio/templates/base.html changedetectionio/templates/sidebar-nav.html
+msgid "Search"
+msgstr "검색"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "URL or Title in '%(title)s'"
+msgstr "'%(title)s'의 URL 또는 제목"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "URL 또는 제목"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "검색어를 입력하세요..."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"<strong>On</strong> &ndash; every watch in this group uses the AI settings below, unless it fills in its own. "
+"<strong>Off</strong> &ndash; no AI for any watch in this group. <strong>Leave it to each watch</strong> &ndash; this "
+"group has no say; each watch uses its own AI settings."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is ON for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is OFF for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Describe what you care about. The AI evaluates every detected change against this and only notifies you when it "
+"matches."
+msgstr "관심 있는 내용을 설명하세요. AI가 감지된 모든 변경 사항을 이 기준과 비교해 일치할 때만 알립니다."
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
 msgstr "이 태그/그룹의 모든 모니터링에 판단 기준을 설정합니다. 각 모니터링에서 자체 설정으로 재정의할 수 있습니다."
