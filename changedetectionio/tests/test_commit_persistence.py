@@ -455,6 +455,63 @@ def test_browser_steps_normalized_to_empty_list(client, live_server):
 # 5. Data Loss Prevention Tests
 # ==============================================================================
 
+def test_settings_persist_after_update(client, live_server):
+    """Test that settings updates are committed and survive restart"""
+    from changedetectionio.store import ChangeDetectionStore
+
+    datastore = client.application.config.get('DATASTORE')
+    datastore_path = datastore.datastore_path
+
+    # Update settings directly (bypass form validation issues)
+    datastore.data['settings']['application']['empty_pages_are_a_change'] = True
+    datastore.data['settings']['application']['fetch_backend'] = 'html_requests'
+    datastore.data['settings']['requests']['time_between_check']['minutes'] = 120
+    datastore.commit()
+
+    # Simulate restart
+    datastore2 = ChangeDetectionStore(datastore_path=datastore_path)
+    datastore2.reload_state(
+        datastore_path=datastore_path,
+        include_default_watches=False,
+        version_tag='test'
+    )
+
+    # Verify settings survived
+    assert datastore2.data['settings']['application']['empty_pages_are_a_change'] == True, "empty_pages_are_a_change should persist"
+    assert datastore2.data['settings']['application']['fetch_backend'] == 'html_requests', "fetch_backend should persist"
+    assert datastore2.data['settings']['requests']['time_between_check']['minutes'] == 120, "time_between_check should persist"
+
+
+def test_tag_mute_persists(client, live_server):
+    """Test that tag mute/unmute operations persist"""
+    from changedetectionio.store import ChangeDetectionStore
+
+    datastore = client.application.config.get('DATASTORE')
+    datastore_path = datastore.datastore_path
+
+    # Add a tag
+    tag_uuid = datastore.add_tag('Test Tag')
+
+    # Mute the tag
+    response = client.post(url_for("tags.mute", uuid=tag_uuid))
+    assert response.status_code == 302  # Redirect
+
+    # Verify muted in memory
+    assert datastore.data['settings']['application']['tags'][tag_uuid]['notification_muted'] == True
+
+    # Simulate restart
+    datastore2 = ChangeDetectionStore(datastore_path=datastore_path)
+    datastore2.reload_state(
+        datastore_path=datastore_path,
+        include_default_watches=False,
+        version_tag='test'
+    )
+
+    # Verify mute state survived
+    assert tag_uuid in datastore2.data['settings']['application']['tags']
+    assert datastore2.data['settings']['application']['tags'][tag_uuid]['notification_muted'] == True
+
+
 def test_tag_delete_removes_from_watches(client, live_server):
     """Test that deleting a tag removes it from all watches"""
     datastore = client.application.config.get('DATASTORE')
