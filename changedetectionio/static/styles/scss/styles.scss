@@ -784,6 +784,78 @@ textarea::placeholder {
   min-width: 100%;
 }
 
+#selector-header {
+  padding-bottom: 1em;
+}
+
+
+.edit-form {
+  max-width: 95%;
+
+  .box-wrap {
+    position: relative;
+  }
+
+  .inner {
+    background: var(--color-background);
+    padding: $common-gap*2;
+  }
+
+  #actions {
+    display: block;
+    background: var(--color-background);
+  }
+
+  /* Make action buttons have consistent size and spacing */
+  #actions .pure-control-group {
+    display: flex;
+    gap: 0.625em;
+    flex-wrap: wrap;
+  }
+
+  .pure-form-message-inline {
+    padding-left: 0;
+    color: var(--color-text-input-description);
+    code {
+      font-size: .875em;
+    }
+  }
+}
+
+.border-fieldset {
+  h3 {
+    margin-top: 0;
+  }
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  fieldset:last-of-type {
+    padding-bottom: 0;
+    .pure-control-group {
+      padding-bottom: 0;
+    }
+  }
+}
+
+
+
+ul {
+  padding-left: 1em;
+  padding-top: 0px;
+  margin-top: 4px;
+}
+
+.time-check-widget {
+  tr {
+    display: inline;
+
+    input[type="number"] {
+      width: 5em;
+    }
+  }
+}
+
 @media only screen and (max-width: 760px) {
   .time-check-widget {
     tbody {
