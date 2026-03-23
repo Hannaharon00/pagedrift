@@ -2701,6 +2701,66 @@ msgstr "Викликає зміну, якщо цей текст з'являєт�
 msgid "Triggered text"
 msgstr "Тригерний текст"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Ігнорується при розрахунку змін, але все ще відображається."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Ігнорований текст"
+
+#: changedetectionio/templates/_helpers.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Виявлення змін не відбудеться, оскільки цей текст існує."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Блокуючий текст"
+
+#: changedetectionio/templates/base.html
+msgid "Search, or Use Alt+S Key"
+msgstr "Пошук, або використовуйте Alt+S"
+
+#: changedetectionio/templates/base.html
+msgid "Real-time updates offline"
+msgstr "Оновлення в реальному часі вимкнено"
+
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "Обрати мову"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "Автовизначення з браузера"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr "Підтримка мов у бета-версії, будь ласка, допоможіть нам покращити її, відкривши PR на GitHub з оновленнями."
+
+#: changedetectionio/templates/base.html
+msgid "Search"
+msgstr "Пошук"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "URL або Назва"
+
+#: changedetectionio/templates/base.html
+msgid "in"
+msgstr "у"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "Введіть пошуковий запит..."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr "Текст для очікування перед спрацьовуванням зміни/сповіщення, весь текст і regex перевіряються без урахування регістру."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Тригерний текст обробляється з результуючого тексту, отриманого після застосування CSS/JSON фільтрів для цього завдання"
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "Each line is processed separately (think of each line as \"OR\")"
 msgstr "Кожен рядок обробляється окремо (сприймайте кожен рядок як \"АБО\")"
