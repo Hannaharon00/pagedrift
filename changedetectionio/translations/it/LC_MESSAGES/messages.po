@@ -3569,6 +3569,64 @@ msgstr "tra poco"
 msgid "%ss ago"
 msgstr "%ss fa"
 
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr "tra 1sett"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr "%ssett fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr "tra %ssett"
+
+#: changedetectionio/languages.py
+msgid "1mo ago"
+msgstr "1mese fa"
+
+#: changedetectionio/languages.py
+msgid "in 1mo"
+msgstr "tra 1mese"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%smo ago"
+msgstr "%smesi fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "tra %smesi"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1anno fa"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "tra 1anno"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%sanni fa"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "tra %sanni"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr ""
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr ""
+
 #: changedetectionio/processors/image_ssim_diff/difference.py
 #, python-brace-format
 msgid "Failed to load screenshots: {}"
