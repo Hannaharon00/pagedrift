@@ -55,6 +55,68 @@ def set_modified_swapped_lines_with_extra_text_for_sorting(datastore_path):
         f.write(test_return_data)
 
 
+def set_modified_with_trigger_text_response(datastore_path):
+    test_return_data = """<html>
+     <body>
+     <p>Some initial text</p>
+     <p>So let's see what happens.</p>
+     <p>and a new line!</p>
+     <p>Which is across multiple lines</p>     
+     </body>
+     </html>
+    """
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+# def test_setup(client, live_server, measure_memory_usage, datastore_path):
+   #  live_server_setup(live_server) # Setup on conftest per function
+
+def test_unique_lines_functionality(client, live_server, measure_memory_usage, datastore_path):
+    
+
+
+    set_original_ignore_response(datastore_path=datastore_path)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Add our URL to the import page
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={"check_unique_lines": "y",
+              "url": test_url,
+              "fetch_backend": "html_requests",
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    assert b'has-unread-changes' not in res.data
+
+    #  Make a change
+    set_modified_swapped_lines(datastore_path)
+
+    # Trigger a check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up
+    wait_for_all_checks(client)
+
+    # It should report nothing found (no new 'has-unread-changes' class)
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' not in res.data
+
+    # Now set the content which contains the new text and re-ordered existing text
+    set_modified_with_trigger_text_response(datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'has-unread-changes' in res.data
+    delete_all_watches(client)
+
 def test_sort_lines_functionality(client, live_server, measure_memory_usage, datastore_path):
     
 
