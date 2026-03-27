@@ -4454,3 +4454,71 @@ msgstr ""
 "np. Powiadom mnie, gdy cena spadnie poniżej 300 dolarów lub pojawi się nowy produkt. Zignoruj zmiany w stopce i "
 "nawigacji."
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr "np. sygnalizuj zmiany cen lub premiery nowych produktów we wszystkich obserwacjach w tej grupie"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr "Przykłady:"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr "Powiadom mnie tylko wtedy, gdy cena spadnie poniżej 200 dolarów lub pojawi się oferta ograniczona czasowo"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr ""
+"Powiadom mnie, gdy pojawi się informacja o nowym wycofaniu produktu, ostrzeżeniu dotyczącym bezpieczeństwa lub "
+"wycofaniu produktu z rynku"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr "Powiadom mnie o rozpoczęciu nowej rundy naboru wniosków o dotacje lub ogłoszeniu terminu składania wniosków"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr "Ma to znaczenie tylko w przypadku zmiany wersji pakietów lub gdy wspomniano o numerze CVE"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr "Włączony filtr wstępny AI: <code>%(filter)s</code> — zawęża zakres treści przed oceną"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr ""
+"Gdy wykryta zostanie zmiana, sztuczna inteligencja opisze ją zgodnie z Twoimi instrukcjami i zastąpi w powiadomieniu "
+"<code>%(diff)s</code>. Jeśli nadal chcesz zachować oryginalną różnicę, użyj <code>%(raw_diff)s</code>."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr "Opisz, w jaki sposób zmiany mają być podsumowywane w powiadomieniach dla wszystkich obserwacji w tej grupie."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+"Dołączenie zachowuje prompt odziedziczony z grupy lub ustawień globalnych i dodaje Twój tekst na końcu, dzięki czemu "
+"późniejsze zmiany tego promptu nadal będą dotyczyć tego monitorowania."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+"Dołączenie zachowuje prompt odziedziczony z ustawień globalnych i dodaje Twój tekst na końcu, dzięki czemu późniejsze"
+" zmiany tego promptu nadal będą dotyczyć tej grupy."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "List each new item added with its name and price. Translate to English."
+msgstr "Wymień wszystkie nowe pozycje wraz z ich nazwami i cenami. Przetłumacz na język angielski."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Summarise what events were added or cancelled. Two sentences maximum."
+msgstr "Podsumuj, jakie wydarzenia zostały dodane lub odwołane. Maksymalnie dwa zdania."
+
