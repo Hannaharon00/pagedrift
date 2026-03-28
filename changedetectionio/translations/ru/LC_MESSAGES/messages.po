@@ -3438,6 +3438,59 @@ msgid "Removed lines"
 msgstr "Удалены строки"
 
 #: changedetectionio/forms.py
+msgid "Keyword triggers - Trigger/wait for text"
+msgstr "Триггеры по ключевым словам — триггер/ожидание текста"
+
+#: changedetectionio/forms.py
+msgid "Block change-detection while text matches"
+msgstr "Блокировать обнаружение изменений, пока текст совпадает"
+
+#: changedetectionio/forms.py
+msgid "Execute JavaScript before change detection"
+msgstr "Выполнять JavaScript перед обнаружением изменений"
+
+#: changedetectionio/blueprint/watchlist/templates/watch-overview.html changedetectionio/forms.py
+msgid "Proxy"
+msgstr "Прокси"
+
+#: changedetectionio/forms.py
+msgid "Send a notification when the filter can no longer be found on the page"
+msgstr "Отправьте уведомление, когда фильтр больше не будет найден на странице."
+
+#: changedetectionio/forms.py
+msgid "On"
+msgstr "На"
+
+#: changedetectionio/blueprint/tags/templates/edit-tag.html changedetectionio/blueprint/ui/templates/edit.html
+#: changedetectionio/forms.py changedetectionio/templates/sidebar-nav.html
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: changedetectionio/forms.py changedetectionio/templates/menu.html
+msgid "Muted"
+msgstr "Без звука"
+
+#: changedetectionio/forms.py
+msgid "Attach screenshot to notification (where possible)"
+msgstr "Прикрепите скриншот к уведомлению (где это возможно)"
+
+#: changedetectionio/forms.py
+msgid "Match"
+msgstr "Соответствовать"
+
+#: changedetectionio/forms.py
+msgid "Match all of the following"
+msgstr "Сопоставьте все следующее"
+
+#: changedetectionio/forms.py
+msgid "Match any of the following"
+msgstr "Соответствует любому из следующих"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in list"
+msgstr "Использовать страницу <title> в списке"
+
+#: changedetectionio/forms.py
 msgid "Number of history items per watch to keep"
 msgstr "Количество сохраняемых элементов истории на часы"
 
