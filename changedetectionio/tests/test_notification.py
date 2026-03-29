@@ -567,6 +567,60 @@ def test_send_test_notification_with_system_default_format(client, live_server, 
     client.post(url_for("ui.form_delete", uuid="all"), follow_redirects=True)
 
 
+def _test_color_notifications(client, notification_body_token, datastore_path):
+
+    set_original_response(datastore_path=datastore_path)
+
+    if os.path.isfile(os.path.join(datastore_path, "notification.txt")):
+        os.unlink(os.path.join(datastore_path, "notification.txt"))
+
+
+    test_notification_url = url_for('test_notification_endpoint', _external=True).replace('http://', 'post://')+"?xxx={{ watch_url }}&+custom-header=123"
+
+
+    # otherwise other settings would have already existed from previous tests in this file
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={
+            "notification_body": notification_body_token,
+            "notification_format": "htmlcolor",
+            "notification_urls": test_notification_url,
+            "notification_title": "New ChangeDetection.io Notification - {{ watch_url }}",
+        },
+        follow_redirects=True
+    )
+    assert b'Settings updated' in res.data
+
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'nice one'},
+        follow_redirects=True
+    )
+
+    assert b"Watch added" in res.data
+
+    wait_for_all_checks(client)
+
+    set_modified_response(datastore_path=datastore_path)
+
+
+    res = client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    assert b'Queued 1 watch for rechecking.' in res.data
+
+    wait_for_all_checks(client)
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+
+    with open(os.path.join(datastore_path, "notification.txt"), 'r') as f:
+        x = f.read()
+        s = f'<span style="{HTML_CHANGED_STYLE}" role="note" aria-label="Changed text" title="Changed text">Which is across multiple lines</span><br>'
+        assert s in x
+
+    client.post(
+        url_for("ui.form_delete", uuid="all"),
+        follow_redirects=True
+    )
+
 # Just checks the format of the colour notifications was correct
 def test_html_color_notifications(client, live_server, measure_memory_usage, datastore_path):
     _test_color_notifications(client, '{{diff}}',datastore_path=datastore_path)
