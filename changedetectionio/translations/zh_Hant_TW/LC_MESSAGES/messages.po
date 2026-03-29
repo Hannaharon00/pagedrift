@@ -3462,6 +3462,62 @@ msgid "Number of changes to show in watch RSS feed"
 msgstr "在 RSS Feed 中顯示的變更數量"
 
 #: changedetectionio/forms.py
+msgid "Should contain zero or more attempts"
+msgstr "應包含 0 次或更多嘗試"
+
+#: changedetectionio/forms.py
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr "發送通知前允許過濾器遺失的次數"
+
+#: changedetectionio/forms.py
+msgid "Model"
+msgstr "模型"
+
+#: changedetectionio/blueprint/settings/templates/settings.html changedetectionio/forms.py
+msgid "API Key"
+msgstr "API 金鑰"
+
+#: changedetectionio/forms.py
+msgid "API Base URL"
+msgstr "API 基礎 URL"
+
+#: changedetectionio/forms.py
+msgid "Token multiplier for local reasoning models"
+msgstr "本地推理模型的權杖乘數"
+
+#: changedetectionio/forms.py
+msgid "Default AI Change Summary prompt"
+msgstr "預設 AI 變更摘要提示詞"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max tokens per watch per period"
+msgstr "每個週期內每個監測任務的最大權杖數"
+
+#: changedetectionio/forms.py
+msgid "Monthly token budget"
+msgstr "每月權杖配額"
+
+#: changedetectionio/blueprint/settings/templates/settings_llm_tab.html changedetectionio/forms.py
+msgid "Max input characters"
+msgstr "最大輸入字元數"
+
+#: changedetectionio/forms.py
+msgid "Enable AI / LLM features"
+msgstr "啟用 AI / LLM 功能"
+
+#: changedetectionio/forms.py
+msgid "Replace {{diff}} notification token with AI summary"
+msgstr "將 {{diff}} 通知權杖替換為 AI 摘要"
+
+#: changedetectionio/forms.py
+msgid "Use LLM as a fallback for extracting price and restock info"
+msgstr "在找不到結構化資料時，使用 LLM 作為提取價格和補貨資訊的備用方案"
+
+#: changedetectionio/forms.py
+msgid "Enable LLM debug logging"
+msgstr "啟用 LLM 除錯記錄"
+
+#: changedetectionio/forms.py
 msgid "AI thinking budget (tokens)"
 msgstr "AI 思考配額（權杖）"
 

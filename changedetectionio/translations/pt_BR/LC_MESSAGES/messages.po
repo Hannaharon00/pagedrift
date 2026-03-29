@@ -4129,6 +4129,62 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Entrada"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Ações"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Adicionar uma linha/regra depois"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Remover esta linha/regra"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Verificar esta regra contra o instantâneo atual"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Definir um agendamento por hora/dia da semana"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Limites de tempo de agendamento"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Horário comercial"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Finais de semana"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Resetar"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Aviso: um ou mais de seus 'dias' tem uma duração que se estenderia para o dia seguinte."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Isso pode ter consequências indesejadas."
+
 #: changedetectionio/templates/_helpers.html
 msgid "More help and examples about using the scheduler"
 msgstr "Mais ajuda e exemplos sobre como usar o agendador"
