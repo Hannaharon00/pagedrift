@@ -234,6 +234,56 @@ polish_html = """<!DOCTYPE html>
 """
 
 
+@pytest.mark.parametrize("html_content", [polish_html])
+@pytest.mark.parametrize("xpath, expected_text", [
+    # Test Polish characters in xpath_filter
+    ('//a[(contains(@class,"index--s-headline-link"))]', 'Naukowcy potwierdzają'),
+    ('//a[(contains(@class,"index--s-headline-link"))]', 'oglądanie krótkich filmików'),
+    ('//a[(contains(@class,"index--s-headline-link"))]', 'zgnilizny mózgu'),
+    ('//a[@class="other-class"]', 'żółć ąę śń'),
+
+    # Test various Unicode scripts
+    ('//p[@class="unicode-test"]', 'Привет мир'),
+    ('//p[@class="unicode-test"]', 'Γειά σου κόσμε'),
+    ('//p[@class="unicode-test"]', 'مرحبا بالعالم'),
+    ('//p[@class="unicode-test"]', '你好世界'),
+    ('//p[@class="unicode-test"]', 'こんにちは世界'),
+    ('//p[@class="unicode-test"]', '🌍🎉✨'),
+
+    # Test with text() extraction
+    ('//a[@class="other-class"]/text()', 'żółć'),
+])
+def test_xpath_utf8_encoding(html_content, xpath, expected_text):
+    """Test that XPath filters preserve UTF-8 characters correctly (issue #3658)"""
+    result = html_tools.xpath_filter(xpath, html_content, append_pretty_line_formatting=False)
+    assert type(result) == str
+    assert expected_text in result
+    # Ensure characters are NOT HTML-entity encoded
+    # For example, 'ą' should NOT become '&#261;'
+    assert '&#' not in result or expected_text in result
+
+
+@pytest.mark.parametrize("html_content", [polish_html])
+@pytest.mark.parametrize("xpath, expected_text", [
+    # Test Polish characters in xpath1_filter
+    ('//a[(contains(@class,"index--s-headline-link"))]', 'Naukowcy potwierdzają'),
+    ('//a[(contains(@class,"index--s-headline-link"))]', 'mózgu'),
+    ('//a[@class="other-class"]', 'żółć ąę śń'),
+
+    # Test various Unicode scripts with xpath1
+    ('//p[@class="unicode-test" and contains(text(), "Cyrillic")]', 'Привет мир'),
+    ('//p[@class="unicode-test" and contains(text(), "Greek")]', 'Γειά σου'),
+    ('//p[@class="unicode-test" and contains(text(), "Chinese")]', '你好世界'),
+])
+def test_xpath1_utf8_encoding(html_content, xpath, expected_text):
+    """Test that XPath1 filters preserve UTF-8 characters correctly"""
+    result = html_tools.xpath1_filter(xpath, html_content, append_pretty_line_formatting=False)
+    assert type(result) == str
+    assert expected_text in result
+    # Ensure characters are NOT HTML-entity encoded
+    assert '&#' not in result or expected_text in result
+
+
 # Test with real-world example from wyborcza.pl (issue #3658)
 wyborcza_style_html = """<!DOCTYPE html>
 <html lang="pl">
