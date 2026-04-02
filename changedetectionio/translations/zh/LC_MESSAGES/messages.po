@@ -4205,6 +4205,62 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr ""
 
+#: changedetectionio/templates/menu.html
+msgid "EDIT"
+msgstr "编辑"
+
+#: changedetectionio/templates/menu.html
+msgid "Website Change Detection and Notification."
+msgstr "网站变更检测与通知。"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI Mode"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI mode"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle Light/Dark Mode"
+msgstr "切换亮/暗模式"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle light/dark mode"
+msgstr "切换亮/暗模式"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Add a page watch"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Page Watches"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Unread changes"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Watch Groups"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Import lists of web pages"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers (coming soon)"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "soon"
+msgstr ""
+
 #: changedetectionio/templates/sidebar-nav.html
 msgid "Search, or Use Alt+S Key"
 msgstr "搜索，或使用 Alt+S 快捷键"
