@@ -364,3 +364,63 @@ got it\r\n
 
     delete_all_watches(client)
 
+# Server says its plaintext, we should always treat it as plaintext
+def test_plaintext_even_if_xml_content(client, live_server, measure_memory_usage, datastore_path):
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("""<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+    <string name="feed_update_receiver_name">Abonnementen bijwerken</string>
+</resources>
+""")
+
+    test_url = url_for('test_endpoint', content_type="text/plain", _external=True)
+
+    # Add our URL to the import page
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    assert b'&lt;string name=&#34;feed_update_receiver_name&#34;' in res.data
+
+    delete_all_watches(client)
+
+# Server says its plaintext, we should always treat it as plaintext, and then if they have a filter, try to apply that
+def test_plaintext_even_if_xml_content_and_can_apply_filters(client, live_server, measure_memory_usage, datastore_path):
+
+
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("""<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+    <string name="feed_update_receiver_name">Abonnementen bijwerken</string>
+    <foobar>ok man</foobar>
+</resources>
+""")
+
+    test_url=url_for('test_endpoint', content_type="text/plain", _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={"include_filters": ['//string']})
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    # Check that the string element with the correct name attribute is present
+    # Note: namespace declarations may be included when extracting elements, which is correct XML behavior
+    assert b'feed_update_receiver_name' in res.data
+    assert b'Abonnementen bijwerken' in res.data
+    assert b'&lt;foobar' not in res.data
+
+    res = delete_all_watches(client)
+
+
