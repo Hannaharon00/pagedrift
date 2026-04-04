@@ -160,3 +160,73 @@ def test_preview_found_false_when_content_not_relevant(
 # No intent / no LLM → llm_evaluation is None
 # ---------------------------------------------------------------------------
 
+def test_preview_no_llm_evaluation_without_intent(
+        client, live_server, measure_memory_usage, datastore_path):
+    """When llm_intent is absent, the LLM client must not be called."""
+    uuid = _add_and_fetch(client, live_server, datastore_path, HTML_WITH_ARTICLES)
+    _configure_llm(client)
+
+    with patch('changedetectionio.llm.client.completion') as mock_llm:
+        res = client.post(
+            url_for("ui.ui_edit.watch_get_preview_rendered", uuid=uuid),
+            data={'fetch_backend': 'html_requests'},
+        )
+        mock_llm.assert_not_called()
+
+    assert res.status_code == 200
+    data = json.loads(res.data.decode('utf-8'))
+    assert data.get('llm_evaluation') is None
+
+    delete_all_watches(client)
+
+
+def test_preview_no_llm_evaluation_when_llm_not_configured(
+        client, live_server, measure_memory_usage, datastore_path):
+    """When LLM model is not set, llm_evaluation must be None even with an intent."""
+    uuid = _add_and_fetch(client, live_server, datastore_path, HTML_WITH_ARTICLES)
+    # Intentionally do NOT configure LLM
+
+    with patch('changedetectionio.llm.client.completion') as mock_llm:
+        res = client.post(
+            url_for("ui.ui_edit.watch_get_preview_rendered", uuid=uuid),
+            data={
+                'llm_intent': 'Tell me the number of articles',
+                'fetch_backend': 'html_requests',
+            },
+        )
+        mock_llm.assert_not_called()
+
+    assert res.status_code == 200
+    data = json.loads(res.data.decode('utf-8'))
+    assert data.get('llm_evaluation') is None
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# LLM failure → llm_evaluation is None, preview still works
+# ---------------------------------------------------------------------------
+
+def test_preview_llm_failure_does_not_break_preview(
+        client, live_server, measure_memory_usage, datastore_path):
+    """If the LLM call raises, preview_extract returns None — preview still works."""
+    uuid = _add_and_fetch(client, live_server, datastore_path, HTML_WITH_ARTICLES)
+    _configure_llm(client)
+
+    with patch('changedetectionio.llm.client.completion', side_effect=Exception('API timeout')):
+        res = client.post(
+            url_for("ui.ui_edit.watch_get_preview_rendered", uuid=uuid),
+            data={
+                'llm_intent': 'Tell me the number of articles',
+                'fetch_backend': 'html_requests',
+            },
+        )
+
+    assert res.status_code == 200
+    data = json.loads(res.data.decode('utf-8'))
+    # Filter content must still be returned
+    assert data.get('after_filter')
+    # preview_extract returns None on error (doesn't fail-open like evaluate_change)
+    assert data.get('llm_evaluation') is None
+
+    delete_all_watches(client)
