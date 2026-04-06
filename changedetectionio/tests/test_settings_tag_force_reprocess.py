@@ -149,3 +149,60 @@ def test_tag_change_forces_reprocess(client, live_server, measure_memory_usage, 
     print("✓ Tag change forces reprocessing only for watches with that tag")
 
 
+def test_tag_change_via_api_forces_reprocess(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that updating a tag via API also clears checksums for affected watches.
+    """
+
+    # Setup test content
+    test_html = """<html>
+     <body>
+     <p>Test content</p>
+     </body>
+     </html>
+    """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_html)
+
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Create a tag
+    datastore = client.application.config.get('DATASTORE')
+    tag_uuid = datastore.add_tag('API Test Tag')
+
+    # Add watch with tag
+    uuid_with_tag = datastore.add_watch(url=test_url, extras={'title': 'API Watch'})
+    datastore.data['watching'][uuid_with_tag]['paused'] = False
+    datastore.data['watching'][uuid_with_tag]['tags'] = [tag_uuid]
+    datastore.data['watching'][uuid_with_tag].commit()
+
+    # First check
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    # Verify checksum exists
+    checksum_file = os.path.join(datastore_path, uuid_with_tag, 'last-checksum.txt')
+    assert os.path.isfile(checksum_file), "First check should create checksum file"
+
+    # Update tag via API
+    res = client.put(
+        f'/api/v1/tag/{tag_uuid}',
+        json={'notification_muted': True},
+        headers={'x-api-key': datastore.data['settings']['application']['api_access_token']}
+    )
+    assert res.status_code == 200, f"API call failed with status {res.status_code}: {res.data}"
+
+    # Give it more time for async operations
+    time.sleep(1.0)
+
+    # Debug: Check if checksum still exists
+    if os.path.isfile(checksum_file):
+        # Read checksum to see if it changed
+        with open(checksum_file, 'r') as f:
+            checksum_content = f.read()
+            print(f"Checksum still exists: {checksum_content}")
+
+    # Verify checksum was deleted
+    assert not os.path.isfile(checksum_file), "API tag update should delete checksum"
+
+    print("✓ Tag update via API forces reprocessing")

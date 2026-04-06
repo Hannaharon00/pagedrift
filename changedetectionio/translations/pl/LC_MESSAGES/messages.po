@@ -4107,6 +4107,75 @@ msgid "The page title of the watch, uses <title> if not set, falls back to URL"
 msgstr "Tytuł strony obserwacji; jeśli nie ustawiono go ręcznie, używany jest tag <title>, a następnie adres URL"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "Wynik różnicowy – pełny wynik różnicowy"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "Wynik różnicowy — pełny wynik różnicowy —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "Wynik porównania – poprawka w ujednoliconym formacie"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr ""
+"Tylko słowa/wartości, które uległy zmianie w stosunku do poprzedniej wersji — np. stara cena. Najlepiej, gdy w każdym"
+" wierszu zmienia się tylko jedna wartość; wiele zmienionych fragmentów łączy się znakiem nowej linii."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr ""
+"Tylko zmienione słowa/wartości z nowej wersji — np. nowa cena. Najlepiej, gdy w każdym wierszu zmienia się tylko "
+"jedna wartość; wiele zmienionych fragmentów należy oddzielić znakiem nowej linii."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "Aktualna wartość treści tekstowej migawki, przydatna w połączeniu z filtrami JSON lub CSS"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "Tekst, który spowodował uruchomienie filtra"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr "(zaktualizowano)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+"Po skonfigurowaniu opcji „AI Change Summary” wyświetlany jest opis wygenerowany przez sztuczną inteligencję zamiast "
+"surowego zestawienia różnic. Jeśli opcja nie jest skonfigurowana, domyślnie wyświetlane jest surowe zestawienie "
+"różnic."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr "Zawsze jest to różnica w wartościach surowych (+/-), niezależnie od ustawienia „Podsumowanie zmian AI”."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr "Tekst podsumowania zmian wygenerowany przez AI (odpowiada ulepszonej funkcji {{diff}} — wyraźne odniesienie)."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr "Oceniony zamiar zmiany AI."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "Ostrzeżenie: Treść"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "oraz"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "depend on how the difference algorithm perceives the change."
 msgstr "zależy od tego, jak algorytm różnicowy interpretuje tę zmianę."
 
