@@ -3923,6 +3923,64 @@ msgid "Text that tripped the trigger from filters"
 msgstr "來自過濾器並觸發變更的文字"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr "（已升級）"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr "當設定了 AI 變更摘要時，包含 AI 產生的描述而非原始差異（Diff）。未設定時則恢復為原始差異。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr "無論 AI 變更摘要如何設定，一律顯示原始的 +/- 差異（Diff）。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr "AI 變更摘要文字（與已升級的 {{diff}} 相同 — 顯式引用）。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr "已評估的 AI 變更意圖。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "警告："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "和"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "的內容取決於差異演算法如何看待變更。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "例如，在某些情況下，新增或移除可能會被視為變更。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "更多資訊"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr "新增電子郵件通知："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr "新增至清單"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "新增電子郵件地址"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "發送測試通知"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "for non-SSL ie"
 msgstr "用於非 SSL 即"
 
