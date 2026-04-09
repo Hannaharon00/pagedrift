@@ -234,6 +234,163 @@ def pytest_addoption(parser):
         help="Custom datastore path for tests"
     )
 
+@pytest.fixture(scope='session')
+def datastore_path(tmp_path_factory, request):
+    """Provide datastore path unique to this worker.
+
+    Supports custom path via --datastore-path/-d flag (mirrors main app).
+
+    CRITICAL for xdist isolation:
+    - Each WORKER gets its own directory
+    - Tests on same worker run SEQUENTIALLY and cleanup between tests
+    - No subdirectories needed since tests don't overlap on same worker
+    - Example: /tmp/test-datastore-gw0/ for worker gw0
+    """
+    # Check for custom path first (mirrors main app's -d flag)
+    custom_path = request.config.getoption("--datastore-path")
+    if custom_path:
+        # Ensure the directory exists
+        os.makedirs(custom_path, exist_ok=True)
+        logger.info(f"Using custom datastore path: {custom_path}")
+        return custom_path
+
+    # Otherwise use default tmp_path_factory logic
+    worker_id = getattr(request.config, 'workerinput', {}).get('workerid', 'master')
+    if worker_id == 'master':
+        path = tmp_path_factory.mktemp("test-datastore")
+    else:
+        path = tmp_path_factory.mktemp(f"test-datastore-{worker_id}")
+    return str(path)
+
+
+@pytest.fixture(scope='function', autouse=True)
+def prepare_test_function(live_server, datastore_path):
+    """Prepare each test with complete isolation.
+
+    CRITICAL for xdist per-test isolation:
+    - Reuses the SAME datastore instance (so blueprint references stay valid)
+    - Clears all watches and state for a clean slate
+    - First watch will get uuid="first"
+    """
+    routes = [rule.rule for rule in live_server.app.url_map.iter_rules()]
+    if '/test-random-content-endpoint' not in routes:
+        logger.debug("Setting up test URL routes")
+        new_live_server_setup(live_server)
+
+    # CRITICAL: Point app to THIS test's unique datastore directory
+    live_server.app.config['TEST_DATASTORE_PATH'] = datastore_path
+
+    # CRITICAL: Get datastore and stop it from writing stale data
+    datastore = live_server.app.config.get('DATASTORE')
+
+    # Clear the queue before starting the test to prevent state leakage
+    from changedetectionio.flask_app import update_q
+    while not update_q.empty():
+        try:
+            update_q.get_nowait()
+        except:
+            break
+
+    # Add test helper methods to the app for worker management
+    def set_workers(count):
+        """Set the number of workers for testing - brutal shutdown, no delays"""
+        from changedetectionio import worker_pool
+        from changedetectionio.flask_app import update_q, notification_q
+
+        current_count = worker_pool.get_worker_count()
+
+       # Special case: Setting to 0 means shutdown all workers brutally
+        if count == 0:
+            logger.debug(f"Brutally shutting down all {current_count} workers")
+            worker_pool.shutdown_workers()
+            return {
+                'status': 'success',
+                'message': f'Shutdown all {current_count} workers',
+                'previous_count': current_count,
+                'current_count': 0
+            }
+
+        # Adjust worker count (no delays, no verification)
+        result = worker_pool.adjust_async_worker_count(
+            count,
+            update_q=update_q,
+            notification_q=notification_q,
+            app=live_server.app,
+            datastore=datastore
+        )
+
+        return result
+
+    def check_all_workers_alive(expected_count):
+        """Check that all expected workers are alive"""
+        from changedetectionio import worker_pool
+        from changedetectionio.flask_app import update_q, notification_q
+        result = worker_pool.check_worker_health(
+            expected_count,
+            update_q=update_q,
+            notification_q=notification_q,
+            app=live_server.app,
+            datastore=datastore
+        )
+        assert result['status'] == 'healthy', f"Workers not healthy: {result['message']}"
+        return result
+
+    # Attach helper methods to app for easy test access
+    live_server.app.set_workers = set_workers
+    live_server.app.check_all_workers_alive = check_all_workers_alive
+
+
+
+
+    # CRITICAL: Clean up any files from previous tests
+    # This ensures a completely clean directory
+    cleanup(datastore_path)
+
+    # CRITICAL: Reload the EXISTING datastore instead of creating a new one
+    # This keeps blueprint references valid (they capture datastore at construction)
+    # reload_state() completely resets the datastore to a clean state
+
+    # Reload state with clean data (no default watches)
+    datastore.reload_state(
+        datastore_path=datastore_path,
+        include_default_watches=False,
+        version_tag=datastore.data.get('version_tag', '0.0.0')
+    )
+    live_server.app.secret_key = init_app_secret(datastore_path)
+    logger.debug(f"prepare_test_function: Reloaded datastore at {hex(id(datastore))}")
+    logger.debug(f"prepare_test_function: Path {datastore.datastore_path}")
+
+    yield
+
+    # Cleanup: Clear watches and queue after test
+    try:
+        from changedetectionio.flask_app import update_q
+        from pathlib import Path
+
+        # Clear the queue to prevent leakage to next test
+        while not update_q.empty():
+            try:
+                update_q.get_nowait()
+            except:
+                break
+
+        datastore.data['watching'] = {}
+
+        # Delete any old watch metadata JSON files
+        base_path = Path(datastore.datastore_path).resolve()
+        max_depth = 2
+
+        for file in base_path.rglob("*.json"):
+            # Calculate depth relative to base path
+            depth = len(file.relative_to(base_path).parts) - 1
+
+            if depth <= max_depth and file.is_file():
+                file.unlink()
+
+    except Exception as e:
+        logger.warning(f"Error during datastore cleanup: {e}")
+
+
 # So the app can also know which test name it was
 @pytest.fixture(autouse=True)
 def set_test_name(request):
