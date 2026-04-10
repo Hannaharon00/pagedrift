@@ -229,3 +229,37 @@ echo "=========================================="
 echo "  Test Summary"
 echo "=========================================="
 
+TESTS_RUN=0
+TESTS_PASSED=0
+TESTS_FAILED=0
+
+for result_file in "$TEST_RESULTS_DIR"/test_*.result; do
+    if [ -f "$result_file" ]; then
+        TESTS_RUN=$((TESTS_RUN + 1))
+        status=$(cut -d'|' -f1 < "$result_file")
+        if [ "$status" = "pass" ]; then
+            TESTS_PASSED=$((TESTS_PASSED + 1))
+        else
+            TESTS_FAILED=$((TESTS_FAILED + 1))
+        fi
+    fi
+done
+
+echo "Tests run:    $TESTS_RUN"
+echo -e "${GREEN}Tests passed: $TESTS_PASSED${NC}"
+if [ $TESTS_FAILED -gt 0 ]; then
+    echo -e "${RED}Tests failed: $TESTS_FAILED${NC}"
+else
+    echo -e "${GREEN}Tests failed: $TESTS_FAILED${NC}"
+fi
+echo "=========================================="
+echo ""
+
+# Exit with appropriate code
+if [ $TESTS_FAILED -gt 0 ]; then
+    echo -e "${RED}Some tests failed!${NC}"
+    exit 1
+else
+    echo -e "${GREEN}All tests passed!${NC}"
+    exit 0
+fi
