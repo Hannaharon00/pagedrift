@@ -2589,6 +2589,62 @@ msgstr "та"
 msgid "depend on how the difference algorithm perceives the change."
 msgstr "залежить від того, як алгоритм різниці сприймає зміну."
 
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "Наприклад, додавання або видалення в деяких випадках може бути сприйняте як зміна."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "Детальніше тут"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "AppRise Notification URLs"
+msgstr "URL сповіщень AppRise"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for notification to just about any service!"
+msgstr "для сповіщень практично в будь-який сервіс!"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Please read the notification services wiki here for important configuration notes"
+msgstr "Будь ласка, прочитайте вікі по сервісах сповіщень тут для важливих нотаток щодо конфігурації"
+
+#: changedetectionio/templates/_common_fields.html changedetectionio/templates/edit/text-options.html
+msgid "Use"
+msgstr "Використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Show advanced help and tips"
+msgstr "Показати розширену довідку та поради"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or"
+msgstr "(або"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports a maximum"
+msgstr "підтримує максимум"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "2,000 characters"
+msgstr "2000 символів"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "of notification text, including the title."
+msgstr "тексту сповіщення, включаючи заголовок."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "bots can't send messages to other bots, so you should specify chat ID of non-bot user."
+msgstr "боти не можуть надсилати повідомлення іншим ботам, тому ви повинні вказати ID чату користувача (не бота)."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "only supports very limited HTML and can fail when extra tags are sent,"
+msgstr "підтримує дуже обмежений HTML і може видати помилку при надсиланні зайвих тегів,"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(or use plaintext/markdown format)"
+msgstr "(або використовуйте формат plaintext/markdown)"
+
 #: changedetectionio/templates/_helpers.html
 msgid "in the"
 msgstr "у"
