@@ -2821,6 +2821,62 @@ msgstr "Використовуйте групи для вилучення тіл
 msgid "returns a list of years only"
 msgstr "повертає тільки список років"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "Приклад - рядки, що містять ключове слово"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "Один рядок на регулярний вираз/збіг"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "Вхід"
+
+#: changedetectionio/templates/menu.html
+msgid "GROUPS"
+msgstr "ГРУПИ"
+
+#: changedetectionio/templates/menu.html
+msgid "SETTINGS"
+msgstr "НАЛАШТУВАННЯ"
+
+#: changedetectionio/templates/menu.html
+msgid "IMPORT"
+msgstr "ІМПОРТ"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "Відновити авто-планування"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "Призупинити авто-чергу завдань"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling is paused - click to resume"
+msgstr "Планування на паузі - натисніть для відновлення"
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "Увімкнути сповіщення"
+
+#: changedetectionio/templates/menu.html
+msgid "Mute notifications"
+msgstr "Вимкнути сповіщення"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "Сповіщення вимкнено - натисніть для увімкнення"
+
+#: changedetectionio/templates/menu.html
+msgid "EDIT"
+msgstr "РЕДАГУВАТИ"
+
+#: changedetectionio/templates/menu.html
+msgid "LOG OUT"
+msgstr "ВИЙТИ"
+
 #: changedetectionio/templates/menu.html
 msgid "Website Change Detection and Notification."
 msgstr "Виявлення змін веб-сайтів та сповіщення."
