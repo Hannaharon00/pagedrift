@@ -3743,6 +3743,64 @@ msgid "A <strong>RegEx</strong> is a pattern that identifies exactly which part 
 msgstr ""
 
 #: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Warning: Contents of"
+msgstr "警告：以下内容"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and"
+msgstr "和"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "depend on how the difference algorithm perceives the change."
+msgstr "取决于差异算法对变更的判断。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For example, an addition or removal could be perceived as a change in some cases."
+msgstr "例如，在某些情况下，新增或删除可能被视为变更。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "More Here"
+msgstr "更多信息"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email notification:"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add to list"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "添加邮箱地址"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "发送测试通知"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "Notification debug logs"
 msgstr "通知调试日志"
 
