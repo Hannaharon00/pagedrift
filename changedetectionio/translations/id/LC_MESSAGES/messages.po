@@ -4440,6 +4440,64 @@ msgstr "Lepas tautan %(name)s?"
 
 #: changedetectionio/templates/base.html
 #, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from <strong>%(name)s</strong>?</p><p>The tag will be kept but watches"
+" will be removed from it.</p>"
+msgstr ""
+"<p>Anda yakin ingin melepas semua monitor dari <strong>%(name)s</strong>?</p><p>Tag akan dipertahankan tetapi monitor"
+" akan dihapus dari tag tersebut.</p>"
+
+#: changedetectionio/templates/base.html
+msgid "There was an error communicating with the server."
+msgstr "Terjadi kesalahan saat berkomunikasi dengan server."
+
+#: changedetectionio/templates/base.html
+msgid "There was a problem processing the request, please reload the page."
+msgstr "Terjadi masalah saat memproses permintaan, silakan muat ulang halaman."
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "There was a problem processing the request: %(error)s"
+msgstr "Terjadi masalah saat memproses permintaan: %(error)s"
+
+#: changedetectionio/templates/base.html
+msgid "Existing filters under the 'Filters & Triggers' tab were cleared."
+msgstr "Filter yang ada pada tab 'Filter & Pemicu' telah dibersihkan."
+
+#: changedetectionio/templates/base.html
+msgid "Fetching element data.."
+msgstr "Mengambil data elemen.."
+
+#: changedetectionio/templates/base.html
+msgid "Rendering.."
+msgstr "Merender.."
+
+#: changedetectionio/templates/base.html
+msgid "Draw mode - click and drag to select an area"
+msgstr "Mode gambar - klik dan seret untuk memilih area"
+
+#: changedetectionio/templates/base.html
+msgid "Hover over elements to select"
+msgstr "Arahkan kursor ke elemen untuk memilih"
+
+#: changedetectionio/templates/base.html
+msgid "Image copied to clipboard!"
+msgstr "Gambar disalin ke clipboard!"
+
+#: changedetectionio/templates/base.html
+msgid "Failed to copy image. Your browser may not support this feature."
+msgstr "Gagal menyalin gambar. Browser Anda mungkin tidak mendukung fitur ini."
+
+#: changedetectionio/templates/base.html
+msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
+msgstr "Silakan pilih dahulu teks/baris yang ingin Anda tangkap dengan menyorotnya menggunakan mouse."
+
+#: changedetectionio/templates/base.html
+msgid "Please select text within the diff content."
+msgstr "Silakan pilih teks di dalam konten diff."
+
+#: changedetectionio/templates/base.html
+#, python-format
 msgid "Failed to generate image: %(error)s"
 msgstr "Gagal membuat gambar: %(error)s"
 
