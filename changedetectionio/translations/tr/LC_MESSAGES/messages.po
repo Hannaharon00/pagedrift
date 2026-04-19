@@ -3739,6 +3739,70 @@ msgid "in 1m"
 msgstr ""
 
 #: changedetectionio/languages.py
+#, python-format
+msgid "%sm ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sm"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1h ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1h"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sh ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sh"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1d ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1d"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sd ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sd"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "1w ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+msgid "in 1w"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%sw ago"
+msgstr ""
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %sw"
+msgstr ""
+
+#: changedetectionio/languages.py
 msgid "1mo ago"
 msgstr ""
 
@@ -4493,6 +4557,72 @@ msgid ""
 "Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+"Bir değişikliği/bildirimi tetiklemeden önce beklenecek metin, tüm metinler ve regex'ler büyük/küçük harfe duyarsız "
+"olarak test edilir."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Tetikleyici metin, bu izleyici için herhangi bir CSS/JSON Filtresinden çıkan sonuç metninden işlenir"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Her satır ayrı ayrı işlenir (her satırı \"VEYA\" olarak düşünün)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Not: Regex örneğini kullanmak için eğik çizgi / içine alın:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "Ayrıca ek"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "koşullar"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "da kullanabilirsiniz: \\\"Sayfa metni\\\" - İçerir, Şununla Başlar, İçermez ve daha fazlası"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Bu metin sayfadayken değişiklik tespitini engelle, tüm metinler ve regex'ler büyük/küçük harfe duyarsız olarak test "
+"edilir, bir ürünün tekrar ne zaman kullanılabileceğini beklemek için iyidir"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Engelleme metni, bu izleyici için herhangi bir CSS/JSON Filtresinden çıkan sonuç metninden işlenir"
 
 #: changedetectionio/templates/edit/text-options.html
 msgid "Example - match lines containing a keyword"
