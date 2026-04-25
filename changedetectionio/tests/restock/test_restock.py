@@ -178,3 +178,80 @@ def test_restock_price_change_direction(client, live_server, measure_memory_usag
     assert b'+9.8%' in res.data
 
 
+# Add a site in paused mode, add an invalid filter, we should still have visual selector data ready
+def test_restock_detection(client, live_server, measure_memory_usage, datastore_path):
+
+    set_original_response(datastore_path=datastore_path)
+
+    #####################
+    notification_url = url_for('test_notification_endpoint', _external=True).replace('http://localhost', 'http://changedet').replace('http', 'json')
+
+    # Prefer a browser fetcher (supports screenshots + visual selector) when one is
+    # actually configured/usable here, otherwise fall back to the plain HTTP fetcher so
+    # the restock logic is still exercised without needing a browser driver.
+    fetch_backend = get_browser_fetcher_backend() or "html_requests"
+
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={"application-empty_pages_are_a_change": "y",
+              "requests-time_between_check-minutes": 180,
+              'application-fetch_backend': fetch_backend,
+              },
+        follow_redirects=True
+    )
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "fallback-title "+default_notification_title,
+              "notification_body": "fallback-body "+default_notification_body,
+              "notification_format": default_notification_format},
+        follow_redirects=True
+    )
+    # When using a browser fetcher the docker container (playwright/selenium) can't reach our
+    # usual localhost test url, so rewrite it to the reachable host. With the in-process
+    # html_requests fetcher we must keep the real localhost url.
+    test_url = url_for('test_endpoint', _external=True)
+    if fetch_backend != "html_requests":
+        test_url = test_url.replace('http://localhost', 'http://changedet')
+
+
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": '', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+
+    # Is it correctly show as NOT in stock?
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'processor-restock_diff' in res.data # Should have saved in restock mode
+    assert b'not-in-stock' in res.data # should be out of stock
+
+    # Is it correctly shown as in stock
+    set_back_in_stock_response(datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'not-in-stock' not in res.data
+
+    # We should have a notification
+    notification_file = os.path.join(datastore_path, "notification.txt")
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+    assert os.path.isfile(notification_file), "Notification received"
+    os.unlink(notification_file)
+
+    # Default behaviour is to only fire notification when it goes OUT OF STOCK -> IN STOCK
+    # So here there should be no file, because we go IN STOCK -> OUT OF STOCK
+    set_original_response(datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    time.sleep(5)
+    assert not os.path.isfile(notification_file), "No notification should have fired when it went OUT OF STOCK by default"
+
+    # BUT we should see that it correctly shows "not in stock"
+    res = client.get(url_for("watchlist.index"))
+    assert b'not-in-stock' in res.data, "Correctly showing NOT IN STOCK in the list after it changed from IN STOCK"
+
