@@ -4197,6 +4197,62 @@ msgstr ""
 msgid "for direct API calls (or omit the"
 msgstr ""
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Vuoi usare una pianificazione oraria?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Testo trigger"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Testo ignorato"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Testo bloccato"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Nessuna rilevazione se questo testo esiste."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Delete %(name)s?"
