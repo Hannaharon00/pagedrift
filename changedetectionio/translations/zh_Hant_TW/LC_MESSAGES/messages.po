@@ -3462,6 +3462,62 @@ msgstr "應介於 1 到 999 之間"
 msgid "Default User-Agent overrides"
 msgstr "預設 User-Agent 覆寫"
 
+#: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "名稱與代理伺服器 URL 皆為必填。"
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "在新分頁開啟「歷史記錄」頁面"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "已啟用即時 UI 更新"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "啟用網站圖示 (Favicons)"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "在監測概覽列表中使用頁面 <title>"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr "相對時間格式"
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr "完整格式（1 分鐘前）"
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr "精簡格式（1 分鐘前）"
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr "導覽側邊欄"
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "已啟用 API 存取權杖安全檢查"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "將空白頁面視為變更？"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "忽略文字"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "忽略空白"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr "截圖：最小變更百分比"
+
 #: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Must be between 0 and 100"
 msgstr "必須介於 0 到 100 之間"
