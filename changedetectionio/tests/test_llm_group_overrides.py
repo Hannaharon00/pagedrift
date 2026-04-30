@@ -394,6 +394,67 @@ def test_watch_edit_hides_llm_change_summary_placeholder_when_group_overrides_di
     delete_all_watches(client)
 
 
+def test_watch_edit_llm_change_summary_shows_own_value_not_group_placeholder(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    When the watch has its own llm_change_summary, the textarea body shows the watch's
+    value and no group placeholder appears.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Summary Group', llm_change_summary='Tag summary prompt',
+                                 ai=True)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    ds.data['watching'][watch_uuid]['llm_change_summary'] = 'My own summary prompt'
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    text = _page_text(res)
+
+    assert 'My own summary prompt' in text
+    assert 'From group' not in text
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# No tag linked — fields are editable
+# ---------------------------------------------------------------------------
+
+def test_watch_edit_no_tag_fields_are_editable(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A watch with no tags: both LLM textareas are editable (no readonly, no From group).
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert res.status_code == 200
+    body = res.data.decode('utf-8', errors='replace')
+
+    # Neither textarea should be readonly
+    for field in ('llm_intent', 'llm_change_summary'):
+        pos = body.find(f'name="{field}"')
+        assert pos != -1, f"{field} textarea missing from watch edit page"
+        snippet = body[max(0, pos - 50): pos + 300]
+        assert 'readonly' not in snippet, \
+            f"{field} textarea must not be readonly with no tags; snippet: {snippet!r}"
+
+    assert 'From group' not in body
+
+    delete_all_watches(client)
+
+
 # ---------------------------------------------------------------------------
 # Both fields overridden independently
 # ---------------------------------------------------------------------------
