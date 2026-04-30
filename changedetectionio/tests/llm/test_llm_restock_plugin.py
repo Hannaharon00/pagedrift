@@ -299,3 +299,29 @@ class TestLLMRestockPluginErrorHandling:
         assert result is None
 
 
+class TestLLMRestockPluginHTMLStripping:
+    def test_strip_html_removes_tags(self):
+        from changedetectionio.processors.restock_diff.plugins.llm_restock import _strip_html
+        result = _strip_html('<html><body><p>Price: $10</p></body></html>')
+        assert '<' not in result
+        assert 'Price: $10' in result
+
+    def test_strip_html_removes_scripts(self):
+        from changedetectionio.processors.restock_diff.plugins.llm_restock import _strip_html
+        html = '<html><head><script>var x = 1;</script></head><body>In Stock</body></html>'
+        result = _strip_html(html)
+        assert 'var x' not in result
+        assert 'In Stock' in result
+
+    def test_strip_html_decodes_entities(self):
+        from changedetectionio.processors.restock_diff.plugins.llm_restock import _strip_html
+        result = _strip_html('Price: 49&nbsp;&amp;&nbsp;in stock')
+        assert '&amp;' not in result
+        assert '&nbsp;' not in result
+        assert 'in stock' in result
+
+    def test_strip_html_truncates_long_content(self):
+        from changedetectionio.processors.restock_diff.plugins.llm_restock import _strip_html, _MAX_CONTENT_CHARS
+        long_html = '<p>' + 'x' * (_MAX_CONTENT_CHARS * 2) + '</p>'
+        result = _strip_html(long_html)
+        assert len(result) <= _MAX_CONTENT_CHARS

@@ -4432,6 +4432,68 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr "將文字限制在此 XPath 規則中，只需以正斜線開頭即可。若要明確指定要使用的 XPath，或 XPath 規則以 XPath 函數開頭：字首加上 <code>xpath:</code>"
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr "在此處測試您的 XPath"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr "從 RSS Feed 獲取所有標題 <code>//title/text()</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr "若要使用 XPath 1.0：字首加上 <code>xpath1:</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr "此處獲取更多 CSS 選擇器說明"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr "觸發變更 / 通知前要等待的文字，所有文字與正規表示式皆不區分大小寫進行測試。"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "觸發文字由該監測器的任何 CSS / JSON 過濾器產生的結果文字進行處理"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "每行獨立處理（將每行視為「或 OR」）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "注意：包裹在正斜線 / 中以使用正規表示式，範例："
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "您也可以使用"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "條件"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "「網頁文字」- 包含、開頭為、不包含以及更多選項"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+"例如：Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr "當此文字出現在網頁上時阻擋變更檢測，所有文字與正規表示式皆不區分大小寫進行測試，適合用於等待產品重新開賣 / 有貨"
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
 msgstr "阻擋文字由該監測器的任何 CSS / JSON 過濾器產生的結果文字進行處理"
