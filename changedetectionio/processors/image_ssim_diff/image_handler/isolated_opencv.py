@@ -545,3 +545,83 @@ def _worker_calculate_percentage(conn, img_bytes_from, img_bytes_to, pixel_diffe
         conn.close()
 
 
+async def calculate_change_percentage_isolated(img_bytes_from, img_bytes_to, pixel_difference_threshold, blur_sigma, max_width, max_height):
+    """
+    Calculate change percentage in isolated subprocess (async-safe).
+
+    Returns:
+        float: Change percentage
+    """
+    import time
+    import asyncio
+    print(f"[{time.time():.3f}] [Parent] Starting calculate_percentage subprocess", flush=True)
+
+    ctx = multiprocessing.get_context('spawn')
+    parent_conn, child_conn = ctx.Pipe()
+
+    p = ctx.Process(
+        target=_worker_calculate_percentage,
+        args=(child_conn, img_bytes_from, img_bytes_to, pixel_difference_threshold, blur_sigma, max_width, max_height)
+    )
+
+    print(f"[{time.time():.3f}] [Parent] Starting subprocess", flush=True)
+    p.start()
+    print(f"[{time.time():.3f}] [Parent] Subprocess started (pid={p.pid}), waiting for result ({POLL_TIMEOUT_ABSOLUTE}s timeout)", flush=True)
+
+    result = 0.0
+    try:
+        # Async-friendly polling: check in small intervals without blocking event loop
+        deadline = time.time() + POLL_TIMEOUT_ABSOLUTE
+        while time.time() < deadline:
+            # Run poll() in thread to avoid blocking event loop
+            has_data = await asyncio.to_thread(parent_conn.poll, 0.1)
+            if has_data:
+                print(f"[{time.time():.3f}] [Parent] Result available, receiving", flush=True)
+                result = await asyncio.to_thread(parent_conn.recv)
+                # Check if result is an error dict
+                if isinstance(result, dict) and 'error' in result:
+                    raise RuntimeError(f"Calculate change percentage failed: {result['error']}")
+                print(f"[{time.time():.3f}] [Parent] Result received: {result:.2f}%", flush=True)
+                break
+            await asyncio.sleep(0)  # Yield control to event loop
+        else:
+            from loguru import logger
+            logger.critical(f"[OpenCV subprocess] Timeout waiting for calculate_change_percentage result after {POLL_TIMEOUT_ABSOLUTE}s (subprocess may be hung)")
+            print(f"[{time.time():.3f}] [Parent] Timeout waiting for result after {POLL_TIMEOUT_ABSOLUTE}s", flush=True)
+            raise TimeoutError(f"Calculate change percentage subprocess timeout after {POLL_TIMEOUT_ABSOLUTE}s")
+    except Exception as e:
+        print(f"[{time.time():.3f}] [Parent] Error receiving percentage: {e}", flush=True)
+        raise
+    finally:
+        # Always close pipe first
+        try:
+            parent_conn.close()
+        except:
+            pass
+
+        # Try graceful shutdown (async-safe)
+        print(f"[{time.time():.3f}] [Parent] Waiting for subprocess to exit (5s timeout)", flush=True)
+        join_start = time.time()
+        await asyncio.to_thread(p.join, 5)
+        join_elapsed = time.time() - join_start
+        print(f"[{time.time():.3f}] [Parent] First join took {join_elapsed:.2f}s", flush=True)
+
+        if p.is_alive():
+            print(f"[{time.time():.3f}] [Parent] Process didn't exit gracefully, terminating", flush=True)
+            term_start = time.time()
+            p.terminate()
+            await asyncio.to_thread(p.join, 3)
+            term_elapsed = time.time() - term_start
+            print(f"[{time.time():.3f}] [Parent] Terminate+join took {term_elapsed:.2f}s", flush=True)
+
+        if p.is_alive():
+            print(f"[{time.time():.3f}] [Parent] Process didn't terminate, killing", flush=True)
+            kill_start = time.time()
+            p.kill()
+            await asyncio.to_thread(p.join, 1)
+            kill_elapsed = time.time() - kill_start
+            print(f"[{time.time():.3f}] [Parent] Kill+join took {kill_elapsed:.2f}s", flush=True)
+
+        print(f"[{time.time():.3f}] [Parent] Subprocess cleanup complete, returning result", flush=True)
+
+    return result
