@@ -478,6 +478,115 @@ def construct_blueprint(datastore: ChangeDetectionStore):
         from changedetectionio.processors import get_processor_submodule
         processor_module = get_processor_submodule(processor_name, 'extract')
 
+        # Call the processor's process_extraction() function
+        if processor_module and hasattr(processor_module, 'process_extraction'):
+            return processor_module.process_extraction(
+                watch=watch,
+                datastore=datastore,
+                request=request,
+                url_for=url_for,
+                make_response=make_response,
+                send_from_directory=send_from_directory,
+                flash=flash,
+                redirect=redirect
+            )
+
+        # Fallback: if processor doesn't have extract module, use base processors.extract as default
+        from changedetectionio.processors.extract import process_extraction as default_process_extraction
+        return default_process_extraction(
+            watch=watch,
+            datastore=datastore,
+            request=request,
+            url_for=url_for,
+            make_response=make_response,
+            send_from_directory=send_from_directory,
+            flash=flash,
+            redirect=redirect
+        )
+
+    @diff_blueprint.route("/diff/<uuid_str:uuid>/download-patch", methods=['GET'])
+    @login_optionally_required
+    def download_patch(uuid):
+        """
+        Generate and return a unified diff patch file between two snapshots.
+        Query params: from_version, to_version (timestamp strings from watch history).
+        Returns the patch as a downloadable .patch file — the same content fed to the LLM.
+        """
+        import difflib
+
+        try:
+            watch = datastore.data['watching'][uuid]
+        except KeyError:
+            return plaintext_response('Watch not found', 404)
+
+        dates = list(watch.history.keys())
+        if len(dates) < 2:
+            return plaintext_response('Not enough history', 400)
+
+        from_version = request.args.get('from_version', dates[-2])
+        to_version   = request.args.get('to_version',   dates[-1])
+
+        # Validate before use. get_history_snapshot() does a plain dict lookup, so an
+        # unknown key raises KeyError whose str() carries the raw query parameter - which
+        # the error path below used to reflect into a text/html response, giving reflected
+        # XSS (GHSA-23mp-8222-96fr). This mirrors the check the API resource already
+        # performs for the same operation in api/Watch.py.
+        for timestamp in (from_version, to_version):
+            if timestamp not in watch.history:
+                return plaintext_response('Snapshot not found', 404)
+
+        try:
+            from_text = watch.get_history_snapshot(timestamp=from_version)
+            to_text   = watch.get_history_snapshot(timestamp=to_version)
+        except Exception as e:
+            # Never reflect the exception text. Besides the KeyError guarded above, this
+            # also catches brotli decode failures and the data-dir containment guard in
+            # get_history_snapshot(), whose messages carry filesystem paths. Send the
+            # detail to the log and keep the response text/plain regardless, matching the
+            # pattern already applied to rss/single_watch.py, so nothing that reaches the
+            # body can be parsed as HTML by the browser.
+            logger.error(f"download-patch: could not read snapshots for watch {uuid}: {e}")
+            return plaintext_response('Could not read snapshots', 500)
+
+        diff_lines = list(difflib.unified_diff(
+            from_text.splitlines(keepends=True),
+            to_text.splitlines(keepends=True),
+            fromfile=f'snapshot-{from_version}',
+            tofile=f'snapshot-{to_version}',
+            lineterm='',
+        ))
+        patch_text = ''.join(diff_lines) if diff_lines else '(no differences)\n'
+
+        response = make_response(patch_text)
+        response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+        return response
+
+    @diff_blueprint.route("/diff/<uuid_str:uuid>/processor-asset/<string:asset_name>", methods=['GET'])
+    @login_optionally_required
+    def processor_asset(uuid, asset_name):
+        """
+        Serve processor-specific binary assets (images, files, etc.).
+
+        This route is processor-aware: it delegates to the processor's
+        difference.py module, allowing different processor types to serve
+        custom assets without embedding them as base64 in templates.
+
+        This solves memory issues with large binary data (e.g., screenshots)
+        by streaming them as separate HTTP responses instead of embedding
+        in the HTML template.
+
+        Each processor implements processors/{type}/difference.py::get_asset()
+        which returns (binary_data, content_type, cache_control_header).
+
+        Example URLs:
+        - /diff/{uuid}/processor-asset/before
+        - /diff/{uuid}/processor-asset/after
+        - /diff/{uuid}/processor-asset/rendered_diff
+        """
+
+        if uuid == 'first':
+            uuid = list(datastore.data['watching'].keys()).pop()
+
         try:
             watch = datastore.data['watching'][uuid]
         except KeyError:
