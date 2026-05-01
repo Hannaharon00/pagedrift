@@ -369,3 +369,81 @@ def test_check_with_prefix_include_filters(client, live_server, measure_memory_u
     delete_all_watches(client)
 
 
+def test_various_rules(client, live_server, measure_memory_usage, datastore_path):
+    # Just check these don't error
+    ##  live_server_setup(live_server) # Setup on conftest per function
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write("""<html>
+       <body>
+     Some initial text<br>
+     <p>Which is across multiple lines</p>
+     <br>
+     So let's see what happens.  <br>
+     <div class="sametext">Some text thats the same</div>
+     <div class="changetext">Some text that will change</div>
+     <a href=''>some linky </a>
+     <a href=''>another some linky </a>
+     <!-- related to https://github.com/dgtlmoon/changedetection.io/pull/1774 -->
+     <input   type="email"   id="email" />     
+     </body>
+     </html>
+    """)
+
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    for r in ['//div', '//a', 'xpath://div', 'xpath://a']:
+        res = client.post(
+            url_for("ui.ui_edit.edit_page", uuid="first"),
+            data={"include_filters": r,
+                  "url": test_url,
+                  "tags": "",
+                  "headers": "",
+                  'fetch_backend': "html_requests",
+                  "time_between_check_use_default": "y"},
+            follow_redirects=True
+        )
+        wait_for_all_checks(client)
+        assert b"Updated watch." in res.data
+        res = client.get(url_for("watchlist.index"))
+        assert b'fetch-error' not in res.data, f"Should not see errors after '{r} filter"
+
+    delete_all_watches(client)
+
+
+def test_xpath_20(client, live_server, measure_memory_usage, datastore_path):
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    set_original_response(datastore_path=datastore_path)
+
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={"include_filters": "//*[contains(@class, 'sametext')]|//*[contains(@class, 'changetext')]",
+              "url": test_url,
+              "tags": "",
+              "headers": "",
+              'fetch_backend': "html_requests",
+              "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid=uuid),
+        follow_redirects=True
+    )
+
+    assert b"Some text thats the same" in res.data  # in selector
+    assert b"Some text that will change" in res.data  # in selector
+
+    delete_all_watches(client)
+
+
