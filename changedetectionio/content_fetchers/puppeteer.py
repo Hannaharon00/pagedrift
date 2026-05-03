@@ -592,3 +592,5 @@ class PuppeteerFetcherPlugin:
         return ('html_webdriver', fetcher)
 
 
+# Create module-level instance for plugin registration
+puppeteer_plugin = PuppeteerFetcherPlugin()
