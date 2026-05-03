@@ -4689,3 +4689,59 @@ msgstr ""
 msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
 msgstr "Teks blokir diproses dari teks hasil yang keluar dari Filter CSS/JSON apa pun untuk monitor ini"
 
+#: changedetectionio/templates/menu.html
+msgid "EDIT"
+msgstr "EDIT"
+
+#: changedetectionio/templates/menu.html
+msgid "Website Change Detection and Notification."
+msgstr "Deteksi Perubahan dan Notifikasi Situs Web."
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI Mode"
+msgstr "Alihkan Mode AI"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI mode"
+msgstr "Alihkan mode AI"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle Light/Dark Mode"
+msgstr "Alihkan Mode Terang/Gelap"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle light/dark mode"
+msgstr "Alihkan mode terang/gelap"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Add a page watch"
+msgstr "Tambahkan monitor halaman"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Page Watches"
+msgstr "Monitor Halaman"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Unread changes"
+msgstr "Perubahan belum dibaca"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Watch Groups"
+msgstr "Grup Monitor"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Import lists of web pages"
+msgstr "Impor daftar halaman web"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers (coming soon)"
+msgstr "Browser (segera hadir)"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers"
+msgstr "Browser"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "soon"
+msgstr "segera"
+
