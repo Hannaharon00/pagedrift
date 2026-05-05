@@ -1822,6 +1822,43 @@ paths:
 
         **Configuration via Query Parameters:**
 
+        You can pass ANY watch configuration field as query parameters to apply settings to all imported watches.
+        All parameters from the Watch schema are supported (processor, fetch_backend, notification_urls, etc.).
+
+        **Special Parameters:**
+        - `tag` / `tag_uuids` - Assign tags to imported watches
+        - `proxy` - Use specific proxy for imported watches
+        - `dedupe` - Skip duplicate URLs (default: true)
+
+        **Type Conversion:**
+        - Booleans: `true`, `false`, `1`, `0`, `yes`, `no`
+        - Arrays: Comma-separated or JSON format (`[item1,item2]`)
+        - Objects: JSON format (`{"key":"value"}`)
+        - Numbers: Parsed as int or float
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            # Basic import
+            curl -X POST "http://localhost:5000/api/v1/import" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: text/plain" \
+              -d $'https://example.com\nhttps://example.org\nhttps://example.net'
+
+            # Import with processor and fetch backend
+            curl -X POST "http://localhost:5000/api/v1/import?processor=restock_diff&fetch_backend=html_webdriver" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: text/plain" \
+              -d $'https://example.com\nhttps://example.org'
+
+            # Import with multiple settings
+            curl -X POST "http://localhost:5000/api/v1/import?processor=restock_diff&paused=true&tag=production" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: text/plain" \
+              -d $'https://example.com'
+        - lang: 'Python'
+          source: |
+            import requests
+
         This endpoint requires no authentication and returns YAML.
 
         To load it directly in Swagger UI, paste the URL into the "Explore" box:
