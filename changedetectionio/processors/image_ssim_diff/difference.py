@@ -303,3 +303,139 @@ def _draw_bounding_box_if_configured(img_bytes, watch, datastore):
         return img_bytes
 
 
+def render(watch, datastore, request, url_for, render_template, flash, redirect):
+    """
+    Render the screenshot comparison diff page.
+
+    Uses ImageDiffHandler for all image operations.
+
+    Args:
+        watch: Watch object
+        datastore: Datastore object
+        request: Flask request
+        url_for: Flask url_for function
+        render_template: Flask render_template function
+        flash: Flask flash function
+        redirect: Flask redirect function
+
+    Returns:
+        Rendered template or redirect
+    """
+    # Get version parameters (from_version, to_version)
+    versions = list(watch.history.keys())
+
+    if len(versions) < 2:
+        flash(gettext("Not enough history to compare. Need at least 2 snapshots."), "error")
+        return redirect(url_for('watchlist.index'))
+
+    # Default: compare latest two versions
+    from_version = request.args.get('from_version', versions[-2] if len(versions) >= 2 else versions[0])
+    to_version = request.args.get('to_version', versions[-1])
+
+    # Validate versions exist
+    if from_version not in versions:
+        from_version = versions[-2] if len(versions) >= 2 else versions[0]
+    if to_version not in versions:
+        to_version = versions[-1]
+
+    # Get pixel difference threshold sensitivity (per-watch > global > env default)
+    pixel_difference_threshold_sensitivity = watch.get('pixel_difference_threshold_sensitivity')
+    if not pixel_difference_threshold_sensitivity or pixel_difference_threshold_sensitivity == '':
+        pixel_difference_threshold_sensitivity = datastore.data['settings']['application'].get('pixel_difference_threshold_sensitivity', SCREENSHOT_COMPARISON_THRESHOLD_OPTIONS_DEFAULT)
+
+    # Convert to appropriate type
+    try:
+        pixel_difference_threshold_sensitivity = float(pixel_difference_threshold_sensitivity)
+    except (ValueError, TypeError):
+        logger.warning(f"Invalid pixel_difference_threshold_sensitivity value '{pixel_difference_threshold_sensitivity}', using default")
+        pixel_difference_threshold_sensitivity = 30.0
+
+    # Get blur sigma
+    blur_sigma = OPENCV_BLUR_SIGMA
+
+    # Load screenshots from history
+    try:
+        img_bytes_from = watch.get_history_snapshot(timestamp=from_version)
+        img_bytes_to = watch.get_history_snapshot(timestamp=to_version)
+
+    except Exception as e:
+        logger.error(f"Failed to load screenshots: {e}")
+        flash(gettext("Failed to load screenshots: {}").format(e), "error")
+        return redirect(url_for('watchlist.index'))
+
+    # Calculate change percentage using isolated subprocess to prevent memory leaks (async-safe)
+    now = time.time()
+    try:
+        from .image_handler import isolated_opencv as process_screenshot_handler
+        import asyncio
+        import threading
+
+        # Async-safe wrapper: runs coroutine in new thread with its own event loop
+        def run_async_in_thread():
+            return asyncio.run(
+                process_screenshot_handler.calculate_change_percentage_isolated(
+                    img_bytes_from,
+                    img_bytes_to,
+                    pixel_difference_threshold=int(pixel_difference_threshold_sensitivity),
+                    blur_sigma=blur_sigma,
+                    max_width=MAX_DIFF_WIDTH,
+                    max_height=MAX_DIFF_HEIGHT
+                )
+            )
+
+        # Run in thread to avoid blocking event loop if called from async context
+        result_container = [None]
+        exception_container = [None]
+
+        def thread_target():
+            try:
+                result_container[0] = run_async_in_thread()
+            except Exception as e:
+                exception_container[0] = e
+
+        thread = threading.Thread(target=thread_target, daemon=True, name="ImageDiff-ChangePercentage")
+        thread.start()
+        thread.join(timeout=60)
+
+        if exception_container[0]:
+            raise exception_container[0]
+
+        change_percentage = result_container[0]
+
+        method_display = f"{process_screenshot_handler.IMPLEMENTATION_NAME} (pixel_diff_threshold: {pixel_difference_threshold_sensitivity:.0f})"
+        logger.debug(f"Done change percentage calculation in {time.time() - now:.2f}s")
+
+    except Exception as e:
+        logger.error(f"Failed to calculate change percentage: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        flash(gettext("Failed to calculate diff: {}").format(e), "error")
+        return redirect(url_for('watchlist.index'))
+
+    # Load historical data if available (for charts/visualization)
+    comparison_data = {}
+    comparison_config_path = os.path.join(watch.data_dir, "visual_comparison_data.json")
+    if os.path.isfile(comparison_config_path):
+        try:
+            with open(comparison_config_path, 'r') as f:
+                comparison_data = json.load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load comparison history data: {e}")
+
+    # Render custom template
+    # Template path is namespaced to avoid conflicts with other processors
+    # Images are now served via separate /processor-asset/ endpoints instead of base64
+    return render_template(
+        'image_ssim_diff/diff.html',
+        change_percentage=change_percentage,
+        comparison_data=comparison_data,  # Full history for charts/visualization
+        comparison_method=method_display,
+        current_diff_url=watch.open_link,
+        from_version=from_version,
+        percentage_different=change_percentage,
+        threshold=pixel_difference_threshold_sensitivity,
+        to_version=to_version,
+        uuid=watch.get('uuid'),
+        versions=versions,
+        watch=watch,
+    )
