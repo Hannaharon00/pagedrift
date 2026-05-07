@@ -260,3 +260,66 @@ class TestNotificationServiceLlmAttachment:
 # End-to-end: Jinja2 template rendering with llm_summary / llm_intent
 # ---------------------------------------------------------------------------
 
+class TestLlmTokenEndToEnd:
+    """
+    Verify that the tokens render correctly through the Jinja2 engine
+    used for notification bodies.
+    """
+
+    def test_llm_summary_renders_in_template(self):
+        from changedetectionio.jinja2_custom import render as jinja_render
+        from changedetectionio.notification_service import NotificationContextData
+
+        n = NotificationContextData()
+        n['llm_summary'] = 'Price dropped from $500 to $400'
+        n['watch_url'] = 'https://example.com'
+
+        rendered = jinja_render(
+            template_str='Change at {{watch_url}}: {{llm_summary}}',
+            **n
+        )
+        assert 'Price dropped from $500 to $400' in rendered
+        assert 'https://example.com' in rendered
+
+    def test_llm_intent_renders_in_template(self):
+        from changedetectionio.jinja2_custom import render as jinja_render
+        from changedetectionio.notification_service import NotificationContextData
+
+        n = NotificationContextData()
+        n['llm_intent'] = 'flag price drops below $300'
+        n['watch_url'] = 'https://example.com'
+
+        rendered = jinja_render(
+            template_str='Intent was: {{llm_intent}}',
+            **n
+        )
+        assert 'flag price drops below $300' in rendered
+
+    def test_llm_summary_empty_string_when_none(self):
+        from changedetectionio.jinja2_custom import render as jinja_render
+        from changedetectionio.notification_service import NotificationContextData
+
+        n = NotificationContextData()
+        # llm_summary defaults to None in NotificationContextData
+        rendered = jinja_render(
+            template_str='Summary: {{llm_summary or ""}}',
+            **n
+        )
+        assert rendered == 'Summary: '
+
+    def test_both_tokens_in_same_template(self):
+        from changedetectionio.jinja2_custom import render as jinja_render
+        from changedetectionio.notification_service import NotificationContextData
+
+        n = NotificationContextData()
+        n['llm_summary'] = 'New senior role posted'
+        n['llm_intent'] = 'alert on new engineering jobs'
+        n['watch_url'] = 'https://jobs.example.com'
+
+        rendered = jinja_render(
+            template_str='[{{llm_intent}}] {{llm_summary}} — {{watch_url}}',
+            **n
+        )
+        assert 'alert on new engineering jobs' in rendered
+        assert 'New senior role posted' in rendered
+        assert 'https://jobs.example.com' in rendered
