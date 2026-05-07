@@ -409,6 +409,113 @@ def queue_item_async_safe(update_q, item, silent=False):
         return False
 
 
+def shutdown_workers():
+    """Shutdown all async workers brutally - no delays, no waiting"""
+    global worker_threads, queue_executor
+
+    # Check if we're in pytest environment - if so, be more gentle with logging
+    import os
+    in_pytest = "pytest" in os.sys.modules or "PYTEST_CURRENT_TEST" in os.environ
+
+    if not in_pytest:
+        logger.info("Brutal shutdown of async workers initiated...")
+
+    # Stop all worker event loops
+    for worker in worker_threads:
+        worker.stop()
+
+    # Clear immediately - threads are daemon and will die
+    worker_threads.clear()
+
+    # Shutdown the queue executor to prevent "cannot schedule new futures after shutdown" errors
+    # This must happen AFTER workers are stopped to avoid race conditions
+    if queue_executor:
+        try:
+            queue_executor.shutdown(wait=False)
+            if not in_pytest:
+                logger.debug("Queue executor shut down")
+        except Exception as e:
+            if not in_pytest:
+                logger.warning(f"Error shutting down queue executor: {e}")
+
+    if not in_pytest:
+        logger.info("Async workers brutal shutdown complete")
+
+
+
+
+def adjust_async_worker_count(new_count, update_q=None, notification_q=None, app=None, datastore=None):
+    """
+    Dynamically adjust the number of async workers.
+
+    Args:
+        new_count: Target number of workers
+        update_q, notification_q, app, datastore: Required for adding new workers
+
+    Returns:
+        dict: Status of the adjustment operation
+    """
+    global worker_threads
+
+    current_count = get_worker_count()
+
+    if new_count == current_count:
+        return {
+            'status': 'no_change',
+            'message': f'Worker count already at {current_count}',
+            'current_count': current_count
+        }
+
+    if new_count > current_count:
+        # Add workers
+        workers_to_add = new_count - current_count
+        logger.info(f"Adding {workers_to_add} async workers (from {current_count} to {new_count})")
+
+        if not all([update_q, notification_q, app, datastore]):
+            return {
+                'status': 'error',
+                'message': 'Missing required parameters to add workers',
+                'current_count': current_count
+            }
+
+        for i in range(workers_to_add):
+            add_worker(update_q, notification_q, app, datastore)
+
+        return {
+            'status': 'success',
+            'message': f'Added {workers_to_add} workers',
+            'previous_count': current_count,
+            'current_count': len(worker_threads)
+        }
+
+    else:
+        # Remove workers
+        workers_to_remove = current_count - new_count
+        logger.info(f"Removing {workers_to_remove} async workers (from {current_count} to {new_count})")
+
+        removed_count = 0
+        for _ in range(workers_to_remove):
+            if remove_worker():
+                removed_count += 1
+
+        return {
+            'status': 'success',
+            'message': f'Removed {removed_count} workers',
+            'previous_count': current_count,
+            'current_count': current_count - removed_count
+        }
+
+
+def get_worker_status():
+    """Get status information about async workers"""
+    return {
+        'worker_type': 'async',
+        'worker_count': get_worker_count(),
+        'running_uuids': get_running_uuids(),
+        'active_threads': sum(1 for w in worker_threads if w.thread and w.thread.is_alive()),
+    }
+
+
 def wait_for_all_checks(update_q, timeout=150):
     """
     Wait for queue to be empty and all workers to be idle.
