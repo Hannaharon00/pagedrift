@@ -1733,3 +1733,31 @@ paths:
 
         **Configuration via Query Parameters:**
 
+        This endpoint requires no authentication and returns YAML.
+
+        To load it directly in Swagger UI, paste the URL into the "Explore" box:
+        ```
+        http://localhost:5000/api/v1/full-spec
+        ```
+      security: []
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            # Fetch the live merged spec (no API key needed)
+            curl -X GET "http://localhost:5000/api/v1/full-spec"
+        - lang: 'Python'
+          source: |
+            import requests
+
+            # No authentication required
+            response = requests.get('http://localhost:5000/api/v1/full-spec')
+            print(response.text)  # Returns YAML
+      responses:
+        '200':
+          description: |
+            Merged OpenAPI specification in YAML format. Includes all processor plugin schemas
+            (e.g. `processor_config_restock_diff`) not present in the static `api-spec.yaml`.
+          content:
+            application/yaml:
+              schema:
+                type: string
