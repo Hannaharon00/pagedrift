@@ -251,3 +251,8 @@
 </details>
 {% endmacro %}
 
+{# Thin wrapper kept for callers (watch edit, tag edit) that may grow non-notification
+   common fields later. Today it just renders the notification block. #}
+{% macro render_common_settings_form(form, emailprefix, settings_application, extra_notification_token_placeholder_info) %}
+{{ notification_part_render_common_settings_form(form, emailprefix, settings_application, extra_notification_token_placeholder_info) }}
+{% endmacro %}
