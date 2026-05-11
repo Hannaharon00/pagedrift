@@ -204,3 +204,44 @@ body {
         opacity: 0.55;
         cursor: not-allowed;
 
+        label {
+          cursor: not-allowed;
+        }
+      }
+
+      .pure-form-message-inline {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+    }
+
+    #by-element-toggle-group {
+      .pure-form-message-inline {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      #clear-selector {
+        margin-top: 0.5rem;
+      }
+    }
+
+    #quick-watch-llm-intent {
+      label {
+        display: block;
+        margin-bottom: 0.35rem;
+      }
+    }
+
+    #add-watch-submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+}
+
