@@ -4372,6 +4372,62 @@ msgstr "경고: 설정한 '요일' 중 하나 이상이 다음 날까지 이어�
 msgid "This could have unintended consequences."
 msgstr "의도하지 않은 결과가 생길 수 있습니다."
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "예약 사용 도움말 및 예시"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "시간 예약을 사용하시겠습니까?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "먼저 시간대 설정을 확인하고 저장해 주세요."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "트리거 텍스트"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "이 텍스트가 나타나고(AND) 문서에도 변경이 있을 때만 변경으로 감지합니다."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "무시된 텍스트"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "변경 계산에서는 무시하지만 화면에는 표시합니다."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "차단 텍스트"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "이 텍스트 존재 시 변경 감지 안 함."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr "설정 섹션"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr ""
