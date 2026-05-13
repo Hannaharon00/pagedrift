@@ -4374,6 +4374,69 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr "將文字限制在此 XPath 規則中，只需以正斜線開頭即可。若要明確指定要使用的 XPath，或 XPath 規則以 XPath 函數開頭：字首加上 <code>xpath:</code>"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "阻擋文字由該監測器的任何 CSS / JSON 過濾器產生的結果文字進行處理"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "此處的所有行皆必須不存在（將每行視為「或 OR」）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"celsius\n"
+"temperature\n"
+"price"
+msgstr ""
+"celsius\n"
+"temperature\n"
+"price"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keep only lines that contain any of these words or phrases (plain text, case-insensitive)"
+msgstr "僅保留包含這些字詞或片語的行（純文字，不區分大小寫）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One entry per line — any line in the page text that contains a match is kept"
+msgstr "每行一個項目 — 網頁文字中任何包含相符內容的行都將被保留"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Simpler alternative to regex — use this when you just want lines about a specific topic"
+msgstr "比正規表示式更簡單的替代方案 — 當您只想獲取關於特定主題的行時使用此功能"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "enter <code>celsius</code> to keep only lines mentioning temperature readings"
+msgstr "輸入 <code>celsius</code> 以僅保留提及溫度讀數的行"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr "在其他過濾器之後，使用正規表示式或字串符合在最終輸出中提取文字（逐行）："
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "正規表示式 - 範例"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "請別忘記考慮行首的空白字元"
+
+#: changedetectionio/templates/edit/text-options.html
+#, python-format
+msgid "Use <code>//(?aiLmsux))</code> type flags (more <a href=\"%(url)s\">information here</a>)"
+msgstr "使用 <code>//(?aiLmsux))</code> 類型旗標（<a href=\"%(url)s\">更多資訊請見此處</a>）"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example: <code>Out of stock</code>"
+msgstr "關鍵字範例 - 範例：<code>Out of stock</code>"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "使用群組以僅提取該文字 - 範例"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "僅傳回年份列表"
+
 #: changedetectionio/templates/sidebar-nav.html
 msgid "Search, or Use Alt+S Key"
 msgstr "搜尋，或使用 Alt+S 鍵"
