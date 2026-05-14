@@ -4311,6 +4311,65 @@ msgstr "Ingin menggunakan jadwal waktu?"
 msgid "First confirm/save your Time Zone Settings"
 msgstr "Konfirmasi/simpan Pengaturan Zona Waktu Anda terlebih dahulu"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Teks pemicu"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Memicu perubahan jika teks ini muncul, DAN ada sesuatu yang berubah dalam dokumen."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Teks yang diabaikan"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Diabaikan saat menghitung perubahan, tetapi tetap ditampilkan."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Teks yang diblokir"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Deteksi perubahan tidak akan dilakukan karena teks ini ada."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr "Bagian pengaturan"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr "Konfirmasi Tindakan"
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr "Anda yakin?"
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr "<p>Anda yakin ingin melanjutkan?</p>"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr "Konfirmasi"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Delete %(name)s?"
+msgstr "Hapus %(name)s?"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "<p>Are you sure you want to delete <strong>%(name)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Anda yakin ingin menghapus <strong>%(name)s</strong>?</p><p>Tindakan ini tidak dapat dibatalkan.</p>"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Unlink %(name)s?"
+msgstr "Lepas tautan %(name)s?"
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Failed to generate image: %(error)s"
