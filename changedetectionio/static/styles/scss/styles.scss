@@ -784,6 +784,44 @@ textarea::placeholder {
   min-width: 100%;
 }
 
+@media only screen and (min-width: 761px) {
+
+  /* m-d is medium-desktop */
+  .m-d {
+    min-width: 80%;
+  }
+}
+
+.pure-form-stacked {
+  >div:first-child {
+    display: block;
+  }
+}
+
+// Login form styles moved to parts/_login_form.scss
+
+.tab-pane-inner {
+
+  &:not(:target) {
+    display: none;
+  }
+
+  &:target {
+    display: block;
+  }
+
+  // doesnt need padding because theres another row of buttons/activity
+  padding: 0px;
+}
+
+.beta-logo {
+  height: 50px;
+  // looks better when it's hanging off a little
+  right: -3px;
+  top: -3px;
+  position: absolute;
+}
+
 #selector-header {
   padding-bottom: 1em;
 }
