@@ -4518,6 +4518,72 @@ msgstr ""
 msgid "test your XPath here"
 msgstr "проверьте свой XPath здесь"
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr "Получить все заголовки из RSS-канала <code>//title/text()</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr "Чтобы использовать XPath1.0: префикс <code>xpath1:</code>."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr "здесь для получения дополнительной помощи по выбору CSS"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+"Текст, который следует ожидать перед запуском изменения/уведомления. Весь текст и регулярные выражения проверяются "
+"без учета регистра."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Текст триггера обрабатывается из результирующего текста, полученного из любых фильтров CSS/JSON для этого монитора."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Каждая строка обрабатывается отдельно (представьте каждую строку как «ИЛИ»)."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Примечание. Чтобы использовать пример регулярного выражения, заключите косую черту /:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "Вы также можете использовать"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "условия"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "«Текст страницы» — с «Содержит», «Начинается с», «Не содержит» и многими другими."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+"Например: Нет в наличии.\n"
+"Распродано\n"
+"Нет в наличии\n"
+"Недоступно"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Блокировать обнаружение изменений, пока этот текст находится на странице. Весь текст и регулярные выражения "
+"проверяются без учета регистра, что удобно для ожидания, когда продукт снова станет доступен."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "Текст блока обрабатывается из результирующего текста, полученного из любых фильтров CSS/JSON для этого монитора."
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "One line per regular-expression/string match"
 msgstr "Одна строка на совпадение регулярного выражения/строки"

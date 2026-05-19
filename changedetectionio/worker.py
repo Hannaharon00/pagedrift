@@ -787,3 +787,16 @@ def cleanup_error_artifacts(uuid, datastore):
 
 
 
+async def send_filter_failure_notification(watch_uuid, notification_q, datastore):
+    """Helper function to send filter failure notifications using the new notification service"""
+    try:
+        from changedetectionio.notification_service import create_notification_service
+        
+        # Create notification service instance
+        notification_service = create_notification_service(datastore, notification_q)
+        
+        notification_service.send_filter_failure_notification(watch_uuid)
+    except Exception as e:
+        logger.error(f"Error sending filter failure notification for {watch_uuid}: {e}")
+
+
