@@ -286,3 +286,74 @@ Line 4"""
         # When ignore_junk is enabled, whitespace is normalized at line level so lines match
         output = diff.render_diff(before, after, include_equal=False, word_diff=False, ignore_junk=True)
         
+        raw = diff.render_diff(before, after, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "quick\njumps")
+        self.assertEqual(extract_changed_to(raw),   "slow\nhops")
+
+    def test_diff_changed_from_to_no_change(self):
+        """No changes → empty string"""
+        content = "nothing changed here"
+
+        raw = diff.render_diff(content, content, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "")
+        self.assertEqual(extract_changed_to(raw),   "")
+
+
+    def test_word_diff_no_prefix_whole_line_replaced(self):
+        """When include_change_type_prefix=False, word-level diffs for whole-line
+        replacements must not include placemarkers (issue #3816)."""
+        before = "73"
+        after = "100"
+
+        raw = diff.render_diff(before, after, word_diff=True, include_change_type_prefix=False)
+
+        self.assertNotIn('PLACEMARKER', raw)
+        # Should contain just the raw values separated by newline
+        self.assertIn('73', raw)
+        self.assertIn('100', raw)
+
+    def test_word_diff_no_prefix_inline_changes(self):
+        """When include_change_type_prefix=False, inline word-level diffs
+        must not include placemarkers (issue #3816)."""
+        before = "the price is 50 dollars"
+        after = "the price is 75 dollars"
+
+        raw = diff.render_diff(before, after, word_diff=True, include_change_type_prefix=False)
+
+        self.assertNotIn('PLACEMARKER', raw)
+        self.assertIn('50', raw)
+        self.assertIn('75', raw)
+
+    def test_word_diff_with_prefix_still_wraps(self):
+        """Default include_change_type_prefix=True must still wrap tokens."""
+        before = "73"
+        after = "100"
+
+        raw = diff.render_diff(before, after, word_diff=True, include_change_type_prefix=True)
+
+        self.assertIn('PLACEMARKER', raw)
+
+    def test_word_diff_no_prefix_exact_output(self):
+        """Pin exact output for include_change_type_prefix=False to catch regressions.
+
+        Whole-line replacement: old and new values separated by newline, no markers.
+        Inline partial replacement: equal tokens kept, changed tokens (both old and new)
+        appended without markers — this means old+new are concatenated in place.
+        """
+        # Whole-line replaced: both values on separate lines, clean
+        raw = diff.render_diff('73', '100', word_diff=True, include_change_type_prefix=False)
+        self.assertEqual(raw, '73\n100')
+
+        # Inline word replacement: equal context preserved, old+new token concatenated in-place
+        raw = diff.render_diff('the price is 50 dollars', 'the price is 75 dollars',
+                               word_diff=True, include_change_type_prefix=False)
+        self.assertEqual(raw, 'the price is 5075 dollars')
+
+        # Sanity: with prefix the whole-line case is fully wrapped
+        raw = diff.render_diff('73', '100', word_diff=True, include_change_type_prefix=True)
+        self.assertEqual(raw, '@changed_PLACEMARKER_OPEN73@changed_PLACEMARKER_CLOSED\n'
+                               '@changed_into_PLACEMARKER_OPEN100@changed_into_PLACEMARKER_CLOSED')
+
+

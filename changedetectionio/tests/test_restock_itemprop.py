@@ -345,6 +345,139 @@ def test_itemprop_percent_threshold(client, live_server, measure_memory_usage, d
 
 
 
+def test_change_with_notification_values(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    if os.path.isfile(os.path.join(datastore_path, "notification.txt")):
+        os.unlink(os.path.join(datastore_path, "notification.txt"))
+
+    test_url = url_for('test_endpoint', _external=True)
+    set_original_response(props_markup=instock_props[0], price='960.45', datastore_path=datastore_path)
+
+    notification_url = url_for('test_notification_endpoint', _external=True).replace('http', 'json')
+
+    ######################
+    # You must add a type of 'restock_diff' for its tokens to register as valid in the global settings
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+
+    # A change in price, should trigger a change by default
+    wait_for_all_checks(client)
+
+    # Should see new tokens register — the placeholder table lives on the
+    # notifications page now (post-/settings refactor).
+    res = client.get(url_for("settings.notifications.apprise"))
+
+    assert b'{{restock.last_price}}' in res.data
+    assert b'{{restock.previous_price}}' in res.data
+    assert b'Price at the previous check' in res.data
+
+    #####################
+    # Set this up for when we remove the notification from the watch, it should fallback with these details
+    res = client.post(
+        url_for("settings.notifications.apprise"),
+        data={"notification_urls": notification_url,
+              "notification_title": "title new price {{restock.price}}",
+              "notification_body": "new price {{restock.price}} previous price {{restock.previous_price}} instock {{restock.in_stock}}",
+              "notification_format": default_notification_format},
+        follow_redirects=True
+    )
+
+    # check tag accepts without error
+
+    # Check the watches in these modes add the tokens for validating
+    assert b"A variable or function is not defined" not in res.data
+
+    assert b"Settings updated." in res.data
+
+    # A change in price, should trigger a change by default
+    set_original_response(props_markup=instock_props[0], price='1950.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+    assert os.path.isfile(os.path.join(datastore_path, "notification.txt")), "Notification received"
+    with open(os.path.join(datastore_path, "notification.txt"), 'r') as f:
+        notification = f.read()
+        assert "new price 1950.45" in notification
+        assert "title new price 1950.45" in notification
+        assert "previous price 960.45" in notification
+
+    # Regression for #4260: with 3+ snapshots, {{restock.previous_price}} must report the price at
+    # the PREVIOUS check (1950.45), not the first-ever price in history (960.45). Before the fix the
+    # newest-first history list was indexed at [-1] (the oldest snapshot), so from the 3rd check on
+    # this was stuck on the first price ever recorded. The two-snapshot case above passed only by
+    # coincidence (with two entries the oldest snapshot IS the previous check).
+    os.unlink(os.path.join(datastore_path, "notification.txt"))
+    set_original_response(props_markup=instock_props[0], price='2500.45', datastore_path=datastore_path)
+    client.post(url_for("ui.form_watch_checknow"))
+    wait_for_all_checks(client)
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+    assert os.path.isfile(os.path.join(datastore_path, "notification.txt")), "Notification received"
+    with open(os.path.join(datastore_path, "notification.txt"), 'r') as f:
+        notification = f.read()
+        assert "new price 2500.45" in notification
+        assert "previous price 1950.45" in notification          # the actual previous check
+        assert "previous price 960.45" not in notification        # the pre-fix bug (first-ever price)
+
+    ## Now test the "SEND TEST NOTIFICATION" is working
+    os.unlink(os.path.join(datastore_path, "notification.txt"))
+    uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+    res = client.post(url_for("ui.ui_notification.ajax_callback_send_notification_test", watch_uuid=uuid), data={}, follow_redirects=True)
+    wait_for_notification_endpoint_output(datastore_path=datastore_path)
+    assert os.path.isfile(os.path.join(datastore_path, "notification.txt")), "Notification received"
+
+    delete_all_watches(client)
+
+def test_data_sanity(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    delete_all_watches(client)
+
+    test_url = url_for('test_endpoint', _external=True)
+    test_url2 = url_for('test_endpoint2', _external=True)
+    set_original_response(props_markup=instock_props[0], price="950.95", datastore_path=datastore_path)
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert b'950.95' in res.data
+
+    # Check the restock model object doesnt store the value by mistake and used in a new one
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url2, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+    res = client.get(url_for("watchlist.index"))
+    assert str(res.data.decode()).count("950.95") == 1, "Price should only show once (for the watch added, no other watches yet)"
+
+    ## different test, check the edit page works on an empty request result
+    delete_all_watches(client)
+
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url2, "tags": 'restock tests', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_edit.edit_page", uuid="first"))
+    assert test_url2.encode('utf-8') in res.data
+
+    delete_all_watches(client)
+
 def test_itemprop_as_str(client, live_server, measure_memory_usage, datastore_path):
 
     test_return_data = f"""<html>
