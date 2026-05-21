@@ -382,6 +382,58 @@ jobs:
 
           echo "✓ Root path reverse proxy working correctly"
 
+      - name: Test reverse proxy - subpath with X-Forwarded-Prefix
+        run: |
+          echo "=== Testing nginx reverse proxy at subpath /changedet-sub/ ==="
+          curl --retry-connrefused --retry 6 -s http://localhost:8080/changedet-sub/ > /tmp/nginx-test-subpath.html
+
+          # Check for changedetection.io UI elements
+          if grep -q "checkbox-uuid" /tmp/nginx-test-subpath.html; then
+            echo "✓ Found checkbox-uuid in subpath response"
+          else
+            echo "ERROR: checkbox-uuid not found in subpath response"
+            cat /tmp/nginx-test-subpath.html
+            exit 1
+          fi
+
+          echo "✓ Subpath reverse proxy working correctly"
+
+      - name: Test API through reverse proxy subpath
+        run: |
+          echo "=== Testing API endpoints through nginx subpath /changedet-sub/ ==="
+
+          # Extract API key from the changedetection.io datastore
+          API_KEY=$(docker exec changedet-app cat /datastore/changedetection.json | grep -o '"api_access_token": *"[^"]*"' | cut -d'"' -f4)
+
+          if [ -z "$API_KEY" ]; then
+            echo "ERROR: Could not extract API key from datastore"
+            docker exec changedet-app cat /datastore/changedetection.json
+            exit 1
+          fi
+
+          echo "✓ Extracted API key: ${API_KEY:0:8}..."
+
+          # Create a watch via API through nginx proxy subpath
+          echo "Creating watch via POST to /changedet-sub/api/v1/watch"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "http://localhost:8080/changedet-sub/api/v1/watch" \
+            -H "x-api-key: ${API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "url": "https://example.com/test-nginx-proxy",
+              "tag": "nginx-test"
+            }')
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          if [ "$HTTP_CODE" != "201" ]; then
+            echo "ERROR: Expected HTTP 201, got $HTTP_CODE"
+            echo "Response: $BODY"
+            exit 1
+          fi
+
+          echo "✓ Watch created successfully (HTTP 201)"
+
           # Extract the watch UUID from response
           WATCH_UUID=$(echo "$BODY" | grep -o '"uuid": *"[^"]*"' | cut -d'"' -f4)
           echo "✓ Watch UUID: $WATCH_UUID"
