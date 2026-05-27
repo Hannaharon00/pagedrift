@@ -409,3 +409,108 @@ def queue_item_async_safe(update_q, item, silent=False):
         return False
 
 
+def wait_for_all_checks(update_q, timeout=150):
+    """
+    Wait for queue to be empty and all workers to be idle.
+
+    Args:
+        update_q: The update queue to monitor
+        timeout: Maximum wait time in seconds (default 150 = 150 iterations * 0.2-0.8s)
+
+    Returns:
+        bool: True if all checks completed, False if timeout
+    """
+    import time
+    empty_since = None
+    attempt = 0
+    max_attempts = timeout
+
+    while attempt < max_attempts:
+        # Adaptive sleep - start fast, slow down if needed
+        if attempt < 10:
+            sleep_time = 0.2  # Very fast initial checks
+        elif attempt < 30:
+            sleep_time = 0.4  # Medium speed
+        else:
+            sleep_time = 0.8  # Slower for persistent issues
+
+        time.sleep(sleep_time)
+
+        q_length = update_q.qsize()
+        running_uuids = get_running_uuids()
+        any_workers_busy = len(running_uuids) > 0
+
+        if q_length == 0 and not any_workers_busy:
+            if empty_since is None:
+                empty_since = time.time()
+            # Brief stabilization period for async workers
+            elif time.time() - empty_since >= 0.3:
+                # Add small buffer for filesystem operations to complete
+                time.sleep(0.2)
+                logger.trace("wait_for_all_checks: All checks complete (queue empty, workers idle)")
+                return True
+        else:
+            empty_since = None
+
+        attempt += 1
+
+    logger.warning(f"wait_for_all_checks: Timeout after {timeout} attempts")
+    return False  # Timeout
+
+
+def check_worker_health(expected_count, update_q=None, notification_q=None, app=None, datastore=None):
+    """
+    Check if the expected number of async workers are running and restart any missing ones.
+
+    Args:
+        expected_count: Expected number of workers
+        update_q, notification_q, app, datastore: Required for restarting workers
+
+    Returns:
+        dict: Health check results
+    """
+    global worker_threads
+
+    current_count = get_worker_count()
+
+    # Check which workers are actually alive
+    alive_count = sum(1 for w in worker_threads if w.thread and w.thread.is_alive())
+
+    if alive_count == expected_count:
+        return {
+            'status': 'healthy',
+            'expected_count': expected_count,
+            'actual_count': alive_count,
+            'message': f'All {expected_count} async workers running'
+        }
+
+    # Find dead workers
+    dead_workers = []
+    for i, worker in enumerate(worker_threads[:]):
+        if not worker.thread or not worker.thread.is_alive():
+            dead_workers.append(i)
+            logger.warning(f"Async worker {worker.worker_id} thread is dead")
+
+    # Remove dead workers from tracking
+    for i in reversed(dead_workers):
+        if i < len(worker_threads):
+            worker_threads.pop(i)
+
+    missing_workers = expected_count - alive_count
+    restarted_count = 0
+
+    if missing_workers > 0 and all([update_q, notification_q, app, datastore]):
+        logger.info(f"Restarting {missing_workers} crashed async workers")
+
+        for i in range(missing_workers):
+            if add_worker(update_q, notification_q, app, datastore):
+                restarted_count += 1
+
+    return {
+        'status': 'repaired' if restarted_count > 0 else 'degraded',
+        'expected_count': expected_count,
+        'actual_count': alive_count,
+        'dead_workers': len(dead_workers),
+        'restarted_workers': restarted_count,
+        'message': f'Found {len(dead_workers)} dead workers, restarted {restarted_count}'
+    }
