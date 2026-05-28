@@ -151,3 +151,56 @@
   td, th { text-align: left; }
 }
 
+.restock-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;   // centre the title + download link above the centred table
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+// ── Watchlist: restock rows keep the "History" button even in AI mode ──
+// (AI mode swaps History->Summary for LLM watches; restock has its own graph roll-down instead.)
+html[data-ai-mode="true"] body.llm-configured tr.processor-restock_diff {
+  .btn-label-history { display: inline; }
+  .btn-label-summary { display: none; }
+}
+
+// ── Watchlist: inline restock graph roll-down (mirrors .ai-inline-summary-row, teal/green) ──
+.restock-inline-row {
+  td {
+    white-space: normal !important;
+    word-break: break-word;
+    padding: 0.6rem 1rem 0.8rem 1.4rem !important;
+    background: linear-gradient(135deg, #e6fbf0, #e8f6ff) !important;
+    border-top: 1px solid #9fe3c2 !important;
+    border-left: 3px solid #1fa463 !important;
+    color: #06281a !important;
+    line-height: 1.5;
+  }
+
+  html[data-darkmode="true"] & td {
+    background: linear-gradient(135deg, #0c2a1c, #0d2230) !important;
+    border-top: 1px solid #1f5e40 !important;
+    border-left-color: #1fa463 !important;
+    color: #d6ffe9 !important;
+  }
+
+  .restock-inline-graph {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .restock-inline-history-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    opacity: 0.75;
+    white-space: nowrap;
+
+    &:hover { opacity: 1; }
+  }
+
+  .restock-inline-error { color: #c0392b; }
+}
