@@ -4150,6 +4150,74 @@ msgid "The diff output - only changes and additions —"
 msgstr "Keluaran diff - hanya perubahan dan penambahan —"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "Keluaran diff - hanya perubahan dan penghapusan"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "Keluaran diff - hanya perubahan dan penghapusan —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "Keluaran diff - keluaran perbedaan lengkap"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "Keluaran diff - keluaran perbedaan lengkap —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "Keluaran diff - patch dalam format unified"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr ""
+"Hanya kata/nilai yang berubah dari versi sebelumnya — mis. harga lama. Paling baik saat satu nilai berubah per baris;"
+" beberapa fragmen yang berubah digabungkan dengan baris baru."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr ""
+"Hanya kata/nilai yang berubah dari versi baru — mis. harga baru. Paling baik saat satu nilai berubah per baris; "
+"beberapa fragmen yang berubah digabungkan dengan baris baru."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "Nilai isi teks snapshot saat ini, berguna saat digabungkan dengan filter JSON atau CSS"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "Teks yang memicu pemicu dari filter"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr "(ditingkatkan)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+"Saat Ringkasan Perubahan AI dikonfigurasi, berisi deskripsi yang dibuat AI alih-alih diff mentah. Kembali ke diff "
+"mentah saat tidak dikonfigurasi."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr "Selalu diff +/- mentah, terlepas dari pengaturan Ringkasan Perubahan AI."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr "Teks Ringkasan Perubahan AI (sama dengan {{diff}} yang ditingkatkan — referensi eksplisit)."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr "Intent Perubahan AI yang dievaluasi."
+
+#: changedetectionio/templates/_common_fields.html
 msgid "Warning: Contents of"
 msgstr "Peringatan: Isi dari"
 
