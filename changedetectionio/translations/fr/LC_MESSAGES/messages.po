@@ -3408,6 +3408,62 @@ msgstr "Syntaxe de modèle non valide : %(error)s"
 msgid "Invalid template syntax in \"%(header)s\" header: %(error)s"
 msgstr ""
 
+#: changedetectionio/blueprint/tags/form.py changedetectionio/forms.py
+msgid "Name"
+msgstr "Nom"
+
+#: changedetectionio/forms.py
+msgid "Proxy URL"
+msgstr "URL du proxy"
+
+#: changedetectionio/forms.py
+msgid "Proxy URLs must start with http://, https:// or socks5://"
+msgstr "Les URL proxy doivent commencer par http://, https:// ou socks5://"
+
+#: changedetectionio/forms.py
+msgid "Browser connection URL"
+msgstr "URL de connexion au navigateur"
+
+#: changedetectionio/forms.py
+msgid "Browser URLs must start with wss:// or ws://"
+msgstr "Les URL du navigateur doivent commencer par wss:// ou ws://"
+
+#: changedetectionio/forms.py
+msgid "Plaintext requests"
+msgstr "Requêtes en texte brut"
+
+#: changedetectionio/forms.py
+msgid "Chrome requests"
+msgstr "Requêtes Chrome"
+
+#: changedetectionio/forms.py
+msgid "Default proxy"
+msgstr "Proxy par défaut"
+
+#: changedetectionio/forms.py
+msgid "Random jitter seconds ± check"
+msgstr "Secondes de gigue aléatoire ± vérification"
+
+#: changedetectionio/forms.py
+msgid "Number of fetch workers"
+msgstr "Nombre de travailleurs de récupération"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 50"
+msgstr "Doit être compris entre 1 et 50"
+
+#: changedetectionio/forms.py
+msgid "Requests timeout in seconds"
+msgstr "Délai d'expiration des demandes en secondes"
+
+#: changedetectionio/forms.py
+msgid "Should be between 1 and 999"
+msgstr "Doit être compris entre 1 et 999"
+
+#: changedetectionio/forms.py
+msgid "Default User-Agent overrides"
+msgstr "Remplacements de l'agent utilisateur par défaut"
+
 #: changedetectionio/forms.py
 msgid "Both a name, and a Proxy URL is required."
 msgstr "Un nom et une URL de proxy sont requis."
