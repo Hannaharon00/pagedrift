@@ -448,3 +448,41 @@ body.actionside-bar-on {
   }
 }
 
+/* same menu gets rendered again as the hamburger menu, requires some tweaks */
+.mobile-menu-drawer {
+  .action-sidebar-list {
+    padding: 0;
+  }
+  .mobile-menu-section .action-sidebar-item {
+    padding-left: 0;
+  }
+}
+
+
+/** top logo stuff */
+#action-sidebar-logo {
+  padding-top: $common-gap*2;
+  padding-left: $common-gap;
+}
+
+.actionsidebar-minimal {
+  #checking-now-stats-sidebar {
+    display: none;
+  }
+  #cdio-logo {
+    #logo-expanded {
+      display: none;
+    }
+  }
+
+  &.action-side-bar-expanded {
+    #checking-now-stats-sidebar{
+      display: block;
+    }
+    #cdio-logo {
+      #logo-expanded {
+        display: inline-block;
+      }
+    }
+  }
+
