@@ -4591,3 +4591,68 @@ msgstr "Wymień wszystkie nowe pozycje wraz z ich nazwami i cenami. Przetłumacz
 msgid "Summarise what events were added or cancelled. Two sentences maximum."
 msgstr "Podsumuj, jakie wydarzenia zostały dodane lub odwołane. Maksymalnie dwa zdania."
 
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"celsius\n"
+"temperature\n"
+"price"
+msgstr ""
+"stopnie Celsjusza\n"
+"temperatura\n"
+"cena"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keep only lines that contain any of these words or phrases (plain text, case-insensitive)"
+msgstr ""
+"Zachowaj tylko wiersze zawierające którekolwiek z poniższych słów lub fraz (tekst zwykły, bez rozróżniania wielkości "
+"liter)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One entry per line — any line in the page text that contains a match is kept"
+msgstr "Jedna pozycja w każdym wierszu — zachowywany jest każdy wiersz tekstu strony, który zawiera pasujące wyrażenie"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Simpler alternative to regex — use this when you just want lines about a specific topic"
+msgstr ""
+"Prostsza alternatywa dla wyrażeń regularnych — skorzystaj z niej, gdy chcesz wyświetlić tylko wiersze dotyczące "
+"konkretnego tematu"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "enter <code>celsius</code> to keep only lines mentioning temperature readings"
+msgstr "wpisz <code>celsius</code>, aby zachować tylko wiersze zawierające odczyty temperatury"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr ""
+"Wyodrębnia tekst w ostatecznym wyniku (wiersz po wierszu) po zastosowaniu innych filtrów wykorzystujących wyrażenia "
+"regularne lub dopasowanie ciągów znaków:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "Wyrażenie regularne – przykład"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "Nie zapomnij uwzględnić odstępów na początku wiersza"
+
+#: changedetectionio/templates/edit/text-options.html
+#, python-format
+msgid "Use <code>//(?aiLmsux))</code> type flags (more <a href=\"%(url)s\">information here</a>)"
+msgstr "Użyj flag typu <code>//(?aiLmsux))</code> (więcej <a href=\"%(url)s\">informacji tutaj</a>)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example: <code>Out of stock</code>"
+msgstr "Przykład słowa kluczowego – przykład: <code>Brak na stanie</code>"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "Skorzystaj z grup, aby wyodrębnić właśnie ten tekst – przykład"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "zwraca wyłącznie listę lat"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "Przykład – wyszukiwanie wierszy zawierających słowo kluczowe"
+
