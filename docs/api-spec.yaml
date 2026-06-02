@@ -1284,6 +1284,95 @@ paths:
         '404':
           description: Web page change monitor (watch) not found
 
+    delete:
+      operationId: deleteWatchHistory
+      tags: [Watch History]
+      summary: Delete watch history
+      description: |
+        Delete/clear all historical snapshots for a web page change monitor (watch), the watch itself is kept.
+        This also resets the "last checked"/"last changed" state, so the watch will be re-checked on the next cycle.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X DELETE "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/history" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            response = requests.delete(f'http://localhost:5000/api/v1/watch/{uuid}/history', headers=headers)
+            print(response.status_code)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: History deleted successfully
+        '404':
+          description: Web page change monitor (watch) not found
+
+  /watch/{uuid}/history/{timestamp}:
+    get:
+      operationId: getWatchSnapshot
+      tags: [Snapshots]
+      summary: Get single snapshot
+      description: | 
+        Get single snapshot from web page change monitor (watch). Use 'latest' for the most recent snapshot.
+        Use the Watch History API to get a list of timestamps to pass.
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/watch/095be615-a8ad-4c33-8e9c-c7612fbf6c9f/history/latest" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            uuid = '095be615-a8ad-4c33-8e9c-c7612fbf6c9f'
+            timestamp = 'latest'  # or use specific timestamp like 1640995200
+            response = requests.get(f'http://localhost:5000/api/v1/watch/{uuid}/history/{timestamp}', headers=headers)
+            print(response.text)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Web page change monitor (watch) unique ID
+          schema:
+            type: string
+            format: uuid
+        - name: timestamp
+          in: path
+          required: true
+          description: Snapshot timestamp or 'latest'
+          schema:
+            oneOf:
+              - type: integer
+              - type: string
+                enum: [latest]
+        - name: html
+          in: query
+          description: Set to 1 to return the last HTML
+          schema:
+            type: string
+            enum: ["1"]
+      responses:
+        '200':
+          description: Snapshot content
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Snapshot not found
+
   /watch/{uuid}/difference/{from_timestamp}/{to_timestamp}:
     get:
       operationId: getWatchHistoryDiff
