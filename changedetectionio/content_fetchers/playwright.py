@@ -460,6 +460,15 @@ class fetcher(Fetcher):
                 gc.collect()
 
 
+# Plugin registration for built-in fetcher
+class PlaywrightFetcherPlugin:
+    """Plugin class that registers the Playwright fetcher as a built-in plugin."""
+
+    def register_content_fetcher(self):
+        """Register the Playwright fetcher"""
+        return ('html_webdriver', fetcher)
+
+
 # Create module-level instance for plugin registration
 playwright_plugin = PlaywrightFetcherPlugin()
 
