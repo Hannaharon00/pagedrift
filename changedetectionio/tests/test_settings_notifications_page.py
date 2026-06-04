@@ -66,3 +66,50 @@ def test_notifications_page_renders_form_inputs(
         "tabs.js not loaded — the tab UI won't activate"
 
 
+def test_notifications_page_get_renders_stored_values(
+        client, live_server, measure_memory_usage, datastore_path):
+    """GET /settings/notifications must render the values currently in storage."""
+    ds = client.application.config.get('DATASTORE')
+    _seed_notification_config(ds)
+
+    res = client.get(url_for('settings.notifications.apprise'))
+    assert res.status_code == 200
+    body = res.data.decode('utf-8', errors='replace')
+
+    assert 'json://example.invalid/preserved' in body, \
+        "Stored notification URL must be rendered in the form"
+    assert 'Preserved title' in body
+    assert 'Preserved body' in body
+    assert 'https://preserved.example/' in body, \
+        "Stored base_url must be rendered in the form"
+
+
+def test_notifications_page_post_saves_values(
+        client, live_server, measure_memory_usage, datastore_path):
+    """POST to /settings/notifications must persist the submitted notification
+    fields into application settings."""
+    ds = client.application.config.get('DATASTORE')
+
+    res = client.post(
+        url_for('settings.notifications.apprise'),
+        data={
+            'notification_urls': 'json://example.invalid/new',
+            'notification_title': 'New title - {{ watch_url }}',
+            'notification_body': 'New body',
+            'notification_format': 'html',
+            'base_url': 'https://new.example/',
+        },
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+    assert b'Settings updated.' in res.data, \
+        "Notification settings save did not flash success"
+
+    app = ds.data['settings']['application']
+    assert 'json://example.invalid/new' in (app.get('notification_urls') or [])
+    assert app.get('notification_title') == 'New title - {{ watch_url }}'
+    assert app.get('notification_body') == 'New body'
+    assert app.get('notification_format') == 'html'
+    assert app.get('base_url') == 'https://new.example/'
+
+
