@@ -576,6 +576,83 @@ from changedetectionio.auth_decorator import (
 )
 
 
+# When nobody is logged in Flask-Login's current_user is set to an AnonymousUser object.
+class User(flask_login.UserMixin):
+    id = None
+
+    def set_password(self, password):
+        return True
+
+    def get_user(self, email="defaultuser@changedetection.io"):
+        return self
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
+    # Compare given password against JSON store or Env var
+    def check_password(self, password):
+        import base64
+        import hashlib
+
+        # Can be stored in env (for deployments) or in the general configs
+        raw_salt_pass = os.getenv("SALTED_PASS", False)
+
+        if not raw_salt_pass:
+            raw_salt_pass = datastore.data['settings']['application'].get('password')
+
+        raw_salt_pass = base64.b64decode(raw_salt_pass)
+        salt_from_storage = raw_salt_pass[:32]  # 32 is the length of the salt
+
+        # Use the exact same setup you used to generate the key, but this time put in the password to check
+        new_key = hashlib.pbkdf2_hmac(
+            'sha256',
+            password.encode('utf-8'),  # Convert the password to bytes
+            salt_from_storage,
+            100000,
+        )
+        new_key = salt_from_storage + new_key
+
+        return new_key == raw_salt_pass
+
+    pass
+
+
+def clean_startup_state(datastore):
+    """One-shot validation/repair of persisted settings at app startup.
+
+    Runs once when the app boots (after the datastore is loaded and fetchers are registered).
+    Keeps stale/invalid persisted config from silently breaking runtime behaviour. Add further
+    startup repairs here as needed.
+    """
+    # If the global default fetch method points at a fetcher that is no longer available
+    # (e.g. a browser plugin like 'cloakbrowser' that was set as default and then uninstalled),
+    # fall back to 'html_requests'. Otherwise the settings UI shows no selected default and
+    # watches set to "System settings default" silently resolve to requests at fetch time
+    # (and break for browser-steps watches).
+    try:
+        from changedetectionio import content_fetchers
+
+        valid_fetchers = {name for name, _desc in content_fetchers.available_fetchers()}
+        cur_default = datastore.data['settings']['application'].get('fetch_backend')
+        if cur_default and cur_default != 'system' and cur_default not in valid_fetchers:
+            logger.warning(
+                f"Configured default fetch_backend '{cur_default}' is not an available fetcher "
+                f"(plugin uninstalled?) - resetting default to 'html_requests'."
+            )
+            datastore.data['settings']['application']['fetch_backend'] = 'html_requests'
+    except Exception as e:
+        logger.error(f"clean_startup_state: could not validate default fetch_backend: {e}")
+
+
 def changedetection_app(config=None, datastore_o=None):
     logger.trace("TRACE log is enabled")
 

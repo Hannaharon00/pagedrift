@@ -186,3 +186,17 @@
   }
 }
 
+// Desktop - hide mobile menu elements
+@media only screen and (min-width: 1025px) {
+  .hamburger-menu,
+  .mobile-menu-drawer,
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+}
+
+html[data-darkmode=true] {
+  .mobile-menu-drawer {
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.4);
+  }
+}
