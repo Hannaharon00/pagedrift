@@ -4279,6 +4279,62 @@ msgstr "Увага, один або кілька ваших 'днів' мают�
 msgid "This could have unintended consequences."
 msgstr "Це може призвести до непередбачених наслідків."
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Більше довідки та прикладів використання планувальника"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Хочете використовувати розклад за часом?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Спочатку підтвердіть/збережіть налаштування часового поясу"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Тригерний текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Викликає зміну, якщо цей текст з'являється І щось змінилося в документі."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Ігнорований текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Ігнорується при розрахунку змін, але все ще відображається."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Блокуючий текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Виявлення змін не відбудеться, оскільки цей текст існує."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "Delete %(name)s?"
