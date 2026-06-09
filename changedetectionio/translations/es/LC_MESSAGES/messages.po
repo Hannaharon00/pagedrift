@@ -4633,6 +4633,62 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr ""
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "Ejemplo: líneas coincidentes que contienen una palabra clave"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "Una línea por coincidencia de cadena/expresión regular"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "Acceso"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "Reanudar la programación automática"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "Pausar la programación de monitores en cola automática"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "Dejar de silenciar notificaciones"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "Las notificaciones están silenciadas: haga clic para activar el silencio"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr ""
+
 #: changedetectionio/templates/menu.html
 msgid "EDIT"
 msgstr "EDITAR"
