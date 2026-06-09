@@ -447,3 +447,57 @@ def test_xpath_20(client, live_server, measure_memory_usage, datastore_path):
     delete_all_watches(client)
 
 
+# Be sure all-in-the-wild types of RSS feeds work with xpath
+def test_rss_xpath(client, live_server, measure_memory_usage, datastore_path):
+    for feed_header in ['', '<?xml version="1.0" encoding="utf-8"?>']:
+        set_rss_atom_feed_response(header=feed_header, datastore_path=datastore_path)
+        for content_type in RSS_XML_CONTENT_TYPES:
+            _subtest_xpath_rss(client, content_type=content_type, datastore_path=datastore_path)
+
+
+# GHSA-6fmw-82m7-jq6p — XPath arbitrary file read via unparsed-text() and friends
+# Unit-level: verify xpath_filter() and the safe XPath3 parser block all dangerous functions.
+def test_xpath_blocked_functions_unit():
+    """Dangerous XPath 3.0 functions must be rejected at the parser level (no live server needed)."""
+    import elementpath
+    from changedetectionio.html_tools import xpath_filter, get_safe_xpath3_parser
+    from lxml import html
+
+    html_content = '<html><body><p>safe content</p></body></html>'
+
+    dangerous_expressions = [
+        "unparsed-text('file:///etc/passwd')",
+        "unparsed-text-lines('file:///etc/passwd')",
+        "unparsed-text-available('file:///etc/passwd')",
+        "doc('file:///etc/passwd')",
+        "doc-available('file:///etc/passwd')",
+        "json-doc('file:///datastore/changedetection.json')",
+        "collection('file:///datastore/')",
+        "uri-collection('file:///datastore/')",
+        "transform(map{})",
+        "load-xquery-module('foo')",
+        "environment-variable('PATH')",
+        "available-environment-variables()",
+    ]
+
+    for expr in dangerous_expressions:
+        # xpath_filter() must raise, not silently return file contents
+        try:
+            result = xpath_filter(expr, html_content)
+            assert False, f"xpath_filter should have raised for: {expr!r}, got: {result!r}"
+        except elementpath.ElementPathError:
+            pass  # expected
+
+        # the safe parser must reject the expression at parse time
+        tree = html.fromstring(html_content)
+        try:
+            elementpath.select(tree, expr, parser=get_safe_xpath3_parser())
+            assert False, f"safe XPath3 parser should have raised for: {expr!r}"
+        except elementpath.ElementPathError:
+            pass  # expected
+
+    # Sanity check: normal XPath still works
+    result = xpath_filter('//p/text()', html_content)
+    assert result == 'safe content'
+
+
