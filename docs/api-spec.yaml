@@ -1758,6 +1758,98 @@ paths:
         '400':
           description: Invalid input
 
+    put:
+      operationId: replaceNotifications
+      tags: [Notifications]
+      summary: Replace notification URLs
+      description: Replace all notification URLs with the provided list (can be empty)
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X PUT "http://localhost:5000/api/v1/notifications" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "notification_urls": [
+                  "mailto:newadmin@example.com"
+                ]
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'notification_urls': [
+                    'mailto:newadmin@example.com'
+                ]
+            }
+            response = requests.put('http://localhost:5000/api/v1/notifications', 
+                                  headers=headers, json=data)
+            print(response.json())
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUrls'
+      responses:
+        '200':
+          description: Notification URLs replaced successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationUrls'
+        '400':
+          description: Invalid input
+
+    delete:
+      operationId: deleteNotifications
+      tags: [Notifications]
+      summary: Delete notification URLs
+      description: Delete one or more notification URLs from the configuration
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X DELETE "http://localhost:5000/api/v1/notifications" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "notification_urls": [
+                  "mailto:admin@example.com"
+                ]
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'notification_urls': [
+                    'mailto:admin@example.com'
+                ]
+            }
+            response = requests.delete('http://localhost:5000/api/v1/notifications', 
+                                     headers=headers, json=data)
+            print(response.status_code)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUrls'
+      responses:
+        '204':
+          description: Notification URLs deleted successfully
+        '400':
+          description: No matching notification URLs found
+
   /search:
     get:
       operationId: searchWatches
