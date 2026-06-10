@@ -366,3 +366,53 @@ $(function () {
     $root.find('.queue-waiting').attr('data-show', idle ? 'true' : 'false');
   }
 
+  // Debounced refetch — the socket fires many times per check; we only need the latest state.
+  let pending = null;
+  function refresh() {
+    if (pending) clearTimeout(pending);
+    pending = setTimeout(function () {
+      pending = null;
+      $.getJSON(refreshUrl()).done(repaint);
+    }, 200);
+  }
+
+  function attach(socket) {
+    socket.on('watch_update', refresh);
+    socket.on('queue_size', refresh);
+    socket.on('watch_deleted', refresh);
+  }
+
+  // Delegated click — survives row re-renders.
+  $root.on('click', '.queue-cancel', function (e) {
+    e.preventDefault();
+    const uuid = this.dataset.uuid;
+    if (!uuid) return;
+    const $link = $(this).addClass('is-busy').text('…');
+    $.post('{{ url_for("ui.ui_queue.queue_cancel_running") }}', { uuid: uuid })
+      .always(refresh)
+      .fail(function () { $link.removeClass('is-busy').text(I18N.cancel || 'cancel'); });
+  });
+
+  if (window.cdioSocket) {
+    attach(window.cdioSocket);
+  } else {
+    document.addEventListener('cdio:socket-ready', function (e) {
+      attach(e.detail.socket);
+    }, { once: true });
+  }
+
+  // First load: get the JS-driven view up to date with what the server has.
+  refresh();
+
+  // Heartbeat: re-fetch periodically (catches scheduler-added items) and prune expired ghosts.
+  setInterval(refresh, 8000);
+  setInterval(function () { cleanupSlots(); renderWorkers(); renderQueued(); }, 2000);
+  // Tick "queued Ns ago" / "running Ns" labels every second.
+  setInterval(refreshTimeCells, 1000);
+  refreshTimeCells();
+
+  // Re-init feather icons for the action buttons (they're inline in the template)
+  if (window.feather) window.feather.replace();
+});
+</script>
+{%- endblock -%}
