@@ -4454,6 +4454,76 @@ msgid "From group '%(name)s': %(value)s"
 msgstr "Из группы «%(name)s»: %(value)s"
 
 #: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr ""
+"например Сообщите мне, когда цена упадет ниже 300 долларов США или будет выпущен новый продукт. Игнорируйте нижний "
+"колонтитул и изменения навигации."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr "например Сообщить об изменении цен или выпуске новых продуктов для всех часов в этой группе"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr "Примеры:"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr ""
+"Уведомляйте только в том случае, если цена упадет ниже 200 долларов США или будет добавлена ​​акция с ограниченным "
+"сроком действия."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr "Оповещение при публикации нового отзыва, уведомления о безопасности или отзыва продукта"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr "Уведомлять об открытии нового грантового раунда или объявлении крайнего срока подачи заявок."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr "Важно только в том случае, если изменяются версии пакетов или упоминается CVE."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr "Активен предварительный фильтр AI: <code>%(filter)s</code> — сужает объем контента перед оценкой."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr ""
+"При обнаружении изменения ИИ описывает его в соответствии с вашими инструкциями и заменяет <code>%(diff)s</code> в "
+"вашем уведомлении. Используйте <code>%(raw_diff)s</code>, если вам все еще нужен исходный дифференциал."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr "Опишите, как изменения должны отражаться в уведомлениях для всех часов в этой группе."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "List each new item added with its name and price. Translate to English."
+msgstr "Перечислите каждый новый добавленный товар с его названием и ценой. Перевести на английский."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Summarise what events were added or cancelled. Two sentences maximum."
+msgstr "Подведите итог, какие события были добавлены или отменены. Два предложения максимум."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
 msgid "Describe the price change: old price, new price, percentage difference."
 msgstr "Опишите изменение цены: старая цена, новая цена, процентная разница."
 
