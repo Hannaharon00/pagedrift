@@ -297,3 +297,23 @@ def test_ua_global_override(client, live_server, measure_memory_usage, datastore
     assert b"html-requests-user-agent" not in res.data
     delete_all_watches(client)
 
+def test_headers_validation(client, live_server, measure_memory_usage, datastore_path):
+    
+
+    test_url = url_for('test_headers', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={
+            "url": test_url,
+            "fetch_backend": 'html_requests',
+            "headers": "User-AGent agent-from-watch\r\nsadfsadfsadfsdaf\r\n:foobar",
+            "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+
+    assert b"Line 1 is missing a &#39;:&#39; separator." in res.data
+    assert b"Line 3 has an empty key." in res.data
+
