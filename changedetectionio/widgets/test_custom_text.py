@@ -111,3 +111,28 @@ def test_custom_text():
     print("TernaryNoneBooleanField('Status', yes_text='🟢 Online', no_text='🔴 Offline', none_text='🟡 Auto')")
     print("TernaryNoneBooleanField('Notifications', yes_text='<i class=\"fa fa-bell-slash\"></i> Muted', ...)")
 
+def test_data_processing():
+    """Test that custom text doesn't affect data processing"""
+    print("\n=== Testing Data Processing ===")
+    
+    form = TestForm()
+    field = form.notification_field
+    
+    # Test form data processing
+    field.process_formdata(['true'])
+    assert field.data is True, "Custom text should not affect data processing"
+    print("✅ True processing works with custom text")
+    
+    field.process_formdata(['false'])
+    assert field.data is False, "Custom text should not affect data processing"
+    print("✅ False processing works with custom text")
+    
+    field.process_formdata(['none'])
+    assert field.data is None, "Custom text should not affect data processing"
+    print("✅ None processing works with custom text")
+    
+    print("✅ All data processing tests passed!")
+
+if __name__ == '__main__':
+    test_custom_text()
+    test_data_processing()
