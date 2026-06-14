@@ -164,6 +164,85 @@ class import_distill_io_json(Importer):
         flash(gettext("{count} Imported from Distill.io in {duration}s, {skipped_count} Skipped.").format(count=len(self.new_uuids), duration=f"{time.time() - now:.2f}", skipped_count=len(self.remaining_data)))
 
 
+class import_xlsx_wachete(Importer):
+
+    def run(self,
+            data,
+            flash,
+            datastore,
+            ):
+
+        good = 0
+        now = time.time()
+        self.new_uuids = []
+
+        from openpyxl import load_workbook
+
+        try:
+            wb = load_workbook(data)
+        except Exception as e:
+            # @todo correct except
+            flash(gettext("Unable to read export XLSX file, something wrong with the file?"), 'error')
+            return
+
+        for row_id, row in enumerate(wb.active.iter_rows(min_row=2), start=2):
+            try:
+                extras = {}
+                data = {}
+                for cell in row:
+                    if not cell.value:
+                        continue
+                    column_title = wb.active.cell(row=1, column=cell.column).value.strip().lower()
+                    data[column_title] = cell.value
+
+                # Forced switch to webdriver/playwright/etc
+                dynamic_wachet = str(data.get('dynamic wachet', '')).strip().lower()  # Convert bool to str to cover all cases
+                # libreoffice and others can have it as =FALSE() =TRUE(), or bool(true)
+                if 'true' in dynamic_wachet or dynamic_wachet == '1':
+                    extras['fetch_backend'] = 'html_webdriver'
+                elif 'false' in dynamic_wachet or dynamic_wachet == '0':
+                    extras['fetch_backend'] = 'html_requests'
+
+                if data.get('xpath'):
+                    # @todo split by || ?
+                    extras['include_filters'] = [data.get('xpath')]
+                if data.get('name'):
+                    extras['title'] = data.get('name').strip()
+                if data.get('interval (min)'):
+                    minutes = int(data.get('interval (min)'))
+                    hours, minutes = divmod(minutes, 60)
+                    days, hours = divmod(hours, 24)
+                    weeks, days = divmod(days, 7)
+                    extras['time_between_check'] = {'weeks': weeks, 'days': days, 'hours': hours, 'minutes': minutes, 'seconds': 0}
+
+                # At minimum a URL is required.
+                if data.get('url'):
+                    try:
+                        validate_url(data.get('url'))
+                    except ValidationError as e:
+                        logger.error(f">> Import URL error {data.get('url')} {str(e)}")
+                        flash(gettext("Error processing row number {}, URL value was incorrect, row was skipped.").format(row_id), 'error')
+                        # Don't bother processing anything else on this row
+                        continue
+
+                    if self.watch_limit_hit(datastore, flash):
+                        break
+
+                    new_uuid = datastore.add_watch(url=data['url'].strip(),
+                                                   extras=extras,
+                                                   tag=data.get('folder'),
+                                                   save_immediately=False)
+                    if new_uuid:
+                        # Straight into the queue.
+                        self.new_uuids.append(new_uuid)
+                        good += 1
+            except Exception as e:
+                logger.error(e)
+                flash(gettext("Error processing row number {}, check all cell data types are correct, row was skipped.").format(row_id), 'error')
+
+        flash(gettext("{count} imported from Wachete .xlsx in {duration}s").format(count=len(self.new_uuids), duration=f"{time.time() - now:.2f}"))
+
+
 class import_xlsx_custom(Importer):
 
     def run(self,
