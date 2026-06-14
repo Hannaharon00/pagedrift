@@ -3513,6 +3513,58 @@ msgstr "忽略空白"
 msgid "Screenshot: Minimum Change Percentage"
 msgstr ""
 
+#: changedetectionio/forms.py changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Must be between 0 and 100"
+msgstr "必须介于 0 到 100 之间"
+
+#: changedetectionio/forms.py changedetectionio/templates/login.html
+msgid "Password"
+msgstr "密码"
+
+#: changedetectionio/forms.py
+msgid "Pager size"
+msgstr "分页大小"
+
+#: changedetectionio/forms.py
+msgid "Should be atleast zero (disabled)"
+msgstr "应至少为 0（表示禁用）"
+
+#: changedetectionio/forms.py
+msgid "RSS Content format"
+msgstr "RSS 内容格式"
+
+#: changedetectionio/forms.py
+msgid "RSS <description> body built from"
+msgstr "RSS <description> 内容来源"
+
+#: changedetectionio/forms.py
+msgid "RSS \"System default\" template override"
+msgstr "RSS “系统默认”模板覆盖"
+
+#: changedetectionio/forms.py
+msgid "Remove password"
+msgstr "移除密码"
+
+#: changedetectionio/forms.py
+msgid "Render anchor tag content"
+msgstr "渲染 a 标签内容"
+
+#: changedetectionio/forms.py
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr "启用密码时允许匿名访问监控历史页面"
+
+#: changedetectionio/forms.py
+msgid "Hide muted watches from RSS feed"
+msgstr "在 RSS 中隐藏静音的监控项"
+
+#: changedetectionio/forms.py
+msgid "Enable RSS reader mode "
+msgstr "启用 RSS 阅读模式"
+
+#: changedetectionio/forms.py
+msgid "Number of changes to show in watch RSS feed"
+msgstr "监控项 RSS 中显示的变更数量"
+
 #: changedetectionio/forms.py
 msgid "Should contain zero or more attempts"
 msgstr "应为 0 或更多次"

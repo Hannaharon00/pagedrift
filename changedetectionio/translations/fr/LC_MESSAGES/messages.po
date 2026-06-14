@@ -3628,6 +3628,63 @@ msgstr ""
 msgid "Enable LLM debug logging"
 msgstr ""
 
+#: changedetectionio/forms.py
+msgid "AI thinking budget (tokens)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Off (no thinking)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Max AI summary length (tokens)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "When monthly token budget is reached"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip AI summarisation only (watch still checks)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Skip the watch check entirely"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Watchlist \"Summary\" link compares"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Previous version (second-last vs latest)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Changes since you last viewed the watch"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "RegEx to extract"
+msgstr "RegEx à extraire"
+
+#: changedetectionio/forms.py
+msgid "Extract as CSV"
+msgstr "Extraire des données"
+
+#: changedetectionio/languages.py
+msgid "just now"
+msgstr "à l'instant"
+
+#: changedetectionio/languages.py
+msgid "right now"
+msgstr "bientôt"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%ss ago"
+msgstr "il y a %ss"
+
 #: changedetectionio/languages.py
 #, python-format
 msgid "in %ss"
