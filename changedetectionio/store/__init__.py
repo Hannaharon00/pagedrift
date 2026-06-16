@@ -817,6 +817,140 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
             watch_uuid: Watch UUID
             resource_name: Name of resource (e.g., "last-screenshot.png")
 
+        Returns:
+            bool: True if resource exists
+        """
+        resource_path = os.path.join(self.datastore_path, watch_uuid, resource_name)
+        return path.isfile(resource_path)
+
+    def visualselector_data_is_ready(self, watch_uuid):
+        """
+        Check if visual selector data (screenshot + elements) is ready.
+
+        Returns:
+            bool: True if both screenshot and elements data exist
+        """
+        has_screenshot = self._watch_resource_exists(watch_uuid, "last-screenshot.png")
+        has_elements = self._watch_resource_exists(watch_uuid, "elements.deflate")
+        return has_screenshot and has_elements
+
+    # Old sync_to_json and save_datastore methods removed - now handled by FileSavingDataStore parent class
+
+    @property
+    def proxy_list(self):
+        proxy_list = {}
+        proxy_list_file = os.path.join(self.datastore_path, 'proxies.json')
+
+        # Load from external config file
+        if path.isfile(proxy_list_file):
+            if HAS_ORJSON:
+                # orjson.loads() expects UTF-8 encoded bytes #3611
+                with open(os.path.join(self.datastore_path, "proxies.json"), 'rb') as f:
+                    proxy_list = orjson.loads(f.read())
+            else:
+                with open(os.path.join(self.datastore_path, "proxies.json"), encoding='utf-8') as f:
+                    proxy_list = json.load(f)
+
+        # Mapping from UI config if available
+        extras = self.data['settings']['requests'].get('extra_proxies')
+        if extras:
+            i = 0
+            for proxy in extras:
+                i += 0
+                if proxy.get('proxy_name') and proxy.get('proxy_url'):
+                    k = "ui-" + str(i) + proxy.get('proxy_name')
+                    proxy_list[k] = {'label': proxy.get('proxy_name'), 'url': proxy.get('proxy_url')}
+
+        if proxy_list and strtobool(os.getenv('ENABLE_NO_PROXY_OPTION', 'True')):
+            proxy_list["no-proxy"] = {'label': "No proxy", 'url': ''}
+
+        return proxy_list if len(proxy_list) else None
+
+    def get_preferred_proxy_for_watch(self, uuid):
+        """
+        Returns the preferred proxy by ID key
+        :param uuid: UUID
+        :return: proxy "key" id
+        """
+
+        if self.proxy_list is None:
+            return None
+
+        # If it's a valid one
+        watch = self.data['watching'].get(uuid)
+
+        if strtobool(os.getenv('ENABLE_NO_PROXY_OPTION', 'True')) and watch.get('proxy') == "no-proxy":
+            return None
+
+        if watch.get('proxy') and watch.get('proxy') in list(self.proxy_list.keys()):
+            return watch.get('proxy')
+
+        # not valid (including None), try the system one
+        else:
+            system_proxy_id = self.data['settings']['requests'].get('proxy')
+            # Is not None and exists
+            if self.proxy_list.get(system_proxy_id):
+                return system_proxy_id
+
+        # Fallback - Did not resolve anything, or doesnt exist, use the first available
+        if system_proxy_id is None or not self.proxy_list.get(system_proxy_id):
+            first_default = list(self.proxy_list)[0]
+            return first_default
+
+        return None
+
+    @property
+    def has_extra_headers_file(self):
+        filepath = os.path.join(self.datastore_path, 'headers.txt')
+        return os.path.isfile(filepath)
+
+    def get_all_base_headers(self):
+        headers = {}
+        # Global app settings
+        headers.update(self.data['settings'].get('headers', {}))
+
+        return headers
+
+    def get_all_headers_in_textfile_for_watch(self, uuid):
+        from ..model.App import parse_headers_from_text_file
+        headers = {}
+
+        # Global in /datastore/headers.txt
+        filepath = os.path.join(self.datastore_path, 'headers.txt')
+        try:
+            if os.path.isfile(filepath):
+                headers.update(parse_headers_from_text_file(filepath))
+        except Exception as e:
+            logger.error(f"ERROR reading headers.txt at {filepath} {str(e)}")
+
+        watch = self.data['watching'].get(uuid)
+        if watch:
+
+            # In /datastore/xyz-xyz/headers.txt
+            filepath = os.path.join(watch.data_dir, 'headers.txt')
+            try:
+                if os.path.isfile(filepath):
+                    headers.update(parse_headers_from_text_file(filepath))
+            except Exception as e:
+                logger.error(f"ERROR reading headers.txt at {filepath} {str(e)}")
+
+            # In /datastore/tag-name.txt
+            tags = self.get_all_tags_for_watch(uuid=uuid)
+            for tag_uuid, tag in tags.items():
+                fname = "headers-" + re.sub(r'[\W_]', '', tag.get('title')).lower().strip() + ".txt"
+                filepath = os.path.join(self.datastore_path, fname)
+                try:
+                    if os.path.isfile(filepath):
+                        headers.update(parse_headers_from_text_file(filepath))
+                except Exception as e:
+                    logger.error(f"ERROR reading headers.txt at {filepath} {str(e)}")
+
+        return headers
+
+    def get_tag_overrides_for_watch(self, uuid, attr):
+        tags = self.get_all_tags_for_watch(uuid=uuid)
+        ret = []
+
         if tags:
             for tag_uuid, tag in tags.items():
                 if attr in tag and tag[attr]:
