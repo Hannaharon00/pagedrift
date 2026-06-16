@@ -413,3 +413,278 @@ class ChecksumCalculator:
         return hashlib.md5(text.encode('utf-8')).hexdigest()
 
 
+# Some common stuff here that can be moved to a base class
+# (set_proxy_from_list)
+class perform_site_check(difference_detection_processor):
+
+    def run_changedetection(self, watch, force_reprocess=False):
+        changed_detected = False
+
+        if not watch:
+            raise Exception("Watch no longer exists.")
+
+        current_raw_document_checksum = self.get_raw_document_checksum()
+
+        # Build filter config up front so we can hash it for the skip check.
+        filter_config = FilterConfig(watch, self.datastore)
+        current_filter_config_hash = filter_config.get_filter_config_hash()
+
+        # Skip only when ALL of these hold:
+        #   1. raw HTML is unchanged
+        #   2. watch config was not edited (was_edited covers per-watch field changes)
+        #   3. effective filter config is unchanged (covers global/tag setting changes that
+        #      bypass was_edited — e.g. global_ignore_text, global_subtractive_selectors)
+        # last_filter_config_hash being False means first run or upgrade: don't skip.
+        if (not force_reprocess and
+            not watch.was_edited and
+            self.last_raw_content_checksum and
+            self.last_raw_content_checksum == current_raw_document_checksum and
+            watch.get('last_filter_config_hash') and
+            watch.get('last_filter_config_hash') == current_filter_config_hash):
+            raise checksumFromPreviousCheckWasTheSame()
+
+        # Initialize remaining components
+        content_processor = ContentProcessor(self.fetcher, watch, filter_config, self.datastore)
+        transformer = ContentTransformer()
+        rule_engine = RuleEngine()
+
+        # Get content type and stream info
+        ctype_header = self.fetcher.get_all_headers().get('content-type', DEFAULT_WHEN_NO_CONTENT_TYPE_HEADER).lower()
+        stream_content_type = guess_stream_type(http_content_header=ctype_header, content=self.fetcher.content)
+
+        # Unset any existing notification error
+        update_obj = {'last_notification_error': False, 'last_error': False}
+        url = watch.link
+
+        self.screenshot = self.fetcher.screenshot
+        self.xpath_data = self.fetcher.xpath_data
+
+        # Track the content type (readonly field, doesn't trigger was_edited)
+        update_obj['content-type'] = ctype_header  # Use hyphen (matches OpenAPI spec and watch_base default)
+
+        # Save the raw content checksum to file (processor implementation detail, not watch config)
+        self.update_last_raw_content_checksum(current_raw_document_checksum)
+        update_obj['last_filter_config_hash'] = current_filter_config_hash
+
+        # === CONTENT PREPROCESSING ===
+        # Avoid creating unnecessary intermediate string copies by reassigning only when needed
+        content = self.fetcher.content
+
+        # RSS preprocessing
+        if stream_content_type.is_rss:
+            content = content_processor.preprocess_rss(content)
+            if self.datastore.data["settings"]["application"].get("rss_reader_mode"):
+                # Now just becomes regular HTML that can have xpath/CSS applied (first of the set etc)
+                stream_content_type.is_rss = False
+                stream_content_type.is_html = True
+                self.fetcher.content = content
+
+        # PDF preprocessing
+        if watch.is_pdf or stream_content_type.is_pdf:
+            content = content_processor.preprocess_pdf(raw_content=self.fetcher.raw_content)
+            stream_content_type.is_html = True
+
+        # JSON - Always reformat it nicely for consistency.
+
+        if stream_content_type.is_json:
+            if not filter_config.has_include_json_filters:
+                content = content_processor.preprocess_json(raw_content=content)
+        #else, otherwise it gets sorted/formatted in the filter stage anyway
+
+        # HTML obfuscation workarounds
+        if stream_content_type.is_html:
+            content = html_tools.workarounds_for_obfuscations(content)
+
+        # Check for LD+JSON price data (for HTML content)
+        if stream_content_type.is_html:
+            update_obj['has_ldjson_price_data'] = html_tools.has_ldjson_product_info(content)
+
+        # === FILTER APPLICATION ===
+        # Start with content reference, avoid copy until modification
+        html_content = content
+
+        # Apply subtractive selectors first so include filters operate on already-cleaned content.
+        # Otherwise a subtractive selector that relies on ancestor context (e.g. ".main .ads")
+        # cannot match after the include filter has extracted the inner element and stripped
+        # the parent wrapper.
+        if filter_config.has_subtractive_selectors:
+            html_content = content_processor.apply_subtractive_selectors(html_content)
+
+        # Apply include filters (CSS, XPath, JSON)
+        if filter_config.has_include_filters:
+            html_content = content_processor.apply_include_filters(html_content, stream_content_type)
+
+        # === TEXT EXTRACTION ===
+        if watch.is_source_type_url:
+            # For source URLs, keep raw content
+            stripped_text = html_content
+        elif stream_content_type.is_plaintext:
+            # For plaintext, keep as-is without HTML-to-text conversion
+            stripped_text = html_content
+        else:
+            # Extract text from HTML/RSS content (not generic XML)
+            if stream_content_type.is_html or stream_content_type.is_rss:
+                stripped_text = content_processor.extract_text_from_html(html_content, stream_content_type)
+            else:
+                stripped_text = html_content
+
+        # === TEXT TRANSFORMATIONS ===
+        if watch.get('trim_text_whitespace'):
+            stripped_text = transformer.trim_whitespace(stripped_text)
+
+        # Save text before ignore filters (for diff calculation)
+        text_content_before_ignored_filter = stripped_text
+
+        # === DIFF FILTERING ===
+        # If user wants specific diff types (added/removed/replaced only)
+        if watch.has_special_diff_filter_options_set() and len(watch.history.keys()):
+            stripped_text = self._apply_diff_filtering(watch, stripped_text, text_content_before_ignored_filter)
+            if stripped_text is None:
+                # No differences found, but content exists
+                c = ChecksumCalculator.calculate(text_content_before_ignored_filter, ignore_whitespace=True)
+                return False, {'previous_md5': c}, text_content_before_ignored_filter.encode('utf-8')
+
+
+        # === EMPTY PAGE CHECK ===
+        empty_pages_are_a_change = self.datastore.data['settings']['application'].get('empty_pages_are_a_change', False)
+        if not stream_content_type.is_json and not empty_pages_are_a_change and len(stripped_text.strip()) == 0:
+            raise content_fetchers.exceptions.ReplyWithContentButNoText(
+                url=url,
+                status_code=self.fetcher.get_last_status_code(),
+                screenshot=self.fetcher.screenshot,
+                has_filters=filter_config.has_include_filters,
+                html_content=html_content,
+                xpath_data=self.fetcher.xpath_data
+            )
+
+        update_obj["last_check_status"] = self.fetcher.get_last_status_code()
+
+        # Snapshot an ignore-applied stream BEFORE extract operations so line-level
+        # ignore patterns still match original content (#4138). Otherwise an extract_text
+        # regex like /(\d+\.\d+\.\d+)/ would transform "v.1.2.1" into "1.2.1" and the
+        # ignore_text pattern "v" would no longer match — meaning changes to ignored
+        # lines would incorrectly affect the checksum.
+        text_for_checksuming = None
+        if filter_config.ignore_text:
+            text_for_checksuming = html_tools.strip_ignore_text(stripped_text, filter_config.ignore_text)
+
+        # === LINE FILTER (plain-text substring) ===
+        if filter_config.extract_lines_containing:
+            stripped_text = transformer.extract_lines_containing(stripped_text, filter_config.extract_lines_containing)
+            if text_for_checksuming is not None:
+                text_for_checksuming = transformer.extract_lines_containing(text_for_checksuming, filter_config.extract_lines_containing)
+
+        # === REGEX EXTRACTION ===
+        if filter_config.extract_text:
+            stripped_text = transformer.extract_by_regex(stripped_text, filter_config.extract_text)
+            if text_for_checksuming is not None:
+                text_for_checksuming = transformer.extract_by_regex(text_for_checksuming, filter_config.extract_text)
+
+        # === MORE TEXT TRANSFORMATIONS ===
+        if watch.get('remove_duplicate_lines'):
+            stripped_text = transformer.remove_duplicate_lines(stripped_text)
+            if text_for_checksuming is not None:
+                text_for_checksuming = transformer.remove_duplicate_lines(text_for_checksuming)
+
+        if watch.get('sort_text_alphabetically'):
+            stripped_text = transformer.sort_alphabetically(stripped_text)
+            if text_for_checksuming is not None:
+                text_for_checksuming = transformer.sort_alphabetically(text_for_checksuming)
+
+        # === CHECKSUM CALCULATION ===
+        if text_for_checksuming is None:
+            text_for_checksuming = stripped_text
+        else:
+            # Optionally remove ignored lines from displayed output too
+            strip_ignored_lines = watch.get('strip_ignored_lines')
+            if strip_ignored_lines is None:
+                strip_ignored_lines = self.datastore.data['settings']['application'].get('strip_ignored_lines')
+            if strip_ignored_lines:
+                stripped_text = text_for_checksuming
+
+        # Calculate checksum
+        ignore_whitespace = self.datastore.data['settings']['application'].get('ignore_whitespace', False)
+        fetched_md5 = ChecksumCalculator.calculate(text_for_checksuming, ignore_whitespace=ignore_whitespace)
+
+        # === BLOCKING RULES EVALUATION ===
+        blocked = False
+
+        # Check trigger_text - use text_for_checksuming so ignore_text can suppress trigger_text
+        if rule_engine.evaluate_trigger_text(text_for_checksuming, filter_config.trigger_text):
+            blocked = True
+
+        # Check text_should_not_be_present
+        if rule_engine.evaluate_text_should_not_be_present(stripped_text, filter_config.text_should_not_be_present):
+            blocked = True
+
+        # Check custom conditions
+        if rule_engine.evaluate_conditions(watch, self.datastore, stripped_text):
+            blocked = True
+
+        # === CHANGE DETECTION ===
+        if blocked:
+            changed_detected = False
+        else:
+            # Compare checksums
+            if watch.get('previous_md5') != fetched_md5:
+                changed_detected = True
+
+            # Always record the new checksum
+            update_obj["previous_md5"] = fetched_md5
+
+            # On first run, initialize previous_md5
+            if not watch.get('previous_md5'):
+                watch['previous_md5'] = fetched_md5
+
+        logger.debug(f"Watch UUID {watch.get('uuid')} content check - Previous MD5: {watch.get('previous_md5')}, Fetched MD5 {fetched_md5}")
+
+        # === UNIQUE LINES CHECK ===
+        if changed_detected and watch.get('check_unique_lines', False):
+            has_unique_lines = watch.lines_contain_something_unique_compared_to_history(
+                lines=stripped_text.splitlines(),
+                ignore_whitespace=ignore_whitespace
+            )
+
+            if not has_unique_lines:
+                logger.debug(f"check_unique_lines: UUID {watch.get('uuid')} didnt have anything new setting change_detected=False")
+                changed_detected = False
+            else:
+                logger.debug(f"check_unique_lines: UUID {watch.get('uuid')} had unique content")
+
+        # Note: Explicit cleanup is only needed here because text_json_diff handles
+        # large strings (100KB-300KB for RSS/HTML). The other processors work with
+        # small strings and don't need this.
+        #
+        # Python would clean these up automatically, but explicit `del` frees memory
+        # immediately rather than waiting for function return, reducing peak memory usage.
+        del content
+        if 'html_content' in locals() and html_content is not stripped_text:
+            del html_content
+        if 'text_content_before_ignored_filter' in locals() and text_content_before_ignored_filter is not stripped_text:
+            del text_content_before_ignored_filter
+        if 'text_for_checksuming' in locals() and text_for_checksuming is not stripped_text:
+            del text_for_checksuming
+
+        return changed_detected, update_obj, stripped_text
+
+    def _apply_diff_filtering(self, watch, stripped_text, text_before_filter):
+        """Apply user's diff filtering preferences (show only added/removed/replaced lines)."""
+        from changedetectionio import diff
+
+        rendered_diff = diff.render_diff(
+            previous_version_file_contents=watch.get_last_fetched_text_before_filters(),
+            newest_version_file_contents=stripped_text,
+            include_equal=False,
+            include_added=watch.get('filter_text_added', True),
+            include_removed=watch.get('filter_text_removed', True),
+            include_replaced=watch.get('filter_text_replaced', True),
+            include_change_type_prefix=False
+        )
+
+        watch.save_last_text_fetched_before_filters(text_before_filter.encode('utf-8'))
+
+        if not rendered_diff and stripped_text:
+            # No differences found
+            return None
+
+        return rendered_diff
