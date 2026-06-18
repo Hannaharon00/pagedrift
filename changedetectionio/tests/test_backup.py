@@ -202,3 +202,62 @@ def test_backup_restore(client, live_server, measure_memory_usage, datastore_pat
         f"Tag 2 not properly rehydrated, got {type(restored_tag2)}"
 
 
+def test_backup_restore_zip_slip_rejected(client, live_server, measure_memory_usage, datastore_path):
+    """Zip Slip path traversal entries in a restore zip must be rejected."""
+    import pytest
+    from changedetectionio.blueprint.backups.restore import import_from_zip
+
+    # Build a zip with a path traversal entry that would escape the extraction dir
+    malicious_zip = io.BytesIO()
+    with ZipFile(malicious_zip, 'w') as zf:
+        zf.writestr("../escaped.txt", "ATTACKER-CONTROLLED")
+    malicious_zip.seek(0)
+
+    datastore = live_server.app.config['DATASTORE']
+
+    with pytest.raises(ValueError, match="Zip Slip"):
+        import_from_zip(
+            zip_stream=malicious_zip,
+            datastore=datastore,
+            include_groups=True,
+            include_groups_replace=True,
+            include_watches=True,
+            include_watches_replace=True,
+        )
+
+
+def test_backup_restore_zip_bomb_rejected(client, live_server, measure_memory_usage, datastore_path):
+    """A zip whose total uncompressed size exceeds the limit must be rejected.
+
+    The guard reads file_size from the zip central-directory metadata — no
+    actual decompression happens, so this test is fast and uses minimal RAM.
+    100 KB of zeros compresses to ~100 bytes; monkeypatching the limit to
+    50 KB is enough to trigger the check without creating any large files.
+    """
+    import pytest
+    import changedetectionio.blueprint.backups.restore as restore_mod
+    from changedetectionio.blueprint.backups.restore import import_from_zip
+
+    # ~100 KB of zeros → deflate compresses to ~100 bytes, but file_size metadata = 100 KB
+    bomb_zip = io.BytesIO()
+    with ZipFile(bomb_zip, 'w', compression=ZIP_DEFLATED) as zf:
+        zf.writestr("data.txt", b"\x00" * (100 * 1024))
+    bomb_zip.seek(0)
+
+    datastore = live_server.app.config['DATASTORE']
+    original_limit = restore_mod._MAX_DECOMPRESSED_BYTES
+    try:
+        restore_mod._MAX_DECOMPRESSED_BYTES = 50 * 1024  # 50 KB limit for this test
+        with pytest.raises(ValueError, match="decompressed size"):
+            import_from_zip(
+                zip_stream=bomb_zip,
+                datastore=datastore,
+                include_groups=True,
+                include_groups_replace=True,
+                include_watches=True,
+                include_watches_replace=True,
+            )
+    finally:
+        restore_mod._MAX_DECOMPRESSED_BYTES = original_limit
+
+
