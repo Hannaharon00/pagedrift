@@ -4606,6 +4606,73 @@ msgstr "Deteksi otomatis dari browser"
 msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
 msgstr "Dukungan bahasa masih beta, bantu kami meningkatkannya dengan membuka PR di GitHub untuk setiap pembaruan."
 
+#: changedetectionio/templates/base.html
+msgid "AI / LLM not configured"
+msgstr "AI / LLM belum dikonfigurasi"
+
+#: changedetectionio/templates/base.html
+msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
+msgstr "Ringkasan bertenaga LLM belum diaktifkan. Konfigurasikan penyedia AI di Pengaturan untuk memulai."
+
+#: changedetectionio/templates/base.html
+msgid "Go to AI / LLM Settings"
+msgstr "Buka Pengaturan AI / LLM"
+
+#: changedetectionio/templates/base.html changedetectionio/templates/sidebar-nav.html
+msgid "Search"
+msgstr "Cari"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "URL or Title in '%(title)s'"
+msgstr "URL atau Judul di '%(title)s'"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "URL atau Judul"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "Masukkan istilah pencarian..."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"<strong>On</strong> &ndash; every watch in this group uses the AI settings below, unless it fills in its own. "
+"<strong>Off</strong> &ndash; no AI for any watch in this group. <strong>Leave it to each watch</strong> &ndash; this "
+"group has no say; each watch uses its own AI settings."
+msgstr ""
+"<strong>Aktif</strong> &ndash; setiap monitor dalam grup ini menggunakan pengaturan AI di bawah, kecuali memiliki "
+"pengaturannya sendiri. <strong>Nonaktif</strong> &ndash; tidak ada AI untuk monitor mana pun dalam grup ini. "
+"<strong>Biarkan ditentukan oleh masing-masing monitor</strong> &ndash; grup ini tidak menentukan; setiap monitor "
+"menggunakan pengaturan AI-nya sendiri."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is ON for every watch in that group."
+msgstr "Grup %(name)s menentukan ini: AI AKTIF untuk setiap monitor dalam grup tersebut."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is OFF for every watch in that group."
+msgstr "Grup %(name)s menentukan ini: AI NONAKTIF untuk setiap monitor dalam grup tersebut."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Describe what you care about. The AI evaluates every detected change against this and only notifies you when it "
+"matches."
+msgstr ""
+"Jelaskan hal yang Anda pedulikan. AI mengevaluasi setiap perubahan terdeteksi terhadap ini dan hanya memberi "
+"notifikasi saat cocok."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
+msgstr "Atur intent perubahan untuk semua monitor dalam tag/grup ini. Setiap monitor dapat menimpanya dengan intent sendiri."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "From group '%(name)s': %(value)s"
+msgstr "Dari grup '%(name)s': %(value)s"
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
 msgstr ""
