@@ -341,6 +341,93 @@ class TestLLMDiffSummaryCache(unittest.TestCase):
         assert watch.get_llm_diff_summary('1000', '2000', prompt=self.PROMPT) == 'Updated summary'
 
 
+class TestHistoryPathTraversal(unittest.TestCase):
+    """GHSA-8757-69j2-hx56: history.txt must not allow reads outside the watch data dir."""
+
+    def _make_watch(self):
+        mock_datastore = {'settings': {'application': {}}, 'watching': {}}
+        watch = Watch.model(datastore_path='/tmp', __datastore=mock_datastore, default={})
+        watch.ensure_data_dir_exists()
+        return watch
+
+    def _write_history_txt(self, watch, lines):
+        """Directly write raw lines to history.txt to simulate a restored backup."""
+        fname = os.path.join(watch.data_dir, watch.history_index_filename)
+        with open(fname, 'w', encoding='utf-8') as f:
+            f.writelines(lines)
+
+    def test_absolute_path_in_history_is_rejected(self):
+        """An absolute path like /etc/passwd must not appear in history."""
+        watch = self._make_watch()
+        self._write_history_txt(watch, ['1000000000,/etc/passwd\n'])
+        history = watch.history
+        self.assertEqual(history, {}, "Absolute path entry must be rejected")
+
+    def test_traversal_path_in_history_is_rejected(self):
+        """A relative traversal path like ../../etc/passwd must not appear in history."""
+        watch = self._make_watch()
+        self._write_history_txt(watch, ['1000000000,../../etc/passwd\n'])
+        history = watch.history
+        self.assertEqual(history, {}, "Path traversal entry must be rejected")
+
+    def test_parent_dir_entry_is_rejected_by_the_containment_check(self):
+        """A bare '..' is the shortest entry that reaches and fails the containment check.
+
+        os.path.basename() reduces '/etc/passwd' and '../../etc/passwd' to
+        'passwd', so those two stop at the os.path.exists() check below the
+        guard rather than at the guard itself. '..' survives basename() intact
+        and resolves to the parent of data_dir, which does exist, so the
+        containment check is what rejects it. Not the only such input —
+        '../..' and 'foo/..' collapse to the same thing — and not the only
+        reason the check exists: it also blocks a filename inside data_dir
+        that is itself a symlink pointing outside.
+        """
+        watch = self._make_watch()
+        self._write_history_txt(watch, ['1000000000,..\n'])
+        history = watch.history
+        self.assertEqual(history, {}, "Parent-directory entry must be rejected")
+
+    def test_normal_snapshot_entry_is_accepted(self):
+        """A bare filename written by save_history_blob must still load correctly."""
+        import uuid as uuid_builder
+        watch = self._make_watch()
+        watch.save_history_blob(contents="hello world", timestamp=1000000000, snapshot_id=str(uuid_builder.uuid4()))
+        history = watch.history
+        self.assertEqual(len(history), 1, "Normal snapshot entry must be accepted")
+        # Watch.history resolves entries with os.path.realpath, so compare against a
+        # resolved data_dir. On macOS the datastore lives under /tmp, which is a symlink
+        # to /private/tmp, and an unresolved comparison fails there for a correct path.
+        self.assertTrue(
+            list(history.values())[0].startswith(os.path.realpath(watch.data_dir)),
+            "Resolved path must be inside the watch data directory"
+        )
+
+    def test_get_history_snapshot_blocks_outside_path_directly(self):
+        """get_history_snapshot(filepath=...) must raise if the path escapes data_dir."""
+        watch = self._make_watch()
+        with self.assertRaises(PermissionError):
+            watch.get_history_snapshot(filepath='/etc/passwd')
+
+    def test_get_history_snapshot_blocks_traversal_directly(self):
+        """get_history_snapshot(filepath=...) must raise on ../../ traversal paths."""
+        watch = self._make_watch()
+        with self.assertRaises(PermissionError):
+            watch.get_history_snapshot(filepath=os.path.join(watch.data_dir, '../../etc/passwd'))
+
+    def test_resolved_path_stays_inside_data_dir(self):
+        """All resolved history paths must reside within the watch's data_dir."""
+        import uuid as uuid_builder
+        watch = self._make_watch()
+        for ts in [1000000001, 1000000002, 1000000003]:
+            watch.save_history_blob(contents=f"content {ts}", timestamp=ts, snapshot_id=str(uuid_builder.uuid4()))
+        safe_dir = os.path.realpath(watch.data_dir)
+        for path in watch.history.values():
+            self.assertTrue(
+                os.path.realpath(path).startswith(safe_dir),
+                f"Path {path!r} escapes the watch data directory"
+            )
+
+
 class TestLinkToOpen(unittest.TestCase):
     """`link_to_open` - the optional human-facing URL used instead of the watched URL."""
 
