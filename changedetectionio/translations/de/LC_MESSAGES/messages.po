@@ -3923,6 +3923,63 @@ msgstr "Erkennung von visuellen / Bild-Screenshot-Änderungen"
 msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
 msgstr "Vergleicht Screenshots mit einem schnellen OpenCV-Algorithmus, der 10- bis 100-mal schneller ist als SSIM"
 
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Date"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Stock status"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Currency"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "Erkennung von Bestandsauffüllung"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "Nur auf Lager (Ausverkauft -> Nur auf Lager)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "Eventuelle Änderungen der Verfügbarkeit"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "Aus, Verfügbarkeit/Auffüllung nicht verfolgen"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "Unterhalb des Preises, um eine Benachrichtigung auszulösen"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "Keine Begrenzung"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "Über dem Preis, um eine Benachrichtigung auszulösen"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "Schwellenwert (%) für Preisänderungen seit der vorherigen Prüfung"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "Sollte zwischen 0 und 100 liegen"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "Verfolgen Sie Preisänderungen"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Restock & Price Detection"
 msgstr "Wiederauffüllung und Preiserkennung"
