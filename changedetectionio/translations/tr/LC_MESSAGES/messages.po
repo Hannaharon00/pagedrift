@@ -3916,6 +3916,63 @@ msgstr "Görsel / Görüntü ekran görüntüsü değişiklik tespiti"
 msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
 msgstr "Ekran görüntülerini hızlı OpenCV algoritması kullanarak karşılaştırır, SSIM'den 10-100 kat daha hızlıdır"
 
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Date"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Stock status"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+msgid "Currency"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/difference.py
+#: changedetectionio/processors/restock_diff/templates/restock_diff/difference.html
+msgid "Price history"
+msgstr ""
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Re-stock detection"
+msgstr "Yeniden stok tespiti"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "In Stock only (Out Of Stock -> In Stock only)"
+msgstr "Yalnızca Stokta (Stokta Yok -> Yalnızca Stokta)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Any availability changes"
+msgstr "Herhangi bir kullanılabilirlik değişikliği"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Off, don't follow availability/restock"
+msgstr "Kapalı, kullanılabilirliği/yeniden stoklamayı takip etme"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Below price to trigger notification"
+msgstr "Bildirimi tetiklemek için fiyatın altında"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "No limit"
+msgstr "Sınır yok"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Above price to trigger notification"
+msgstr "Bildirimi tetiklemek için fiyatın üstünde"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Threshold (%) for price changes since the previous check"
+msgstr "Önceki kontrolden bu yana fiyat değişiklikleri için eşik (%)"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Should be between 0 and 100"
+msgstr "0 ile 100 arasında olmalıdır"
+
+#: changedetectionio/processors/restock_diff/forms.py
+msgid "Follow price changes"
+msgstr "Fiyat değişikliklerini takip et"
+
 #: changedetectionio/processors/restock_diff/forms.py
 msgid "Restock & Price Detection"
 msgstr "Yeniden Stoklama ve Fiyat Tespiti"
