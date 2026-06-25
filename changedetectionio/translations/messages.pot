@@ -4420,6 +4420,70 @@ msgid ""
 "edits to that prompt still reach this watch."
 msgstr ""
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid ""
+"Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
+" rule starts with an XPath function: Prefix with <code>xpath:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
 msgstr ""
