@@ -400,6 +400,83 @@ def test_api_concurrency_race_conditions(client, live_server, measure_memory_usa
 # TIER 2: IMPORTANT FUNCTIONALITY TESTS
 # ============================================================================
 
+def test_api_time_validation_edge_cases(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test time_between_check validation edge cases.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Zero interval
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "time_between_check_use_default": False,
+            "time_between_check": {"seconds": 0}
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    assert res.status_code == 400, "Zero interval should be rejected"
+
+    # Test 2: Negative interval
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "time_between_check_use_default": False,
+            "time_between_check": {"seconds": -100}
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    assert res.status_code == 400, "Negative interval should be rejected"
+
+    # Test 3: All fields null with use_default=false
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "time_between_check_use_default": False,
+            "time_between_check": {"weeks": None, "days": None, "hours": None, "minutes": None, "seconds": None}
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    assert res.status_code == 400, "All null intervals should be rejected when not using default"
+
+    # Test 4: Extremely large interval (overflow risk)
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "time_between_check_use_default": False,
+            "time_between_check": {"weeks": 999999999}
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should either accept (with limits) or reject
+    assert res.status_code in [201, 400]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 5: Valid minimal interval (should work)
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "time_between_check_use_default": False,
+            "time_between_check": {"seconds": 60}
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    assert res.status_code == 201
+    watch_uuid = res.json.get('uuid')
+    client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    delete_all_watches(client)
+
+
 def test_api_queue_manipulation(client, live_server, measure_memory_usage, datastore_path):
     """
     Test queue behavior under stress and edge cases.
