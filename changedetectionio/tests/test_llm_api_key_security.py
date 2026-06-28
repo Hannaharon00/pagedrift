@@ -516,3 +516,90 @@ def test_llm_models_refuses_to_leak_stored_key_to_different_api_base(
     assert calls == [], "litellm must not have been invoked at all"
 
 
+def test_llm_test_refuses_to_leak_stored_key_to_different_api_base(
+        client, live_server, measure_memory_usage, datastore_path, monkeypatch):
+    """Same guard on /settings/llm/test — attacker-supplied api_base + missing
+    api_key must not result in the stored key being sent to that URL."""
+    monkeypatch.delenv('ALLOW_IANA_RESTRICTED_ADDRESSES', raising=False)
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)   # stores CANARY_KEY, no stored api_base
+
+    calls = []
+    # Patch the completion wrapper so we'd notice if litellm were invoked.
+    import changedetectionio.llm.client as llm_client
+    monkeypatch.setattr(llm_client, 'completion',
+                        lambda **kw: calls.append(kw) or ('', 0, 0, 0))
+
+    res = client.post(
+        url_for('settings.llm.llm_test'),
+        query_string={
+            'model': 'gpt-4o-mini',
+            'api_base': 'https://attacker.example/v1',
+            # api_key intentionally omitted
+        },
+    )
+    assert res.status_code == 400
+    body = res.get_json()
+    assert body['ok'] is False
+    assert 'api_key' in body['error']
+    assert calls == [], "completion() must not have been invoked"
+
+
+def test_llm_models_allows_stored_key_when_api_base_matches_saved(
+        client, live_server, measure_memory_usage, datastore_path, monkeypatch):
+    """Regression: the legit UI flow (test saved config without retyping the key)
+    must still work — i.e. when request api_base matches the stored api_base,
+    the stored key IS substituted."""
+    monkeypatch.delenv('ALLOW_IANA_RESTRICTED_ADDRESSES', raising=False)
+    monkeypatch.setenv('ALLOW_IANA_RESTRICTED_ADDRESSES', 'true')  # so localhost passes SSRF
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    ds.data['settings']['application']['llm']['api_base'] = 'http://localhost:11434'
+
+    received = []
+    import litellm
+    monkeypatch.setattr(litellm, 'get_valid_models',
+                        lambda **kwargs: (received.append(kwargs), ['llama3.2'])[1])
+
+    res = client.get(
+        url_for('settings.llm.llm_get_models'),
+        query_string={
+            'provider': 'openai_compatible',
+            'api_base': 'http://localhost:11434',  # matches saved
+            # api_key omitted — should fall back to stored CANARY_KEY
+        },
+    )
+    assert res.status_code == 200, res.get_json()
+    assert received and received[0].get('api_key') == CANARY_KEY, \
+        "When api_base matches saved, the stored api_key should be used"
+
+
+# ---------------------------------------------------------------------------
+# CSRF — /clear and /clear-summary-cache must not mutate state on GET
+# (GHSA-g36r-fm2p-87xm). The <img src=...> CSRF vector relies on GET firing the
+# mutation; the production guard is "POST only + Flask-WTF CSRF token". The
+# test config disables WTF_CSRF_ENABLED, so we verify the GET vector by
+# asserting the mutation didn't happen, and verify POST routing by exercising
+# the legit confirm-then-POST flow.
+#
+# NB: the app registers a catch-all '/<path:filename>' static route, which
+# intercepts any GET that isn't claimed by a method-matching rule and returns
+# 404 — so we can't simply assert on status code. The behaviour test below is
+# the actual security property.
+# ---------------------------------------------------------------------------
+
+def test_llm_clear_get_does_not_wipe_config(
+        client, live_server, measure_memory_usage, datastore_path):
+    """The CSRF surface is GET → mutation. After this fix the endpoint is
+    POST-only, so a GET must leave LLM config intact."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    assert ds.data['settings']['application'].get('llm', {}).get('api_key') == CANARY_KEY
+
+    client.get(url_for('settings.llm.llm_clear'))
+
+    # Mutation must not have happened — that's what defeats <img src=...> CSRF.
+    assert ds.data['settings']['application'].get('llm', {}).get('api_key') == CANARY_KEY, \
+        "GET /settings/llm/clear must not wipe LLM config (CSRF guard)"
+
+
