@@ -312,6 +312,48 @@ def get_processor_badge_texts():
     return badge_texts
 
 
+def get_processor_descriptions():
+    """
+    Get a dictionary mapping processor names to their description/name values.
+    Translations are applied based on the current request locale.
+
+    :return: A dict mapping processor name to description (e.g., {'text_json_diff': 'Webpage Text/HTML, JSON and PDF changes'})
+    """
+    processor_classes = find_processors()
+    descriptions = {}
+
+    for module, sub_package_name in processor_classes:
+        # Try to get the 'name' or 'description' attribute from the processor module first
+        if hasattr(module, 'name'):
+            descriptions[sub_package_name] = gettext(module.name)
+        elif hasattr(module, 'description'):
+            descriptions[sub_package_name] = gettext(module.description)
+        else:
+            # Fall back to parent module's __init__.py
+            parent_module = get_parent_module(module)
+            if parent_module and hasattr(parent_module, 'processor_description'):
+                descriptions[sub_package_name] = gettext(parent_module.processor_description)
+            elif parent_module and hasattr(parent_module, 'name'):
+                descriptions[sub_package_name] = gettext(parent_module.name)
+            else:
+                # Final fallback to a readable name
+                descriptions[sub_package_name] = sub_package_name.replace('_', ' ').title()
+
+    return descriptions
+
+
+def wcag_text_color(hex_bg: str) -> str:
+    """Return #000000 or #ffffff for maximum WCAG contrast against hex_bg."""
+    hex_bg = hex_bg.lstrip('#')
+    if len(hex_bg) != 6:
+        return '#000000'
+    r, g, b = (int(hex_bg[i:i+2], 16) / 255 for i in (0, 2, 4))
+    def lin(c):
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+    return '#000000' if L > 0.179 else '#ffffff'
+
+
 def save_processor_config(datastore, watch_uuid, config_data):
     """
     Save processor-specific configuration to JSON file.
