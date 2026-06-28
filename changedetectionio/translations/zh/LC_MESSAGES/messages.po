@@ -3458,6 +3458,62 @@ msgid "Default User-Agent overrides"
 msgstr "默认 User-Agent 覆盖"
 
 #: changedetectionio/forms.py
+msgid "Both a name, and a Proxy URL is required."
+msgstr "名称和代理 URL 都是必填项。"
+
+#: changedetectionio/forms.py
+msgid "Open 'History' page in a new tab"
+msgstr "在新标签页中打开“历史记录”"
+
+#: changedetectionio/forms.py
+msgid "Realtime UI Updates Enabled"
+msgstr "启用实时界面更新"
+
+#: changedetectionio/forms.py
+msgid "Favicons Enabled"
+msgstr "启用站点图标"
+
+#: changedetectionio/forms.py
+msgid "Use page <title> in watch overview list"
+msgstr "在监控概览列表中使用页面 <title>"
+
+#: changedetectionio/forms.py
+msgid "Relative time format"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Long (1 minute ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Short (1m ago)"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "Navigation sidebar"
+msgstr ""
+
+#: changedetectionio/forms.py
+msgid "API access token security check enabled"
+msgstr "已启用 API 访问令牌安全检查"
+
+#: changedetectionio/forms.py
+msgid "Treat empty pages as a change?"
+msgstr "将空页面视为变更？"
+
+#: changedetectionio/forms.py
+msgid "Ignore Text"
+msgstr "忽略文本"
+
+#: changedetectionio/forms.py
+msgid "Ignore whitespace"
+msgstr "忽略空白"
+
+#: changedetectionio/forms.py
+msgid "Screenshot: Minimum Change Percentage"
+msgstr ""
+
+#: changedetectionio/forms.py
 msgid "Should contain zero or more attempts"
 msgstr "应为 0 或更多次"
 
