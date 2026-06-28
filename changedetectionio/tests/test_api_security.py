@@ -477,6 +477,79 @@ def test_api_time_validation_edge_cases(client, live_server, measure_memory_usag
     delete_all_watches(client)
 
 
+def test_api_browser_steps_validation(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test browser_steps validation for invalid operations and structures.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Empty browser step
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "browser_steps": [
+                {"operation": "", "selector": "", "optional_value": ""}
+            ]
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept (empty is valid as null)
+    assert res.status_code in [201, 400]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 2: Invalid operation type
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "browser_steps": [
+                {"operation": "invalid_operation", "selector": "#test", "optional_value": ""}
+            ]
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept (validation happens at runtime) or reject
+    assert res.status_code in [201, 400]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 3: Missing required fields in browser step
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "browser_steps": [
+                {"operation": "click"}  # Missing selector and optional_value
+            ]
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should be rejected due to schema validation
+    assert res.status_code == 400
+
+    # Test 4: Extra fields in browser step
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "browser_steps": [
+                {"operation": "click", "selector": "#test", "optional_value": "", "extra_field": "value"}
+            ]
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should be rejected due to additionalProperties: false
+    assert res.status_code == 400
+
+    delete_all_watches(client)
+
+
 def test_api_queue_manipulation(client, live_server, measure_memory_usage, datastore_path):
     """
     Test queue behavior under stress and edge cases.
