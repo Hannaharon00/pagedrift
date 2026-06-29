@@ -180,6 +180,111 @@ def test_invalid_locale(client, live_server, measure_memory_usage, datastore_pat
         "Should remain in en-GB when an invalid locale is provided"
 
 
+def test_language_persistence_in_session(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that the language preference persists across multiple requests
+    within the same session, and that auto-detect properly clears the preference.
+    """
+
+    # Establish session cookie
+    client.get(url_for("watchlist.index"), follow_redirects=True)
+
+    # Set language to Italian
+    res = client.post(
+        url_for("set_language", locale="it"),
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Make multiple requests - language should persist
+    for _ in range(3):
+        res = client.get(
+            url_for("watchlist.index"),
+            follow_redirects=True
+        )
+
+        assert res.status_code == 200
+        # lang attribute is the canonical "which locale rendered?" signal; a
+        # free-text 'Annulla' check would also work but the lang attribute
+        # can't be a substring accident.
+        assert b'<html lang="it"' in res.data, "Italian rendering should persist across requests"
+
+    # Verify locale is in session
+    with client.session_transaction() as sess:
+        assert sess.get('locale') == 'it', "Locale should be set in session"
+
+    # Call auto-detect to clear the locale
+    res = client.post(
+        url_for("ui.delete_locale_language_session_var_if_it_exists"),
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+    # Verify the flash message appears (in English since we cleared the locale)
+    assert b"Language set to auto-detect from browser" in res.data, "Should show flash message"
+
+    # Verify locale was removed from session
+    with client.session_transaction() as sess:
+        assert 'locale' not in sess, "Locale should be removed from session after auto-detect"
+
+    # Now requests should use browser default. Send an explicit
+    # Accept-Language header so Babel's best_match has something to resolve
+    # against — without one the test client sends nothing and the lang
+    # attribute renders as 'None'.
+    res = client.get(
+        url_for("watchlist.index"),
+        headers={'Accept-Language': 'en-GB,en;q=0.9'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+    assert b'<html lang="en-GB"' in res.data, "Should fall back to en-GB after auto-detect clears the Italian session locale"
+    assert b'<html lang="it"' not in res.data, "Italian lang attribute must be gone after auto-detect"
+
+
+def test_set_language_with_redirect(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that changing language keeps the user on the same page.
+    Example: User is on /settings, changes language, stays on /settings.
+    """
+    from flask import url_for
+
+    # Establish session cookie
+    client.get(url_for("watchlist.index"), follow_redirects=True)
+
+    # Set language with a redirect parameter (simulating language change from /settings)
+    res = client.post(
+        url_for("set_language", locale="de", redirect="/settings"),
+        follow_redirects=False
+    )
+
+    # Should redirect back to settings
+    assert res.status_code in [302, 303]
+    assert '/settings' in res.location
+
+    # Verify language was set in session
+    with client.session_transaction() as sess:
+        assert sess.get('locale') == 'de'
+
+    # Test with invalid locale (should still redirect safely)
+    res = client.post(
+        url_for("set_language", locale="invalid_locale", redirect="/settings"),
+        follow_redirects=False
+    )
+    assert res.status_code in [302, 303]
+    assert '/settings' in res.location
+
+    # Test with malicious redirect (should default to watchlist)
+    res = client.post(
+        url_for("set_language", locale="en", redirect="https://evil.com"),
+        follow_redirects=False
+    )
+    assert res.status_code in [302, 303]
+    # Should not redirect to evil.com
+    assert 'evil.com' not in res.location
+
+
 def test_time_unit_translations(client, live_server, measure_memory_usage, datastore_path):
     """
     Test that time unit labels (Hours, Minutes, Seconds) and Chrome Extension
