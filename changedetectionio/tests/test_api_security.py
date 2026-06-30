@@ -727,3 +727,51 @@ def test_api_history_html_does_not_serve_as_text_html(client, live_server, measu
     delete_all_watches(client)
 
 
+def test_api_authentication_edge_cases(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test API authentication edge cases.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Missing API key
+    res = client.get(url_for("createwatch"))
+    assert res.status_code == 403, "Missing API key should be forbidden"
+
+    # Test 2: Invalid API key
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': "invalid_key_12345"}
+    )
+    assert res.status_code == 403, "Invalid API key should be forbidden"
+
+    # Test 3: API key with special characters
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': "key<script>alert(1)</script>"}
+    )
+    assert res.status_code == 403, "Invalid API key should be forbidden"
+
+    # Test 4: Very long API key
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': "x" * 10000}
+    )
+    assert res.status_code == 403, "Invalid API key should be forbidden"
+
+    # Test 5: Case sensitivity of API key
+    wrong_case_key = api_key.upper() if api_key.islower() else api_key.lower()
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': wrong_case_key}
+    )
+    # Should be forbidden (keys are case-sensitive)
+    assert res.status_code == 403, "Wrong case API key should be forbidden"
+
+    # Test 6: Valid API key should work
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200, "Valid API key should work"
