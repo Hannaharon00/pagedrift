@@ -456,6 +456,86 @@ def test_watch_edit_no_tag_fields_are_editable(
 
 
 # ---------------------------------------------------------------------------
+# Evaluator cascade — gated on the same checkbox as the UI
+# ---------------------------------------------------------------------------
+
+def test_resolve_llm_field_uses_tag_value_when_group_overrides_enabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    resolve_llm_field returns the tag's value (and tag name as source) when the watch
+    has no own value and the group is opted in.
+    """
+    from changedetectionio.llm.evaluator import resolve_llm_field
+
+    ds = client.application.config.get('DATASTORE')
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Cascade Group', llm_intent='Group-level intent',
+                                 ai=True)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    watch = ds.data['watching'][watch_uuid]
+    value, source = resolve_llm_field(watch, ds, 'llm_intent')
+
+    assert value == 'Group-level intent'
+    assert source == 'Cascade Group'
+
+    delete_all_watches(client)
+
+
+def test_resolve_llm_field_ignores_tag_value_when_group_overrides_disabled(
+        client, live_server, measure_memory_usage, datastore_path):
+    """The UI hint and the evaluator agree: no opt-in, no inheritance."""
+    from changedetectionio.llm.evaluator import resolve_llm_field
+
+    ds = client.application.config.get('DATASTORE')
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Cascade Group', llm_intent='Group-level intent',
+                                 ai=False)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    watch = ds.data['watching'][watch_uuid]
+    value, source = resolve_llm_field(watch, ds, 'llm_intent')
+
+    assert value == ''
+    assert source == ''
+
+    delete_all_watches(client)
+
+
+def test_resolve_llm_field_uses_watch_value_over_tag(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    resolve_llm_field prefers the watch's own value over the tag's, opted in or not.
+    """
+    from changedetectionio.llm.evaluator import resolve_llm_field
+
+    ds = client.application.config.get('DATASTORE')
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+
+    watch_uuid = _create_watch(client, test_url, api_token)
+    tag_uuid = _add_tag_with_llm(ds, 'Override Group', llm_intent='Tag intent',
+                                 ai=True)
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    ds.data['watching'][watch_uuid]['llm_intent'] = 'Watch-level intent'
+    watch = ds.data['watching'][watch_uuid]
+
+    value, source = resolve_llm_field(watch, ds, 'llm_intent')
+
+    assert value == 'Watch-level intent'
+    assert source == 'watch'
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
 # Both fields overridden independently
 # ---------------------------------------------------------------------------
 
