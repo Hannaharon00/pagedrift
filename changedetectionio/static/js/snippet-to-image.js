@@ -405,3 +405,105 @@ async function shareImage(platform, jpegDataUrl) {
     window.open(shareUrl, '_blank', 'width=600,height=400');
 }
 
+/**
+ * Main function: Convert selected diff text to a shareable JPEG image
+ *
+ * Features:
+ * - Expands partial selections to full lines
+ * - Preserves all diff highlighting and formatting
+ * - Adds metadata footer with URL and version info
+ * - Embeds EXIF metadata in the JPEG
+ * - Opens in new window or downloads if popup blocked
+ */
+async function diffToJpeg() {
+    // Validate dependencies
+    if (typeof html2canvas === 'undefined') {
+        alert("html2canvas library is not loaded yet. Please wait a moment and try again.");
+        return;
+    }
+
+    // Validate selection
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+        alert(i18nT('imgSelectFirst', "Please select the text/lines you want to capture first by highlighting with your mouse."));
+        return;
+    }
+
+    const originalRange = selection.getRangeAt(0);
+    const differenceElement = document.getElementById("difference");
+
+    if (!differenceElement || !differenceElement.contains(originalRange.commonAncestorContainer)) {
+        alert(i18nT('imgSelectWithin', "Please select text within the diff content."));
+        return;
+    }
+
+    // Setup UI state
+    const btn = document.getElementById("share-as-image-btn");
+    const originalBtnHtml = btn ? btn.innerHTML : '';
+    setButtonState(btn, true);
+
+    let tempElement = null;
+
+    try {
+        // Expand selection to full lines and clone content
+        const expandedRange = expandRangeToFullLines(originalRange, differenceElement);
+        const selectedFragment = expandedRange.cloneContents();
+
+        // Count lines for footer
+        const selectedLines = countLines(selectedFragment);
+        const totalLines = countLines(differenceElement);
+
+        // Create temporary element with proper styling
+        tempElement = createCaptureElement(selectedFragment, differenceElement);
+        // Append footer to innerWrapper (inside the border), not outerWrapper
+        tempElement._innerWrapper.appendChild(createFooter(selectedLines, totalLines));
+
+        // Add to DOM for rendering
+        document.body.appendChild(tempElement);
+
+        // Wait for rendering
+        await new Promise(resolve => setTimeout(resolve, RENDER_DELAY_MS));
+
+        // Capture to canvas
+        const canvas = await html2canvas(tempElement, {
+            scale: CANVAS_SCALE,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            backgroundColor: '#ffffff',
+            scrollX: 0,
+            scrollY: 0
+        });
+
+        // Validate canvas
+        if (canvas.width === 0 || canvas.height === 0) {
+            throw new Error("Canvas is empty - no content captured");
+        }
+
+        // Convert to JPEG
+        let jpeg = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
+
+        if (jpeg === "data:," || jpeg.length < 100) {
+            throw new Error("Failed to generate image data");
+        }
+
+        // Add EXIF metadata
+        jpeg = addExifMetadata(jpeg);
+
+        // Display the image
+        displayImage(jpeg);
+
+        // Clear selection
+        selection.removeAllRanges();
+
+    } catch (error) {
+        console.error("Error generating image:", error);
+        alert(i18nT('imgGenerateFailed', 'Failed to generate image: %(error)s').split('%(error)s').join(error.message));
+    } finally {
+        // Cleanup
+        if (tempElement && tempElement.parentNode) {
+            tempElement.parentNode.removeChild(tempElement);
+        }
+        setButtonState(btn, false, originalBtnHtml);
+    }
+}

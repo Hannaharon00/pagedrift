@@ -4621,6 +4621,62 @@ msgstr "使用群組以僅提取該文字 - 範例"
 msgid "returns a list of years only"
 msgstr "僅傳回年份列表"
 
+#: changedetectionio/templates/menu.html
+msgid "EDIT"
+msgstr "編輯"
+
+#: changedetectionio/templates/menu.html
+msgid "Website Change Detection and Notification."
+msgstr "網站變更檢測與通知。"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI Mode"
+msgstr "切換 AI 模式"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI mode"
+msgstr "切換 AI 模式"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle Light/Dark Mode"
+msgstr "切換亮 / 暗模式"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle light/dark mode"
+msgstr "切換亮 / 暗模式"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Add a page watch"
+msgstr "新增網頁監測"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Page Watches"
+msgstr "網頁監測任務"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Unread changes"
+msgstr "未讀變更"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Watch Groups"
+msgstr "監測群組"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Import lists of web pages"
+msgstr "匯入網頁清單"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers (coming soon)"
+msgstr "瀏覽器（即即推出）"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers"
+msgstr "瀏覽器"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "soon"
+msgstr "即將推出"
+
 #: changedetectionio/templates/sidebar-nav.html
 msgid "Search, or Use Alt+S Key"
 msgstr "搜尋，或使用 Alt+S 鍵"
