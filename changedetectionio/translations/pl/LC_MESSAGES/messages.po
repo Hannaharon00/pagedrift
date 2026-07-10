@@ -4505,6 +4505,66 @@ msgstr "Tekst wywołany"
 msgid "Triggers a change if this text appears, AND something changed in the document."
 msgstr "Wywołuje zmianę, jeśli pojawi się ten tekst ORAZ nastąpiła jakaś zmiana w dokumencie."
 
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Tekst pominięty"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Nie jest brane pod uwagę przy obliczaniu zmian, ale nadal jest wyświetlane."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Tekst z pogrubieniem"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Wykrywanie zmian nie zostanie wykonane, ponieważ ten tekst już istnieje."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr "Sekcje ustawień"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr "Potwierdź czynność"
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr "Jesteś pewien?"
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr "<p>Czy na pewno chcesz kontynuować?</p>"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr "Potwierdź"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Delete %(name)s?"
+msgstr "Czy chcesz usunąć %(name)s?"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "<p>Are you sure you want to delete <strong>%(name)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>Czy na pewno chcesz usunąć <strong>%(name)s</strong>?</p><p>Tej czynności nie można cofnąć.</p>"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Unlink %(name)s?"
+msgstr "Czy chcesz usunąć powiązanie z %(name)s?"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from <strong>%(name)s</strong>?</p><p>The tag will be kept but watches"
+" will be removed from it.</p>"
+msgstr ""
+"<p>Czy na pewno chcesz usunąć wszystkie obserwacje z <strong>%(name)s</strong>?</p><p>Tag zostanie zachowany, ale "
+"obserwacje zostaną z niego usunięte.</p>"
+
 #: changedetectionio/templates/base.html
 msgid "Change Detection Diff"
 msgstr "Wykrywanie zmian – porównanie"
