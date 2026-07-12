@@ -1785,6 +1785,87 @@ paths:
         '404':
           description: Tag not found
 
+    put:
+      operationId: updateTag
+      tags: [Group / Tag Management]
+      summary: Update tag
+      description: Update an existing tag using JSON
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X PUT "http://localhost:5000/api/v1/tag/550e8400-e29b-41d4-a716-446655440000" \
+              -H "x-api-key: YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "title": "Updated Production Sites",
+                "notification_muted": false
+              }'
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'application/json'
+            }
+            tag_uuid = '550e8400-e29b-41d4-a716-446655440000'
+            data = {
+                'title': 'Updated Production Sites',
+                'notification_muted': False
+            }
+            response = requests.put(f'http://localhost:5000/api/v1/tag/{tag_uuid}', 
+                                  headers=headers, json=data)
+            print(response.text)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Tag unique ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      responses:
+        '200':
+          description: Tag updated successfully
+        '500':
+          description: Server error
+
+    delete:
+      operationId: deleteTag
+      tags: [Group / Tag Management]
+      summary: Delete tag
+      description: Delete a tag/group and remove it from all web page change monitors (watches)
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X DELETE "http://localhost:5000/api/v1/tag/550e8400-e29b-41d4-a716-446655440000" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+            
+            headers = {'x-api-key': 'YOUR_API_KEY'}
+            tag_uuid = '550e8400-e29b-41d4-a716-446655440000'
+            response = requests.delete(f'http://localhost:5000/api/v1/tag/{tag_uuid}', headers=headers)
+            print(response.text)
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: Tag unique ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Tag deleted successfully
+
 
   /notifications:
     get:
