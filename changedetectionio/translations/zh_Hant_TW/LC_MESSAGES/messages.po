@@ -4369,6 +4369,70 @@ msgstr "分享此連結："
 msgid "Real-time updates offline"
 msgstr "離線即時更新"
 
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "選擇語言"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "從瀏覽器自動檢測"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr "語言支援尚在 Beta 階段，請在 GitHub 上提交 PR 以協助我們改進。"
+
+#: changedetectionio/templates/base.html
+msgid "AI / LLM not configured"
+msgstr "AI / LLM 未設定"
+
+#: changedetectionio/templates/base.html
+msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
+msgstr "尚未啟用 LLM 驅動的摘要功能。請在「設定」中設定 AI 供應商以開始使用。"
+
+#: changedetectionio/templates/base.html
+msgid "Go to AI / LLM Settings"
+msgstr "前往 AI / LLM 設定"
+
+#: changedetectionio/templates/base.html changedetectionio/templates/sidebar-nav.html
+msgid "Search"
+msgstr "搜尋"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "URL or Title in '%(title)s'"
+msgstr "URL 或標題 在 '%(title)s'"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "URL 或標題"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "輸入搜尋關鍵字 ..."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"<strong>On</strong> &ndash; every watch in this group uses the AI settings below, unless it fills in its own. "
+"<strong>Off</strong> &ndash; no AI for any watch in this group. <strong>Leave it to each watch</strong> &ndash; this "
+"group has no say; each watch uses its own AI settings."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is ON for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is OFF for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Describe what you care about. The AI evaluates every detected change against this and only notifies you when it "
+"matches."
+msgstr "描述您關心的內容。AI 會針對此描述評估每次檢測到的變更，且僅在符合時才通知您。"
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "List each new item added with its name and price. Translate to English."
 msgstr "列出每個新新增項目的名稱與價格。翻譯成英文。"
