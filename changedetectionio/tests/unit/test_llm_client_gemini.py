@@ -98,3 +98,20 @@ class TestGeminiFlashLiteClientHandling(unittest.TestCase):
         self.assertEqual(mock_call.call_count, 2)
 
 
+class TestThinkingExtraBodyFlashLite(unittest.TestCase):
+    def test_flash_lite_model_gets_no_thinking_config(self):
+        self.assertIsNone(ev._thinking_extra_body("gemini/gemini-2.0-flash-lite", budget=0))
+        self.assertIsNone(ev._thinking_extra_body("gemini/gemini-3.5-flash-lite", budget=0))
+
+    def test_non_gemini_model_gets_no_thinking_config(self):
+        self.assertIsNone(ev._thinking_extra_body("gpt-4o-mini", budget=100))
+
+    @patch("litellm.get_model_info")
+    def test_gemini_supporting_reasoning_gets_thinking_config(self, mock_info):
+        mock_info.return_value = {"supports_reasoning": True}
+        result = ev._thinking_extra_body("gemini/gemini-2.5-flash", budget=512)
+        self.assertEqual(result, {"generationConfig": {"thinkingConfig": {"thinkingBudget": 512}}})
+
+
+if __name__ == "__main__":
+    unittest.main()
