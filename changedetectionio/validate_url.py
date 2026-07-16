@@ -315,3 +315,91 @@ def validate_fetch_url(url):
         raise ValueError(reason)
 
 
+def is_safe_valid_url(test_url):
+    from changedetectionio import strtobool
+    from changedetectionio.jinja2_custom import render as jinja_render
+    import os
+    import re
+    import validators
+
+    # Validate input type first - must be a non-empty string
+    if test_url is None:
+        logger.warning('URL validation failed: URL is None')
+        return False
+
+    if not isinstance(test_url, str):
+        logger.warning(f'URL validation failed: URL must be a string, got {type(test_url).__name__}')
+        return False
+
+    if not test_url.strip():
+        logger.warning('URL validation failed: URL is empty or whitespace only')
+        return False
+
+    # Per-request cache: same URL is often validated 2-3x per watchlist render (sort + display).
+    # Flask's g is scoped to one request and auto-cleared on teardown, so dynamic Jinja2 URLs
+    # like {{microtime()}} are always re-evaluated on the next request.
+    # Falls back gracefully when called outside a request context (e.g. background workers).
+    _cache_key = test_url
+    try:
+        from flask import g
+        _cache = g.setdefault('_url_validation_cache', {})
+        if _cache_key in _cache:
+            return _cache[_cache_key]
+    except RuntimeError:
+        _cache = None  # No app context
+
+    allow_file_access = strtobool(os.getenv('ALLOW_FILE_URI', 'false'))
+    safe_protocol_regex = '^(http|https|ftp|file):' if allow_file_access else '^(http|https|ftp):'
+
+    # See https://github.com/dgtlmoon/changedetection.io/issues/1358
+
+    # Remove 'source:' prefix so we dont get 'source:javascript:' etc
+    # 'source:' is a valid way to tell us to return the source
+
+    r = re.compile('^source:', re.IGNORECASE)
+    test_url = r.sub('', test_url)
+
+    # Check the actual rendered URL in case of any Jinja markup
+    # Only run jinja_render when the URL actually contains Jinja2 syntax - creating a new
+    # ImmutableSandboxedEnvironment is expensive and is called once per watch per page load
+    if '{%' in test_url or '{{' in test_url:
+        try:
+            test_url = jinja_render(test_url)
+        except Exception as e:
+            logger.error(f'URL "{test_url}" is not correct Jinja2? {str(e)}')
+            return False
+
+    # Check query parameters and fragment
+    if re.search(r'[<>]', test_url):
+        logger.warning(f'URL "{test_url}" contains suspicious characters')
+        return False
+
+    # Reject backslashes — urllib's urlparse and urllib3's parse_url disagree on URLs containing
+    # a backslash (e.g. http://INTERNAL:8888\@PUBLIC/), which is the documented SSRF bypass in
+    # GHSA-rph4-96w6-q594. A backslash has no legitimate use in an HTTP URL, so block at add-time.
+    if '\\' in test_url:
+        logger.warning(f'URL "{test_url}" contains a backslash — rejected (parser-differential SSRF vector).')
+        return False
+
+    # Normalize URL encoding - handle both encoded and unencoded query parameters
+    test_url = normalize_url_encoding(test_url)
+
+    # Be sure the protocol is safe (no file, etcetc)
+    pattern = re.compile(os.getenv('SAFE_PROTOCOL_REGEX', safe_protocol_regex), re.IGNORECASE)
+    if not pattern.match(test_url.strip()):
+        logger.warning(f'URL "{test_url}" is not safe, aborting.')
+        return False
+
+    # If hosts that only contain alphanumerics are allowed ("localhost" for example)
+    allow_simplehost = not strtobool(os.getenv('BLOCK_SIMPLEHOSTS', 'False'))
+    try:
+        if not test_url.strip().lower().startswith('file:') and not validators.url(test_url, simple_host=allow_simplehost):
+            logger.warning(f'URL "{test_url}" failed validation, aborting.')
+            return False
+    except validators.ValidationError:
+        logger.warning(f'URL f"{test_url}" failed validation, aborting.')
+        return False
+
+    if _cache is not None:
+        _cache[_cache_key] = True
+    return True
