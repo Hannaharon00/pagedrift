@@ -102,3 +102,60 @@ class TestLLMSettingsDumpShapes(unittest.TestCase):
         self.assertEqual(out['tokens_this_month'], 42)
 
 
+class TestLLMSettingsFieldGroups(unittest.TestCase):
+    def test_connection_fields_all_declared(self):
+        declared = set(LLMSettings.model_fields)
+        for name in LLMSettings.CONNECTION_FIELDS:
+            self.assertIn(name, declared, f"CONNECTION_FIELDS lists undeclared field: {name}")
+
+    def test_protected_fields_all_declared(self):
+        declared = set(LLMSettings.model_fields)
+        for name in LLMSettings.PROTECTED_FIELDS:
+            self.assertIn(name, declared, f"PROTECTED_FIELDS lists undeclared field: {name}")
+
+    def test_connection_and_protected_disjoint(self):
+        # System-managed counters and user-set provider config must not overlap —
+        # otherwise a "clear credentials" action would also wipe counters.
+        overlap = set(LLMSettings.CONNECTION_FIELDS) & set(LLMSettings.PROTECTED_FIELDS)
+        self.assertEqual(overlap, set(), f"CONNECTION/PROTECTED overlap: {overlap}")
+
+
+class TestLLMSettingsRoundTrip(unittest.TestCase):
+    def test_counter_round_trip_via_dump_load(self):
+        original = LLMSettings.model_validate({
+            'model': 'gpt-4o-mini',
+            'tokens_total_cumulative': 123456,
+            'tokens_this_month': 789,
+            'tokens_month_key': '2026-05',
+            'cost_usd_total_cumulative': 12.34,
+            'cost_usd_this_month': 0.56,
+        })
+        roundtripped = LLMSettings.model_validate(original.model_dump())
+        self.assertEqual(roundtripped.tokens_total_cumulative, 123456)
+        self.assertEqual(roundtripped.tokens_this_month, 789)
+        self.assertEqual(roundtripped.tokens_month_key, '2026-05')
+        self.assertEqual(roundtripped.cost_usd_total_cumulative, 12.34)
+        self.assertEqual(roundtripped.cost_usd_this_month, 0.56)
+
+    def test_form_merge_preserves_counters(self):
+        # The POST handler pattern: validate existing storage, overlay form input
+        # (with PROTECTED_FIELDS stripped), re-validate. Counters in storage must
+        # survive even if the form somehow tried to set them.
+        existing = LLMSettings.model_validate({
+            'model': 'gpt-4o-mini', 'tokens_total_cumulative': 99999,
+        })
+        form_input = {
+            'model': 'claude-3-5-haiku-20251001',
+            'enabled': False,
+        }
+        # Strip protected fields from form input as the route handler does
+        for protected in LLMSettings.PROTECTED_FIELDS:
+            form_input.pop(protected, None)
+        merged = LLMSettings.model_validate({**existing.model_dump(), **form_input})
+        self.assertEqual(merged.model, 'claude-3-5-haiku-20251001')
+        self.assertFalse(merged.enabled)
+        self.assertEqual(merged.tokens_total_cumulative, 99999)
+
+
+if __name__ == '__main__':
+    unittest.main()
