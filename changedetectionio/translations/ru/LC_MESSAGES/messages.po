@@ -4329,6 +4329,58 @@ msgstr "Вход"
 msgid "Actions"
 msgstr "Действия"
 
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Добавьте строку/правило после"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Удалить эту строку/правило"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Проверьте это правило на текущем снимке"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr "Установите почасовой/еженедельный график"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr "Запланируйте ограничения по времени"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr "Часы работы"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr "Выходные"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr "Перезагрузить"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr "Внимание! Продолжительность одного или нескольких ваших «дней» может продлиться до следующего дня."
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr "Это может иметь непредвиденные последствия."
+
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Дополнительная помощь и примеры использования планировщика"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Хотите использовать расписание?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Сначала подтвердите/сохраните настройки часового пояса."
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid ""
