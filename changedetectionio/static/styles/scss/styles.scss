@@ -986,6 +986,87 @@ ul {
   @extend .inline-tag;
 }
 
+.ldjson-price-track-offer {
+  a.pure-button {
+    border-radius: 3px;
+    padding: 3px;
+    background-color: var(--color-background-button-green);
+  }
+
+  font-weight: bold;
+  font-style: italic;
+}
+
+.price-follow-tag-icon {
+  display: inline-block;
+  height: 0.8rem;
+  vertical-align: middle;
+}
+
+
+#quick-watch-processor-type {
+  ul#processor {
+    color: #fff;
+    padding-left: 0px;
+    li {
+      list-style: none;
+      font-size: 0.9rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  label, input {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.restock-label {
+  &.in-stock {
+    background-color: #7a0cc5;
+    color: #fff;
+  }
+  &.not-in-stock {
+    background-color: var(--color-background-button-cancel);
+    color: #777;
+  }
+  &.error {
+    background-color: var(--color-background-button-error);
+    color: #fff;
+    opacity: 0.7;
+  }
+  &.price {
+    border: 1px solid var(--color-background-button-cancel);
+  }
+
+  svg {
+    vertical-align: middle;
+  }
+
+  @extend .inline-tag;
+}
+
+/* Price up/down indicator next to the restock price, e.g. "▼ -18%" */
+.price-change {
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: 90%;
+  margin-left: 4px;
+  vertical-align: middle;
+
+  /* Price dropped = good for a shopper = green; price rose = red */
+  &.down {
+    color: var(--color-background-button-green);
+  }
+
+  &.up {
+    color: var(--color-background-button-error);
+  }
+}
+
 #chrome-extension-link {
   img {
     height: 21px;

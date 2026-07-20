@@ -147,3 +147,58 @@ RSS_ENTRY_TEMPLATE = """<article class="rss-item" id="{{ entry.id|replace('"', '
 """
 
 
+def format_rss_items(rss_content: str, render_anchor_tag_content=False) -> str:
+    """
+    Format RSS/Atom feed items in a readable text format using feedparser and Jinja2.
+
+    Converts RSS <item> or Atom <entry> elements to formatted text with all available fields:
+    - Basic fields: title, link, id/guid, published date, updated date
+    - Author fields: author, author_detail, contributors, publisher
+    - Content fields: content, summary, description
+    - Metadata: tags, category, rights, license
+    - Media: enclosures, media_content, media_thumbnail
+    - Dublin Core elements: dc:creator, dc:date, dc:publisher, etc. (mapped by feedparser)
+
+    Args:
+        rss_content: The RSS/Atom feed content
+        render_anchor_tag_content: Whether to render anchor tag content in descriptions (unused, kept for compatibility)
+
+    Returns:
+        Formatted HTML content ready for html_to_text conversion
+    """
+    try:
+        import feedparser
+        from changedetectionio.jinja2_custom import safe_jinja
+
+        # Parse the feed - feedparser handles all RSS/Atom variants, CDATA, entity unescaping, etc.
+        feed = feedparser.parse(rss_content)
+
+        # Determine feed type for appropriate labels
+        is_atom = feed.version and 'atom' in feed.version
+
+        formatted_items = []
+        for entry in feed.entries:
+            # Render the entry using Jinja2 template
+            rendered = safe_jinja.render(RSS_ENTRY_TEMPLATE, entry=entry, is_atom=is_atom)
+            formatted_items.append(rendered.strip())
+
+        # Wrap each item in a div with classes (first, last, item-N)
+        items_html = []
+        total_items = len(formatted_items)
+        for idx, item in enumerate(formatted_items):
+            classes = ['rss-item']
+            if idx == 0:
+                classes.append('first')
+            if idx == total_items - 1:
+                classes.append('last')
+            classes.append(f'item-{idx + 1}')
+
+            class_str = ' '.join(classes)
+            items_html.append(f'<div class="{class_str}">{item}</div>')
+
+        return '<html><body>\n' + "\n<br>".join(items_html) + '\n</body></html>'
+
+    except Exception as e:
+        logger.warning(f"Error formatting RSS items: {str(e)}")
+        # Fall back to original content
+        return rss_content
