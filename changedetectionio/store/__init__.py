@@ -505,6 +505,140 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
                     except OSError as e:
                         logger.warning(f"Failed to delete checksum file for {uuid}: {e}")
 
+        logger.info(f"Cleared {deleted_count} checksum files to force reprocessing")
+        return deleted_count
+
+    def clear_checksums_for_tag(self, tag_uuid):
+        """
+        Delete last-checksum.txt files for all watches using a specific tag.
+
+        This should be called when a tag configuration is edited, since watches
+        inherit tag settings and need to reprocess.
+
+        Args:
+            tag_uuid: UUID of the tag that was modified
+
+        Returns:
+            int: Number of checksum files deleted
+        """
+        deleted_count = 0
+        for uuid, watch in self.__data['watching'].items():
+            if watch.get('tags') and tag_uuid in watch['tags']:
+                if watch.data_dir:
+                    checksum_file = os.path.join(watch.data_dir, 'last-checksum.txt')
+                    if os.path.isfile(checksum_file):
+                        try:
+                            os.remove(checksum_file)
+                            deleted_count += 1
+                            logger.debug(f"Cleared checksum for watch {uuid} (tag {tag_uuid})")
+                        except OSError as e:
+                            logger.warning(f"Failed to delete checksum file for {uuid}: {e}")
+
+        logger.info(f"Cleared {deleted_count} checksum files for tag {tag_uuid}")
+        return deleted_count
+
+    def commit(self):
+        """
+        Save settings immediately to disk using atomic write.
+
+        Uses atomic write pattern (temp file + rename) for crash safety.
+
+        Fire-and-forget: Logs errors but does not raise exceptions.
+        Settings data remains in memory even if save fails, so next commit will retry.
+        """
+        try:
+            self._save_settings()
+            logger.debug("Committed settings")
+        except Exception as e:
+            logger.error(f"Failed to commit settings: {e}")
+
+    def update_watch(self, uuid, update_obj):
+
+        # It's possible that the watch could be deleted before update
+        if not self.__data['watching'].get(uuid):
+            return
+
+        with self.lock:
+
+            # In python 3.9 we have the |= dict operator, but that still will lose data on nested structures...
+            for dict_key, d in self.generic_definition.items():
+                if isinstance(d, dict):
+                    if update_obj is not None and dict_key in update_obj:
+                        self.__data['watching'][uuid][dict_key].update(update_obj[dict_key])
+                        del (update_obj[dict_key])
+
+            self.__data['watching'][uuid].update(update_obj)
+
+        # Immediate save
+        self.__data['watching'][uuid].commit()
+
+    @property
+    def threshold_seconds(self):
+        seconds = 0
+        for m, n in Watch.mtable.items():
+            x = self.__data['settings']['requests']['time_between_check'].get(m)
+            if x:
+                seconds += x * n
+        return seconds
+
+    @property
+    def unread_changes_count(self):
+        unread_changes_count = 0
+        for uuid, watch in self.__data['watching'].items():
+            if watch.history_n >= 2 and watch.viewed == False:
+                unread_changes_count += 1
+
+        return unread_changes_count
+
+    @property
+    def data(self):
+        # Re #152, Return env base_url if not overriden
+        # Re #148 - Some people have just {{ base_url }} in the body or title, but this may break some notification services
+        #           like 'Join', so it's always best to atleast set something obvious so that they are not broken.
+
+        active_base_url = BASE_URL_NOT_SET_TEXT
+        if self.__data['settings']['application'].get('base_url'):
+            active_base_url = self.__data['settings']['application'].get('base_url')
+        elif os.getenv('BASE_URL'):
+            active_base_url = os.getenv('BASE_URL')
+
+        # I looked at various ways todo the following, but in the end just copying the dict seemed simplest/most reliable
+        # even given the memory tradeoff - if you know a better way.. maybe return d|self.__data.. or something
+        d = self.__data
+        d['settings']['application']['active_base_url'] = active_base_url.strip('" ')
+        return d
+
+    # Delete a single watch by UUID
+    def delete(self, uuid):
+        """
+        Delete a watch by UUID.
+
+        Uses abstracted storage method for backend-agnostic deletion.
+        Supports 'all' to delete all watches (mainly for testing).
+
+        Args:
+            uuid: Watch UUID to delete, or 'all' to delete all watches
+        """
+        with self.lock:
+            if uuid == 'all':
+                # Delete all watches - capture UUIDs first before modifying dict
+                all_uuids = list(self.__data['watching'].keys())
+
+                for watch_uuid in all_uuids:
+                    # Delete from storage using polymorphic method
+                    try:
+                        self._delete_watch(watch_uuid)
+                    except Exception as e:
+                        logger.error(f"Failed to delete watch {watch_uuid} from storage: {e}")
+
+                    # Send delete signal
+                    watch_delete_signal = signal('watch_deleted')
+                    if watch_delete_signal:
+                        watch_delete_signal.send(watch_uuid=watch_uuid)
+
+                # Clear the dict
+                self.__data['watching'] = {}
+
                 # Mainly used for testing to allow all items to flush before running next test
                 time.sleep(1)
 
