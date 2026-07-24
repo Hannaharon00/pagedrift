@@ -478,6 +478,34 @@ def test_data_sanity(client, live_server, measure_memory_usage, datastore_path):
 
     delete_all_watches(client)
 
+# All examples should give a prive of 666.66
+def test_special_prop_examples(client, live_server, measure_memory_usage, datastore_path):
+    import glob
+    
+
+    test_url = url_for('test_endpoint', _external=True)
+    check_path = os.path.join(os.path.dirname(__file__), "itemprop_test_examples", "*.txt")
+    files = glob.glob(check_path)
+    assert files
+    for test_example_filename in files:
+        with open(test_example_filename, 'r') as example_f:
+            with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as test_f:
+                test_f.write(f"<html><body>{example_f.read()}</body></html>")
+
+            # Now fetch it and check the price worked
+            client.post(
+                url_for("ui.ui_views.form_quick_watch_add"),
+                data={"url": test_url, "tags": 'restock tests', 'processor': 'restock_diff'},
+                follow_redirects=True
+            )
+            wait_for_all_checks(client)
+            res = client.get(url_for("watchlist.index"))
+            assert b'ception' not in res.data
+            assert b'155.55' in res.data
+
+    delete_all_watches(client)
+
+
 def test_itemprop_as_str(client, live_server, measure_memory_usage, datastore_path):
 
     test_return_data = f"""<html>
