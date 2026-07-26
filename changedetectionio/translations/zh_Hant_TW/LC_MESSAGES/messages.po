@@ -4434,6 +4434,71 @@ msgid ""
 msgstr "描述您關心的內容。AI 會針對此描述評估每次檢測到的變更，且僅在符合時才通知您。"
 
 #: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
+msgstr "為此標籤 / 群組中的所有監測任務設定變更意圖。每個監測任務都可以使用自己的意圖進行覆寫。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "From group '%(name)s': %(value)s"
+msgstr "來自群組 '%(name)s'：%(value)s"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Alert me when the price drops below $300, or a new product is launched. Ignore footer and navigation changes."
+msgstr "例如：當價格跌破 $300 或推出新產品時提醒我。忽略頁尾與導覽列的變更。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "e.g. Flag price changes or new product launches across all watches in this group"
+msgstr "例如：在此群組中的所有監測任務中標記價格變更或新產品推出"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Examples:"
+msgstr "範例："
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only notify if the price drops below $200, or a limited-time deal is added"
+msgstr "僅在價格降至 $200 以下或新增限時優惠時通知"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Alert when a new recall, safety notice, or product withdrawal is published"
+msgstr "當發布新的召回、安全通知或產品撤銷時發出警報"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Notify when a new grant round opens or an application deadline is announced"
+msgstr "當新一輪補助開放或宣布申請截止日期時通知"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Only important if package versions change or a CVE is mentioned"
+msgstr "僅在套件版本變更或提及 CVE 時才重要"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "AI pre-filter active: <code>%(filter)s</code> — narrows content scope before evaluation"
+msgstr "AI 預先過濾器已啟用：<code>%(filter)s</code> — 在評估前縮小內容範圍"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"When a change is detected, the AI describes it according to your instructions and replaces <code>%(diff)s</code> in "
+"your notification. Use <code>%(raw_diff)s</code> if you still want the original diff."
+msgstr "當檢測到變更時，AI 會根據您的說明進行描述，並替換您通知中的 <code>%(diff)s</code>。如果您仍需要原始差異，請使用 <code>%(raw_diff)s</code>。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe how changes should be summarised in notifications for all watches in this group."
+msgstr "描述此群組中所有監測任務的通知應如何摘要變更。"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from the group or from global settings and adds your text after it, so later "
+"edits to that prompt still reach this watch."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Appending keeps the prompt inherited from global settings and adds your text after it, so later edits to that prompt "
+"still reach this group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
 msgid "List each new item added with its name and price. Translate to English."
 msgstr "列出每個新新增項目的名稱與價格。翻譯成英文。"
 
