@@ -106,3 +106,32 @@ def run_socketio_watch_update_test(client, live_server, password_mode="", datast
     # Clean up
     delete_all_watches(client)
 
+def test_everything(live_server, client, measure_memory_usage, datastore_path):
+
+   #  live_server_setup(live_server) # Setup on conftest per function
+
+    run_socketio_watch_update_test(password_mode="", live_server=live_server, client=client, datastore_path=datastore_path)
+
+    ############################ Password required auth check ##############################
+
+    # Enable password check and diff page access bypass
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={"application-password": "foobar",
+              "requests-time_between_check-minutes": 180,
+              'application-fetch_backend': "html_requests"},
+        follow_redirects=True
+    )
+
+    assert b"Password protection enabled." in res.data
+
+    run_socketio_watch_update_test(password_mode="not logged in, should exit on connect", live_server=live_server, client=client, datastore_path=datastore_path)
+    res = client.post(
+        url_for("login"),
+        data={"password": "foobar"},
+        follow_redirects=True
+    )
+
+    # Yes we are correctly logged in
+    assert b"/logout" in res.data
+    run_socketio_watch_update_test(password_mode="should be like normal", live_server=live_server, client=client, datastore_path=datastore_path)
