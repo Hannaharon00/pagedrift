@@ -515,6 +515,77 @@ def test_xpath_20_function_count2(client, live_server, measure_memory_usage, dat
     delete_all_watches(client)
 
 
+def test_xpath_20_function_string_join_matches(client, live_server, measure_memory_usage, datastore_path):
+    set_original_response(datastore_path=datastore_path)
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', _external=True)
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            "include_filters": "xpath:string-join(//*[contains(@class, 'sametext')]|//*[matches(@class, 'changetext')], 'specialconjunction')",
+            "url": test_url,
+            "tags": "",
+            "headers": "",
+            'fetch_backend': "html_requests",
+            "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid=uuid),
+        follow_redirects=True
+    )
+
+    assert b"Some text thats the samespecialconjunctionSome text that will change" in res.data  # in selector
+
+    delete_all_watches(client)
+
+
+def _subtest_xpath_rss(client, datastore_path, content_type='text/html'):
+
+    # Add our URL to the import page
+    test_url = url_for('test_endpoint', content_type=content_type, _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": '', 'edit_and_watch_submit_button': 'Edit > Watch'},
+        follow_redirects=True
+    )
+
+    assert b"Watch added in Paused state, saving will unpause" in res.data
+
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first", unpause_on_save=1),
+        data={
+            "url": test_url,
+            "include_filters": "xpath://item",
+            "tags": '',
+            "fetch_backend": "html_requests",
+            "time_between_check_use_default": "y",
+        },
+        follow_redirects=True
+    )
+
+    assert b"unpaused" in res.data
+    wait_for_all_checks(client)
+
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    assert b"Lets go discount" in res.data, f"When testing for Lets go discount called with content type '{content_type}'"
+    assert b"Events and Announcements" not in res.data, f"When testing for Lets go discount called with content type '{content_type}'" # It should not be here because thats not our selector target
+
+    delete_all_watches(client)
+
 # Be sure all-in-the-wild types of RSS feeds work with xpath
 def test_rss_xpath(client, live_server, measure_memory_usage, datastore_path):
     for feed_header in ['', '<?xml version="1.0" encoding="utf-8"?>']:
