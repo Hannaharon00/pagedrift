@@ -479,3 +479,6 @@ class TestHtmlToText(unittest.TestCase):
         assert 'Real content after the data attribute' in text
 
 
+if __name__ == '__main__':
+    # Can run this file directly for quick testing
+    unittest.main()
