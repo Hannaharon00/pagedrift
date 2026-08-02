@@ -3884,6 +3884,58 @@ msgstr "El valor del cuadro delimitador es demasiado largo"
 msgid "Bounding box must be in format: x,y,width,height (integers only)"
 msgstr "El cuadro delimitador debe tener el formato: x,y,ancho,alto (solo números enteros)"
 
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values must be non-negative"
+msgstr "Los valores del cuadro delimitador no deben ser negativos"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values are too large"
+msgstr "Los valores del cuadro delimitador son demasiado grandes"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection mode must be either \"element\" or \"draw\""
+msgstr "El modo de selección debe ser \"elemento\" o \"dibujo\""
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Minimum Change Percentage"
+msgstr "Porcentaje mínimo de cambio"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Pixel Difference Sensitivity"
+msgstr "Sensibilidad de diferencia de píxeles"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Use global default"
+msgstr "Usar valor predeterminado global"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding Box"
+msgstr "Cuadro delimitador"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection Mode"
+msgstr "Modo de selección"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection mode value is too long"
+msgstr "El valor del modo de selección es demasiado largo"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Screenshot Comparison"
+msgstr "Comparación de capturas de pantalla"
+
+#: changedetectionio/processors/image_ssim_diff/preview.py
+msgid "Preview unavailable - No snapshots captured yet"
+msgstr "Vista previa no disponible: aún no se han capturado instantáneas"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Visual / Image screenshot change detection"
+msgstr "Detección de cambios de captura de pantalla visual/imagen"
+
+#: changedetectionio/processors/image_ssim_diff/processor.py
+msgid "Compares screenshots using fast OpenCV algorithm, 10-100x faster than SSIM"
+msgstr "Compara capturas de pantalla utilizando el rápido algoritmo OpenCV, entre 10 y 100 veces más rápido que SSIM"
+
 #: changedetectionio/processors/restock_diff/difference.py
 msgid "Date"
 msgstr ""
