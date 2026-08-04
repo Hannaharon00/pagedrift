@@ -4926,3 +4926,37 @@ msgstr "Browser"
 msgid "soon"
 msgstr "segera"
 
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Search, or Use Alt+S Key"
+msgstr "Cari, atau Gunakan Tombol Alt+S"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Queue"
+msgstr "Antrean"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Live activity"
+msgstr "Aktivitas langsung"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "A new version is available"
+msgstr "Versi baru tersedia"
+
+#: changedetectionio/validate_url.py
+msgid "API Base URL is not a valid http(s) URL."
+msgstr "URL Dasar API bukan URL http(s) yang valid."
+
+#: changedetectionio/validate_url.py
+msgid ""
+"API Base URL resolves to a private, loopback, link-local or reserved IP address and was blocked to prevent SSRF. To "
+"allow LLM endpoints on private networks (e.g. a local Ollama server) set the environment variable "
+"ALLOW_IANA_RESTRICTED_ADDRESSES=true and restart."
+msgstr ""
+"URL Dasar API mengarah ke alamat IP privat, loopback, link-local, atau reserved dan diblokir untuk mencegah SSRF. "
+"Untuk mengizinkan endpoint LLM pada jaringan privat (mis. server Ollama lokal), atur variabel lingkungan "
+"ALLOW_IANA_RESTRICTED_ADDRESSES=true lalu mulai ulang."
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "Main settings"
+msgstr "Pengaturan utama"
+
