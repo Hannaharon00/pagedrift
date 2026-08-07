@@ -4758,6 +4758,76 @@ msgstr "Wymień wszystkie nowe pozycje wraz z ich nazwami i cenami. Przetłumacz
 msgid "Summarise what events were added or cancelled. Two sentences maximum."
 msgstr "Podsumuj, jakie wydarzenia zostały dodane lub odwołane. Maksymalnie dwa zdania."
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr "Aby użyć XPath 1.0: Dodaj prefiks <code>xpath1:</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr "Kliknij tutaj, aby uzyskać więcej informacji na temat selektorów CSS"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+"Tekst, na który należy poczekać przed wywołaniem zmiany/powiadomienia; wszystkie teksty i wyrażenia regularne są "
+"sprawdzane bez uwzględniania wielkości liter."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr ""
+"Tekst wyzwalający jest przetwarzany na podstawie tekstu wynikowego pochodzącego z dowolnych filtrów CSS/JSON dla tej "
+"obserwacji"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Każdy wiersz jest przetwarzany osobno (każdy wiersz należy traktować jako „LUB”)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Uwaga: Aby użyć wyrażenia regularnego, należy ująć je w ukośniki /. Przykład:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "Można również skorzystać z"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "warunki"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "„Tekst strony” – z opcjami „Zawiera”, „Zaczyna się od”, „Nie zawiera” i wieloma innymi"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+"Na przykład: Brak na stanie\n"
+"Wyprzedane\n"
+"Nie ma na stanie\n"
+"Niedostępne"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Zablokuj wykrywanie zmian, dopóki ten tekst znajduje się na stronie; wszystkie teksty i wyrażenia regularne są "
+"sprawdzane bez uwzględniania wielkości liter. Przydaje się to podczas oczekiwania na ponowną dostępność produktu"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr ""
+"Tekst blokujący jest przetwarzany na podstawie tekstu wynikowego pochodzącego z dowolnych filtrów CSS/JSON dla tej "
+"obserwacji"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "Żadna z podanych tutaj linii nie może istnieć (każdą linię należy traktować jako „LUB”)"
+
 #: changedetectionio/templates/edit/text-options.html
 msgid ""
 "celsius\n"
