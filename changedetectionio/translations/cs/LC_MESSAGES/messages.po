@@ -4370,6 +4370,62 @@ msgstr ""
 msgid "This could have unintended consequences."
 msgstr ""
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "Další nápověda a příklady použití plánovače"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "Chcete použít časový plán?"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Spouštěcí text"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Ignorovaný text"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Blokovaný text"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Nedojde k detekci změn, protože tento text existuje."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 msgid "Select Language"
 msgstr "Vyberte Jazyk"
