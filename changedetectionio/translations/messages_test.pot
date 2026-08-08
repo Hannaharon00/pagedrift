@@ -456,3 +456,35 @@ msgstr ""
 msgid "Render anchor tag content"
 msgstr ""
 
+#: changedetectionio/forms.py:1023
+msgid "Allow anonymous access to watch history page when password is enabled"
+msgstr ""
+
+#: changedetectionio/forms.py:1025
+msgid "Hide muted watches from RSS feed"
+msgstr ""
+
+#: changedetectionio/forms.py:1028
+msgid "Enable RSS reader mode "
+msgstr ""
+
+#: changedetectionio/forms.py:1029
+msgid "Number of changes to show in watch RSS feed"
+msgstr ""
+
+#: changedetectionio/forms.py:1031 changedetectionio/forms.py:1036
+msgid "Should contain zero or more attempts"
+msgstr ""
+
+#: changedetectionio/forms.py:1033
+msgid "Number of times the filter can be missing before sending a notification"
+msgstr ""
+
+#: changedetectionio/forms.py:1056
+msgid "RegEx to extract"
+msgstr ""
+
+#: changedetectionio/forms.py:1057
+msgid "Extract as CSV"
+msgstr ""
+

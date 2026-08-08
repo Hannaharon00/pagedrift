@@ -297,6 +297,116 @@ def test_ua_global_override(client, live_server, measure_memory_usage, datastore
     assert b"html-requests-user-agent" not in res.data
     delete_all_watches(client)
 
+def test_headers_textfile_in_request(client, live_server, measure_memory_usage, datastore_path):
+    import os
+
+    # Add our URL to the import page
+
+    webdriver_ua = "Hello fancy webdriver UA 1.0"
+    requests_ua = "Hello basic requests UA 1.1"
+
+    test_url = url_for('test_headers', _external=True)
+    if os.getenv('PLAYWRIGHT_DRIVER_URL'):
+        # Because its no longer calling back to localhost but from the browser container, set in test-only.yml
+        test_url = test_url.replace('localhost', 'cdio')
+
+    form_data = {
+        "application-fetch_backend": "html_requests",
+        "application-minutes_between_check": 180,
+        "requests-default_ua-html_requests": requests_ua
+    }
+
+    if os.getenv('PLAYWRIGHT_DRIVER_URL'):
+        form_data["requests-default_ua-html_webdriver"] = webdriver_ua
+
+    res = client.post(
+        url_for("settings.settings_page"),
+        data=form_data,
+        follow_redirects=True
+    )
+    assert b'Settings updated' in res.data
+
+    res = client.get(url_for("settings.settings_page"))
+
+    # Only when some kind of real browser is setup
+    if os.getenv('PLAYWRIGHT_DRIVER_URL'):
+        assert b'requests-default_ua-html_webdriver' in res.data
+
+    # Field should always be there
+    assert b"requests-default_ua-html_requests" in res.data
+
+    # Add the test URL twice, we will check
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+    # Add some headers to a request
+    res = client.post(
+        url_for("ui.ui_edit.edit_page", uuid="first"),
+        data={
+            "url": test_url,
+            "tags": "testtag",
+            "fetch_backend": 'html_webdriver' if os.getenv('PLAYWRIGHT_DRIVER_URL') else 'html_requests',
+            "headers": "xxx:ooo\ncool:yeah\r\n",
+            "time_between_check_use_default": "y"},
+        follow_redirects=True
+    )
+    assert b"Updated watch." in res.data
+    wait_for_all_checks(client)
+
+    with open(os.path.join(datastore_path, 'headers-testtag.txt'), 'w') as f:
+        f.write("tag-header: test\r\nurl-header: http://example.com")
+
+    with open(os.path.join(datastore_path, 'headers.txt'), 'w') as f:
+        f.write("global-header: nice\r\nnext-global-header: nice\r\nurl-header-global: http://example.com/global")
+
+    uuid = next(iter(live_server.app.config['DATASTORE'].data['watching']))
+    with open(os.path.join(datastore_path, uuid, 'headers.txt'), 'w') as f:
+        f.write("watch-header: nice\r\nurl-header-watch: http://example.com/watch")
+
+    wait_for_all_checks(client)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    # Give the thread time to pick it up, this actually is not super reliable and pytest can terminate before the check is ran
+    wait_for_all_checks(client)
+
+    # WARNING - pytest and 'wait_for_all_checks' shuts down before it has actually stopped processing when using pyppeteer fetcher
+    # so adding more time here
+    if os.getenv('FAST_PUPPETEER_CHROME_FETCHER'):
+        time.sleep(6)
+
+    res = client.get(url_for("ui.ui_edit.edit_page", uuid="first"))
+    assert b"Extra headers file found and will be added to this watch" in res.data
+
+    # Not needed anymore
+    os.unlink(os.path.join(datastore_path, 'headers.txt'))
+    os.unlink(os.path.join(datastore_path, 'headers-testtag.txt'))
+
+    # The service should echo back the request verb
+    res = client.get(
+        url_for("ui.ui_preview.preview_page", uuid="first"),
+        follow_redirects=True
+    )
+
+    assert b"Global-Header:nice" in res.data
+    assert b"Next-Global-Header:nice" in res.data
+    assert b"Xxx:ooo" in res.data
+    assert b"Watch-Header:nice" in res.data
+    assert b"Tag-Header:test" in res.data
+    assert b"Url-Header:http://example.com" in res.data
+    assert b"Url-Header-Global:http://example.com/global" in res.data
+    assert b"Url-Header-Watch:http://example.com/watch" in res.data
+
+    # Check the custom UA from system settings page made it through
+    if os.getenv('PLAYWRIGHT_DRIVER_URL'):
+        assert "User-Agent:".encode('utf-8') + webdriver_ua.encode('utf-8') in res.data
+    else:
+        assert "User-Agent:".encode('utf-8') + requests_ua.encode('utf-8') in res.data
+
+    # unlink headers.txt on start/stop
+    delete_all_watches(client)
+
 def test_headers_validation(client, live_server, measure_memory_usage, datastore_path):
     
 
