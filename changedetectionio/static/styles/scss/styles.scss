@@ -1142,3 +1142,19 @@ ul#highlightSnippetActions {
   padding: $common-gap*2;
 }
 
+header {
+  color: var(--color-white);
+}
+
+#heart-us {
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    width: 1.4rem; /*it's slightly more wider than square so default auto will trim it slightly */
+  }
+}
+
+textarea::placeholder {
+    white-space: pre-wrap;
+}
