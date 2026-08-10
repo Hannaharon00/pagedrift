@@ -406,6 +406,226 @@ async function shareImage(platform, jpegDataUrl) {
 }
 
 /**
+ * Display or download the generated image
+ */
+function displayImage(jpegDataUrl) {
+    const win = window.open();
+    if (win) {
+        win.document.write(`
+            <html>
+                <head>
+                    <title>Diff Screenshot</title>
+                    <style>
+                        body {
+                            margin: 0;
+                            padding: 20px;
+                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                            background: #f5f5f5;
+                        }
+                        .container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        }
+                        img {
+                            max-width: 100%;
+                            display: block;
+                            margin-bottom: 20px;
+                            border: 1px solid #ddd;
+                            border-radius: 4px;
+                        }
+                        .share-section {
+                            padding: 20px 0;
+                            border-top: 2px solid #e0e0e0;
+                        }
+                        .share-section h3 {
+                            margin: 0 0 15px 0;
+                            color: #333;
+                            font-size: 18px;
+                        }
+                        .share-buttons {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                        }
+                        .share-btn {
+                            padding: 10px 20px;
+                            border: none;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                        .share-btn:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        }
+                        .btn-download {
+                            background: #4CAF50;
+                            color: white;
+                        }
+                        .btn-native {
+                            background: #2196F3;
+                            color: white;
+                        }
+                        .btn-twitter {
+                            background: #000000;
+                            color: white;
+                        }
+                        .btn-facebook {
+                            background: #1877F2;
+                            color: white;
+                        }
+                        .btn-linkedin {
+                            background: #0A66C2;
+                            color: white;
+                        }
+                        .btn-reddit {
+                            background: #FF4500;
+                            color: white;
+                        }
+                        .btn-email {
+                            background: #757575;
+                            color: white;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <img src="${jpegDataUrl}" alt="Diff Screenshot" id="diffImage"/>
+
+                        <div class="share-section">
+                            <h3>Share or Download</h3>
+                            <p style="margin: 0 0 15px 0; padding: 12px; background: #f0f7ff; border-left: 4px solid #2196F3; color: #333; font-size: 14px; line-height: 1.5;">
+                                <strong>💡 Tip:</strong> Right-click the image above and select "Copy Image", then click a share button below and paste it into your post (Ctrl+V or right-click → Paste).
+                            </p>
+                            <div class="share-buttons">
+                                <button class="share-btn btn-download" onclick="downloadImage()">
+                                    📥 Download Image
+                                </button>
+                                ${navigator.share ? '<button class="share-btn btn-native" onclick="shareNative()">📤 Share...</button>' : ''}
+                                <button class="share-btn btn-twitter" onclick="shareToTwitter()">
+                                    𝕏 Share to X
+                                </button>
+                                <button class="share-btn btn-facebook" onclick="shareToFacebook()">
+                                    Share to Facebook
+                                </button>
+                                <button class="share-btn btn-linkedin" onclick="shareToLinkedIn()">
+                                    Share to LinkedIn
+                                </button>
+                                <button class="share-btn btn-reddit" onclick="shareToReddit()">
+                                    Share to Reddit
+                                </button>
+                                <button class="share-btn btn-email" onclick="shareViaEmail()">
+                                    📧 Share via Email
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        const imageDataUrl = "${jpegDataUrl}";
+
+                        function dataURLtoBlob(dataURL) {
+                            const parts = dataURL.split(',');
+                            const byteString = atob(parts[1]);
+                            const mimeString = parts[0].split(':')[1].split(';')[0];
+                            const ab = new ArrayBuffer(byteString.length);
+                            const ia = new Uint8Array(ab);
+                            for (let i = 0; i < byteString.length; i++) {
+                                ia[i] = byteString.charCodeAt(i);
+                            }
+                            return new Blob([ab], { type: mimeString });
+                        }
+
+                        function downloadImage() {
+                            const a = document.createElement("a");
+                            a.href = imageDataUrl;
+                            a.download = "changedetection-diff-" + Date.now() + ".jpg";
+                            a.click();
+                        }
+
+                        async function shareNative() {
+                            try {
+                                const blob = dataURLtoBlob(imageDataUrl);
+                                const file = new File([blob], "changedetection-diff-" + Date.now() + ".jpg", { type: 'image/jpeg' });
+                                await navigator.share({
+                                    title: 'Change Detection Diff',
+                                    text: i18nT('shareText', 'Check out this change detected via changedetection.io'),
+                                    files: [file]
+                                });
+                            } catch (error) {
+                                if (error.name !== 'AbortError') {
+                                    console.error('Share failed:', error);
+                                }
+                            }
+                        }
+
+                        function shareToTwitter() {
+                            const text = encodeURIComponent(i18nT('shareText', 'Check out this change detected via changedetection.io'));
+                            window.open('https://twitter.com/intent/tweet?text=' + text, '_blank', 'width=600,height=400');
+                        }
+
+                        function shareToFacebook() {
+                            const cdUrl = encodeURIComponent('https://changedetection.io');
+                            window.open('https://www.facebook.com/sharer/sharer.php?u=' + cdUrl, '_blank', 'width=600,height=400');
+                        }
+
+                        function shareToLinkedIn() {
+                            const cdUrl = encodeURIComponent('https://changedetection.io');
+                            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + cdUrl, '_blank', 'width=600,height=400');
+                        }
+
+                        function shareToReddit() {
+                            const cdUrl = encodeURIComponent('https://changedetection.io');
+                            const title = encodeURIComponent('Change Detection Tool');
+                            window.open('https://reddit.com/submit?url=' + cdUrl + '&title=' + title, '_blank', 'width=600,height=400');
+                        }
+
+                        function shareViaEmail() {
+                            const subject = encodeURIComponent('Change Detection Diff');
+                            const body = encodeURIComponent(i18nT('shareText', 'Check out this change detected via changedetection.io'));
+                            window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+                        }
+                    </script>
+                </body>
+            </html>
+        `);
+    } else {
+        // Fallback: trigger download if popup is blocked
+        const a = document.createElement("a");
+        a.href = jpegDataUrl;
+        a.download = "changedetection-diff-" + Date.now() + ".jpg";
+        a.click();
+    }
+}
+
+/**
+ * Update button UI state
+ */
+function setButtonState(button, isLoading, originalHtml = '') {
+    if (!button) return;
+
+    if (isLoading) {
+        button.innerHTML = 'Generating...';
+        button.style.opacity = "0.5";
+        button.style.pointerEvents = "none";
+    } else {
+        button.innerHTML = originalHtml;
+        button.style.opacity = "1";
+        button.style.pointerEvents = "auto";
+    }
+}
+
+/**
  * Main function: Convert selected diff text to a shareable JPEG image
  *
  * Features:
