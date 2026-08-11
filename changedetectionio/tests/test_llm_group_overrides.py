@@ -785,3 +785,40 @@ def test_watch_own_ai_switch_survives_being_overridden_by_a_group(
     delete_all_watches(client)
 
 
+# ---------------------------------------------------------------------------
+# End-to-end through the real forms — the path the user actually clicks
+# ---------------------------------------------------------------------------
+
+def test_group_override_round_trip_through_both_forms(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Set the group to On with an intent via the group form, tag a watch with it, and the watch
+    edit page shows the inherited value as its placeholder. This is the flow that was broken:
+    the group had no way to switch group-wide AI settings on at all.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    res = client.post(url_for('tags.form_tag_add'), data={'name': 'E2E Group'}, follow_redirects=True)
+    assert b'Tag added' in res.data
+    tag_uuid = [u for u, t in ds.data['settings']['application']['tags'].items()
+                if t.get('title') == 'E2E Group'][0]
+
+    res = client.post(
+        url_for('tags.form_tag_edit_submit', uuid=tag_uuid),
+        data={'title': 'E2E Group',
+              'llm_intent': 'Only tell me about stock changes',
+              'llm_backend_profile': 'true'},
+        follow_redirects=True,
+    )
+    assert b'Updated' in res.data
+
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    res = client.get(url_for('ui.ui_edit.edit_page', uuid=watch_uuid))
+    assert _from_group_text('E2E Group', 'Only tell me about stock changes') in _page_text(res)
+
+    delete_all_watches(client)
