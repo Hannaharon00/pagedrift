@@ -640,3 +640,31 @@ def test_xpath_blocked_functions_unit():
     assert result == 'safe content'
 
 
+# GHSA-6fmw-82m7-jq6p — form validation must also reject dangerous XPath expressions.
+def test_xpath_blocked_functions_form_validation(client, live_server, measure_memory_usage, datastore_path):
+    """Edit-form validation must reject dangerous XPath 3.0 functions before they are stored."""
+    from flask import url_for
+
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+    client.application.config.get('DATASTORE').add_watch(url=test_url)
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+    wait_for_all_checks(client)
+
+    dangerous_expressions = [
+        "xpath:unparsed-text('file:///etc/passwd')",
+        "xpath:environment-variable('PATH')",
+        "xpath:doc('file:///etc/passwd')",
+    ]
+
+    for expr in dangerous_expressions:
+        res = client.post(
+            url_for("ui.ui_edit.edit_page", uuid="first"),
+            data={"include_filters": expr, "url": test_url, "tags": "", "headers": "",
+                  'fetch_backend': "html_requests", "time_between_check_use_default": "y"},
+            follow_redirects=True
+        )
+        assert b"is not a valid XPath expression" in res.data, \
+            f"Form should reject dangerous expression: {expr!r}"
+
+    delete_all_watches(client)
