@@ -634,3 +634,52 @@ class TestSummariseChange:
 # compute_summary_cache_key / get_effective_summary_prompt
 # ---------------------------------------------------------------------------
 
+class TestSummaryCacheKey:
+    def test_same_inputs_produce_same_key(self):
+        from changedetectionio.llm.evaluator import compute_summary_cache_key
+        key1 = compute_summary_cache_key('+ new line', 'describe changes')
+        key2 = compute_summary_cache_key('+ new line', 'describe changes')
+        assert key1 == key2
+
+    def test_different_diff_produces_different_key(self):
+        from changedetectionio.llm.evaluator import compute_summary_cache_key
+        key1 = compute_summary_cache_key('+ line A', 'prompt')
+        key2 = compute_summary_cache_key('+ line B', 'prompt')
+        assert key1 != key2
+
+    def test_different_prompt_produces_different_key(self):
+        from changedetectionio.llm.evaluator import compute_summary_cache_key
+        key1 = compute_summary_cache_key('diff', 'list changes')
+        key2 = compute_summary_cache_key('diff', 'translate to English')
+        assert key1 != key2
+
+    def test_key_is_16_hex_chars(self):
+        from changedetectionio.llm.evaluator import compute_summary_cache_key
+        key = compute_summary_cache_key('diff', 'prompt')
+        assert len(key) == 16
+        assert all(c in '0123456789abcdef' for c in key)
+
+    def test_get_effective_prompt_returns_custom_when_set(self):
+        from changedetectionio.llm.evaluator import get_effective_summary_prompt
+        ds = _make_datastore()
+        watch = _make_watch(llm_change_summary='My custom prompt')
+        assert get_effective_summary_prompt(watch, ds) == 'My custom prompt'
+
+    def test_get_effective_prompt_returns_default_when_empty(self):
+        from changedetectionio.llm.evaluator import get_effective_summary_prompt, DEFAULT_CHANGE_SUMMARY_PROMPT
+        ds = _make_datastore()
+        watch = _make_watch(llm_change_summary='')
+        assert get_effective_summary_prompt(watch, ds) == DEFAULT_CHANGE_SUMMARY_PROMPT
+
+    def test_get_effective_prompt_cascades_from_tag(self):
+        from changedetectionio.llm.evaluator import get_effective_summary_prompt
+        tag = _make_tag(llm_change_summary='tag-level prompt')
+        ds = _make_datastore(tags={'t1': tag})
+        watch = _make_watch(llm_change_summary='', tags=['t1'])
+        assert get_effective_summary_prompt(watch, ds) == 'tag-level prompt'
+
+
+# ---------------------------------------------------------------------------
+# llm_change_summary_mode — append vs replace (#4251)
+# ---------------------------------------------------------------------------
+
