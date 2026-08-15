@@ -3875,6 +3875,67 @@ msgstr "dalam 1bln"
 msgid "%smo ago"
 msgstr "%sbln lalu"
 
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %smo"
+msgstr "dalam %sbln"
+
+#: changedetectionio/languages.py
+msgid "1yr ago"
+msgstr "1th lalu"
+
+#: changedetectionio/languages.py
+msgid "in 1yr"
+msgstr "dalam 1th"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "%syr ago"
+msgstr "%sth lalu"
+
+#: changedetectionio/languages.py
+#, python-format
+msgid "in %syr"
+msgstr "dalam %sth"
+
+#: changedetectionio/processors/extract.py
+msgid "No matches found while scanning all of the watch history for that RegEx."
+msgstr "Tidak ditemukan kecocokan saat memindai seluruh riwayat monitor untuk RegEx tersebut."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+msgid "Not enough history to compare. Need at least 2 snapshots."
+msgstr "Riwayat tidak cukup untuk dibandingkan. Diperlukan minimal 2 snapshot."
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to load screenshots: {}"
+msgstr "Gagal memuat tangkapan layar: {}"
+
+#: changedetectionio/processors/image_ssim_diff/difference.py
+#, python-brace-format
+msgid "Failed to calculate diff: {}"
+msgstr "Gagal menghitung perbedaan: {}"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box value is too long"
+msgstr "Nilai bounding box terlalu panjang"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box must be in format: x,y,width,height (integers only)"
+msgstr "Bounding box harus dalam format: x,y,width,height (hanya bilangan bulat)"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values must be non-negative"
+msgstr "Nilai bounding box tidak boleh negatif"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Bounding box values are too large"
+msgstr "Nilai bounding box terlalu besar"
+
+#: changedetectionio/processors/image_ssim_diff/forms.py
+msgid "Selection mode must be either \"element\" or \"draw\""
+msgstr "Mode pemilihan harus \"element\" atau \"draw\""
+
 #: changedetectionio/processors/image_ssim_diff/forms.py
 msgid "Minimum Change Percentage"
 msgstr "Persentase Perubahan Minimum"
