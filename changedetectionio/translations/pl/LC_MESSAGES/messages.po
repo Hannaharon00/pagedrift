@@ -4566,6 +4566,60 @@ msgstr ""
 "obserwacje zostaną z niego usunięte.</p>"
 
 #: changedetectionio/templates/base.html
+msgid "There was an error communicating with the server."
+msgstr "Wystąpił błąd podczas komunikacji z serwerem."
+
+#: changedetectionio/templates/base.html
+msgid "There was a problem processing the request, please reload the page."
+msgstr "Wystąpił problem podczas przetwarzania żądania. Proszę odświeżyć stronę."
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "There was a problem processing the request: %(error)s"
+msgstr "Wystąpił problem podczas przetwarzania żądania: %(error)s"
+
+#: changedetectionio/templates/base.html
+msgid "Existing filters under the 'Filters & Triggers' tab were cleared."
+msgstr "Istniejące filtry w zakładce „Filtry i wyzwalacze” zostały usunięte."
+
+#: changedetectionio/templates/base.html
+msgid "Fetching element data.."
+msgstr "Pobieranie danych elementu..."
+
+#: changedetectionio/templates/base.html
+msgid "Rendering.."
+msgstr "Przetwarzanie..."
+
+#: changedetectionio/templates/base.html
+msgid "Draw mode - click and drag to select an area"
+msgstr "Tryb rysowania – kliknij i przeciągnij, aby zaznaczyć obszar"
+
+#: changedetectionio/templates/base.html
+msgid "Hover over elements to select"
+msgstr "Najedź kursorem na elementy, aby je zaznaczyć"
+
+#: changedetectionio/templates/base.html
+msgid "Image copied to clipboard!"
+msgstr "Obraz został skopiowany do schowka!"
+
+#: changedetectionio/templates/base.html
+msgid "Failed to copy image. Your browser may not support this feature."
+msgstr "Nie udało się skopiować obrazu. Być może Twoja przeglądarka nie obsługuje tej funkcji."
+
+#: changedetectionio/templates/base.html
+msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
+msgstr "Najpierw zaznacz myszką tekst lub wiersze, które chcesz skopiować."
+
+#: changedetectionio/templates/base.html
+msgid "Please select text within the diff content."
+msgstr "Proszę zaznaczyć fragment tekstu w treści porównania."
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Failed to generate image: %(error)s"
+msgstr "Nie udało się wygenerować obrazu: %(error)s"
+
+#: changedetectionio/templates/base.html
 msgid "Change Detection Diff"
 msgstr "Wykrywanie zmian – porównanie"
 
