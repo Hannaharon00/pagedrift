@@ -4685,6 +4685,75 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr ""
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr ""
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr ""
+"Texto a esperar antes de activar un cambio/notificación, todo el texto y las expresiones regulares se prueban sin "
+"distinguir entre mayúsculas y minúsculas."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr ""
+"El texto de activación se procesa a partir del texto de resultado que surge de cualquier filtro CSS/JSON para este "
+"monitor"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "Cada línea se procesa por separado (piense en cada línea como \"O\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "Nota: incluya una barra diagonal / para usar el ejemplo de expresiones regulares:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "También puedes usar"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "condiciones"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "\"Texto de página\": contiene, comienza con, no contiene y muchos más"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr ""
+"Bloquear la detección de cambios mientras este texto está en la página, todo el texto y las expresiones regulares se "
+"prueban sin distinguir entre mayúsculas y minúsculas, lo cual es bueno para esperar a que un producto vuelva a estar "
+"disponible"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "El texto del bloque se procesa a partir del texto resultante que surge de cualquier filtro CSS/JSON para este monitor"
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "Example - match lines containing a keyword"
 msgstr "Ejemplo: líneas coincidentes que contienen una palabra clave"
