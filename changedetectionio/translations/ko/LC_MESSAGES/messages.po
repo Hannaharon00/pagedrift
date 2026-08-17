@@ -4850,3 +4850,34 @@ msgstr ""
 msgid "soon"
 msgstr ""
 
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Search, or Use Alt+S Key"
+msgstr "검색 또는 Alt+S 키 사용"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Queue"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Live activity"
+msgstr ""
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "A new version is available"
+msgstr "새 버전이 있습니다"
+
+#: changedetectionio/validate_url.py
+msgid "API Base URL is not a valid http(s) URL."
+msgstr ""
+
+#: changedetectionio/validate_url.py
+msgid ""
+"API Base URL resolves to a private, loopback, link-local or reserved IP address and was blocked to prevent SSRF. To "
+"allow LLM endpoints on private networks (e.g. a local Ollama server) set the environment variable "
+"ALLOW_IANA_RESTRICTED_ADDRESSES=true and restart."
+msgstr ""
+
+#: changedetectionio/widgets/ternary_boolean.py
+msgid "Main settings"
+msgstr "기본 설정"
+
