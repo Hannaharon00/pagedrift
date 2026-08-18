@@ -400,6 +400,62 @@ msgstr ""
 msgid "Browser URLs must start with wss:// or ws://"
 msgstr ""
 
+#: changedetectionio/forms.py:945
+msgid "Plaintext requests"
+msgstr ""
+
+#: changedetectionio/forms.py:947
+msgid "Chrome requests"
+msgstr ""
+
+#: changedetectionio/forms.py:953
+msgid "Default proxy"
+msgstr ""
+
+#: changedetectionio/forms.py:954
+msgid "Random jitter seconds ± check"
+msgstr ""
+
+#: changedetectionio/forms.py:958
+msgid "Number of fetch workers"
+msgstr ""
+
+#: changedetectionio/forms.py:961
+msgid "Should be between 1 and 50"
+msgstr ""
+
+#: changedetectionio/forms.py:963
+msgid "Requests timeout in seconds"
+msgstr ""
+
+#: changedetectionio/forms.py:966
+msgid "Should be between 1 and 999"
+msgstr ""
+
+#: changedetectionio/forms.py:971
+msgid "Default User-Agent overrides"
+msgstr ""
+
+#: changedetectionio/forms.py:977
+msgid "Both a name, and a Proxy URL is required."
+msgstr ""
+
+#: changedetectionio/forms.py:981
+msgid "Open 'History' page in a new tab"
+msgstr ""
+
+#: changedetectionio/forms.py:982
+msgid "Realtime UI Updates Enabled"
+msgstr ""
+
+#: changedetectionio/forms.py:983
+msgid "Favicons Enabled"
+msgstr ""
+
+#: changedetectionio/forms.py:984
+msgid "Use page <title> in watch overview list"
+msgstr ""
+
 #: changedetectionio/forms.py:989
 msgid "API access token security check enabled"
 msgstr ""
