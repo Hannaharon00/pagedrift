@@ -485,6 +485,36 @@ class WatchHistoryDiff(Resource):
         return response
 
 
+class WatchFavicon(Resource):
+    def __init__(self, **kwargs):
+        # datastore is a black box dependency
+        self.datastore = kwargs['datastore']
+
+    @auth.check_token
+    @validate_openapi_request('getWatchFavicon')
+    def get(self, uuid):
+        """Get favicon for a watch."""
+        watch = self.datastore.data['watching'].get(uuid)
+        if not watch:
+            abort(404, message=f"No watch exists with the UUID of {uuid}")
+
+        favicon_filename = watch.get_favicon_filename()
+        if favicon_filename:
+            # Use cached MIME type detection
+            filepath = os.path.join(watch.data_dir, favicon_filename)
+            mime = get_favicon_mime_type(filepath)
+            if 'text' in mime:
+                logger.debug(f"Aborting favicon request for {filepath} because mimetype might be text (bad mimetype) '{mime}'")
+                abort(404)
+
+            response = make_response(send_from_directory(watch.data_dir, favicon_filename))
+            response.headers['Content-type'] = mime
+            response.headers['Cache-Control'] = 'max-age=300, must-revalidate'  # Cache for 5 minutes, then revalidate
+            return response
+
+        abort(404, message=f'No Favicon available for {uuid}')
+
+
 class CreateWatch(Resource):
     def __init__(self, **kwargs):
         # datastore is a black box dependency
