@@ -4425,6 +4425,59 @@ msgstr "Zamanlayıcıyı kullanma hakkında daha fazla yardım ve örnek"
 msgid "Want to use a time schedule?"
 msgstr "Bir zaman çizelgesi kullanmak ister misiniz?"
 
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "Önce Saat Dilimi Ayarlarınızı onaylayın/kaydedin"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Tetiklenen metin"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Bu metin görünürse VE belgede bir şey değişirse bir değişikliği tetikler."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Yoksayılan metin"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Değişiklikleri hesaplamak için yoksayıldı, ancak hala gösteriliyor."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Engellenen metin"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Bu metin var olduğu için değişiklik tespiti yapılmayacaktır."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Delete %(name)s?"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid "<p>Are you sure you want to delete <strong>%(name)s</strong>?</p><p>This action cannot be undone.</p>"
