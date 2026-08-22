@@ -143,3 +143,5 @@ class TestTriggerConditions(unittest.TestCase):
         self.assertFalse(res_nonempty.get('result'))
 
 
+if __name__ == '__main__':
+    unittest.main()
