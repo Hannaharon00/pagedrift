@@ -2140,6 +2140,101 @@ paths:
           source: |
             import requests
 
+            headers = {
+                'x-api-key': 'YOUR_API_KEY',
+                'Content-Type': 'text/plain'
+            }
+
+            # Basic import
+            urls = 'https://example.com\nhttps://example.org\nhttps://example.net'
+            response = requests.post('http://localhost:5000/api/v1/import',
+                                   headers=headers, data=urls)
+            print(response.json())
+
+            # Import with configuration
+            params = {
+                'processor': 'restock_diff',
+                'fetch_backend': 'html_webdriver',
+                'paused': 'false',
+                'tag': 'production'
+            }
+            response = requests.post('http://localhost:5000/api/v1/import',
+                                   headers=headers, params=params, data=urls)
+            print(response.json())
+      parameters:
+        - name: tag_uuids
+          in: query
+          description: Tag UUID(s) to apply to imported watches (comma-separated for multiple)
+          schema:
+            type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        - name: tag
+          in: query
+          description: Tag name to apply to imported watches
+          schema:
+            type: string
+          example: "production"
+        - name: proxy
+          in: query
+          description: Proxy key to use for imported watches
+          schema:
+            type: string
+          example: "proxy1"
+        - name: dedupe
+          in: query
+          description: Skip duplicate URLs (default true)
+          schema:
+            type: boolean
+            default: true
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: |
+              https://example.com
+              https://example.org
+              https://example.net
+      responses:
+        '200':
+          description: URLs imported successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                description: List of created watch UUIDs
+        '429':
+          description: |
+            Watch limit reached (server has `PAGE_WATCH_LIMIT` set; unlimited by default).
+            The batch is rejected whole - no watches are created - so the same request can be
+            retried unchanged once there is room.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Watch limit reached (48/50 watches), importing 5 URL(s) would exceed it. No watches were imported."
+        '500':
+          description: Server error
+
+  /systeminfo:
+    get:
+      operationId: getSystemInfo
+      tags: [System Information]
+      summary: Get system information
+      description: Return information about the current system state
+      x-code-samples:
+        - lang: 'curl'
+          source: |
+            curl -X GET "http://localhost:5000/api/v1/systeminfo" \
+              -H "x-api-key: YOUR_API_KEY"
+        - lang: 'Python'
+          source: |
+            import requests
+
             headers = {'x-api-key': 'YOUR_API_KEY'}
             response = requests.get('http://localhost:5000/api/v1/systeminfo', headers=headers)
             print(response.json())
