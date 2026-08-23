@@ -193,3 +193,63 @@ def test_openapi_validation_get_requests_bypass_validation(client, live_server, 
     delete_all_watches(client)
 
 
+def test_openapi_validation_create_tag_missing_required_title(client, live_server, measure_memory_usage, datastore_path):
+    """Test that creating a tag without required title triggers OpenAPI validation error."""
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Try to create a tag without the required 'title' field
+    res = client.post(
+        url_for("tag"),
+        data=json.dumps({"notification_urls": ["mailto:test@example.com"]}),  # Missing required 'title' field
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        follow_redirects=True
+    )
+
+    # Should get 400 error due to missing required field
+    assert res.status_code == 400, f"Expected 400 but got {res.status_code}"
+    assert b"Validation failed" in res.data, "Should contain validation error message"
+    delete_all_watches(client)
+
+
+def test_openapi_validation_watch_update_allows_partial_updates(client, live_server, measure_memory_usage, datastore_path):
+
+    """Test that watch updates allow partial updates without requiring all fields (positive test)."""
+#xxx
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # First create a valid watch
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "https://example.com", "title": "Test Watch"}),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        follow_redirects=True
+    )
+    assert res.status_code == 201, "Watch creation should succeed"
+
+    # Get the watch list to find the UUID
+    res = client.get(
+        url_for("createwatch"),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200
+    watch_uuid = list(res.json.keys())[0]
+
+    # Update only the title (partial update) - should succeed
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"title": "Updated Title Only"}),  # Only updating title, not URL
+    )
+
+    # Should succeed because UpdateWatch schema allows partial updates
+    assert res.status_code == 200, f"Partial updates should succeed, got {res.status_code}"
+
+    # Verify the update worked
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200
+    assert res.json.get('title') == 'Updated Title Only', "Title should be updated"
+    assert res.json.get('url') == 'https://example.com', "URL should remain unchanged"
+    delete_all_watches(client)
