@@ -2645,6 +2645,62 @@ msgstr "підтримує дуже обмежений HTML і може вида
 msgid "(or use plaintext/markdown format)"
 msgstr "(або використовуйте формат plaintext/markdown)"
 
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr "Заміна за регулярним виразом, використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr "Для повного довідника по всіх вбудованих фільтрах Jinja2 зверніться до"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Формат для всіх сповіщень"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr "Запис"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr "Дії"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr "Додати рядок/правило після"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr "Видалити цей рядок/правило"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr "Перевірити це правило на поточному знімку"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Error - This watch needs Chrome (with playwright/sockpuppetbrowser), but Chrome based fetching is not enabled."
+msgstr "Помилка - Це завдання потребує Chrome (playwright/sockpuppetbrowser), але завантаження через Chrome не увімкнено."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Alternatively try our"
+msgstr "Альтернативно спробуйте наш"
+
+#: changedetectionio/templates/_helpers.html
+msgid "very affordable subscription based service which has all this setup for you"
+msgstr "дуже доступний сервіс за передплатою, де все це вже налаштовано для вас"
+
+#: changedetectionio/templates/_helpers.html
+msgid "You may need to"
+msgstr "Вам може знадобитися"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Enable playwright environment variable"
+msgstr "Увімкнути змінну оточення playwright"
+
+#: changedetectionio/templates/_helpers.html
+msgid "and uncomment the"
+msgstr "та розкоментувати"
+
 #: changedetectionio/templates/_helpers.html
 msgid "in the"
 msgstr "у"
