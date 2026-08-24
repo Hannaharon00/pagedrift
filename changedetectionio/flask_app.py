@@ -1399,3 +1399,275 @@ def check_for_new_version():
         app.config.exit.wait(86400)
 
 
+def notification_runner(worker_id=0):
+    global notification_debug_log
+    import json
+    from datetime import datetime
+
+    with app.app_context():
+        while not app.config.exit.is_set():
+            try:
+                # Multiple workers can run concurrently (configurable via NOTIFICATION_WORKERS)
+                n_object = notification_q.get(block=False)
+            except queue.Empty:
+                app.config.exit.wait(1)
+
+            else:
+                now = datetime.now()
+                sent_obj = None
+
+                try:
+                    from changedetectionio.notification.handler import process_notification
+
+                    # Fallback to system config if not set
+                    if not n_object.get('notification_body') and datastore.data['settings'][
+                        'application'
+                    ].get('notification_body'):
+                        n_object['notification_body'] = datastore.data['settings'][
+                            'application'
+                        ].get('notification_body')
+
+                    if not n_object.get('notification_title') and datastore.data['settings'][
+                        'application'
+                    ].get('notification_title'):
+                        n_object['notification_title'] = datastore.data['settings'][
+                            'application'
+                        ].get('notification_title')
+
+                    if not n_object.get('notification_format') and datastore.data['settings'][
+                        'application'
+                    ].get('notification_format'):
+                        n_object['notification_format'] = datastore.data['settings'][
+                            'application'
+                        ].get('notification_format')
+                    if n_object.get('notification_urls', {}):
+                        sent_obj = process_notification(n_object, datastore)
+
+                except Exception as e:
+                    logger.error(
+                        f"Notification worker {worker_id} - Watch URL: {n_object['watch_url']}  Error {str(e)}"
+                    )
+
+                    # UUID wont be present when we submit a 'test' from the global settings
+                    if 'uuid' in n_object:
+                        datastore.update_watch(
+                            uuid=n_object['uuid'],
+                            update_obj={
+                                'last_notification_error': "Notification error detected, goto notification log."
+                            },
+                        )
+
+                    log_lines = str(e).splitlines()
+                    notification_debug_log += log_lines
+
+                    with app.app_context():
+                        app.config['watch_check_update_SIGNAL'].send(
+                            app_context=app, watch_uuid=n_object.get('uuid')
+                        )
+
+                # Process notifications
+                notification_debug_log += [
+                    "{} - SENDING - {}".format(now.strftime("%c"), json.dumps(sent_obj))
+                ]
+                # Trim the log length
+                notification_debug_log = notification_debug_log[-100:]
+
+
+# Threaded runner, look for new watches to feed into the Queue.
+def ticker_thread_check_time_launch_checks():
+    import random
+
+    proxy_last_called_time = {}
+    last_health_check = 0
+
+    recheck_time_minimum_seconds = int(os.getenv('MINIMUM_SECONDS_RECHECK_TIME', 3))
+    logger.debug(f"System env MINIMUM_SECONDS_RECHECK_TIME {recheck_time_minimum_seconds}")
+
+    # Workers are now started during app initialization, not here
+    WAIT_TIME_BETWEEN_LOOP = 1.0 if not IN_PYTEST else 0.01
+    if IN_PYTEST:
+        # The time between loops should be less than the first .sleep/wait in def wait_for_all_checks() of tests/util.py
+        logger.warning(
+            f"Looks like we're in PYTEST! Setting time between searching for items to add to the queue to {WAIT_TIME_BETWEEN_LOOP}s"
+        )
+
+    while not app.config.exit.is_set():
+        # Periodic worker health check (every 60 seconds)
+        now = time.time()
+        if now - last_health_check > 60:
+            expected_workers = int(
+                os.getenv("FETCH_WORKERS", datastore.data['settings']['requests']['workers'])
+            )
+            health_result = worker_pool.check_worker_health(
+                expected_count=expected_workers,
+                update_q=update_q,
+                notification_q=notification_q,
+                app=app,
+                datastore=datastore,
+            )
+
+            if health_result['status'] != 'healthy':
+                logger.warning(f"Worker health check: {health_result['message']}")
+
+            last_health_check = now
+
+        # Get a list of watches by UUID that are currently fetching data
+        running_uuids = worker_pool.get_running_uuids()
+
+        # Build set of queued UUIDs once for O(1) lookup instead of O(n) per watch
+        queued_uuids = {q_item.item['uuid'] for q_item in update_q.queue}
+
+        # Re #232 - Deepcopy the data incase it changes while we're iterating through it all
+        watch_uuid_list = []
+        while True:
+            try:
+                # Get a list of watches sorted by last_checked, [1] because it gets passed a tuple
+                # This is so we examine the most over-due first
+                for k in sorted(
+                    datastore.data['watching'].items(),
+                    key=lambda item: item[1].get('last_checked', 0),
+                ):
+                    watch_uuid_list.append(k[0])
+
+            except RuntimeError:
+                # RuntimeError: dictionary changed size during iteration
+                time.sleep(0.1)
+                watch_uuid_list = []
+            else:
+                break
+
+        recheck_time_system_seconds = int(datastore.threshold_seconds)
+
+        # Check for watches outside of the time threshold to put in the thread queue.
+        for watch_index, uuid in enumerate(watch_uuid_list):
+            # Re #438 - Check queue size every 100 watches for CPU efficiency (not every watch)
+            if watch_index % 100 == 0:
+                current_queue_size = update_q.qsize()
+                if current_queue_size >= MAX_QUEUE_SIZE:
+                    logger.debug(
+                        f"Queue size limit reached ({current_queue_size}/{MAX_QUEUE_SIZE}), stopping scheduler this iteration."
+                    )
+                    break
+
+            # Check if all checks are paused - this loop could get stuck on very long lists of watches, best to check here.
+            if datastore.data['settings']['application'].get('all_paused', False):
+                app.config.exit.wait(1)
+                break
+
+            now = time.time()
+            watch = datastore.data['watching'].get(uuid)
+            if not watch:
+                logger.error(f"Watch: {uuid} no longer present.")
+                continue
+
+            # No need todo further processing if it's paused
+            if watch['paused']:
+                continue
+
+            # @todo - Maybe make this a hook?
+            # Time schedule limit - Decide between watch or global settings
+            scheduler_source = None
+            if watch.get('time_between_check_use_default'):
+                time_schedule_limit = datastore.data['settings']['requests'].get(
+                    'time_schedule_limit', {}
+                )
+                scheduler_source = 'system/global settings'
+
+            else:
+                time_schedule_limit = watch.get('time_schedule_limit')
+                scheduler_source = 'watch'
+
+            tz_name = default_timezone_name(
+                datastore.data['settings']['application'].get('scheduler_timezone_default')
+            )
+
+            if time_schedule_limit and time_schedule_limit.get('enabled'):
+                logger.trace(
+                    f"{uuid} Time scheduler - Using scheduler settings from {scheduler_source}"
+                )
+                try:
+                    result = is_within_schedule(
+                        time_schedule_limit=time_schedule_limit, default_tz=tz_name
+                    )
+                    if not result:
+                        logger.trace(f"{uuid} Time scheduler - not within schedule skipping.")
+                        continue
+                except Exception as e:
+                    # `continue`, never `return` — this runs inside the ticker thread's
+                    # main `while not exit.is_set()` loop, so returning here killed the
+                    # scheduler outright and no watch was ever checked again until
+                    # restart. One watch with a bad schedule must not stop the others.
+                    logger.error(
+                        f"{uuid} - Recheck scheduler, error handling timezone, check skipped - TZ name '{tz_name}' - {str(e)}"
+                    )
+                    continue
+
+            # If they supplied an individual entry minutes to threshold.
+            threshold = (
+                recheck_time_system_seconds
+                if watch.get('time_between_check_use_default')
+                else watch.threshold_seconds()
+            )
+
+            # #580 - Jitter plus/minus amount of time to make the check seem more random to the server
+            jitter = datastore.data['settings']['requests'].get('jitter_seconds', 0)
+            if jitter > 0:
+                if watch.jitter_seconds == 0:
+                    watch.jitter_seconds = random.uniform(-abs(jitter), jitter)
+
+            seconds_since_last_recheck = now - watch['last_checked']
+
+            if (
+                seconds_since_last_recheck >= (threshold + watch.jitter_seconds)
+                and seconds_since_last_recheck >= recheck_time_minimum_seconds
+            ):
+                if uuid not in running_uuids and uuid not in queued_uuids:
+                    # Proxies can be set to have a limit on seconds between which they can be called
+                    watch_proxy = datastore.get_preferred_proxy_for_watch(uuid=uuid)
+                    if watch_proxy and watch_proxy in list(datastore.proxy_list.keys()):
+                        # Proxy may also have some threshold minimum
+                        proxy_list_reuse_time_minimum = int(
+                            datastore.proxy_list.get(watch_proxy, {}).get('reuse_time_minimum', 0)
+                        )
+                        if proxy_list_reuse_time_minimum:
+                            proxy_last_used_time = proxy_last_called_time.get(watch_proxy, 0)
+                            time_since_proxy_used = int(time.time() - proxy_last_used_time)
+                            if time_since_proxy_used < proxy_list_reuse_time_minimum:
+                                # Not enough time difference reached, skip this watch
+                                logger.debug(
+                                    f"> Skipped UUID {uuid} "
+                                    f"using proxy '{watch_proxy}', not "
+                                    f"enough time between proxy requests "
+                                    f"{time_since_proxy_used}s/{proxy_list_reuse_time_minimum}s"
+                                )
+                                continue
+                            else:
+                                # Record the last used time
+                                proxy_last_called_time[watch_proxy] = int(time.time())
+
+                    # Use Epoch time as priority, so we get a "sorted" PriorityQueue, but we can still push a priority 1 into it.
+                    priority = int(time.time())
+
+                    # Into the queue with you
+                    queued_successfully = worker_pool.queue_item_async_safe(
+                        update_q,
+                        queuedWatchMetaData.PrioritizedItem(priority=priority, item={'uuid': uuid}),
+                    )
+                    if queued_successfully:
+                        logger.debug(
+                            f"> Queued watch UUID {uuid} "
+                            f"Checked at {watch['last_checked']} "
+                            f"queued at {now:0.2f} priority {priority} "
+                            f"jitter {watch.jitter_seconds:0.2f}s, "
+                            f"{now - watch['last_checked']:0.2f}s since Checked"
+                        )
+                    else:
+                        logger.critical(
+                            f"CRITICAL: Failed to queue watch UUID {uuid} in ticker thread!"
+                        )
+
+                    # Reset for next time
+                    watch.jitter_seconds = 0
+
+        # Should be low so we can break this out in testing
+        app.config.exit.wait(WAIT_TIME_BETWEEN_LOOP)
