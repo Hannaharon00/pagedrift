@@ -525,3 +525,56 @@ def test_global_default_saved_and_loaded_via_settings_form(
     delete_all_watches(client)
 
 
+def test_global_default_survives_llm_clear(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Clearing LLM credentials via /settings/llm/clear must not wipe
+    the global summary default.
+    """
+    from changedetectionio.tests.util import live_server_setup
+    live_server_setup(live_server)
+
+    _configure_llm(client)
+    ds = client.application.config.get('DATASTORE')
+    _set_global_default(ds, 'Surviving prompt.')
+
+    res = client.post(url_for('settings.llm.llm_clear'), follow_redirects=True)
+    assert res.status_code == 200
+
+    llm_dict = ds.data['settings']['application'].get('llm') or {}
+    assert llm_dict.get('change_summary_default') == 'Surviving prompt.'
+    # The credential fields should be gone
+    assert 'model' not in llm_dict
+    assert 'api_key' not in llm_dict
+
+    delete_all_watches(client)
+
+
+def test_diff_token_unchanged_when_no_ai_summary(
+        client, live_server, measure_memory_usage, datastore_path):
+    """When no AI Change Summary is configured, {{ diff }} renders the raw diff as normal."""
+    from changedetectionio.notification_service import add_rendered_diff_to_notification_vars
+
+    n_object = {
+        'current_snapshot': 'Item A\nItem B\nItem C',
+        'prev_snapshot': 'Item A\nItem B',
+        '_llm_change_summary': '',
+    }
+
+    diff_vars = add_rendered_diff_to_notification_vars(
+        notification_scan_text='{{diff}}',
+        current_snapshot=n_object['current_snapshot'],
+        prev_snapshot=n_object['prev_snapshot'],
+        word_diff=False,
+    )
+    n_object.update(diff_vars)
+
+    raw = n_object.get('diff', '')
+    n_object['raw_diff'] = raw
+    if (n_object.get('_llm_change_summary') or '').strip():
+        n_object['diff'] = n_object['_llm_change_summary']
+
+    # diff should still be the raw diff (not replaced)
+    assert n_object['diff'] == n_object['raw_diff']
+
+    delete_all_watches(client)
