@@ -4611,6 +4611,62 @@ msgid ""
 " rule starts with an XPath function: Prefix with <code>xpath:</code>"
 msgstr ""
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "示例 - 匹配包含关键字的行"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "每行一个正则/字符串匹配规则"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "登录"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "恢复自动调度"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "暂停监控项自动入队"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "取消静音通知"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "通知已静音 - 点击取消静音"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr ""
+
 #: changedetectionio/templates/menu.html
 msgid "EDIT"
 msgstr "编辑"
