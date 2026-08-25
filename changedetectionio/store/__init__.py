@@ -1219,3 +1219,48 @@ class ChangeDetectionStore(DatastoreUpdatesMixin, FileSavingDataStore):
         extra_notification_tokens = {}
         watch_processors_checked = set()
 
+        for watch_uuid, watch in self.__data['watching'].items():
+            processor = watch.get('processor')
+            if processor not in watch_processors_checked:
+                extra_notification_tokens.update(watch.extra_notification_token_values())
+                watch_processors_checked.add(processor)
+
+        return extra_notification_tokens
+
+    def get_unique_notification_token_placeholders_available(self):
+        # The actual description of the tokens, could be combined with get_unique_notification_tokens_available instead of doing this twice
+        extra_notification_tokens = []
+        watch_processors_checked = set()
+
+        for watch_uuid, watch in self.__data['watching'].items():
+            processor = watch.get('processor')
+            if processor not in watch_processors_checked:
+                extra_notification_tokens += watch.extra_notification_token_placeholder_info()
+                watch_processors_checked.add(processor)
+
+        return extra_notification_tokens
+
+    def add_notification_url(self, notification_url):
+
+        logger.debug(f">>> Adding new notification_url - '{notification_url}'")
+
+        notification_urls = self.data['settings']['application'].get('notification_urls', [])
+
+        if notification_url in notification_urls:
+            return notification_url
+
+        with self.lock:
+            notification_urls = self.__data['settings']['application'].get('notification_urls', [])
+
+            if notification_url in notification_urls:
+                return notification_url
+
+            # Append and update the datastore
+            notification_urls.append(notification_url)
+            self.__data['settings']['application']['notification_urls'] = notification_urls
+
+        self.commit()
+        return notification_url
+
+    # Schema update methods moved to store/updates.py (DatastoreUpdatesMixin)
+    # This includes: get_updates_available(), run_updates(), and update_1() through update_26()
