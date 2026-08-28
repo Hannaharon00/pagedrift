@@ -602,6 +602,113 @@ class DatastoreUpdatesMixin:
                     f"url-watches.json remains intact, safe to retry. Error: {e}"
                 )
 
+        for uuid, tag_data in tags.items():
+            if os.path.isfile(os.path.join(self.datastore_path, uuid, "tag.json")):
+                logger.debug(f"Tag {uuid} tag.json exists, skipping")
+                continue
+            try:
+                tag_data.commit()
+                saved_count += 1
+                if saved_count % 10 == 0:
+                    logger.info(f"  Progress: {saved_count}/{tag_count} tags migrated...")
+
+            except Exception as e:
+                logger.error(f"Failed to save tag {uuid} ({tag_data.get('title', 'unknown')}): {e}")
+                failed_count += 1
+
+        if failed_count > 0:
+            logger.warning(f"Migration complete: {saved_count} tags saved, {failed_count} tags FAILED")
+        else:
+            logger.success(f"Migration complete: {saved_count} tags saved to individual tag.json files")
+
+        # Tags remain in settings for backwards compatibility AND easy access
+        # On next load, _load_tags() will read from tag.json files and merge with settings
+        logger.info("Tags saved to both settings AND individual tag.json files")
+        logger.info("Future tag edits will update both locations (dual storage)")
+        logger.critical("=" * 80)
+
+        # write it to disk, it will be saved without ['tags'] in the JSON db because we find it from disk glob
+        # (left this out by accident in previous update, added tags={} in the changedetection.json save_to_disk)
+        self._save_settings()
+
+    def update_30(self):
+        """Migrate restock_settings out of watch.json into restock_diff.json processor config file.
+
+        Previously, restock_diff processor settings (in_stock_processing, follow_price_changes, etc.)
+        were stored directly in the watch dict (watch.json). They now belong in a separate per-watch
+        processor config file (restock_diff.json) consistent with the processor_config_* API system.
+
+        For tags: restock_settings key is renamed to processor_config_restock_diff in the tag dict,
+        matching what the API writes when updating a tag.
+
+        Safe to re-run: skips watches that already have a restock_diff.json, skips tags that already
+        have processor_config_restock_diff set.
+        """
+        import json
+
+        # --- Watches ---
+        for uuid, watch in self.data['watching'].items():
+            if watch.get('processor') != 'restock_diff':
+                continue
+            restock_settings = watch.get('restock_settings')
+            if not restock_settings:
+                continue
+
+            data_dir = watch.data_dir
+            if data_dir:
+                watch.ensure_data_dir_exists()
+                filepath = os.path.join(data_dir, 'restock_diff.json')
+                if not os.path.isfile(filepath):
+                    with open(filepath, 'w', encoding='utf-8') as f:
+                        json.dump({'restock_diff': restock_settings}, f, indent=2)
+                    logger.info(f"update_30: migrated restock_settings → {filepath}")
+
+            del self.data['watching'][uuid]['restock_settings']
+            watch.commit()
+
+        # --- Tags ---
+        for tag_uuid, tag in self.data['settings']['application']['tags'].items():
+            restock_settings = tag.get('restock_settings')
+            if not restock_settings or tag.get('processor_config_restock_diff'):
+                continue
+            tag['processor_config_restock_diff'] = restock_settings
+            del tag['restock_settings']
+            tag.commit()
+            logger.info(f"update_30: migrated tag {tag_uuid} restock_settings → processor_config_restock_diff")
+
+    def update_31(self):
+        """Fold any flat application.llm_* key into nested application.llm.<stripped>.
+
+        Before: a handful of LLM settings (llm_enabled, llm_thinking_budget, …) lived
+        directly on settings.application alongside everything else, while the provider
+        config (model, api_key, …) was already nested under settings.application.llm.
+        Unifies them under one parent so the LLMSettings pydantic model has a single
+        home to read/write.
+
+        Flat key wins on conflict (most-recent form-saved value). Idempotent.
+        """
+        application = self.data['settings']['application']
+        present = [k for k in list(application) if k.startswith('llm_')]
+        if not present:
+            return
+
+        nested = application.get('llm') or {}
+        for flat in present:
+            nested[flat.removeprefix('llm_')] = application.pop(flat)
+        application['llm'] = nested
+        logger.info(f"update_31: folded {len(present)} flat llm_* keys into application.llm.* "
+                    f"({', '.join(present)})")
+
+    def update_32(self):
+        """Drop max_tokens_per_check and rename max_tokens_cumulative → max_tokens_per_count_period.
+
+        max_tokens_per_check was never reachable from the UI (form field declared but
+        never rendered or saved) and overlapped with the cumulative cap. Removing it.
+
+        max_tokens_cumulative was misleading — the field was used as a per-watch
+        per-period cap, not lifetime. Renamed so the semantic is clear and so a
+        future configurable period (day/week/month) doesn't force another rename.
+
         Both keys are unreached from real installs (no UI path on prior releases);
         this migration is mostly for branches and devs running pre-release commits.
         """
