@@ -445,3 +445,35 @@ def construct_blueprint(datastore: ChangeDetectionStore, update_q, worker_pool, 
                                  headers={'App-Guid': datastore.data['app_guid']})
             res = r.json()
 
+            # Add to the flask session
+            session['share-link'] = f"https://changedetection.io/share/{res['share_key']}"
+
+
+        except Exception as e:
+            logger.error(f"Error sharing -{str(e)}")
+            flash(gettext("Could not share, something went wrong while communicating with the share server - {}").format(str(e)), 'error')
+
+        return redirect(url_for('watchlist.index'))
+
+    @ui_blueprint.route("/language/auto-detect", methods=['POST'])
+    def delete_locale_language_session_var_if_it_exists():
+        """Clear the session locale preference to auto-detect from browser Accept-Language header"""
+        if 'locale' in session:
+            session.pop('locale', None)
+            # Refresh Flask-Babel to clear cached locale
+            from flask_babel import refresh
+            refresh()
+            flash(gettext("Language set to auto-detect from browser"))
+
+        # Check if there's a redirect parameter to return to the same page
+        redirect_url = request.args.get('redirect')
+
+        # If redirect is provided and safe, use it
+        from changedetectionio.is_safe_url import is_safe_url
+        if redirect_url and is_safe_url(redirect_url, current_app):
+            return redirect(redirect_url)
+
+        # Otherwise redirect to watchlist
+        return redirect(url_for('watchlist.index'))
+
+    return ui_blueprint
