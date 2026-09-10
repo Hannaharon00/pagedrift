@@ -4317,6 +4317,63 @@ msgstr ""
 msgid "more help here"
 msgstr "weitere Hilfe hier"
 
+#: changedetectionio/templates/_common_fields.html
+#, python-format
+msgid "Accepts the <code>%(token)s</code> placeholders listed below"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Customise notifications"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Titel für alle Benachrichtigungen"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "zum Beispiel -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Regular-expression replace, use"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For a complete reference of all Jinja2 built-in filters, users can refer to the"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Format for all notifications"
+msgstr "Format für alle Benachrichtigungen"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Discord does not render HTML — switch to"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Plain Text"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr ""
+
 #: changedetectionio/templates/_helpers.html
 msgid "Entry"
 msgstr "Eintrag"
