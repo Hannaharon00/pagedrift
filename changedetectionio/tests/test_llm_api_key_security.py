@@ -603,3 +603,73 @@ def test_llm_clear_get_does_not_wipe_config(
         "GET /settings/llm/clear must not wipe LLM config (CSRF guard)"
 
 
+def test_llm_clear_summary_cache_get_does_not_wipe_cache(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Same property for the cache wipe endpoint — GET must not delete the
+    change-summary-*.txt files the endpoint targets. To exercise the actual
+    deletion path we have to create a real watch (so a real data_dir exists)
+    and drop a real change-summary-*.txt inside it. POST should remove it;
+    GET must not."""
+    import os
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+
+    # Create a real watch — required to exercise llm_clear_summary_cache's
+    # iteration over datastore.data['watching'].values().
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        '/api/v1/watch',
+        data=json.dumps({'url': test_url}),
+        headers={'content-type': 'application/json', 'x-api-key': api_token},
+        follow_redirects=True,
+    )
+    assert res.status_code == 201
+    uuid = res.json.get('uuid')
+
+    watch = ds.data['watching'][uuid]
+    data_dir = watch.data_dir
+    assert data_dir, "Watch must have a data_dir for this test to be meaningful"
+    os.makedirs(data_dir, exist_ok=True)
+
+    summary_file = os.path.join(data_dir, 'change-summary-csrf-canary.txt')
+    with open(summary_file, 'w') as f:
+        f.write('do-not-delete-via-GET')
+
+    # GET must NOT trigger the wipe — this is the CSRF surface that was open
+    # via <img src="/settings/llm/clear-summary-cache">.
+    client.get(url_for('settings.llm.llm_clear_summary_cache'))
+    assert os.path.exists(summary_file), \
+        "GET on /settings/llm/clear-summary-cache must not invoke the cache wipe"
+
+    # Sanity check: POST does remove it — confirms our test actually exercises
+    # the deletion path the GET test is guarding against.
+    client.post(url_for('settings.llm.llm_clear_summary_cache'))
+    assert not os.path.exists(summary_file), \
+        "POST on /settings/llm/clear-summary-cache should remove change-summary-*.txt"
+
+    delete_all_watches(client)
+
+
+def test_llm_clear_via_post_still_works(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Confirm the legit confirm-then-POST flow wipes the provider credentials.
+
+    Post-LLMSettings: /llm/clear strips only the connection fields (model, api_key,
+    api_base, provider_kind, local_token_multiplier). User-set toggles, the global
+    summary prompt, monthly budgets, and system token counters survive. This matches
+    the settings-page "empty model" save semantic and the LLMSettings.CONNECTION_FIELDS
+    grouping — see PYDANTIC_MIGRATION.md.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    assert ds.data['settings']['application'].get('llm', {}).get('api_key') == CANARY_KEY
+
+    res = client.post(url_for('settings.llm.llm_clear'), follow_redirects=True)
+    assert res.status_code == 200
+
+    # The api_key must be gone (this is what the test really cares about).
+    llm = ds.data['settings']['application'].get('llm') or {}
+    assert 'api_key' not in llm, f"api_key should have been wiped, got: {llm!r}"
+    assert 'model' not in llm
+    assert 'api_base' not in llm
