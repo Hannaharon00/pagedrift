@@ -1178,6 +1178,50 @@ def test_api_watch_get_returns_resolved_restock_processor_config(client, live_se
     delete_all_watches(client)
 
 
+def test_api_conflict_UI_password(client, live_server, measure_memory_usage, datastore_path):
+
+
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Enable password check and diff page access bypass
+    res = client.post(
+        url_for("settings.settings_page"),
+        data={"application-password": "foobar", # password is now set! API should still work!
+              "application-api_access_token_enabled": "y",
+              "requests-time_between_check-minutes": 180,
+              'application-fetch_backend': "html_requests"},
+        follow_redirects=True
+    )
+
+    assert b"Password protection enabled." in res.data
+
+    # Create a watch
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Create new
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": test_url, "title": "My test URL" }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 201
+
+
+    wait_for_all_checks(client)
+    url = url_for("createwatch")
+    # Get a listing, it will be the first one
+    res = client.get(
+        url,
+        headers={'x-api-key': api_key}
+    )
+    assert res.status_code == 200
+
+    assert len(res.json)
+
+
 def test_api_url_validation(client, live_server, measure_memory_usage, datastore_path):
     """
     Test URL validation for edge cases in both CREATE and UPDATE endpoints.
