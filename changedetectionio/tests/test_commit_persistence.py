@@ -586,3 +586,76 @@ def test_watch_pause_unpause_persists(client, live_server):
     assert data['paused'] == False, "Unpause should be persisted"
 
 
+def test_watch_mute_unmute_persists(client, live_server):
+    """Test that mute/unmute operations commit and persist"""
+    datastore = client.application.config.get('DATASTORE')
+
+    # Get API key
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    uuid = datastore.add_watch(url='http://example.com')
+    watch = datastore.data['watching'][uuid]
+
+    # Mute via API
+    response = client.get(url_for("watch", uuid=uuid, muted='muted'), headers={'x-api-key': api_key})
+    assert response.status_code == 200
+
+    # Check persisted to disk
+    watch_json_path = os.path.join(watch.data_dir, 'watch.json')
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+    assert data['notification_muted'] == True, "Mute should be persisted"
+
+    # Unmute
+    response = client.get(url_for("watch", uuid=uuid, muted='unmuted'), headers={'x-api-key': api_key})
+    assert response.status_code == 200
+
+    with open(watch_json_path, 'r') as f:
+        data = json.load(f)
+    assert data['notification_muted'] == False, "Unmute should be persisted"
+
+
+def test_ui_watch_edit_persists_all_fields(client, live_server):
+    """Test that UI watch edit form persists all modified fields"""
+    from changedetectionio.store import ChangeDetectionStore
+
+    datastore = client.application.config.get('DATASTORE')
+    datastore_path = datastore.datastore_path
+
+    # Create watch
+    uuid = datastore.add_watch(url='http://example.com')
+
+    # Edit via UI with multiple field changes
+    response = client.post(
+        url_for("ui.ui_edit.edit_page", uuid=uuid),
+        data={
+            'url': 'http://updated-example.com',
+            'title': 'Updated Watch Title',
+            'time_between_check-hours': '2',
+            'time_between_check-minutes': '30',
+            'include_filters': '#content',
+            'fetch_backend': 'html_requests',
+            'method': 'POST',
+            'ignore_text': 'Advertisement\nTracking'
+        },
+        follow_redirects=True
+    )
+
+    assert b"Updated watch" in response.data or b"Saved" in response.data
+
+    # Simulate restart
+    datastore2 = ChangeDetectionStore(datastore_path=datastore_path)
+    datastore2.reload_state(
+        datastore_path=datastore_path,
+        include_default_watches=False,
+        version_tag='test'
+    )
+
+    # Verify all fields survived
+    watch = datastore2.data['watching'][uuid]
+    assert watch['url'] == 'http://updated-example.com'
+    assert watch['title'] == 'Updated Watch Title'
+    assert watch['time_between_check']['hours'] == 2
+    assert watch['time_between_check']['minutes'] == 30
+    assert watch['fetch_backend'] == 'html_requests'
+    assert watch['method'] == 'POST'
