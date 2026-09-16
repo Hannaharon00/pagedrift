@@ -4816,6 +4816,73 @@ msgid "Block text is processed from the result-text that comes out of any CSS/JS
 msgstr "Текст блока обрабатывается из результирующего текста, полученного из любых фильтров CSS/JSON для этого монитора."
 
 #: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "Все строки здесь не должны существовать (представьте каждую строку как «ИЛИ»)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"celsius\n"
+"temperature\n"
+"price"
+msgstr ""
+"Цельсия\n"
+"температура\n"
+"цена"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keep only lines that contain any of these words or phrases (plain text, case-insensitive)"
+msgstr "Сохраняйте только строки, содержащие любое из этих слов или фраз (обычный текст, без учета регистра)."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One entry per line — any line in the page text that contains a match is kept"
+msgstr "Одна запись в строке — сохраняется любая строка текста страницы, содержащая совпадение."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Simpler alternative to regex — use this when you just want lines about a specific topic"
+msgstr "Более простая альтернатива регулярному выражению — используйте ее, если вам просто нужны строки по определенной теме."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "enter <code>celsius</code> to keep only lines mentioning temperature readings"
+msgstr "введите <code>celsius</code>, чтобы сохранить только строки, в которых упоминаются показания температуры."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr ""
+"Извлекает текст в конечном выводе (построчно) после других фильтров с использованием регулярных выражений или "
+"сопоставления строк:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "Регулярное выражение — пример"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "Не забудьте учитывать пробелы в начале строки."
+
+#: changedetectionio/templates/edit/text-options.html
+#, python-format
+msgid "Use <code>//(?aiLmsux))</code> type flags (more <a href=\"%(url)s\">information here</a>)"
+msgstr ""
+"Используйте флаги типа <code>//(?aiLmsux))</code> (более подробную информацию о <a href=\"%(url)s\"> можно найти "
+"здесь</a>)."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example: <code>Out of stock</code>"
+msgstr "Пример ключевого слова: <code>Нет на складе</code>"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "Используйте группы для извлечения только этого текста — пример"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "возвращает только список лет"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "Пример: сопоставить строки, содержащие ключевое слово"
+
+#: changedetectionio/templates/edit/text-options.html
 msgid "One line per regular-expression/string match"
 msgstr "Одна строка на совпадение регулярного выражения/строки"
 
