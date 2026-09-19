@@ -1010,6 +1010,140 @@ class model(EntityPersistenceMixin, watch_base):
             logger.error(f"Error creating thumbnail for {self.get('uuid')}: {str(e)}")
             return None
 
+    def __get_file_ctime(self, filename):
+        fname = os.path.join(self.data_dir, filename)
+        if os.path.isfile(fname):
+            return int(os.path.getmtime(fname))
+        return False
+
+    @property
+    def error_text_ctime(self):
+        return self.__get_file_ctime('last-error.txt')
+
+    @property
+    def snapshot_text_ctime(self):
+        if self.history_n==0:
+            return False
+
+        timestamp = list(self.history.keys())[-1]
+        return int(timestamp)
+
+    @property
+    def snapshot_screenshot_ctime(self):
+        return self.__get_file_ctime('last-screenshot.png')
+
+    @property
+    def snapshot_error_screenshot_ctime(self):
+        return self.__get_file_ctime('last-error-screenshot.png')
+
+    def get_error_text(self):
+        """Return the text saved from a previous request that resulted in a non-200 error"""
+        fname = os.path.join(self.data_dir, "last-error.txt")
+        if os.path.isfile(fname):
+            with open(fname, 'r', encoding='utf-8') as f:
+                return f.read()
+        return False
+
+    def get_error_snapshot(self):
+        """Return path to the screenshot that resulted in a non-200 error"""
+        fname = os.path.join(self.data_dir, "last-error-screenshot.png")
+        if os.path.isfile(fname):
+            return fname
+        return False
+
+
+    @staticmethod
+    def _llm_summary_prompt_hash(prompt: str) -> str:
+        """8-char hex hash of the prompt — used to detect when the prompt changes."""
+        import hashlib
+        return hashlib.md5(prompt.encode('utf-8', errors='replace')).hexdigest()[:8]
+
+    def get_llm_diff_summary(self, from_version, to_version, prompt: str = '') -> str:
+        """Return the cached AI Change Summary for this from→to + prompt combination, or ''.
+
+        The prompt hash is embedded in the filename so that a changed prompt
+        automatically produces a cache miss and triggers regeneration.
+        """
+        prompt_hash = self._llm_summary_prompt_hash(prompt)
+        fname = os.path.join(self.data_dir, f'change-summary-{from_version}-to-{to_version}-{prompt_hash}.txt')
+        if not os.path.isfile(fname):
+            logger.debug(f"LLM cached diff summary '{fname}' NOT found")
+            return ''
+        with open(fname, 'r', encoding='utf-8') as f:
+            logger.debug(f"LLM cached diff summary '{fname}' FOUND")
+            return f.read().strip()
+
+    def save_llm_diff_summary(self, summary: str, from_version, to_version, prompt: str = ''):
+        """Persist the AI Change Summary keyed by version pair + prompt hash."""
+        self.ensure_data_dir_exists()
+        prompt_hash = self._llm_summary_prompt_hash(prompt)
+        fname = os.path.join(self.data_dir, f'change-summary-{from_version}-to-{to_version}-{prompt_hash}.txt')
+        tmp = fname + '.tmp'
+        try:
+            with open(tmp, 'w', encoding='utf-8') as f:
+                f.write(summary)
+            os.replace(tmp, fname)
+        except OSError as e:
+            logger.warning(f"Could not write LLM summary cache {fname}: {e}")
+
+    def pause(self):
+        self['paused'] = True
+
+    def unpause(self):
+        self['paused'] = False
+
+    def toggle_pause(self):
+        self['paused'] ^= True
+
+    def mute(self):
+        self['notification_muted'] = True
+
+    def unmute(self):
+        self['notification_muted'] = False
+
+    def toggle_mute(self):
+        self['notification_muted'] ^= True
+
+    def _get_commit_data(self):
+        """
+        Prepare watch data for commit.
+
+        Excludes processor_config_* keys (stored in separate files).
+        Excludes __-prefixed keys (transient in-memory state — must not persist to disk).
+        Normalizes browser_steps to empty list if no meaningful steps.
+        """
+        import copy
+
+        # Get base snapshot with lock
+        lock = self._datastore.lock if self._datastore and hasattr(self._datastore, 'lock') else None
+
+        if lock:
+            with lock:
+                snapshot = dict(self)
+        else:
+            snapshot = dict(self)
+
+        # Exclude processor config keys (stored separately) and __-prefixed transient keys
+        watch_dict = {
+            k: copy.deepcopy(v) for k, v in snapshot.items()
+            if not k.startswith('processor_config_') and not k.startswith('__')
+        }
+
+        # Normalize browser_steps: if no meaningful steps, save as empty list
+        if not self.has_browser_steps:
+            watch_dict['browser_steps'] = []
+
+        return watch_dict
+
+    # _save_to_disk() method provided by EntityPersistenceMixin
+    # commit() method inherited from watch_base
+
+
+    def extra_notification_token_values(self):
+        # Used for providing extra tokens
+        # return {'widget': 555}
+        return {}
+
         return False
 
 
