@@ -740,6 +740,47 @@ class TestIsWithinSchedule(unittest.TestCase):
             # So it should be False because Tuesday is disabled
             self.assertFalse(result, "Should check current day (Tuesday), which is disabled")
 
+    def test_schedule_with_mixed_hours_minutes(self):
+        """Test schedule with both hours and minutes (23 hours 60 minutes = 24 hours)."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        current_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': current_hour,
+                'duration': {'hours': 23, 'minutes': 60}  # = 1440 minutes = 24 hours
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertTrue(result, "Should handle 23 hours + 60 minutes = 24 hours")
+
+    def test_schedule_48_hours(self):
+        """Test schedule with 48-hour duration."""
+        timezone_str = 'UTC'
+        now = arrow.now(timezone_str)
+        current_day = now.format('dddd').lower()
+        start_hour = now.format('HH:00')
+
+        time_schedule_limit = {
+            'enabled': True,
+            'timezone': timezone_str,
+            current_day: {
+                'enabled': True,
+                'start_time': start_hour,
+                'duration': {'hours': 48, 'minutes': 0}  # 2 full days
+            }
+        }
+
+        result = time_handler.is_within_schedule(time_schedule_limit)
+        self.assertTrue(result, "Should support 48-hour (multi-day) schedules")
+
+
 class TestWeekdayEnum(unittest.TestCase):
     """Tests for the Weekday enum."""
 
