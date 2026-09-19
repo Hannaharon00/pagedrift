@@ -4100,6 +4100,66 @@ msgid "All diff variants accept"
 msgstr "各種差分出力は"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "args, e.g."
+msgstr "引数を受け付けます。例："
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes, additions, and removals —"
+msgstr "差分出力 - 変更、追加、削除のみ —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Without (added) prefix or colors"
+msgstr "（追加済み）プレフィックスや色なし"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions"
+msgstr "差分出力 - 変更と追加のみ"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and additions —"
+msgstr "差分出力 - 変更と追加のみ —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "差分出力 - 変更と削除のみ"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "差分出力 - 変更と削除のみ —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "差分出力 - 完全な差分出力"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "差分出力 - 完全な差分出力 —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "差分出力 - 統一フォーマットのパッチ"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr "前バージョンから変更された単語/値のみ — 例: 旧価格。1行あたり1つの値が変わる場合に最適。複数の変更箇所は改行で結合されます。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr "新バージョンの変更された単語/値のみ — 例: 新価格。1行あたり1つの値が変わる場合に最適。複数の変更箇所は改行で結合されます。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "現在のスナップショットのテキスト内容の値。JSONやCSSフィルタと組み合わせると便利です。"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "フィルタからトリガーを発動させたテキスト"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "(upgraded)"
 msgstr ""
 
