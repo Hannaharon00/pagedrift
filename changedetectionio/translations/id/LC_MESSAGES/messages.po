@@ -4870,6 +4870,58 @@ msgstr ""
 msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
 msgstr "Teks blokir diproses dari teks hasil yang keluar dari Filter CSS/JSON apa pun untuk monitor ini"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "Satu baris per regular-expression/pencocokan string"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "Masuk"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "Lanjutkan penjadwalan otomatis"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "Jeda penjadwalan antrean otomatis monitor"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr "Penjadwalan dijeda — klik untuk melanjutkan"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr "Penjadwalan aktif — klik untuk menjeda semua"
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr "Dijeda"
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr "Berjalan"
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "Aktifkan kembali notifikasi"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "Notifikasi dibisukan - klik untuk mengaktifkan kembali"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr "Peringatan aktif"
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr "Keluar"
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr "Pengaturan"
+
 #: changedetectionio/templates/menu.html
 msgid "EDIT"
 msgstr "EDIT"
