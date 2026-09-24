@@ -4586,6 +4586,70 @@ msgstr ""
 msgid "Real-time updates offline"
 msgstr "Atualizações em tempo real offline"
 
+#: changedetectionio/templates/base.html
+msgid "Select Language"
+msgstr "Selecionar Idioma"
+
+#: changedetectionio/templates/base.html
+msgid "Auto-detect from browser"
+msgstr "Detectar automaticamente do navegador"
+
+#: changedetectionio/templates/base.html
+msgid "Language support is in beta, please help us improve by opening a PR on GitHub with any updates."
+msgstr "O suporte a idiomas está em beta; ajude-nos a melhorar abrindo um PR no GitHub com quaisquer atualizações."
+
+#: changedetectionio/templates/base.html
+msgid "AI / LLM not configured"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "LLM-powered summaries are not yet enabled. Configure an AI provider in Settings to get started."
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Go to AI / LLM Settings"
+msgstr ""
+
+#: changedetectionio/templates/base.html changedetectionio/templates/sidebar-nav.html
+msgid "Search"
+msgstr "Pesquisar"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "URL or Title in '%(title)s'"
+msgstr "URL ou Título em '%(title)s'"
+
+#: changedetectionio/templates/base.html
+msgid "URL or Title"
+msgstr "URL ou Título"
+
+#: changedetectionio/templates/base.html
+msgid "Enter search term..."
+msgstr "Digite o termo de busca..."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"<strong>On</strong> &ndash; every watch in this group uses the AI settings below, unless it fills in its own. "
+"<strong>Off</strong> &ndash; no AI for any watch in this group. <strong>Leave it to each watch</strong> &ndash; this "
+"group has no say; each watch uses its own AI settings."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is ON for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Group %(name)s decides this: AI is OFF for every watch in that group."
+msgstr ""
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid ""
+"Describe what you care about. The AI evaluates every detected change against this and only notifies you when it "
+"matches."
+msgstr ""
+
 #: changedetectionio/templates/edit/include_llm_intent.html
 msgid "Set a change intent for all watches in this tag/group. Each watch can override with its own."
 msgstr ""
