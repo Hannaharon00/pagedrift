@@ -207,3 +207,83 @@ def extract_metadata_pure_python(html_content):
     return result
 
 
+def query_price_availability(extracted_data):
+    """
+    Query extracted metadata for price and availability information.
+
+    Uses jsonpath_ng to query JSON-LD data (same approach as extruct).
+    Falls back to OpenGraph and microdata if JSON-LD doesn't have the data.
+
+    Args:
+        extracted_data: Dict from extract_metadata_pure_python()
+
+    Returns:
+        dict: {'price': float, 'currency': str, 'availability': str}
+    """
+    from jsonpath_ng import parse
+
+    result = {}
+
+    # 1. Try JSON-LD first (most reliable and common)
+    for data in extracted_data.get('json-ld', []):
+        try:
+            # Use jsonpath to find price/availability anywhere in the structure
+            price_parse = parse('$..(price|Price)')
+            availability_parse = parse('$..(availability|Availability)')
+            currency_parse = parse('$..(priceCurrency|currency|priceCurrency)')
+
+            price_results = [m.value for m in price_parse.find(data)]
+            if price_results and not result.get('price'):
+                # Handle various price formats
+                price_val = price_results[0]
+                if isinstance(price_val, (int, float)):
+                    result['price'] = float(price_val)
+                elif isinstance(price_val, str):
+                    # Extract numeric value from string
+                    try:
+                        result['price'] = float(re.sub(r'[^\d.]', '', price_val))
+                    except ValueError:
+                        pass
+
+            avail_results = [m.value for m in availability_parse.find(data)]
+            if avail_results and not result.get('availability'):
+                result['availability'] = str(avail_results[0])
+
+            curr_results = [m.value for m in currency_parse.find(data)]
+            if curr_results and not result.get('currency'):
+                result['currency'] = str(curr_results[0])
+
+            # If we found price, this JSON-LD block is good
+            if result.get('price'):
+                logger.debug(f"Pure Python: Found price data in JSON-LD: {result}")
+                break
+
+        except Exception as e:
+            logger.debug(f"Error querying JSON-LD: {e}")
+            continue
+
+    # 2. Try OpenGraph if JSON-LD didn't provide everything
+    og_data = extracted_data.get('opengraph', {})
+    if not result.get('price') and 'og:price:amount' in og_data:
+        try:
+            result['price'] = float(og_data['og:price:amount'])
+        except ValueError:
+            pass
+    if not result.get('currency') and 'og:price:currency' in og_data:
+        result['currency'] = og_data['og:price:currency']
+    if not result.get('availability') and 'og:availability' in og_data:
+        result['availability'] = og_data['og:availability']
+
+    # 3. Use microdata as last resort
+    microdata = extracted_data.get('microdata', {})
+    if not result.get('price') and 'price' in microdata:
+        result['price'] = microdata['price']
+    if not result.get('currency') and 'currency' in microdata:
+        result['currency'] = microdata['currency']
+    if not result.get('availability') and 'availability' in microdata:
+        result['availability'] = microdata['availability']
+
+    # result['price'] could be float or str here, depending on the website, for example it might contain "1,00" commas, etc.
+    # using something like babel you need to know the locale of the website and even then it can be problematic
+    # we dont really do anything with the price data so far.. so just accept it the way it comes.
+    return result
