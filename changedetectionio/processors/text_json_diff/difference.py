@@ -101,3 +101,146 @@ DIFF_PREFERENCES_CONFIG = {
     'llm_all_changes': {'default': False, 'type': 'bool'},
 }
 
+def render(watch, datastore, request, url_for, render_template, flash, redirect, extract_form=None):
+    """
+    Render the history/diff view for text/JSON/HTML changes.
+
+    Args:
+        watch: The watch object
+        datastore: The ChangeDetectionStore instance
+        request: Flask request object
+        url_for: Flask url_for function
+        render_template: Flask render_template function
+        flash: Flask flash function
+        redirect: Flask redirect function
+        extract_form: Optional pre-built extract form (for error cases)
+
+    Returns:
+        Rendered HTML response
+    """
+    from changedetectionio import forms
+
+    uuid = watch.get('uuid')
+
+    extra_stylesheets = [url_for('static_content', group='styles', filename='diff.css')]
+
+    # Use provided form or create a new one
+    if extract_form is None:
+        extract_form = forms.extractDataForm(formdata=request.form,
+                                             data={'extract_regex': request.form.get('extract_regex', '')}
+                                             )
+    # Resolve which two snapshots we're comparing (shared with all processors' diff pages).
+    from changedetectionio.processors.difference_base import resolve_diff_versions
+    diff_versions = resolve_diff_versions(watch, request)
+    dates = diff_versions.dates
+    from_version = diff_versions.from_version
+    to_version = diff_versions.to_version
+    from_version_file_contents = diff_versions.from_contents
+    to_version_file_contents = diff_versions.to_contents
+
+    screenshot_url = watch.get_screenshot()
+
+    is_html_webdriver = watch.fetcher_supports_screenshots
+
+    password_enabled_and_share_is_off = False
+    if datastore.data['settings']['application'].get('password') or os.getenv("SALTED_PASS", False):
+        password_enabled_and_share_is_off = not datastore.data['settings']['application'].get('shared_diff_access')
+
+    datastore.set_last_viewed(uuid, time.time())
+
+    # Parse diff preferences from request using config as single source of truth
+    # Check if this is a user submission (any diff pref param exists in query string)
+    user_submitted = any(key in request.args for key in DIFF_PREFERENCES_CONFIG.keys())
+
+    diff_prefs = {}
+    for key, config in DIFF_PREFERENCES_CONFIG.items():
+        if user_submitted:
+            # User submitted form - missing checkboxes are explicitly OFF
+            if config['type'] == 'bool':
+                diff_prefs[key] = strtobool(request.args.get(key, 'off'))
+            else:
+                diff_prefs[key] = request.args.get(key, config['default'])
+        else:
+            # Initial load - use defaults from config
+            diff_prefs[key] = config['default']
+
+    content = diff.render_diff(previous_version_file_contents=from_version_file_contents,
+                               newest_version_file_contents=to_version_file_contents,
+                               include_replaced=diff_prefs['replaced'],
+                               include_added=diff_prefs['added'],
+                               include_removed=diff_prefs['removed'],
+                               include_equal=diff_prefs['changesOnly'],
+                               ignore_junk=diff_prefs['ignoreWhitespace'],
+                               word_diff=diff_prefs['type'] == 'diffWords',
+                               )
+
+    # Build cell grid visualizer before applying HTML color (so we can detect placemarkers)
+    diff_cell_grid = build_diff_cell_visualizer(content)
+
+    content = apply_html_color_to_body(n_body=content)
+    offscreen_content = render_template("diff-offscreen-options.html")
+
+    note = diff_versions.note
+
+    llm_configured = bool(
+        datastore.data.get('settings', {}).get('application', {}).get('llm', {}).get('model')
+    )
+
+    # Load cached AI diff summary for this exact from→to + prompt combination
+    viewing_latest = diff_versions.viewing_latest
+    llm_diff_summary = ''
+    llm_summary_prompt = ''
+    if llm_configured:
+        try:
+            from changedetectionio.llm.evaluator import (
+                get_effective_summary_prompt, build_summary_cache_prompt,
+            )
+            _prompt = get_effective_summary_prompt(watch, datastore)
+            llm_summary_prompt = _prompt
+            # Must match the cache_prompt the worker writes and the UI ajax route reads —
+            # using UI default diff prefs so the initial render finds the worker's pre-cache.
+            from changedetectionio.llm.evaluator import get_llm_settings
+            _ls = get_llm_settings(datastore)
+            _max_summary_tokens = _ls.max_summary_tokens
+            _llm_model = _ls.model
+            _cache_prompt = build_summary_cache_prompt(
+                effective_prompt=_prompt,
+                max_summary_tokens=_max_summary_tokens,
+                model=_llm_model,
+            )
+            llm_diff_summary = watch.get_llm_diff_summary(from_version, to_version, prompt=_cache_prompt)
+        except Exception as e:
+            logger.warning(f"Could not load llm-diff-summary for {uuid}: {e}")
+
+    output = render_template("diff.html",
+                             #initial_scroll_line_number=100,
+                             bottom_horizontal_offscreen_contents=offscreen_content,
+                             content=content,
+                             current_diff_url=watch.open_link,
+                             diff_cell_grid=diff_cell_grid,
+                             diff_prefs=diff_prefs,
+                             extra_classes=' '.join(filter(None, ['difference-page', 'llm-configured' if llm_configured else ''])),
+                             extra_stylesheets=extra_stylesheets,
+                             extra_title=f" - {watch.label} - {gettext('History')}",
+                             extract_form=extract_form,
+                             from_version=str(from_version),
+                             is_html_webdriver=is_html_webdriver,
+                             last_error=watch['last_error'],
+                             last_error_screenshot=watch.get_error_snapshot(),
+                             last_error_text=watch.get_error_text(),
+                             newest=to_version_file_contents,
+                             newest_version_timestamp=dates[-1],
+                             note=note,
+                             password_enabled_and_share_is_off=password_enabled_and_share_is_off,
+                             pure_menu_fixed=False,
+                             screenshot=screenshot_url,
+                             to_version=str(to_version),
+                             uuid=uuid,
+                             versions=dates,  # All except current/last
+                             watch_a=watch,
+                             llm_configured=llm_configured,
+                             llm_diff_summary=llm_diff_summary,
+                             llm_summary_prompt=llm_summary_prompt,
+                             viewing_latest=viewing_latest,
+                             )
+    return output
