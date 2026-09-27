@@ -4806,6 +4806,71 @@ msgstr "Cantumkan setiap item baru yang ditambahkan beserta nama dan harganya. T
 msgid "Summarise what events were added or cancelled. Two sentences maximum."
 msgstr "Ringkas acara apa yang ditambahkan atau dibatalkan. Maksimal dua kalimat."
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe the price change: old price, new price, percentage difference."
+msgstr "Jelaskan perubahan harga: harga lama, harga baru, perbedaan persentase."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "AI"
+msgstr "AI"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI Change Intent and AI "
+"Change Summary."
+msgstr ""
+"Konfigurasikan penyedia AI / LLM di <a href=\"%(url)s\">Pengaturan → AI / LLM</a> untuk mengaktifkan Intent Perubahan"
+" AI dan Ringkasan Perubahan AI."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI features for this group."
+msgstr ""
+"Konfigurasikan penyedia AI / LLM di <a href=\"%(url)s\">Pengaturan → AI / LLM</a> untuk mengaktifkan fitur AI bagi "
+"grup ini."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Note!: //text() function does not work where the <element> contains <![CDATA[]]>"
+msgstr "Catatan!: fungsi //text() tidak berfungsi jika <element> berisi <![CDATA[]]>"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "One CSS, xPath 1 & 2, JSON Path/JQ selector per line, <i>any</i> rules that matches will be used."
+msgstr "Satu selektor CSS, xPath 1 & 2, JSON Path/JQ per baris, <i>aturan apa pun</i> yang cocok akan digunakan."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Limit text to this CSS rule, only text matching this CSS rule is included."
+msgstr "Batasi teks dengan aturan CSS ini, hanya teks yang cocok dengan aturan CSS ini yang disertakan."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix with <code>json:</code>, use <code>json:$</code> to force re-formatting if required,"
+msgstr "Awali dengan <code>json:</code>, gunakan <code>json:$</code> untuk memaksa pemformatan ulang jika diperlukan,"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your JSONPath here"
+msgstr "uji JSONPath Anda di sini"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix <code>jqraw:</code> outputs the results as text instead of a JSON list."
+msgstr "Awalan <code>jqraw:</code> menghasilkan hasil sebagai teks alih-alih daftar JSON."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "jq support not installed"
+msgstr "dukungan jq tidak terinstal"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid ""
+"Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
+" rule starts with an XPath function: Prefix with <code>xpath:</code>"
+msgstr ""
+"Batasi teks dengan aturan XPath ini, cukup mulai dengan garis miring. Untuk menentukan XPath secara eksplisit atau "
+"jika aturan XPath dimulai dengan fungsi XPath: awali dengan <code>xpath:</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr "uji XPath Anda di sini"
+
 #: changedetectionio/templates/edit/include_subtract.html
 msgid "Get all titles from an RSS feed <code>//title/text()</code>"
 msgstr "Dapatkan semua judul dari feed RSS <code>//title/text()</code>"
