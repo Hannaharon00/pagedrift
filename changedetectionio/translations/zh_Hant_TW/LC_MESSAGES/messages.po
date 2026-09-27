@@ -4371,6 +4371,69 @@ msgid "Confirm"
 msgstr "確認"
 
 #: changedetectionio/templates/base.html
+#, python-format
+msgid "Delete %(name)s?"
+msgstr "刪除 %(name)s？"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "<p>Are you sure you want to delete <strong>%(name)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr "<p>您確定要刪除 <strong>%(name)s</strong> 嗎？</p><p>此動作無法復原。</p>"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Unlink %(name)s?"
+msgstr "解除連結 %(name)s？"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid ""
+"<p>Are you sure you want to unlink all watches from <strong>%(name)s</strong>?</p><p>The tag will be kept but watches"
+" will be removed from it.</p>"
+msgstr "<p>您確定要從 <strong>%(name)s</strong> 解除所有監測任務的連結嗎？</p><p>標籤將被保留，但監測任務將從中移除。</p>"
+
+#: changedetectionio/templates/base.html
+msgid "There was an error communicating with the server."
+msgstr "與伺服器通訊時發生錯誤。"
+
+#: changedetectionio/templates/base.html
+msgid "There was a problem processing the request, please reload the page."
+msgstr "處理請求時發生問題，請重新載入網頁。"
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "There was a problem processing the request: %(error)s"
+msgstr "處理請求時發生問題：%(error)s"
+
+#: changedetectionio/templates/base.html
+msgid "Existing filters under the 'Filters & Triggers' tab were cleared."
+msgstr "「過濾器與觸發器」分頁下的現有過濾器已清除。"
+
+#: changedetectionio/templates/base.html
+msgid "Fetching element data.."
+msgstr "正在抓取元素資料 ..."
+
+#: changedetectionio/templates/base.html
+msgid "Rendering.."
+msgstr "正在渲染 ..."
+
+#: changedetectionio/templates/base.html
+msgid "Draw mode - click and drag to select an area"
+msgstr "繪製模式 - 點擊並拖曳以選擇區域"
+
+#: changedetectionio/templates/base.html
+msgid "Hover over elements to select"
+msgstr "將滑鼠懸停在元素上以進行選擇"
+
+#: changedetectionio/templates/base.html
+msgid "Image copied to clipboard!"
+msgstr "圖片已複製到剪貼簿！"
+
+#: changedetectionio/templates/base.html
+msgid "Failed to copy image. Your browser may not support this feature."
+msgstr "複製圖片失敗。您的瀏覽器可能不支援此功能。"
+
+#: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr "請先使用滑鼠反白來選擇您想要捕捉的文字 / 行。"
 
