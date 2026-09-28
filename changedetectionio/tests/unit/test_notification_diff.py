@@ -286,6 +286,167 @@ Line 4"""
         # When ignore_junk is enabled, whitespace is normalized at line level so lines match
         output = diff.render_diff(before, after, include_equal=False, word_diff=False, ignore_junk=True)
         
+        # Lines should be treated as equal
+        lines = [l for l in output.split("\n") if l.strip()]
+        self.assertEqual(len(lines), 0, "Should ignore whitespace differences at line level")
+
+    def test_ignore_junk_with_real_changes(self):
+        """Test ignore_junk doesn't ignore actual word changes"""
+        before = "The  quick   brown  fox"
+        after = "The quick brown cat"
+
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True, ignore_junk=True)
+        
+        # Should still detect the word change (fox -> cat)
+        self.assertIn(f'{REMOVED_PLACEMARKER_OPEN}fox{REMOVED_PLACEMARKER_CLOSED}', output)
+        self.assertIn(f'{ADDED_PLACEMARKER_OPEN}cat{ADDED_PLACEMARKER_CLOSED}', output)
+        # But shouldn't highlight whitespace differences
+
+    def test_ignore_junk_tabs_vs_spaces(self):
+        """Test ignore_junk treats tabs and spaces as equivalent"""
+        before = "Column1\tColumn2\tColumn3"
+        after = "Column1    Column2    Column3"
+
+        # Without ignore_junk, should detect difference
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True, ignore_junk=False)
+        
+        self.assertTrue(len(output.strip()) > 0, "Should detect tab vs space differences")
+
+        # With ignore_junk, should ignore tab/space differences
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True, ignore_junk=True)
+        
+        lines = [l for l in output.split("\n") if l.strip()]
+        self.assertEqual(len(lines), 0, "Should ignore tab vs space differences when ignore_junk=True")
+
+    def test_ignore_junk_html_output(self):
+        """Test ignore_junk with placemarkers for value changes"""
+        before = "Value:  100  points"
+        after = "Value: 200 points"
+
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True, ignore_junk=True)
+        
+        # Should only highlight the actual value change
+        self.assertIn(f'{REMOVED_PLACEMARKER_OPEN}100{REMOVED_PLACEMARKER_CLOSED}', output)
+        self.assertIn(f'{ADDED_PLACEMARKER_OPEN}200{ADDED_PLACEMARKER_CLOSED}', output)
+        # Should not create separate spans for whitespace changes
+
+    def test_ignore_junk_case_insensitive_combination(self):
+        """Test ignore_junk combined with case_insensitive"""
+        before = "The  QUICK   Brown  Fox jumps over the lazy dog every day"
+        after = "The quick brown FOX jumps over the lazy dog every day"
+
+        # Both enabled: should ignore case and whitespace
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True,
+                                 case_insensitive=True, ignore_junk=True)
+        
+        lines = [l for l in output.split("\n") if l.strip()]
+        self.assertEqual(len(lines), 0, "Should ignore both case and whitespace differences")
+
+        # Only case_insensitive: should detect whitespace changes
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True,
+                                 case_insensitive=True, ignore_junk=False)
+        
+        self.assertTrue(len(output.strip()) > 0, "Should detect whitespace changes")
+
+        # Only ignore_junk: should detect case changes
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True,
+                                 case_insensitive=False, ignore_junk=True)
+        
+        # Should detect case differences
+        self.assertIn('QUICK', output)
+        self.assertIn('quick', output)
+        self.assertIn('Brown', output)
+        self.assertIn('brown', output)
+        # Should show changes (though may be grouped together)
+        # Check that placemarkers appear in the output
+        self.assertTrue(REMOVED_PLACEMARKER_OPEN in output, "Should show removed text")
+        self.assertTrue(ADDED_PLACEMARKER_OPEN in output, "Should show added text")
+
+    def test_ignore_junk_multiline(self):
+        """Test ignore_junk with multiple lines"""
+        before = """Line 1  with  spaces
+Line 2 unchanged
+Line 3  with  tabs	and  spaces"""
+
+        after = """Line 1 with spaces
+Line 2 unchanged
+Line 3 with tabs and spaces"""
+
+        # With ignore_junk, should only show unchanged line when include_equal=True
+        output = diff.render_diff(before, after, include_equal=False, word_diff=True, ignore_junk=True)
+        
+        lines = [l for l in output.split("\n") if l.strip()]
+        # Should be empty since only whitespace changed
+        self.assertEqual(len(lines), 0, "Should ignore whitespace changes across multiple lines")
+
+        # Verify Line 2 is not shown as changed
+        self.assertNotIn('[-Line 2-]', output)
+        self.assertNotIn('[+Line 2+]', output)
+
+    def test_diff_changed_from_to_word_level(self):
+        """Primary use case: extract just the old/new value from a changed line (e.g. price monitoring)"""
+        before = "Widget costs $99.99 per month"
+        after  = "Widget costs $109.99 per month"
+
+        raw = diff.render_diff(before, after, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "$99.99")
+        self.assertEqual(extract_changed_to(raw),   "$109.99")
+
+    def test_diff_changed_from_to_multiple_changes(self):
+        """Multiple changed fragments on different lines are joined with newline.
+        An unchanged line between the two changes ensures each is a 1-to-1 replace,
+        so word_diff fires per line rather than falling back to multi-line block mode."""
+        before = "Price $99\nunchanged\nTax $5"
+        after  = "Price $149\nunchanged\nTax $12"
+
+        raw = diff.render_diff(before, after, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "$99\n$5")
+        self.assertEqual(extract_changed_to(raw),   "$149\n$12")
+
+    def test_diff_changed_from_to_pure_insert_delete(self):
+        """Pure line additions/deletions (no inline word diff) are also captured"""
+        before = "old line"
+        after  = "new line"
+
+        # word_diff=False forces line-level CHANGED markers
+        raw = diff.render_diff(before, after, word_diff=False)
+
+        self.assertEqual(extract_changed_from(raw), "old line")
+        self.assertEqual(extract_changed_to(raw),   "new line")
+
+    def test_diff_changed_from_to_similar_numbers(self):
+        """$90.00 → $9.00 must not produce a partial match like '0.00'.
+        The tokenizer splits on whitespace only, so '$90.00' and '$9.00' are
+        each a single atomic token — diff never sees their internal characters."""
+        before = "for sale $90.00"
+        after  = "for sale $9.00"
+
+        raw = diff.render_diff(before, after, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "$90.00")
+        self.assertEqual(extract_changed_to(raw),   "$9.00")
+
+    def test_diff_changed_from_to_whole_line_replaced(self):
+        """When every token on the line changed (no common tokens), render_inline_word_diff
+        takes the whole_line_replaced path using CHANGED/CHANGED_INTO markers instead of
+        REMOVED/ADDED. Extraction must still work via the alternation in the regex."""
+        before = "$99"
+        after  = "$109"
+
+        raw = diff.render_diff(before, after, word_diff=True)
+
+        self.assertEqual(extract_changed_from(raw), "$99")
+        self.assertEqual(extract_changed_to(raw),   "$109")
+
+    def test_diff_changed_from_to_multiple_words_same_line(self):
+        """When multiple words change on the same line all fragments are joined with newline.
+        'quick brown fox jumps' -> 'slow brown fox hops' gives 'quick\njumps' / 'slow\nhops'.
+        These tokens work best when a single value changes per line."""
+        before = "quick brown fox jumps"
+        after  = "slow brown fox hops"
+
         raw = diff.render_diff(before, after, word_diff=True)
 
         self.assertEqual(extract_changed_from(raw), "quick\njumps")
