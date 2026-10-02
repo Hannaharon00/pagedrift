@@ -4395,6 +4395,62 @@ msgstr "警告：1つ以上の「曜日」の期間が翌日まで延長され�
 msgid "This could have unintended consequences."
 msgstr "これは意図しない結果を引き起こす可能性があります。"
 
+#: changedetectionio/templates/_helpers.html
+msgid "More help and examples about using the scheduler"
+msgstr "スケジューラーの使用に関する詳細なヘルプと例"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Want to use a time schedule?"
+msgstr "タイムスケジュールを使用しますか？"
+
+#: changedetectionio/templates/_helpers.html
+msgid "First confirm/save your Time Zone Settings"
+msgstr "まずタイムゾーン設定を確認/保存してください"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "トリガーされたテキスト"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "このテキストが表示され、かつドキュメントに何か変更があった場合に変更をトリガーします。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "無視されたテキスト"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "変更の計算では無視されますが、表示はされます。"
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "ブロックされたテキスト"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "このテキストが存在するため、変更検知は実行されません。"
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 msgid "Please select the text/lines you want to capture first by highlighting with your mouse."
 msgstr ""

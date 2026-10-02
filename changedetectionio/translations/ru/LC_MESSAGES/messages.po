@@ -4216,6 +4216,74 @@ msgid "The diff output - only changes and additions —"
 msgstr "Вывод diff — только изменения и дополнения —"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals"
+msgstr "Вывод различий - только изменения и удаления"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - only changes and removals —"
+msgstr "Вывод различий — только изменения и удаления —"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output"
+msgstr "Вывод разницы – вывод полной разницы"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - full difference output —"
+msgstr "Вывод разницы – вывод полной разницы –"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The diff output - patch in unified format"
+msgstr "Вывод diff - патч в едином формате"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the previous version — e.g. the old price. Best when a single value changes per "
+"line; multiple changed fragments are joined by newline."
+msgstr ""
+"Только измененные слова/значения из предыдущей версии — например. старая цена. Лучше всего, когда в каждой строке "
+"меняется одно значение; несколько измененных фрагментов объединяются новой строкой."
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"Only the changed words/values from the new version — e.g. the new price. Best when a single value changes per line; "
+"multiple changed fragments are joined by newline."
+msgstr ""
+"Только измененные слова/значения из новой версии — например. новая цена. Лучше всего, когда в каждой строке меняется "
+"одно значение; несколько измененных фрагментов объединяются новой строкой."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The current snapshot text contents value, useful when combined with JSON or CSS filters"
+msgstr "Текущее значение текстового содержимого снимка, полезно в сочетании с фильтрами JSON или CSS."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Text that tripped the trigger from filters"
+msgstr "Текст, вызывающий срабатывание триггера фильтров"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "(upgraded)"
+msgstr "(обновлено)"
+
+#: changedetectionio/templates/_common_fields.html
+msgid ""
+"When AI Change Summary is configured, contains the AI-generated description instead of the raw diff. Falls back to "
+"raw diff when not configured."
+msgstr ""
+"Если настроена сводка изменений AI, она содержит описание, созданное AI, вместо необработанных различий. Возвращается"
+" к необработанным различиям, если они не настроены."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Always the raw +/- diff, regardless of AI Change Summary setting."
+msgstr "Всегда необработанная разница +/-, независимо от настройки сводки изменений AI."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Summary text (same as the upgraded {{diff}} — explicit reference)."
+msgstr "Текст сводки изменений AI (тот же, что и в обновленном {{diff}} — явная ссылка)."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "The AI Change Intent that was evaluated."
+msgstr "Намерение изменения ИИ, которое было оценено."
+
+#: changedetectionio/templates/_common_fields.html
 msgid "Warning: Contents of"
 msgstr "Внимание: Содержание"
 
