@@ -4803,6 +4803,62 @@ msgstr "使用群組以僅提取該文字 - 範例"
 msgid "returns a list of years only"
 msgstr "僅傳回年份列表"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "範例 - 符合包含關鍵字的行"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "每個正規表示式 / 字串符合佔用一行"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "登入"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "恢復自動排程"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "暫停監測任務的自動佇列排程"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr "排程已暫停 — 點擊以恢復"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr "排程進行中 — 點擊以暫停全部"
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr "已暫停"
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr ""
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "取消靜音通知"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "通知已靜音 - 點擊以取消靜音"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr "警報開啟"
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr "登出"
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr "設定"
+
 #: changedetectionio/templates/menu.html
 msgid "EDIT"
 msgstr "編輯"
