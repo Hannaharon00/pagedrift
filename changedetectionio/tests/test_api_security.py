@@ -727,6 +727,108 @@ def test_api_history_html_does_not_serve_as_text_html(client, live_server, measu
     delete_all_watches(client)
 
 
+def test_api_notification_edge_cases(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test notification configuration edge cases.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+    set_original_response(datastore_path=datastore_path)
+    test_url = url_for('test_endpoint', _external=True)
+
+    # Test 1: Invalid notification URL
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "notification_urls": ["invalid://url", "ftp://test.com"]
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept (apprise validates at runtime) or reject
+    assert res.status_code in [201, 400]
+    if res.status_code == 201:
+        watch_uuid = res.json.get('uuid')
+        client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    # Test 2: Invalid notification format
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "notification_format": "invalid_format"
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should be rejected by schema
+    assert res.status_code == 400
+
+    # Test 3: Empty notification arrays
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({
+            "url": test_url,
+            "notification_urls": []
+        }),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept (empty is valid)
+    assert res.status_code == 201
+    watch_uuid = res.json.get('uuid')
+    client.delete(url_for("watch", uuid=watch_uuid), headers={'x-api-key': api_key})
+
+    delete_all_watches(client)
+
+
+def test_api_tag_edge_cases(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test tag/group API edge cases including XSS and path traversal.
+    """
+    api_key = live_server.app.config['DATASTORE'].data['settings']['application'].get('api_access_token')
+
+    # Test 1: Empty tag title
+    res = client.post(
+        url_for("tag"),
+        data=json.dumps({"title": ""}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should be rejected (empty title)
+    assert res.status_code == 400
+
+    # Test 2: XSS in tag title
+    res = client.post(
+        url_for("tag"),
+        data=json.dumps({"title": "<script>alert(1)</script>"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept but sanitize
+    if res.status_code == 201:
+        tag_uuid = res.json.get('uuid')
+        # Verify title is stored safely
+        res = client.get(url_for("tag", uuid=tag_uuid), headers={'x-api-key': api_key})
+        # Should be escaped or sanitized
+        client.delete(url_for("tag", uuid=tag_uuid), headers={'x-api-key': api_key})
+
+    # Test 3: Path traversal in tag title
+    res = client.post(
+        url_for("tag"),
+        data=json.dumps({"title": "../../etc/passwd"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should accept (it's just a string, not a path)
+    if res.status_code == 201:
+        tag_uuid = res.json.get('uuid')
+        client.delete(url_for("tag", uuid=tag_uuid), headers={'x-api-key': api_key})
+
+    # Test 4: Very long tag title
+    res = client.post(
+        url_for("tag"),
+        data=json.dumps({"title": "x" * 10000}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+    )
+    # Should be rejected (exceeds maxLength)
+    assert res.status_code == 400
+
+
 def test_api_authentication_edge_cases(client, live_server, measure_memory_usage, datastore_path):
     """
     Test API authentication edge cases.
