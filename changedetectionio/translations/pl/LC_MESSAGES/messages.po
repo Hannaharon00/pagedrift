@@ -4865,6 +4865,79 @@ msgstr "Wymień wszystkie nowe pozycje wraz z ich nazwami i cenami. Przetłumacz
 msgid "Summarise what events were added or cancelled. Two sentences maximum."
 msgstr "Podsumuj, jakie wydarzenia zostały dodane lub odwołane. Maksymalnie dwa zdania."
 
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "Describe the price change: old price, new price, percentage difference."
+msgstr "Opisz zmianę ceny: stara cena, nowa cena, różnica procentowa."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+msgid "AI"
+msgstr "Sztuczna inteligencja"
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid ""
+"Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI Change Intent and AI "
+"Change Summary."
+msgstr ""
+"Skonfiguruj dostawcę usług AI / LLM w <a href=\"%(url)s\">Ustawienia → AI / LLM</a>, aby włączyć funkcje „AI Change "
+"Intent” i „AI Change Summary”."
+
+#: changedetectionio/templates/edit/include_llm_intent.html
+#, python-format
+msgid "Configure an AI / LLM provider in <a href=\"%(url)s\">Settings → AI / LLM</a> to enable AI features for this group."
+msgstr ""
+"Skonfiguruj dostawcę usług AI / LLM w sekcji <a href=\"%(url)s\">Ustawienia → AI / LLM</a>, aby włączyć funkcje AI "
+"dla tej grupy."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Note!: //text() function does not work where the <element> contains <![CDATA[]]>"
+msgstr "Uwaga!: //Funkcja text() nie działa, jeśli element <element> zawiera <![CDATA[]]>"
+
+#. CJK fonts lack native italics; allow substitution with conventional local styling. dennis-ignore: W303
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "One CSS, xPath 1 & 2, JSON Path/JQ selector per line, <i>any</i> rules that matches will be used."
+msgstr ""
+"Jedna reguła CSS, xPath 1 i 2, JSON Path/selektor JQ w każdym wierszu; <i>wszelkie</i> reguły, które pasują, zostaną "
+"zastosowane."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Limit text to this CSS rule, only text matching this CSS rule is included."
+msgstr "Ogranicz tekst do tej reguły CSS – uwzględniony zostanie wyłącznie tekst zgodny z tą regułą CSS."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix with <code>json:</code>, use <code>json:$</code> to force re-formatting if required,"
+msgstr ""
+"Należy poprzedzić prefiksem <code>json:</code>; w razie potrzeby należy użyć <code>json:$</code>, aby wymusić ponowne"
+" sformatowanie,"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your JSONPath here"
+msgstr "Sprawdź tutaj działanie JSONPath"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Prefix <code>jqraw:</code> outputs the results as text instead of a JSON list."
+msgstr "Prefiks <code>jqraw:</code> powoduje wyświetlenie wyników w postaci tekstu zamiast listy JSON."
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "jq support not installed"
+msgstr "Brak zainstalowanego wsparcia dla jq"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid ""
+"Limit text to this XPath rule, simply start with a forward-slash. To specify XPath to be used explicitly or the XPath"
+" rule starts with an XPath function: Prefix with <code>xpath:</code>"
+msgstr ""
+"Aby ograniczyć tekst do tej reguły XPath, wystarczy rozpocząć od ukośnika. Aby jawnie określić regułę XPath, którą ma"
+" zostać zastosowana, lub gdy reguła XPath zaczyna się od funkcji XPath: należy dodać przedrostek <code>xpath:</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr "Sprawdź tutaj swój wyrażenie XPath"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr "Pobierz wszystkie tytuły z kanału RSS <code>//title/text()</code>"
+
 #: changedetectionio/templates/edit/include_subtract.html
 msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
 msgstr "Aby użyć XPath 1.0: Dodaj prefiks <code>xpath1:</code>"
