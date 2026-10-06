@@ -518,3 +518,5 @@ Line 3 with tabs and spaces"""
                                '@changed_into_PLACEMARKER_OPEN100@changed_into_PLACEMARKER_CLOSED')
 
 
+if __name__ == '__main__':
+    unittest.main()

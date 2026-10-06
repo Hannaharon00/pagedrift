@@ -4306,6 +4306,62 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
+#: changedetectionio/templates/_common_fields.html
+msgid "format to avoid"
+msgstr ""
+
+#: changedetectionio/templates/_common_fields.html
+msgid "and other HTML entities appearing literally in your notifications."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Entry"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Actions"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Add a row/rule after"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Remove this row/rule"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Verify this rule against current snapshot"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Set a hourly/week day schedule"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Schedule time limits"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Business hours"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Weekends"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Reset"
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "Warning, one or more of your 'days' has a duration that would extend into the next day."
+msgstr ""
+
+#: changedetectionio/templates/_helpers.html
+msgid "This could have unintended consequences."
+msgstr ""
+
 #: changedetectionio/templates/_helpers.html
 msgid "More help and examples about using the scheduler"
 msgstr ""
