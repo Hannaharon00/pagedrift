@@ -470,3 +470,5 @@ class TestLinkToOpen(unittest.TestCase):
         assert watch.open_link == 'https://example.com/page?id=2'
 
 
+if __name__ == '__main__':
+    unittest.main()
