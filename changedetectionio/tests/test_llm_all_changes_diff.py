@@ -114,3 +114,70 @@ def test_default_mode_sends_single_diff_to_llm(
 # Cache key separation: all_changes=1 and all_changes=0 don't share cache
 # ---------------------------------------------------------------------------
 
+def test_all_changes_and_direct_use_separate_cache_keys(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A cached all_changes=1 summary must not be served for an all_changes=0
+    request on the same from/to pair, and vice-versa.
+    """
+    _configure_llm(client)
+    uuid, _ = _make_watch_with_three_snapshots(client)
+
+    call_count = {'n': 0}
+
+    def fake_summarise(watch, datastore, diff, current_snapshot=None):
+        call_count['n'] += 1
+        return f'Summary call #{call_count["n"]}'
+
+    with patch('changedetectionio.llm.evaluator.summarise_change', side_effect=fake_summarise):
+        # First call: all_changes=1
+        r1 = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=1,
+        ))
+        # Second call: all_changes=0 — must NOT hit the cache from above
+        r2 = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=0,
+        ))
+
+    assert call_count['n'] == 2, "LLM should be called twice (separate cache keys)"
+    assert r1.get_json()['summary'] != r2.get_json()['summary']
+
+    delete_all_watches(client)
+
+
+# ---------------------------------------------------------------------------
+# Caching: second all_changes=1 call returns cached result
+# ---------------------------------------------------------------------------
+
+def test_all_changes_result_is_cached(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A second all_changes=1 request for the same from/to pair must be
+    served from cache — summarise_change must only be called once.
+    """
+    _configure_llm(client)
+    uuid, _ = _make_watch_with_three_snapshots(client)
+
+    call_count = {'n': 0}
+
+    def fake_summarise(watch, datastore, diff, current_snapshot=None):
+        call_count['n'] += 1
+        return 'Cached multi-step summary.'
+
+    with patch('changedetectionio.llm.evaluator.summarise_change', side_effect=fake_summarise):
+        r1 = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=1,
+        ))
+        r2 = client.get(url_for(
+            'ui.ui_diff.diff_llm_summary', uuid=uuid,
+            from_version=TS1, to_version=TS3, all_changes=1,
+        ))
+
+    assert call_count['n'] == 1, "LLM should only be called once; second request should be cached"
+    assert r1.get_json()['summary'] == r2.get_json()['summary'] == 'Cached multi-step summary.'
+    assert r2.get_json().get('cached') is True
+
+    delete_all_watches(client)
