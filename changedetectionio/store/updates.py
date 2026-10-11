@@ -602,6 +602,105 @@ class DatastoreUpdatesMixin:
                     f"url-watches.json remains intact, safe to retry. Error: {e}"
                 )
 
+        logger.critical(f"Phase 1 complete: Saved {saved_count} watches")
+
+        # Phase 2: Verify all files exist
+        logger.critical("Phase 2/4: Verifying all watch.json files were created...")
+
+        missing = []
+        for uuid in self.data['watching'].keys():
+            watch_json = os.path.join(self.datastore_path, uuid, "watch.json")
+            if not os.path.isfile(watch_json):
+                missing.append(uuid)
+
+        if missing:
+            raise Exception(
+                f"Migration failed: {len(missing)} watch files missing: {missing[:5]}... "
+                f"url-watches.json remains intact, safe to retry."
+            )
+
+        logger.critical(f"Phase 2 complete: Verified {watch_count} watch files")
+
+        # Phase 3: Create new settings file
+        logger.critical("Phase 3/4: Creating changedetection.json...")
+
+        try:
+            self._save_settings()
+        except Exception as e:
+            logger.error(f"Failed to create changedetection.json: {e}")
+            raise Exception(
+                f"Migration failed: Could not create changedetection.json. "
+                f"url-watches.json remains intact, safe to retry. Error: {e}"
+            )
+
+        # Phase 4: Verify settings file exists
+        logger.critical("Phase 4/4: Verifying changedetection.json exists...")
+        changedetection_json_new_schema=os.path.join(self.datastore_path, "changedetection.json")
+        if not os.path.isfile(changedetection_json_new_schema):
+            import sys
+            logger.critical("Migration failed, changedetection.json not found after update ran!")
+            sys.exit(1)
+
+
+        logger.critical("Phase 4 complete: Verified changedetection.json exists")
+
+        # Success! Now reload from new format
+        logger.critical("Reloading datastore from new format...")
+        # write it to disk, it will be saved without ['watching'] in the JSON db because we find it from disk glob
+        self._save_settings()
+        logger.success("Datastore reloaded from new format successfully")
+        logger.critical("=" * 80)
+        logger.critical("MIGRATION COMPLETED SUCCESSFULLY!")
+        logger.critical("=" * 80)
+        logger.info("")
+        logger.info("New format:")
+        logger.info(f"  - {watch_count} individual watch.json files created")
+        logger.info(f"  - changedetection.json created (settings only)")
+        logger.info("")
+        logger.info("Rollback safety:")
+        logger.info("  - url-watches.json preserved for rollback")
+        logger.info("  - To rollback: downgrade to previous version and restart")
+        logger.info("  - No manual file operations needed")
+        logger.info("")
+        logger.info("Optional cleanup (after testing new version):")
+        logger.info(f"  - rm {os.path.join(self.datastore_path, 'url-watches.json')}")
+        logger.info("")
+
+    def update_26(self):
+        self.migrate_legacy_db_format()
+
+    # Re-run tag to JSON migration
+    def update_29(self):
+
+        """
+        Migrate tags to individual tag.json files.
+
+        Tags are currently saved only in changedetection.json (settings).
+        This migration ALSO saves them to individual {uuid}/tag.json files,
+        similar to how watches are stored (dual storage).
+
+        Benefits:
+        - Allows atomic tag updates without rewriting entire settings
+        - Enables independent tag versioning/backup
+        - Maintains backwards compatibility (tags stay in settings too)
+        """
+        logger.critical("=" * 80)
+        logger.critical("Running migration: Individual tag persistence (update_28)")
+        logger.critical("Creating individual tag.json files")
+        logger.critical("=" * 80)
+
+        tags = self.data['settings']['application'].get('tags', {})
+        tag_count = len(tags)
+
+        if tag_count == 0:
+            logger.info("No tags found, skipping migration")
+            return
+
+        logger.info(f"Migrating {tag_count} tags to individual tag.json files...")
+
+        saved_count = 0
+        failed_count = 0
+
         for uuid, tag_data in tags.items():
             if os.path.isfile(os.path.join(self.datastore_path, uuid, "tag.json")):
                 logger.debug(f"Tag {uuid} tag.json exists, skipping")
