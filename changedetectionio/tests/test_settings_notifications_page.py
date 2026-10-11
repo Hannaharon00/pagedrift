@@ -113,3 +113,115 @@ def test_notifications_page_post_saves_values(
     assert app.get('base_url') == 'https://new.example/'
 
 
+def test_main_settings_save_does_not_clobber_notification_config(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Regression — the main /settings page and the new /settings/notifications page
+    write to the SAME dict (datastore.data['settings']['application']). The main
+    page's application sub-form still inherits the notification_* fields from
+    commonSettingsForm, so a naive `app.update(form.data['application'])` here
+    would wipe notification_urls / title / body / format / base_url with empty
+    WTForms defaults whenever the user saves the main settings page.
+
+    This test seeds a real notification config, then POSTs the main settings
+    page WITHOUT touching the notification fields, and asserts every notification
+    value survived the unrelated save.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _seed_notification_config(ds)
+
+    res = client.post(
+        url_for('settings.settings_page'),
+        data={
+            # Minimal payload to validate the main form. Must NOT include any
+            # of the notification fields — that's the whole point of the test.
+            'application-pager_size': '50',
+            'application-fetch_backend': 'html_requests',
+            'application-rss_diff_length': '5',
+            'application-filter_failure_notification_threshold_attempts': '0',
+            'application-notification_format': 'html',  # required choice, no Optional()
+            'requests-time_between_check-days': '0',
+            'requests-time_between_check-hours': '0',
+            'requests-time_between_check-minutes': '5',
+            'requests-time_between_check-seconds': '0',
+            'requests-time_between_check-weeks': '0',
+            'requests-jitter_seconds': '0',
+            'requests-workers': '10',
+            'requests-timeout': '60',
+        },
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+    assert b'Settings updated.' in res.data, \
+        "Main settings save didn't reach the success branch — test setup is wrong"
+
+    app = ds.data['settings']['application']
+    assert app.get('notification_urls') == ['json://example.invalid/preserved'], \
+        f"Main settings save clobbered notification_urls (got {app.get('notification_urls')!r})"
+    assert app.get('notification_title') == 'Preserved title - {{ watch_url }}', \
+        f"Main settings save clobbered notification_title (got {app.get('notification_title')!r})"
+    assert app.get('notification_body') == 'Preserved body - {{ diff }}', \
+        f"Main settings save clobbered notification_body (got {app.get('notification_body')!r})"
+    assert app.get('base_url') == 'https://preserved.example/', \
+        f"Main settings save clobbered base_url (got {app.get('base_url')!r})"
+
+    delete_all_watches(client)
+
+
+def test_notifications_page_save_does_not_clobber_other_settings(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Inverse of the above — saving notifications must NOT reach over and zero
+    out unrelated application settings (pager_size, fetch_backend, etc.).
+
+    The notifications-page handler explicitly writes a known list of five
+    notification fields rather than doing app.update(form.data) — this test
+    pins that behaviour so a refactor that switches to .update() (which would
+    silently zero out every non-notification key) fails loudly here.
+    """
+    ds = client.application.config.get('DATASTORE')
+    app = ds.data['settings']['application']
+    # Plant a representative mix of application-level fields: ints, lists,
+    # strings, bools, nested dicts. If the notifications save ever does a
+    # blanket .update(form.data) it'll wipe these to WTForms defaults and
+    # the per-field asserts below will catch it.
+    untouched_snapshot = {
+        'pager_size': 73,
+        'fetch_backend': 'html_requests',
+        'rss_diff_length': 9,
+        'filter_failure_notification_threshold_attempts': 4,
+        'global_ignore_text': ['SENTINEL-IGNORE-LINE'],
+        'global_subtractive_selectors': ['nav.SENTINEL-SUB'],
+        'ignore_whitespace': True,
+        'render_anchor_tag_content': True,
+        'shared_diff_access': True,
+        'api_access_token_enabled': False,
+        'scheduler_timezone_default': 'Europe/Berlin',
+    }
+    for k, v in untouched_snapshot.items():
+        app[k] = v
+
+    res = client.post(
+        url_for('settings.notifications.apprise'),
+        data={
+            'notification_urls': 'json://example.invalid/only-this',
+            'notification_title': '',
+            'notification_body': '',
+            'notification_format': 'html',
+            'base_url': '',
+        },
+        follow_redirects=True,
+    )
+    assert res.status_code == 200
+    assert b'Settings updated.' in res.data, \
+        "Notification save did not reach the success branch — test setup is wrong"
+
+    # Every planted field must have survived the notifications save bit-for-bit.
+    for k, expected in untouched_snapshot.items():
+        actual = ds.data['settings']['application'].get(k)
+        assert actual == expected, \
+            f"Notification save clobbered unrelated setting {k!r}: expected {expected!r}, got {actual!r}"
+
+    # And the notification field we DID submit was actually written.
+    assert ds.data['settings']['application'].get('notification_urls') == \
+        ['json://example.invalid/only-this']
