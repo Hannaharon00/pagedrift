@@ -4502,6 +4502,65 @@ msgstr "Хотите использовать расписание?"
 msgid "First confirm/save your Time Zone Settings"
 msgstr "Сначала подтвердите/сохраните настройки часового пояса."
 
+#: changedetectionio/templates/_helpers.html
+msgid "Triggered text"
+msgstr "Триггерный текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Triggers a change if this text appears, AND something changed in the document."
+msgstr "Запускает изменение, если появляется этот текст И что-то изменилось в документе."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Ignored text"
+msgstr "Игнорируемый текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "Ignored for calculating changes, but still shown."
+msgstr "Игнорируется при расчете изменений, но все равно отображается."
+
+#: changedetectionio/templates/_helpers.html
+msgid "Blocked text"
+msgstr "Заблокированный текст"
+
+#: changedetectionio/templates/_helpers.html changedetectionio/templates/base.html
+msgid "No change-detection will occur because this text exists."
+msgstr "Никакого обнаружения изменений не произойдет, поскольку этот текст существует."
+
+#: changedetectionio/templates/_stab.html
+msgid "Settings sections"
+msgstr "Разделы настроек"
+
+#: changedetectionio/templates/base.html
+msgid "Confirm Action"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Are you sure?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "<p>Are you sure you want to proceed?</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+msgid "Confirm"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Delete %(name)s?"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "<p>Are you sure you want to delete <strong>%(name)s</strong>?</p><p>This action cannot be undone.</p>"
+msgstr ""
+
+#: changedetectionio/templates/base.html
+#, python-format
+msgid "Unlink %(name)s?"
+msgstr ""
+
 #: changedetectionio/templates/base.html
 #, python-format
 msgid ""
