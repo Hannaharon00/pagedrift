@@ -612,3 +612,27 @@ def test_restock_diff_price_data_ajax(client, live_server, measure_memory_usage,
     delete_all_watches(client)
 
 
+def test_restock_edit_has_ai_llm_section(client, live_server, measure_memory_usage, datastore_path):
+    """restock_diff watches must expose the AI / LLM tab content on the edit page, the same as
+    text_json_diff. Regression: the AI section used to be gated to text_json_diff only, so the
+    #ai-llm tab rendered empty for restock watches."""
+    test_url = url_for('test_endpoint', _external=True)
+    set_original_response(props_markup=instock_props[0], datastore_path=datastore_path)
+    client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": '', 'processor': 'restock_diff'},
+        follow_redirects=True
+    )
+    wait_for_all_checks(client)
+    uuid = extract_UUID_from_client(client)
+
+    res = client.get(url_for("ui.ui_edit.edit_page", uuid=uuid))
+    assert res.status_code == 200
+    # The AI / LLM tab link exists...
+    assert b'#ai-llm' in res.data
+    # ...and crucially its section now renders for restock_diff (either the configured fields
+    # block or the "configure a provider" disabled block — both carry this id). Before the fix
+    # this was absent for restock watches.
+    assert b'llm-intent-section' in res.data
+
+    delete_all_watches(client)
