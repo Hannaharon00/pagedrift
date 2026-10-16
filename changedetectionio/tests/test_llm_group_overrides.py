@@ -590,6 +590,88 @@ def test_watch_edit_independent_field_overrides(
 # Tag edit page — AI section is always visible regardless of processor
 # ---------------------------------------------------------------------------
 
+def test_tag_edit_page_shows_ai_section(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    The tag/group edit page must always show the AI Intent and AI Change Summary
+    textareas when LLM is configured, regardless of whether the tag has a
+    'processor' key set (e.g. restock_diff tags must still show AI fields).
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+
+    tag_uuid = ds.add_tag('Test AI Group')
+
+    # Simulate a tag that has processor set (e.g. saved via restock form)
+    ds.data['settings']['application']['tags'][tag_uuid]['processor'] = 'restock_diff'
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    assert res.status_code == 200
+    body = res.data.decode('utf-8', errors='replace')
+
+    # Both AI textareas must appear
+    assert 'name="llm_intent"' in body, \
+        "llm_intent textarea missing from tag edit page — processor check incorrectly blocks it"
+    assert 'name="llm_change_summary"' in body, \
+        "llm_change_summary textarea missing from tag edit page"
+
+    # Neither should be readonly in tag context
+    for field in ('llm_intent', 'llm_change_summary'):
+        pos = body.find(f'name="{field}"')
+        snippet = body[max(0, pos - 50): pos + 300]
+        assert 'readonly' not in snippet, \
+            f"{field} must not be readonly in tag edit context; snippet: {snippet!r}"
+
+    delete_all_watches(client)
+
+
+def test_tag_edit_page_shows_prompt_mode_radio(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    A group must also be able to append to the global prompt rather than replace it,
+    so the mode radio has to render on the tag edit page too. Re #4251.
+    """
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+
+    tag_uuid = ds.add_tag('Append Group')
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    assert res.status_code == 200
+    body = res.data.decode('utf-8', errors='replace')
+
+    assert 'name="llm_change_summary_mode"' in body, \
+        "prompt mode radio missing from tag edit page"
+    assert 'value="replace"' in body
+    assert 'value="append"' in body
+
+    delete_all_watches(client)
+
+
+def test_tag_append_mode_persists_and_applies(
+        client, live_server, measure_memory_usage, datastore_path):
+    """An opted-in group set to append adds its text to the global prompt for its watches."""
+    from changedetectionio.llm.evaluator import get_effective_summary_prompt
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    ds.data['settings']['application']['llm']['change_summary_default'] = 'GLOBAL RULES'
+
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    tag_uuid = _add_tag_with_llm(ds, 'Append Group', llm_change_summary='Group extra line.',
+                                 ai=True)
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_change_summary_mode'] = 'append'
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+
+    watch = ds.data['watching'][watch_uuid]
+    assert get_effective_summary_prompt(watch, ds) == 'GLOBAL RULES\n\nGroup extra line.'
+
+    delete_all_watches(client)
+
+
 def test_tag_append_mode_ignored_when_group_overrides_disabled(
         client, live_server, measure_memory_usage, datastore_path):
     """Without the opt-in the group's appended text never reaches the effective prompt."""

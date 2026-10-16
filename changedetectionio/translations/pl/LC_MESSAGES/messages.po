@@ -5073,3 +5073,59 @@ msgstr "zwraca wyłącznie listę lat"
 msgid "Example - match lines containing a keyword"
 msgstr "Przykład – wyszukiwanie wierszy zawierających słowo kluczowe"
 
+#: changedetectionio/templates/edit/text-options.html
+msgid "One line per regular-expression/string match"
+msgstr "Jedna linia na każde dopasowanie wyrażenia regularnego do ciągu znaków"
+
+#: changedetectionio/templates/login.html
+msgid "Login"
+msgstr "Zaloguj się"
+
+#: changedetectionio/templates/menu.html
+msgid "Resume automatic scheduling"
+msgstr "Wznowienie automatycznego planowania"
+
+#: changedetectionio/templates/menu.html
+msgid "Pause auto-queue scheduling of watches"
+msgstr "Wstrzymaj automatyczne planowanie kolejki obserwacji"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling paused — click to resume"
+msgstr "Planowanie wstrzymane — kliknij, aby wznowić"
+
+#: changedetectionio/templates/menu.html
+msgid "Scheduling active — click to pause all"
+msgstr "Planowanie aktywne — kliknij, aby wstrzymać wszystkie"
+
+#: changedetectionio/templates/menu.html
+msgid "Paused"
+msgstr "Wstrzymane"
+
+#: changedetectionio/templates/menu.html
+msgid "Running"
+msgstr "Uruchomione"
+
+#: changedetectionio/templates/menu.html
+msgid "Unmute notifications"
+msgstr "Włącz powiadomienia"
+
+#: changedetectionio/templates/menu.html
+msgid "Notifications are muted - click to unmute"
+msgstr "Powiadomienia są wyciszone – kliknij, aby je włączyć"
+
+#: changedetectionio/templates/menu.html
+msgid "Alerts on"
+msgstr "Powiadomienia włączone"
+
+#: changedetectionio/templates/menu.html
+msgid "Log out"
+msgstr "Wyloguj się"
+
+#: changedetectionio/templates/menu.html
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: changedetectionio/templates/menu.html
+msgid "EDIT"
+msgstr "EDYTUJ"
+
