@@ -4936,6 +4936,73 @@ msgid "Block text is processed from the result-text that comes out of any CSS/JS
 msgstr "Teks blokir diproses dari teks hasil yang keluar dari Filter CSS/JSON apa pun untuk monitor ini"
 
 #: changedetectionio/templates/edit/text-options.html
+msgid "All lines here must not exist (think of each line as \"OR\")"
+msgstr "Semua baris di sini tidak boleh ada (anggap setiap baris sebagai \"OR\")"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"celsius\n"
+"temperature\n"
+"price"
+msgstr ""
+"celsius\n"
+"suhu\n"
+"harga"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keep only lines that contain any of these words or phrases (plain text, case-insensitive)"
+msgstr ""
+"Pertahankan hanya baris yang mengandung salah satu kata atau frasa ini (teks biasa, tanpa membedakan huruf besar-"
+"kecil)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "One entry per line — any line in the page text that contains a match is kept"
+msgstr "Satu entri per baris — setiap baris pada teks halaman yang mengandung kecocokan akan dipertahankan"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Simpler alternative to regex — use this when you just want lines about a specific topic"
+msgstr "Alternatif yang lebih sederhana daripada regex — gunakan ini jika Anda hanya menginginkan baris tentang topik tertentu"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "enter <code>celsius</code> to keep only lines mentioning temperature readings"
+msgstr "masukkan <code>celsius</code> untuk mempertahankan hanya baris yang menyebutkan pembacaan suhu"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Extracts text in the final output (line by line) after other filters using regular expressions or string match:"
+msgstr ""
+"Mengekstrak teks dalam output akhir (baris demi baris) setelah filter lain menggunakan regular expression atau "
+"pencocokan string:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Regular expression - example"
+msgstr "Regular expression - contoh"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Don't forget to consider the white-space at the start of a line"
+msgstr "Jangan lupa mempertimbangkan spasi di awal baris"
+
+#: changedetectionio/templates/edit/text-options.html
+#, python-format
+msgid "Use <code>//(?aiLmsux))</code> type flags (more <a href=\"%(url)s\">information here</a>)"
+msgstr "Gunakan flag tipe <code>//(?aiLmsux))</code> (lebih banyak <a href=\"%(url)s\">informasi di sini</a>)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Keyword example - example: <code>Out of stock</code>"
+msgstr "Contoh kata kunci - contoh: <code>Stok habis</code>"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Use groups to extract just that text - example"
+msgstr "Gunakan grup untuk mengekstrak hanya teks tersebut - contoh"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "returns a list of years only"
+msgstr "mengembalikan daftar tahun saja"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Example - match lines containing a keyword"
+msgstr "Contoh - cocokkan baris yang mengandung kata kunci"
+
+#: changedetectionio/templates/edit/text-options.html
 msgid "One line per regular-expression/string match"
 msgstr "Satu baris per regular-expression/pencocokan string"
 
