@@ -522,6 +522,78 @@ def test_accept_language_header_en_variants(client, live_server, measure_memory_
     assert b"Select Language" in res.data, "Expected English text 'Select Language'"
 
 
+def test_accept_language_header_zh_simplified(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that browsers sending zh or zh-CN in Accept-Language header get Simplified Chinese.
+    This ensures Simplified Chinese still works correctly and doesn't get confused with Traditional.
+    """
+    from flask import url_for
+
+    # Test 1: Generic 'zh' should get Simplified Chinese
+    with client.session_transaction() as sess:
+        sess.clear()
+
+    res = client.get(
+        url_for("watchlist.index"),
+        headers={'Accept-Language': 'zh,en;q=0.9'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Should get Simplified Chinese content, not Traditional Chinese
+    # Simplified: 选择语言, Traditional: 選擇語言
+    assert '选择语言'.encode() in res.data, "Expected Simplified Chinese '选择语言' (Select Language)"
+    assert '選擇語言'.encode() not in res.data, "Should not get Traditional Chinese '選擇語言'"
+
+    # Check HTML lang attribute
+    assert b'<html lang="zh"' in res.data, "Expected language tag zh in HTML"
+
+    # Check that the correct flag icon is shown (China flag for Simplified Chinese)
+    assert b'<span class="fi fi-cn fis" id="language-selector-flag">' in res.data, \
+        "Expected China flag 'fi fi-cn' for Simplified Chinese"
+    assert b'<span class="fi fi-tw fis" id="language-selector-flag">' not in res.data, \
+        "Should not show Taiwan flag 'fi fi-tw' for Simplified Chinese"
+
+    # Test 2: 'zh-CN' should also get Simplified Chinese
+    with client.session_transaction() as sess:
+        sess.clear()
+
+    res = client.get(
+        url_for("watchlist.index"),
+        headers={'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Should get Simplified Chinese content
+    assert '选择语言'.encode() in res.data, "Expected Simplified Chinese '选择语言' with zh-CN header"
+    assert '選擇語言'.encode() not in res.data, "Should not get Traditional Chinese with zh-CN header"
+
+    # Check that the correct flag icon is shown (China flag for zh-CN)
+    assert b'<span class="fi fi-cn fis" id="language-selector-flag">' in res.data, \
+        "Expected China flag 'fi fi-cn' for zh-CN header"
+
+    # Verify Simplified Chinese in settings page
+    res = client.get(
+        url_for("settings.settings_page"),
+        headers={'Accept-Language': 'zh,en;q=0.9'},
+        follow_redirects=True
+    )
+
+    assert res.status_code == 200
+
+    # Check Simplified Chinese translations (not Traditional or English)
+    # Simplified: 小时, Traditional: 小時
+    assert "小时".encode() in res.data, "Expected Simplified Chinese '小时' for Hours"
+    assert "分钟".encode() in res.data, "Expected Simplified Chinese '分钟' for Minutes"
+    assert "秒".encode() in res.data, "Expected Simplified Chinese '秒' for Seconds"
+    # Make sure it's not Traditional Chinese
+    assert "小時".encode() not in res.data, "Should not have Traditional Chinese '小時'"
+    assert "分鐘".encode() not in res.data, "Should not have Traditional Chinese '分鐘'"
+
+
 def test_session_locale_overrides_accept_language(client, live_server, measure_memory_usage, datastore_path):
     """
     Test that session locale preference overrides browser Accept-Language header.
