@@ -1144,6 +1144,145 @@ class model(EntityPersistenceMixin, watch_base):
         # return {'widget': 555}
         return {}
 
+    def extra_notification_token_placeholder_info(self):
+        # Used for providing extra tokens
+        # return [('widget', "Get widget amounts")]
+        return []
+
+
+    def extract_regex_from_all_history(self, regex):
+        import csv
+        import re
+        import datetime
+        csv_output_filename = False
+        csv_writer = False
+        f = None
+
+        # self.history will be keyed with the full path
+        for k, fname in self.history.items():
+            if os.path.isfile(fname):
+                if True:
+                    contents = self.get_history_snapshot(timestamp=k)
+                    res = re.findall(regex, contents, re.MULTILINE)
+                    if res:
+                        if not csv_writer:
+                            # A file on the disk can be transferred much faster via flask than a string reply
+                            csv_output_filename = f"report-{self.get('uuid')}.csv"
+                            f = open(os.path.join(self.data_dir, csv_output_filename), 'w')
+                            # @todo some headers in the future
+                            #fieldnames = ['Epoch seconds', 'Date']
+                            csv_writer = csv.writer(f,
+                                                    delimiter=',',
+                                                    quotechar='"',
+                                                    quoting=csv.QUOTE_MINIMAL,
+                                                    #fieldnames=fieldnames
+                                                    )
+                            csv_writer.writerow(['Epoch seconds', 'Date'])
+                            # csv_writer.writeheader()
+
+                        date_str = datetime.datetime.fromtimestamp(int(k)).strftime('%Y-%m-%d %H:%M:%S')
+                        for r in res:
+                            row = [k, date_str]
+                            if isinstance(r, str):
+                                row.append(r)
+                            else:
+                                row+=r
+                            csv_writer.writerow(row)
+
+        if f:
+            f.close()
+
+        return csv_output_filename
+
+
+    def has_special_diff_filter_options_set(self):
+
+        # All False - nothing would be done, so act like it's not processable
+        if not self.get('filter_text_added', True) and not self.get('filter_text_replaced', True) and not self.get('filter_text_removed', True):
+            return False
+
+        # Or one is set
+        if not self.get('filter_text_added', True) or not self.get('filter_text_replaced', True) or not self.get('filter_text_removed', True):
+            return True
+
+        # None is set
+        return False
+
+    def save_error_text(self, contents):
+        self.ensure_data_dir_exists()
+        target_path = os.path.join(self.data_dir, "last-error.txt")
+        with open(target_path, 'w', encoding='utf-8') as f:
+            f.write(contents)
+
+    def save_xpath_data(self, data, as_error=False):
+        import json
+        import zlib
+
+        if as_error:
+            target_path = os.path.join(str(self.data_dir), "elements-error.deflate")
+        else:
+            target_path = os.path.join(str(self.data_dir), "elements.deflate")
+
+        self.ensure_data_dir_exists()
+
+        with open(target_path, 'wb') as f:
+            if not isinstance(data, str):
+                f.write(zlib.compress(json.dumps(data).encode()))
+            else:
+                f.write(zlib.compress(data.encode()))
+            f.close()
+
+    # Save as PNG, PNG is larger but better for doing visual diff in the future
+    def save_screenshot(self, screenshot: bytes, as_error=False):
+
+        if as_error:
+            target_path = os.path.join(self.data_dir, "last-error-screenshot.png")
+        else:
+            target_path = os.path.join(self.data_dir, "last-screenshot.png")
+
+        self.ensure_data_dir_exists()
+
+        with open(target_path, 'wb') as f:
+            f.write(screenshot)
+            f.close()
+
+
+    def get_last_fetched_text_before_filters(self):
+        import brotli
+        filepath = os.path.join(self.data_dir, 'last-fetched.br')
+
+        if not os.path.isfile(filepath) or os.path.getsize(filepath) == 0:
+            # If a previous attempt doesnt yet exist, just snarf the previous snapshot instead
+            dates = list(self.history.keys())
+            if len(dates):
+                return self.get_history_snapshot(timestamp=dates[-1])
+            else:
+                return ''
+
+        with open(filepath, 'rb') as f:
+            return(brotli.decompress(f.read()).decode('utf-8'))
+
+    def save_last_text_fetched_before_filters(self, contents):
+        import brotli
+        filepath = os.path.join(self.data_dir, 'last-fetched.br')
+        _brotli_save(contents, filepath, mode=brotli.MODE_TEXT, fallback_uncompressed=False)
+
+    def save_last_fetched_html(self, timestamp, contents):
+        self.ensure_data_dir_exists()
+        snapshot_fname = f"{timestamp}.html.br"
+        filepath = os.path.join(self.data_dir, snapshot_fname)
+        _brotli_save(contents, filepath, mode=None, fallback_uncompressed=True)
+        self._prune_last_fetched_html_snapshots()
+
+    def get_fetched_html(self, timestamp):
+        import brotli
+
+        snapshot_fname = f"{timestamp}.html.br"
+        filepath = os.path.join(self.data_dir, snapshot_fname)
+        if os.path.isfile(filepath):
+            with open(filepath, 'rb') as f:
+                return (brotli.decompress(f.read()).decode('utf-8'))
+
         return False
 
 
