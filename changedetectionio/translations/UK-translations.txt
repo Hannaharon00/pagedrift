@@ -2646,6 +2646,66 @@ msgid "(or use plaintext/markdown format)"
 msgstr "(або використовуйте формат plaintext/markdown)"
 
 #: changedetectionio/templates/_common_fields.html
+msgid "for direct API calls (or omit the"
+msgstr "для прямих викликів API (або опустіть"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for non-SSL ie"
+msgstr "для не-SSL, тобто"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "more help here"
+msgstr "більше довідки тут"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Accepts the"
+msgstr "Приймає"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "placeholders listed below"
+msgstr "заповнювачі, перелічені нижче"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Send test notification"
+msgstr "Надіслати тестове сповіщення"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add email"
+msgstr "Додати email"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Add an email address"
+msgstr "Додати адресу електронної пошти"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Notification debug logs"
+msgstr "Журнали налагодження сповіщень"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Processing.."
+msgstr "Обробка..."
+
+#: changedetectionio/templates/_common_fields.html
+msgid "Title for all notifications"
+msgstr "Заголовок для всіх сповіщень"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "For JSON payloads, use"
+msgstr "Для JSON навантажень використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "without quotes for automatic escaping, for example -"
+msgstr "без лапок для автоматичного екранування, наприклад -"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "URL encoding, use"
+msgstr "URL кодування, використовуйте"
+
+#: changedetectionio/templates/_common_fields.html
+msgid "for example -"
+msgstr "наприклад -"
+
+#: changedetectionio/templates/_common_fields.html
 msgid "Regular-expression replace, use"
 msgstr "Заміна за регулярним виразом, використовуйте"
 
