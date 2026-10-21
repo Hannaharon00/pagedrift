@@ -241,3 +241,6 @@ async () => {
         return 'Possibly in stock'; // possibly in stock, cant decide otherwise.
     }
 
+// returns the element text that makes it think it's out of stock
+    return isItemInStock().trim()
+}
