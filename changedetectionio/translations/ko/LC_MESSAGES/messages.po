@@ -4738,6 +4738,69 @@ msgstr ""
 "이 XPath 규칙에 맞는 텍스트만 포함합니다. 슬래시(/)로 시작하면 됩니다. XPath를 명시적으로 사용하거나 규칙이 XPath 함수로 시작하는 경우에는 <code>xpath:</code> 접두사를 "
 "사용하세요."
 
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "test your XPath here"
+msgstr "여기에서 XPath를 테스트"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "Get all titles from an RSS feed <code>//title/text()</code>"
+msgstr "RSS 피드의 모든 제목 가져오기 <code>//title/text()</code>"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "To use XPath1.0: Prefix with <code>xpath1:</code>"
+msgstr "XPath 1.0을 사용하려면 <code>xpath1:</code> 접두사를 사용하세요"
+
+#: changedetectionio/templates/edit/include_subtract.html
+msgid "here for more CSS selector help"
+msgstr "CSS 선택자 도움말은 여기에서 확인해 보세요"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Text to wait for before triggering a change/notification, all text and regex are tested case-insensitive."
+msgstr "변경/알림을 발생시키기 전에 기다릴 텍스트입니다. 모든 텍스트와 정규식은 대소문자를 구분하지 않고 검사합니다."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Trigger text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
+msgstr "트리거 텍스트는 이 모니터링에 적용된 CSS/JSON 필터 결과 텍스트를 기준으로 처리됩니다."
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Each line is processed separately (think of each line as \"OR\")"
+msgstr "각 줄은 개별적으로 처리됩니다. (각 줄은 \"OR\" 조건)"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "Note: Wrap in forward slash / to use regex example:"
+msgstr "참고: 정규식을 사용하려면 슬래시 / 로 감싸세요. 예:"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "You can also use"
+msgstr "또는"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "conditions"
+msgstr "조건"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid "\"Page text\" - with Contains, Starts With, Not Contains and many more"
+msgstr "\"페이지 텍스트\" - 포함, 시작 일치, 미포함 등 다양한 조건"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"For example: Out of stock\n"
+"Sold out\n"
+"Not in stock\n"
+"Unavailable"
+msgstr ""
+"예:\n"
+"품절\n"
+"매진\n"
+"재고 없음\n"
+"사용 불가"
+
+#: changedetectionio/templates/edit/text-options.html
+msgid ""
+"Block change-detection while this text is on the page, all text and regex are tested case-insensitive, good for "
+"waiting for when a product is available again"
+msgstr "이 텍스트가 페이지에 있는 동안 변경 감지를 차단합니다. 모든 텍스트와 정규식은 대소문자를 구분하지 않으며, 상품이 다시 구매 가능해질 때까지 기다릴 때 유용합니다."
+
 #: changedetectionio/templates/edit/text-options.html
 msgid "Block text is processed from the result-text that comes out of any CSS/JSON Filters for this monitor"
 msgstr "차단 텍스트는 이 모니터링에 적용된 CSS/JSON 필터 결과 텍스트를 기준으로 처리됩니다."
