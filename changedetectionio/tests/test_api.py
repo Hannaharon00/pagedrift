@@ -1337,3 +1337,61 @@ def test_api_url_validation(client, live_server, measure_memory_usage, datastore
     assert res.status_code == 400, "Updating watch URL to XSS attempt should fail"
     assert b'Invalid or unsupported URL' in res.data or b'protocol' in res.data.lower()
 
+    # Test 11: UPDATE to file:// protocol should fail (unless ALLOW_FILE_URI is set)
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": "file:///etc/passwd"}),
+    )
+    assert res.status_code == 400, "Updating watch URL to file:// should fail by default"
+
+    # Test 12: UPDATE other fields without URL should succeed
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"title": "Updated title without URL change"}),
+    )
+    assert res.status_code == 200, "Updating other fields without URL should succeed"
+
+    # Test 13: Verify URL is still valid after non-URL update
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.json.get('url') == test_url, "URL should remain unchanged"
+    assert res.json.get('title') == "Updated title without URL change"
+
+    # Test 14: UPDATE to valid different URL should succeed
+    new_valid_url = test_url + "?new=param"
+    res = client.put(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key, 'content-type': 'application/json'},
+        data=json.dumps({"url": new_valid_url}),
+    )
+    assert res.status_code == 200, "Updating to valid different URL should succeed"
+
+    # Test 15: Verify URL was actually updated
+    res = client.get(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key}
+    )
+    assert res.json.get('url') == new_valid_url, "URL should be updated to new valid URL"
+
+    # Test 16: CREATE with XSS in URL parameters should fail
+    res = client.post(
+        url_for("createwatch"),
+        data=json.dumps({"url": "http://example.com?xss=<script>alert(1)</script>"}),
+        headers={'content-type': 'application/json', 'x-api-key': api_key},
+        follow_redirects=True
+    )
+    # This should fail because of suspicious characters check
+    assert res.status_code == 400, "Creating watch with XSS in URL params should fail"
+
+    # Cleanup
+    client.delete(
+        url_for("watch", uuid=watch_uuid),
+        headers={'x-api-key': api_key},
+    )
+    delete_all_watches(client)
+
+
