@@ -204,3 +204,43 @@ def test_watch_edited_flag_prevents_skip(client, live_server, measure_memory_usa
     print("✓ was_edited flag correctly prevents skip and is reset by worker")
 
 
+def test_watch_edited_flag_system_fields(client, live_server, measure_memory_usage, datastore_path):
+    """
+    Test that system fields (readonly + additional system fields) don't trigger the flag.
+    """
+
+    # Setup - Add a watch
+    test_url = url_for('test_endpoint', _external=True)
+    res = client.post(
+        url_for("ui.ui_views.form_quick_watch_add"),
+        data={"url": test_url, "tags": "", "edit_and_watch_submit_button": "Edit > Watch"},
+        follow_redirects=True
+    )
+
+    datastore = client.application.config.get('DATASTORE')
+    uuid = list(datastore.data['watching'].keys())[0]
+    watch = datastore.data['watching'][uuid]
+
+    # Test readonly fields from OpenAPI spec
+    readonly_fields = ['uuid', 'date_created', 'last_viewed']
+    for field in readonly_fields:
+        watch.reset_watch_edited_flag()
+        if field in watch:
+            old_value = watch[field]
+            watch[field] = 'modified-readonly-value'
+            assert not watch.was_edited, f"Flag should stay False when modifying readonly field '{field}'"
+            watch[field] = old_value  # Restore
+
+    # Test additional system fields not in OpenAPI spec yet
+    system_fields = ['last_check_status']
+    for field in system_fields:
+        watch.reset_watch_edited_flag()
+        watch[field] = 'system-value'
+        assert not watch.was_edited, f"Flag should stay False when modifying system field '{field}'"
+
+    # Test that content-type (readonly per OpenAPI) doesn't trigger flag
+    watch.reset_watch_edited_flag()
+    watch['content-type'] = 'text/html'
+    assert not watch.was_edited, "Flag should stay False when modifying 'content-type' (readonly)"
+
+    print("✓ System fields correctly don't trigger the flag")
