@@ -507,3 +507,58 @@ def load_all_tags(datastore_path, rehydrate_entity_func):
 # FileSavingDataStore Class
 # ============================================================================
 
+class FileSavingDataStore(DataStore):
+    """
+    Abstract datastore that provides file persistence with immediate commits.
+
+    Features:
+    - Individual watch.json files (one per watch)
+    - Immediate persistence via watch.commit() and datastore.commit()
+    - Atomic file writes for crash safety
+
+    Subclasses must implement:
+    - rehydrate_entity(): Convert dict to Watch object
+    - Access to internal __data structure for watch management
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _save_settings(self):
+        """
+        Save settings to storage (polymorphic).
+
+        Subclasses must implement for their backend.
+        - File: changedetection.json
+        - Redis: SET settings
+        - SQL: UPDATE settings table
+        """
+        raise NotImplementedError("Subclass must implement _save_settings")
+
+
+    def _load_watches(self):
+        """
+        Load all watches from storage (polymorphic).
+
+        Subclasses must implement for their backend.
+        - File: Read individual watch.json files
+        - Redis: SCAN watch:* keys
+        - SQL: SELECT * FROM watches
+        """
+        raise NotImplementedError("Subclass must implement _load_watches")
+
+    def _delete_watch(self, uuid):
+        """
+        Delete a watch from storage (polymorphic).
+
+        Subclasses must implement for their backend.
+        - File: Delete {uuid}/ directory recursively
+        - Redis: DEL watch:{uuid}
+        - SQL: DELETE FROM watches WHERE uuid=?
+
+        Args:
+            uuid: Watch UUID to delete
+        """
+        raise NotImplementedError("Subclass must implement _delete_watch")
+
+
