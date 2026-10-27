@@ -128,3 +128,51 @@ def test_rss_reader_mode(client, live_server, measure_memory_usage, datastore_pa
     assert 'PubDate: Thu, 07 Aug 2025 00:00:00 GMT' in snapshot_contents
     delete_all_watches(client)
 
+def test_rss_reader_mode_with_css_filters(client, live_server, measure_memory_usage, datastore_path):
+    set_original_cdata_xml(datastore_path=datastore_path)
+
+    # Rarely do endpoints give the right header, usually just text/xml, so we check also for <rss
+    # This also triggers the automatic CDATA text parser so the RSS goes back a nice content list
+    test_url = url_for('test_endpoint', content_type="text/xml; charset=UTF-8", _external=True)
+    live_server.app.config['DATASTORE'].data['settings']['application']['rss_reader_mode'] = True
+
+
+    # Add our URL to the import page
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={'include_filters': [".last"]})
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+
+    watch = live_server.app.config['DATASTORE'].data['watching'][uuid]
+    dates = list(watch.history.keys())
+    snapshot_contents = watch.get_history_snapshot(timestamp=dates[0])
+    assert 'Wet noodles escape' not in snapshot_contents
+    assert '<br>' not in snapshot_contents
+    assert '&lt;' not in snapshot_contents
+    assert 'The days of Terminator and The Matrix' in snapshot_contents
+    delete_all_watches(client)
+
+
+def test_xmlns_purl_content(client, live_server, measure_memory_usage, datastore_path):
+    set_xmlns_purl_content(datastore_path=datastore_path)
+
+    # Rarely do endpoints give the right header, usually just text/xml, so we check also for <rss
+    # This also triggers the automatic CDATA text parser so the RSS goes back a nice content list
+    #test_url = url_for('test_endpoint', content_type="text/xml; charset=UTF-8", _external=True)
+
+    # Because NO utf-8 was specified here, we should be able to recover it in requests or other somehow.
+    test_url = url_for('test_endpoint', content_type="text/xml;", _external=True)
+    live_server.app.config['DATASTORE'].data['settings']['application']['rss_reader_mode'] = True
+
+    # Add our URL to the import page
+    uuid = client.application.config.get('DATASTORE').add_watch(url=test_url, extras={'include_filters': [".last"]})
+    client.post(url_for("ui.form_watch_checknow"), follow_redirects=True)
+
+    wait_for_all_checks(client)
+
+    watch = live_server.app.config['DATASTORE'].data['watching'][uuid]
+    dates = list(watch.history.keys())
+    snapshot_contents = watch.get_history_snapshot(timestamp=dates[0])
+    assert "Title: Sony Xperia 1 VII review: has Sony’s long-standing Xperia family lost what it takes to compete?" in snapshot_contents
+    assert "dc-content" in snapshot_contents
