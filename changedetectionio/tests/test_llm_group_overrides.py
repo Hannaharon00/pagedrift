@@ -867,6 +867,117 @@ def test_watch_own_ai_switch_survives_being_overridden_by_a_group(
     delete_all_watches(client)
 
 
+def test_watch_ai_switch_saves_via_edit_form(
+        client, live_server, measure_memory_usage, datastore_path):
+    """Turning AI off on a watch persists, and turning it back on works."""
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    test_url = url_for('test_endpoint', _external=True)
+    watch_uuid = _create_watch(client, test_url, api_token)
+
+    from changedetectionio.llm.evaluator import llm_enabled_for_watch
+
+    # Unchecked checkbox is simply absent from the POST
+    res = client.post(
+        url_for('ui.ui_edit.edit_page', uuid=watch_uuid),
+        data={'url': test_url, 'fetch_backend': 'html_requests',
+              'time_between_check_use_default': 'y'},
+        follow_redirects=True,
+    )
+    assert b'Updated watch' in res.data
+    watch = ds.data['watching'][watch_uuid]
+    assert watch.get('llm_backend_profile') is False
+    assert llm_enabled_for_watch(watch, ds) == (False, 'watch')
+
+    res = client.post(
+        url_for('ui.ui_edit.edit_page', uuid=watch_uuid),
+        data={'url': test_url, 'fetch_backend': 'html_requests',
+              'time_between_check_use_default': 'y', 'llm_backend_profile': 'y'},
+        follow_redirects=True,
+    )
+    assert b'Updated watch' in res.data
+    watch = ds.data['watching'][watch_uuid]
+    assert watch.get('llm_backend_profile') is True
+    assert llm_enabled_for_watch(watch, ds) == (True, 'watch')
+
+    delete_all_watches(client)
+
+
+def test_group_ai_switch_saves_and_decides_for_its_watches(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    Group form set to "Off for every watch" → every watch in the group is off, whatever the
+    watch itself says. This is the #4204 "turn AI off for a whole group" flow.
+    """
+    from changedetectionio.llm.evaluator import llm_enabled_for_watch
+
+    ds = client.application.config.get('DATASTORE')
+    _configure_llm(ds)
+    api_token = _api_token(client)
+    watch_uuid = _create_watch(client, url_for('test_endpoint', _external=True), api_token)
+
+    res = client.post(url_for('tags.form_tag_add'), data={'name': 'Budget Group'}, follow_redirects=True)
+    assert b'Tag added' in res.data
+    tag_uuid = [u for u, t in ds.data['settings']['application']['tags'].items()
+                if t.get('title') == 'Budget Group'][0]
+
+    res = client.post(
+        url_for('tags.form_tag_edit_submit', uuid=tag_uuid),
+        data={'title': 'Budget Group', 'llm_backend_profile': 'false'},
+        follow_redirects=True,
+    )
+    assert b'Updated' in res.data
+    tag = ds.data['settings']['application']['tags'][tag_uuid]
+    assert tag.get('llm_backend_profile') is False
+
+    _link_watch_to_tag(ds, watch_uuid, tag_uuid)
+    watch = ds.data['watching'][watch_uuid]
+    assert watch.get('llm_backend_profile') is True  # the watch itself still says "on"
+    assert llm_enabled_for_watch(watch, ds) == (False, 'Budget Group'), \
+        "a group set to Off must win over the watch's own AI switch"
+
+    delete_all_watches(client)
+
+
+def test_group_ai_state_survives_a_save_with_no_llm_configured(
+        client, live_server, measure_memory_usage, datastore_path):
+    """
+    With no provider configured the AI control isn't rendered, and an unrendered control is
+    indistinguishable from "off" in a POST — so the page must carry the saved state in a
+    hidden input, otherwise merely saving the group would switch AI off.
+    """
+    ds = client.application.config.get('DATASTORE')
+    # deliberately NOT calling _configure_llm
+
+    res = client.post(url_for('tags.form_tag_add'), data={'name': 'Unconfigured Group'}, follow_redirects=True)
+    assert b'Tag added' in res.data
+    tag_uuid = [u for u, t in ds.data['settings']['application']['tags'].items()
+                if t.get('title') == 'Unconfigured Group'][0]
+    ds.data['settings']['application']['tags'][tag_uuid]['llm_backend_profile'] = True
+
+    res = client.get(url_for('tags.form_tag_edit', uuid=tag_uuid))
+    body = res.data.decode('utf-8', errors='replace')
+    assert 'name="llm_intent"' not in body, "AI fields should not render without a provider"
+    hidden = _input_tag(body, 'llm_backend_profile')
+    assert 'type="hidden"' in hidden and 'value="true"' in hidden, \
+        "the group AI state must be preserved in a hidden input when the AI section is not rendered"
+
+    # Submit exactly what that page would send
+    res = client.post(
+        url_for('tags.form_tag_edit_submit', uuid=tag_uuid),
+        data={'title': 'Unconfigured Group', 'llm_backend_profile': 'true'},
+        follow_redirects=True,
+    )
+    assert b'Updated' in res.data
+
+    tag = ds.data['settings']['application']['tags'][tag_uuid]
+    assert tag.get('llm_backend_profile') is True, \
+        "saving with the AI section hidden must not switch AI off"
+
+    delete_all_watches(client)
+
+
 # ---------------------------------------------------------------------------
 # End-to-end through the real forms — the path the user actually clicks
 # ---------------------------------------------------------------------------
