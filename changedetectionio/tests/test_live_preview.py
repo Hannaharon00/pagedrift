@@ -101,3 +101,58 @@ def _setup_version_list_preview(datastore_path, client):
     return test_url, uuid
 
 
+def test_preview_ignore_highlight_with_extract_text(client, live_server, measure_memory_usage, datastore_path):
+    """Regression for #4138 follow-up: when extract_text rewrites a line (e.g. "0.54.10" → ".54.10"),
+    the preview must still highlight that row as 'ignored' even though substring matching against the
+    post-extract text fails."""
+    import json
+
+    test_url, uuid = _setup_version_list_preview(datastore_path, client)
+
+    res = client.post(
+        url_for("ui.ui_edit.watch_get_preview_rendered", uuid=uuid),
+        data={
+            "include_filters": "",
+            "fetch_backend": 'html_requests',
+            "ignore_text": "0.54.10",
+            "extract_text": r"/(.\d+\.\d+)/",
+            "url": test_url,
+        },
+    )
+    reply = json.loads(res.data.decode('utf-8'))
+    # The regex strips the leading "0", so the post-extract line for the ignored input is ".54.10".
+    # The preview should still mark its position (line 4) as ignored.
+    assert reply.get('ignore_line_numbers') == [4], \
+        f"Expected line 4 to be highlighted as ignored, got {reply.get('ignore_line_numbers')!r}"
+
+    delete_all_watches(client)
+
+
+def test_preview_strip_ignored_lines_with_extract_text(client, live_server, measure_memory_usage, datastore_path):
+    """Regression for #4138 follow-up: with strip_ignored_lines enabled, an ignored line must be
+    removed from the preview output even when extract_text would otherwise rewrite it (0.54.10 → .54.10)."""
+    import json
+
+    test_url, uuid = _setup_version_list_preview(datastore_path, client)
+
+    res = client.post(
+        url_for("ui.ui_edit.watch_get_preview_rendered", uuid=uuid),
+        data={
+            "include_filters": "",
+            "fetch_backend": 'html_requests',
+            "ignore_text": "0.54.10",
+            "extract_text": r"/(.\d+\.\d+)/",
+            "strip_ignored_lines": "true",
+            "url": test_url,
+        },
+    )
+    reply = json.loads(res.data.decode('utf-8'))
+    after_filter = reply.get('after_filter', '')
+
+    assert '.54.10' not in after_filter, \
+        f"Stripped ignored line should not appear in preview output, got:\n{after_filter!r}"
+    assert '0.54.10' not in after_filter
+    assert reply.get('ignore_line_numbers') == [], \
+        f"Stripped lines need no highlight, got {reply.get('ignore_line_numbers')!r}"
+
+    delete_all_watches(client)
