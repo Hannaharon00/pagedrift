@@ -166,3 +166,71 @@ def _test_runner_check_bad_format_ignored(live_server, client, has_ldjson_price_
     delete_all_watches(client)
 
 
+def test_bad_ldjson_is_correctly_ignored(client, live_server, measure_memory_usage, datastore_path):
+    
+    test_return_data = """
+            <html>
+            <head>
+                <script type="application/ld+json">
+                    {
+                        "@context": "http://schema.org",
+                        "@type": ["Product", "SubType"],
+                        "name": "My test product",
+                        "description": "",
+                        "offers": {
+                            "note" : "You can see the case-insensitive OffERS key, it should work",
+                            "@type": "Offer",
+                            "offeredBy": {
+                                "@type": "Organization",
+                                "name":"Person",
+                                "telephone":"+1 999 999 999"
+                            },
+                            "price": "1",
+                            "priceCurrency": "EUR",
+                            "url": "/some/url"
+                        }
+                    }
+                </script>
+            </head>
+            <body>
+            <div class="yes">Some extra stuff</div>
+            </body></html>
+     """
+    with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+        f.write(test_return_data)
+
+    _test_runner_check_bad_format_ignored(live_server=live_server, client=client, has_ldjson_price_data=True)
+
+    # This is OK that it offers a suggestion in this case, the processor will let them know more about something wrong
+
+    # test_return_data = """
+    #         <html>
+    #         <head>
+    #             <script type="application/ld+json">
+    #                 {
+    #                     "@context": "http://schema.org",
+    #                     "@type": ["Product", "SubType"],
+    #                     "name": "My test product",
+    #                     "description": "",
+    #                     "BrokenOffers": {
+    #                         "@type": "Offer",
+    #                         "offeredBy": {
+    #                             "@type": "Organization",
+    #                             "name":"Person",
+    #                             "telephone":"+1 999 999 999"
+    #                         },
+    #                         "price": "1",
+    #                         "priceCurrency": "EUR",
+    #                         "url": "/some/url"
+    #                     }
+    #                 }
+    #             </script>
+    #         </head>
+    #         <body>
+    #         <div class="yes">Some extra stuff</div>
+    #         </body></html>
+    #  """
+    # with open(os.path.join(datastore_path, "endpoint-content.txt"), "w") as f:
+    #     f.write(test_return_data)
+    #
+    # _test_runner_check_bad_format_ignored(live_server=live_server, client=client, has_ldjson_price_data=False)
