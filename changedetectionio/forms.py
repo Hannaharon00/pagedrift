@@ -926,6 +926,189 @@ class importForm(Form):
     xlsx_file = FileField(_l('Upload .xlsx file'), validators=[FileAllowed(['xlsx'], _l('Must be .xlsx file!'))])
     file_mapping = SelectField(_l('File mapping'), [validators.DataRequired()], choices={('wachete', 'Wachete mapping'), ('custom','Custom mapping')})
 
+class SingleBrowserStep(Form):
+
+    operation = SelectField(_l('Operation'), [validators.Optional()], choices=browser_step_ui_config.keys())
+
+    # maybe better to set some <script>var..
+    selector = StringField(_l('Selector'), [validators.Optional()], render_kw={"placeholder": _l("CSS or xPath selector")})
+    optional_value = StringField(_l('value'), [validators.Optional()], render_kw={"placeholder": _l("Value")})
+#   @todo move to JS? ajax fetch new field?
+#    remove_button = SubmitField(_l('-'), render_kw={"type": "button", "class": "pure-button pure-button-primary", 'title': 'Remove'})
+#    add_button = SubmitField(_l('+'), render_kw={"type": "button", "class": "pure-button pure-button-primary", 'title': 'Add new step after'})
+
+class processor_text_json_diff_form(commonSettingsForm):
+
+    url = StringField(_l('Web Page URL'), validators=[validateURL()])
+    link_to_open = StringField(_l('Open Link Override'), validators=[validators.Optional(), validateURL()], default='')
+    tags = StringTagUUID(_l('Group Tag'), [validators.Optional()], default='')
+
+    time_between_check = EnhancedFormField(
+        TimeBetweenCheckForm,
+        label=_l('Time Between Check'),
+        conditional_field='time_between_check_use_default',
+        conditional_message=REQUIRE_ATLEAST_ONE_TIME_PART_WHEN_NOT_GLOBAL_DEFAULT,
+        conditional_test_function=validate_time_between_check_has_values
+    )
+
+    time_schedule_limit = FormField(ScheduleLimitForm)
+
+    time_between_check_use_default = BooleanField(_l('Use global settings for time between check and scheduler.'), default=False)
+
+    llm_intent = TextAreaField(_l('AI Change Intent - Notify me when..'), validators=[validators.Optional(), validators.Length(max=2000)],
+                               render_kw={"rows": "5", "placeholder": LLM_INTENT_WATCH_PLACEHOLDER})
+
+    llm_change_summary = TextAreaField(_l('AI Change Summary'), validators=[validators.Optional(), validators.Length(max=2000)],
+                               render_kw={"rows": "5", "placeholder": DEFAULT_CHANGE_SUMMARY_PROMPT},
+                               default='')
+
+    llm_change_summary_mode = RadioField(
+        _l('Change Summary prompt - Append or Replace the default?'),
+        choices=[
+            (LLM_PROMPT_MODE_REPLACE, _l('Replace the inherited prompt')),
+            (LLM_PROMPT_MODE_APPEND,  _l('Append to the inherited prompt')),
+        ],
+        default=LLM_PROMPT_MODE_REPLACE,
+    )
+    # @NOTE! In the near future you should be able to select which LLM profile *OR* "off"/None for this watch/group
+    #        For now we use the 'future' field naming but keep the functionality simple.
+    llm_backend_profile = BooleanField(_l('AI enabled for this watch?'), default=True)
+
+    include_filters = StringListField(_l('CSS/JSONPath/JQ/XPath Filters'), [ValidateCSSJSONXPATHInput()], default='')
+
+    subtractive_selectors = StringListField(_l('Remove elements'), [ValidateCSSJSONXPATHInput(allow_json=False)])
+
+    extract_lines_containing = StringListField(_l('Extract lines containing'), [validators.Optional()])
+    extract_text = StringListField(_l('Extract text'), [ValidateListRegex()])
+
+    title = StringField(_l('Title'), default='')
+
+    ignore_text = StringListField(_l('Ignore lines containing'), [ValidateListRegex()])
+    headers = StringDictKeyValue('Request headers')
+    body = TextAreaField(_l('Request body'), [validators.Optional()])
+    method = SelectField(_l('Request method'), choices=valid_method, default=default_method)
+    ignore_status_codes = BooleanField(_l('Ignore status codes (process non-2xx status codes as normal)'), default=False)
+    check_unique_lines = BooleanField(_l('Only trigger when unique lines appear in all history'), default=False)
+    remove_duplicate_lines = BooleanField(_l('Remove duplicate lines of text'), default=False)
+    sort_text_alphabetically =  BooleanField(_l('Sort text alphabetically'), default=False)
+    strip_ignored_lines = TernaryNoneBooleanField(_l('Strip ignored lines'), default=None)
+    trim_text_whitespace = BooleanField(_l('Trim whitespace before and after text'), default=False)
+
+    filter_text_added = BooleanField(_l('Added lines'), default=True)
+    filter_text_replaced = BooleanField(_l('Replaced/changed lines'), default=True)
+    filter_text_removed = BooleanField(_l('Removed lines'), default=True)
+
+    trigger_text = StringListField(_l('Keyword triggers - Trigger/wait for text'), [validators.Optional(), ValidateListRegex()])
+    browser_steps = FieldList(FormField(SingleBrowserStep), min_entries=10)
+    text_should_not_be_present = StringListField(_l('Block change-detection while text matches'), [validators.Optional(), ValidateListRegex()])
+    webdriver_js_execute_code = TextAreaField(_l('Execute JavaScript before change detection'), render_kw={"rows": "5"}, validators=[validators.Optional()])
+
+    save_button = SubmitField(_l('Save'), render_kw={"class": "pure-button pure-button-primary"})
+
+    proxy = RadioField(_l('Proxy'))
+    # filter_failure_notification_send @todo make ternary
+    filter_failure_notification_send = BooleanField(_l('Send a notification when the filter can no longer be found on the page'), default=False)
+    notification_muted = TernaryNoneBooleanField(_l('Notifications'), default=None, yes_text=_l("Muted"), no_text=_l("On"))
+    notification_screenshot = BooleanField(_l('Attach screenshot to notification (where possible)'), default=False)
+
+    conditions_match_logic = RadioField(_l('Match'), choices=[('ALL', _l('Match all of the following')),('ANY', _l('Match any of the following'))], default='ALL')
+    conditions = FieldList(FormField(ConditionFormRow), min_entries=1)  # Add rule logic here
+    use_page_title_in_list = TernaryNoneBooleanField(_l('Use page <title> in list'), default=None)
+
+    history_snapshot_max_length = IntegerField(_l('Number of history items per watch to keep'), render_kw={"style": "width: 5em;"}, validators=[validators.Optional(), validators.NumberRange(min=2)])
+
+    def extra_tab_content(self):
+        return None
+
+    def extra_form_content(self):
+        return None
+
+    def validate(self, **kwargs):
+        if not super().validate():
+            return False
+
+        from changedetectionio.jinja2_custom import render as jinja_render
+        result = True
+
+        # Fail form validation when a body is set for a GET
+        if self.method.data == 'GET' and self.body.data:
+            self.body.errors.append(gettext('Body must be empty when Request Method is set to GET'))
+            result = False
+
+        # Attempt to validate jinja2 templates in the URL
+        try:
+            jinja_render(template_str=self.url.data)
+        except ModuleNotFoundError as e:
+            # incase jinja2_time or others is missing
+            logger.error(e)
+            self.url.errors.append(gettext('Invalid template syntax configuration: %(error)s') % {'error': e})
+            result = False
+        except Exception as e:
+            logger.error(e)
+            self.url.errors.append(gettext('Invalid template syntax: %(error)s') % {'error': e})
+            result = False
+
+        # Attempt to validate jinja2 templates in the optional "Link to Open"
+        if self.link_to_open.data and self.link_to_open.data.strip():
+            try:
+                jinja_render(template_str=self.link_to_open.data)
+            except ModuleNotFoundError as e:
+                logger.error(e)
+                self.link_to_open.errors.append(gettext('Invalid template syntax configuration: %(error)s') % {'error': e})
+                result = False
+            except Exception as e:
+                logger.error(e)
+                self.link_to_open.errors.append(gettext('Invalid template syntax: %(error)s') % {'error': e})
+                result = False
+
+        # Attempt to validate jinja2 templates in the body
+        if self.body.data and self.body.data.strip():
+            try:
+                jinja_render(template_str=self.body.data)
+            except ModuleNotFoundError as e:
+                # incase jinja2_time or others is missing
+                logger.error(e)
+                self.body.errors.append(gettext('Invalid template syntax configuration: %(error)s') % {'error': e})
+                result = False
+            except Exception as e:
+                logger.error(e)
+                self.body.errors.append(gettext('Invalid template syntax: %(error)s') % {'error': e})
+                result = False
+
+        # Attempt to validate jinja2 templates in the headers
+        if len(self.headers.data) > 0:
+            try:
+                for header, value in self.headers.data.items():
+                    jinja_render(template_str=value)
+            except ModuleNotFoundError as e:
+                # incase jinja2_time or others is missing
+                logger.error(e)
+                self.headers.errors.append(gettext('Invalid template syntax configuration: %(error)s') % {'error': e})
+                result = False
+            except Exception as e:
+                logger.error(e)
+                self.headers.errors.append(gettext('Invalid template syntax in \"%(header)s\" header: %(error)s') % {'header': header, 'error': e})
+                result = False
+
+        return result
+
+    def __init__(
+            self,
+            formdata=None,
+            obj=None,
+            prefix="",
+            data=None,
+            meta=None,
+            **kwargs,
+    ):
+        super().__init__(formdata, obj, prefix, data, meta, **kwargs)
+        if kwargs and kwargs.get('default_system_settings'):
+            default_tz = kwargs.get('default_system_settings').get('application', {}).get('scheduler_timezone_default')
+            if default_tz:
+                self.time_schedule_limit.form.timezone.render_kw['placeholder'] = default_tz
+
+
+
 class SingleExtraProxy(Form):
     # maybe better to set some <script>var..
     proxy_name = StringField(_l('Name'), [validators.Optional()], render_kw={"placeholder": _l("Name")})
