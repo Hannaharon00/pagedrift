@@ -5129,6 +5129,58 @@ msgstr "Ustawienia"
 msgid "EDIT"
 msgstr "EDYTUJ"
 
+#: changedetectionio/templates/menu.html
+msgid "Website Change Detection and Notification."
+msgstr "Wykrywanie zmian na stronie internetowej i powiadamianie o nich."
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI Mode"
+msgstr "Włącz/wyłącz tryb AI"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle AI mode"
+msgstr "Włącz/wyłącz tryb AI"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle Light/Dark Mode"
+msgstr "Włącz/wyłącz tryb jasny/ciemny"
+
+#: changedetectionio/templates/menu.html
+msgid "Toggle light/dark mode"
+msgstr "Włącz/wyłącz tryb jasny/ciemny"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Add a page watch"
+msgstr "Dodaj obserwację strony"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Page Watches"
+msgstr "Obserwacje stron"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Unread changes"
+msgstr "Nieprzeczytane zmiany"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Watch Groups"
+msgstr "Grupy obserwacji"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Import lists of web pages"
+msgstr "Importowanie list stron internetowych"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers (coming soon)"
+msgstr "Przeglądarki (wkrótce)"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "Browsers"
+msgstr "Przeglądarki"
+
+#: changedetectionio/templates/sidebar-nav.html
+msgid "soon"
+msgstr "wkrótce"
+
 #: changedetectionio/templates/sidebar-nav.html
 msgid "Search, or Use Alt+S Key"
 msgstr "Wyszukaj lub użyj skrótu klawiszowego Alt+S"

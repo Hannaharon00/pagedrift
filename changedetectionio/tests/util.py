@@ -238,3 +238,198 @@ def wait_for_watch_history(client, min_history_count=2, timeout=10):
     return False
 
 
+# Replaced by new_live_server_setup and calling per function scope in conftest.py
+def  live_server_setup(live_server):
+    return True
+
+def new_live_server_setup(live_server):
+
+    @live_server.app.route('/test-random-content-endpoint')
+    def test_random_content_endpoint():
+        import secrets
+        return "Random content - {}\n".format(secrets.token_hex(64))
+
+    @live_server.app.route('/test-endpoint2')
+    def test_endpoint2():
+        return "<html><body>some basic content</body></html>"
+
+    @live_server.app.route('/test-endpoint')
+    def test_endpoint():
+        # REMOVED: logger.debug() causes file locking between test process and Flask server process
+        # Flask server runs in separate multiprocessing.Process and inherited loguru tries to
+        # write to same log files, causing request handlers to block on file locks
+        # from loguru import logger
+        # logger.debug(f"/test-endpoint hit {request}")
+        ctype = request.args.get('content_type')
+        status_code = request.args.get('status_code')
+        content = request.args.get('content') or None
+        delay = int(request.args.get('delay', 0))
+
+        if delay:
+            time.sleep(delay)
+
+        # Used to just try to break the header detection
+        uppercase_headers = request.args.get('uppercase_headers')
+
+        try:
+            if content is not None:
+                resp = make_response(content, status_code)
+                if uppercase_headers:
+                    ctype=ctype.upper()
+                    resp.headers['CONTENT-TYPE'] = ctype if ctype else 'text/html'
+                else:
+                    resp.headers['Content-Type'] = ctype if ctype else 'text/html'
+                return resp
+
+            # Check thread-safe global dict first (instant, no cache issues)
+            # Fall back to file if not in dict (for tests that write directly)
+            with _test_endpoint_content_lock:
+                content_data = _test_endpoint_content.get("endpoint-content.txt")
+
+            if content_data is None:
+                # Not in global dict, read from file
+                datastore_path = current_app.config.get('TEST_DATASTORE_PATH', 'test-datastore')
+                filepath = os.path.join(datastore_path, "endpoint-content.txt")
+
+                # REMOVED: os.sync() was blocking for many seconds during parallel tests
+                # With -n 6+ parallel tests, heavy I/O causes os.sync() to wait for ALL
+                # system writes to complete, causing "Read timed out" errors
+                # File writes from test code are already flushed by the time workers fetch
+
+                try:
+                    with open(filepath, "rb") as f:
+                        content_data = f.read()
+                except Exception as e:
+                    # REMOVED: logger.error() causes file locking in multiprocess context
+                    # Just raise the exception directly for debugging
+                    raise
+
+            resp = make_response(content_data, status_code)
+            if uppercase_headers:
+                resp.headers['CONTENT-TYPE'] = ctype if ctype else 'text/html'
+            else:
+                resp.headers['Content-Type'] = ctype if ctype else 'text/html'
+            return resp
+        except FileNotFoundError:
+            return make_response('', status_code)
+
+    # Just return the headers in the request
+    @live_server.app.route('/test-headers')
+    def test_headers():
+
+        output = []
+
+        for header in request.headers:
+            output.append("{}:{}".format(str(header[0]), str(header[1])))
+
+        content = "\n".join(output)
+
+        resp = make_response(content, 200)
+        resp.headers['server'] = 'custom'
+        return resp
+
+    # Just return the body in the request
+    @live_server.app.route('/test-body', methods=['POST', 'GET'])
+    def test_body():
+        print ("TEST-BODY GOT", request.data, "returning")
+        return request.data
+
+    # Just return the verb in the request
+    @live_server.app.route('/test-method', methods=['POST', 'GET', 'PATCH'])
+    def test_method():
+        return request.method
+
+    # Where we POST to as a notification, also use a space here to test URL escaping is OK across all tests that use this. ( #2868 )
+    @live_server.app.route('/test_notification_endpoint', methods=['POST', 'GET'])
+    def test_notification_endpoint():
+        datastore_path = current_app.config.get('TEST_DATASTORE_PATH', 'test-datastore')
+
+        with open(os.path.join(datastore_path, "notification.txt"), "wb") as f:
+            # Debug method, dump all POST to file also, used to prove #65
+            data = request.stream.read()
+            if data != None:
+                f.write(data)
+
+        with open(os.path.join(datastore_path, "notification-url.txt"), "w") as f:
+            f.write(request.url)
+
+        with open(os.path.join(datastore_path, "notification-headers.txt"), "w") as f:
+            f.write(str(request.headers))
+
+        if request.content_type:
+            with open(os.path.join(datastore_path, "notification-content-type.txt"), "w") as f:
+                f.write(request.content_type)
+
+        print("\n>> Test notification endpoint was hit.\n", data)
+
+        content = "Text was set"
+        status_code = request.args.get('status_code',200)
+        resp = make_response(content, status_code)
+        return resp
+
+    # Just return the verb in the request
+    @live_server.app.route('/test-basicauth', methods=['GET'])
+    def test_basicauth_method():
+        auth = request.authorization
+        ret = " ".join([auth.username, auth.password, auth.type])
+        return ret
+
+    # Just return some GET var
+    @live_server.app.route('/test-return-query', methods=['GET'])
+    def test_return_query():
+        return request.query_string
+
+
+    @live_server.app.route('/endpoint-test.pdf')
+    def test_pdf_endpoint():
+        datastore_path = current_app.config.get('TEST_DATASTORE_PATH', 'test-datastore')
+
+        # Force filesystem sync before reading to ensure fresh data
+        try:
+            os.sync()
+        except (AttributeError, PermissionError):
+            pass
+
+        # Tried using a global var here but didn't seem to work, so reading from a file instead.
+        with open(os.path.join(datastore_path, "endpoint-test.pdf"), "rb") as f:
+            resp = make_response(f.read(), 200)
+            resp.headers['Content-Type'] = 'application/pdf'
+            return resp
+
+    @live_server.app.route('/test-interactive-html-endpoint')
+    def test_interactive_html_endpoint():
+        header_text=""
+        for k,v in request.headers.items():
+            header_text += f"{k}: {v}<br>"
+
+        resp = make_response(f"""
+        <html>
+          <body>
+          Primitive JS check for <pre>changedetectionio/tests/visualselector/test_fetch_data.py</pre>
+            <p id="remove">This text should be removed</p>
+              <form onsubmit="event.preventDefault();">
+            <!-- obfuscated text so that we dont accidentally get a false positive due to conversion of the source :) --->
+                <button name="test-button" onclick="
+                getElementById('remove').remove();
+                getElementById('some-content').innerHTML = atob('SSBzbWVsbCBKYXZhU2NyaXB0IGJlY2F1c2UgdGhlIGJ1dHRvbiB3YXMgcHJlc3NlZCE=');
+                getElementById('reflect-text').innerHTML = getElementById('test-input-text').value;
+                ">Click here</button>
+                
+                <div id="some-content"></div>
+                
+                <pre>
+                {header_text.lower()}
+                </pre>
+                
+                <br>
+                <!-- used for testing that the jinja2 compiled here --->
+                <input type="text" value="" id="test-input-text" /><br>
+                <div id="reflect-text">Waiting to reflect text from #test-input-text here</div>
+              </form>
+                
+           </body>
+         </html>""", 200)
+        resp.headers['Content-Type'] = 'text/html'
+        return resp
+
+    live_server.start()
