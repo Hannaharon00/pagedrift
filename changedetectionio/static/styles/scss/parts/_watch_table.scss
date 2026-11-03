@@ -523,3 +523,45 @@ body.has-any-unviewed #post-list-mark-views {
 
 
 
+// Watchlist page: quick-add box above the list.
+body.blueprint-watchlist {
+  #add-watch-ui {
+    margin-bottom: $common-gap*2;
+    padding: 0; /* override */
+  }
+  #add-watch-url-row {
+    margin-bottom: 0 !important;
+  }
+  #quick-watch-llm-intent {
+    margin-top: $common-gap;
+  }
+
+  // Let the URL field grow with what's typed, from a compact minimum up to 80% of
+  // the row, instead of always filling it. `field-sizing: content` is the pure-CSS
+  // auto-grow (Chromium 123+); other browsers fall back to the min-width below.
+  #url {
+
+    width: auto;
+    @media only screen and (min-width: $desktop-wide-breakpoint) {
+      /*field-sizing: content;*/ // <-- removed, buggy
+      min-width: 32rem;
+      // Cap against the viewport, not just the parent: with field-sizing:content the parent is
+      // shrink-to-fit, so "80%" is effectively the input's own width and a long URL would grow
+      // it past the viewport edge (horizontal scroll). min(80%, 80vw) keeps it on-screen.
+      max-width: min(80%, 80vw);
+      box-sizing: border-box;
+    }
+  }
+
+  // Reveal the "intent" + "processor type" options only once a URL has been typed
+  // — pure CSS, no JS. :placeholder-shown is true while the box is empty (the
+  // placeholder is visible); :has() lets the form react to the nested #url input.
+  #quick-watch-llm-intent,
+  #quick-watch-processor-type {
+    display: none;
+  }
+  #new-watch-form:has(#url:not(:placeholder-shown)) #quick-watch-llm-intent,
+  #new-watch-form:has(#url:not(:placeholder-shown)) #quick-watch-processor-type {
+    display: block;
+  }
+}
