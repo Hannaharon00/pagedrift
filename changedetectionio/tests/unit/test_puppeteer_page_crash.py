@@ -85,3 +85,47 @@ def test_page_crash_is_recorded_and_does_not_propagate(monkeypatch):
     assert f.page_errors == [crash]
 
 
+def test_every_page_crash_in_one_load_is_kept(monkeypatch):
+    """One load can crash more than one renderer - don't let the later error hide the first."""
+    page = FakePage()
+    f = _fetch_page_until_csp(monkeypatch, page)
+
+    first = RuntimeError('iframe renderer gone')
+    second = RuntimeError('Page crashed!')
+    page.emit('error', first)
+    page.emit('error', second)
+
+    assert f.page_errors == [first, second]
+
+
+def test_run_reports_page_errors_even_when_the_fetch_then_fails(monkeypatch):
+    """Nothing consumes page_errors, so the log is the only signal - it must survive the raise."""
+    from changedetectionio.content_fetchers import puppeteer
+
+    f = puppeteer.fetcher()
+
+    async def crashing_main(**kwargs):
+        f.page_errors.append(RuntimeError('Page crashed!'))
+        raise puppeteer.PageUnloadable(url='https://example.com', status_code=None, message='boom')
+
+    monkeypatch.setattr(f, 'main', crashing_main)
+    monkeypatch.setattr(f, 'quit', AsyncMock())
+
+    records = []
+    sink_id = logger.add(lambda m: records.append(m.record), level='WARNING')
+    try:
+        with pytest.raises(puppeteer.PageUnloadable):
+            asyncio.run(f.run(url='https://example.com', watch_uuid='test-watch'))
+    finally:
+        logger.remove(sink_id)
+
+    messages = [r['message'] for r in records if r['level'].name == 'WARNING']
+    assert any('1 page error(s)' in m and 'Page crashed!' in m for m in messages), messages
+
+
+def test_unlistened_page_crash_would_propagate():
+    """Guards the premise above: without a listener, pyee hands the error straight back."""
+    page = FakePage()
+
+    with pytest.raises(RuntimeError, match='Page crashed!'):
+        page.emit('error', RuntimeError('Page crashed!'))
