@@ -195,3 +195,48 @@ class _RecordingPage:
         return None
 
 
+class TestBrowserStepGotoUrlGate(unittest.TestCase):
+    """GHSA-hm22-wg2m-35v4 - browser step values are raw user input and were never validated.
+
+    action_goto_url() is the single choke point for every navigation we initiate (the "Goto URL"
+    step, "Goto site", the live Browser Steps UI and the Add Watch preview all land here), so the
+    assertion that matters is that page.goto() is never reached for a refused URL.
+    """
+
+    def _interface(self, start_url='https://example.com/'):
+        interface = steppable_browser_interface(start_url=start_url)
+        interface.page = _RecordingPage()
+        return interface
+
+    def test_goto_url_step_cannot_read_local_files(self):
+        with patch.dict('os.environ', LOCKED_DOWN):
+            interface = self._interface()
+            with self.assertRaises(ValueError):
+                asyncio.run(interface.action_goto_url(value='file:///etc/passwd'))
+            self.assertEqual(interface.page.goto_calls, [], "Chromium was navigated to a refused URL")
+
+    def test_goto_url_step_cannot_reach_private_addresses(self):
+        with patch.dict('os.environ', LOCKED_DOWN):
+            for url in ('http://127.0.0.1:5000/', 'http://169.254.169.254/latest/meta-data/'):
+                with self.subTest(url=url):
+                    interface = self._interface()
+                    with self.assertRaises(ValueError):
+                        asyncio.run(interface.action_goto_url(value=url))
+                    self.assertEqual(interface.page.goto_calls, [])
+
+    def test_goto_site_step_validates_the_start_url_too(self):
+        with patch.dict('os.environ', LOCKED_DOWN):
+            interface = self._interface(start_url='source:http://127.0.0.1/')
+            with self.assertRaises(ValueError):
+                asyncio.run(interface.action_goto_site())
+            self.assertEqual(interface.page.goto_calls, [])
+
+    def test_permitted_url_still_navigates(self):
+        with patch.dict('os.environ', LOCKED_DOWN):
+            interface = self._interface()
+            asyncio.run(interface.action_goto_url(value='https://example.com/'))
+            self.assertEqual(interface.page.goto_calls, ['https://example.com/'])
+
+
+if __name__ == '__main__':
+    unittest.main()

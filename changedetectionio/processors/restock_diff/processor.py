@@ -389,6 +389,21 @@ def get_itemprop_availability(html_content) -> Restock:
     return value
 
 
+def is_between(number, lower=None, upper=None):
+    """
+    Check if a number is between two values.
+
+    Parameters:
+    number (float): The number to check.
+    lower (float or None): The lower bound (inclusive). If None, no lower bound.
+    upper (float or None): The upper bound (inclusive). If None, no upper bound.
+
+    Returns:
+    bool: True if the number is between the lower and upper bounds, False otherwise.
+    """
+    return (lower is None or lower <= number) and (upper is None or number <= upper)
+
+
 class perform_site_check(difference_detection_processor):
     screenshot = None
     xpath_data = None
